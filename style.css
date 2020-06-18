@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  background-color: white;
+}
+
+#application {
+	border: black solid 1px;
+	width: 1300px;
+  height: 1000px;
+	display: grid;
+  grid-template-columns: 20% auto;
+  grid-template-rows: 200px auto;
+  grid-template-areas: 
+    "header header"
+    "sidebar main";
+}
+
+#title-bar {
+	border: red solid 1px;
+  grid-area: header;
+  height: 200px;
+  font-size: 20px;
+  text-align: center;
+  display: flex;
+}
+
+#side-bar {
+	border: black solid 1px;
+  grid-area: sidebar;
+  font-size: 20px;
+  position: sticky;
+}
+
+#main {
+	border: black solid 1px;
+  grid-area: main;
+  overflow-y: auto;
+  font-size: 40px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.foto {
+  width: 300px;
+  height: 300px;
+  padding: 10px;
+}
