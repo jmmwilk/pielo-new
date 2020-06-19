@@ -11,10 +11,10 @@ body {
 #application {
 	border: black solid 1px;
 	width: 1300px;
-  height: 1000px;
+  height: 100vh;
 	display: grid;
   grid-template-columns: 20% auto;
-  grid-template-rows: 200px auto;
+  grid-template-rows: 100px auto;
   grid-template-areas: 
     "header header"
     "sidebar main";
@@ -23,7 +23,6 @@ body {
 #title-bar {
 	border: red solid 1px;
   grid-area: header;
-  height: 200px;
   font-size: 20px;
   text-align: center;
   display: flex;

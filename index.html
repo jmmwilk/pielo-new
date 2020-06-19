@@ -8,6 +8,7 @@
     <link href='style.css' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
     <script type="module" src="index.js"></script>
+    <script src='js/handlebars-v4.7.6.js'></script>
   </head>
   <body>
     <div id="application">
@@ -15,21 +16,12 @@
         cholera o co chodzi????
       </div>
       <div id="side-bar">
-        <div class="pielo-type">
-          otulacze
-        </div>
-        <div class="pielo-type">
-          gatki
-        </div>
-        <div class="pielo-type">
-          longi
-        </div>
-        <div class="pielo-type">
-          formowanki
-        </div>
-        <div class="pielo-type">
-          AIO
-        </div>
+        <script id="menu-template" type="text/x-handlebars-template">
+          <li class="menu-template">
+          <h1>{{name}}</h1>
+          <p>{{types}}</p>
+          </li>
+        </script>
       </div>
       <div id="main">
         <div id="products-container">
