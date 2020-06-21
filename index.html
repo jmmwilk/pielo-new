@@ -8,7 +8,7 @@
     <link href='style.css' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
     <script type="module" src="index.js"></script>
-    <script src='js/handlebars-v4.7.6.js'></script>
+    <script src='handlebars-v4.7.6.js'></script>
   </head>
   <body>
     <div id="application">
@@ -25,6 +25,19 @@
       </div>
       <div id="main">
         <div id="products-container">
+          <div id=pielucha>
+            <script id="pielucha-template" type="text/x-handlebars-template">
+              {{#each diapers}}
+              <li class="pielucha-template">
+              <img src="{{photo}}.jpg" class="foto"/>
+              <h1>{{name}}</h1>
+              <p>Rodzaj: {{#if type}} {{type}} {{else}} brak {{/if}} </p>
+              <p>Producent: {{brand}}</p>
+              <p>Rozmiar: {{size}}</p>
+              </li>
+              {{/each}}
+            </script>
+          </div>
           <img src="pielucha.jpg" class="foto"/>
            <img src="pielucha.jpg" class="foto"/>
             <img src="pielucha.jpg" class="foto"/>
