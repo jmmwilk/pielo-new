@@ -1,47 +1,4 @@
-let menu = {
-	'categories': [
-		{
-			'name': 'Rozmiar',
-			'types': [
-				'New Born',
-				'Small',
-				'Mini One Size',
-				'One Size',
-				'Medium',
-				'One Size Plus',
-				'Large'
-			]
-		},
-
-		{
-			'name': 'Materiał',
-			'types': [
-				'Wełna',
-				'PUL',
-				'Bawełna',
-				'Bambus',
-				'Len',
-				'Mikrofibra',
-				'Konopie'
-			]
-		},
-
-		{
-			'name': 'Rodzaj',
-			'types': [
-				'Otulacz',
-				'Gatki',
-				'Longi',
-				'AIO',
-				'SIO',
-				'Kieszonka',
-				'Kąpieluszki',
-				'Trenerki',
-				'Wkłady'
-			]
-		}
-	]
-}
+import * as menu from './menu.js';
 
 let items = {
 	'diapers': [
@@ -55,22 +12,34 @@ let items = {
 		{
 			'photo': 'puppi',
 			'name': 'Otulacz',
-			'type': undefined,
+			'type': 'blabla',
 			'brand': 'Puppi',
 			'size': 'New Born'
 		}
 	]
 }
 
-$(document).ready(function(){
-	let menuTemplate = $('#menu-template').html();
-	let compiledMenuTemplate = Handlebars.compile(menuTemplate);
-	console.log(compiledMenuTemplate(menu.categories[0]));
-	$('#side-bar').html(compiledMenuTemplate(menu.categories[0]));
-});
+// $(document).ready(function(){
+// 	let menuTemplate = $('#menu-template').html();
+// 	let compiledMenuTemplate = Handlebars.compile(menuTemplate);
+// 	console.log(compiledMenuTemplate(menu.categories[0]));
+// 	$('#side-bar').html(compiledMenuTemplate(menu.categories[0]));
+// });
+
+// $(document).ready(function(){
+// 	let pieluchaTemplate = $('#pielucha-template').html();
+// 	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
+// 	$('#pielucha').html(compiledPieluchaTemplate(items));
+// })
+
 
 $(document).ready(function(){
-	let pieluchaTemplate = $('#pielucha-template').html();
-	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
-	$('#pielucha').html(compiledPieluchaTemplate(items));
+	console.log(menu.sideBarMenu)
+})
+
+$(document).ready(function(){
+	let categories = menu.sideBarMenu
+	let menuTemplate = $('menu-template').html();
+	let compiledMenuTemplate = Handlebars.compile(menuTemplate);
+	$('#side-bar').html(compiledMenuTemplate(categories))
 })

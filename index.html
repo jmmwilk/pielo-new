@@ -16,12 +16,18 @@
         cholera o co chodzi????
       </div>
       <div id="side-bar">
-        <script id="menu-template" type="text/x-handlebars-template">
-          <li class="menu-template">
+        <ul id="menu-template" type="text/x-handlebars-template">
+<!--           <li class="menu-template">
           <h1>{{name}}</h1>
           <p>{{types}}</p>
-          </li>
-        </script>
+          </li> -->
+
+          {{#each categories}}
+            <li> class="menu-template">
+              <h1>{{this}}</h1>
+            </li>
+          {{/each}}
+        </ul>
       </div>
       <div id="main">
         <div id="products-container">
