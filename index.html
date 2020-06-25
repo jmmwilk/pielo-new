@@ -17,15 +17,18 @@
       </div>
       <div id="side-bar">
         <ul id="menu-template" type="text/x-handlebars-template">
-<!--           <li class="menu-template">
-          <h1>{{name}}</h1>
-          <p>{{types}}</p>
-          </li> -->
-
           {{#each categories}}
             <li class="menu-template">
               <h1>{{name}}</h1>
-              <h2>{{list}}</h2>
+              {{#each list}}
+                <h2>{{this}}</h2>
+              {{/each}}
+              {{#each submenu1}}
+                <h3>{{this}}</h3>
+              {{/each}}
+              {{#each submenu2}}
+                <h3>{{this}}</h3>
+              {{/each}}
             </li>
           {{/each}}
         </ul>

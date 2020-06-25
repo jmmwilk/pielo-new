@@ -17,6 +17,23 @@ export let sideBarMenu = {
 				'Majtki Treningowe',
 				'Do Kąpieli',
 				'Warstwa Zewnętrzna'
+			],
+			'submenu1': [
+				'Otulacze',
+				'Gatki',
+				'Longi',
+				'Kieszonki',
+				'Wkładki'
+			],
+			'submenu2': [
+				'Formowanki',
+				'Składane',
+				'Prefoldy',
+				'Wkłady Krótkie',
+				'Wkłady Długie',
+				'Wkłady z Burtami',
+				'Boostery',
+				'Inne'
 			]
 		},
 		{
@@ -24,14 +41,6 @@ export let sideBarMenu = {
 		}
 	]
 }
-
-let diapersTypes = [
-			'All In One',
-			'Snap In One',
-			'Majtki Treningowe',
-			'Do Kąpieli',
-			'Warstwa Zewnętrzna'
-			]
 
 
 
