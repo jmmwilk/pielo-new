@@ -34,12 +34,8 @@ let items = {
 
 
 $(document).ready(function(){
-	console.log(menu.sideBarMenu)
-})
-
-$(document).ready(function(){
 	let categories = menu.sideBarMenu
-	let menuTemplate = $('menu-template').html();
+	let menuTemplate = $('#menu-template').html();
 	let compiledMenuTemplate = Handlebars.compile(menuTemplate);
 	$('#side-bar').html(compiledMenuTemplate(categories))
 })

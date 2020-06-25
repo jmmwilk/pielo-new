@@ -1,11 +1,43 @@
 
+// export let sideBarMenu = {
+// 	'categories': [
+// 	'Rodzaje Pieluszek',
+// 	'Materiał',
+// 	'Waga Dziecka'
+// 	]
+// }
+
 export let sideBarMenu = {
 	'categories': [
-	'Rodzaje Pieluszek',
-	'Materiał',
-	'Waga Dziecka'
+		{
+			'name': 'Rodzaje Pieluszek',
+			'list': [
+				'All In One',
+				'Snap In One',
+				'Majtki Treningowe',
+				'Do Kąpieli',
+				'Warstwa Zewnętrzna'
+			]
+		},
+		{
+			'name': 'Materiał'
+		}
 	]
 }
+
+let diapersTypes = [
+			'All In One',
+			'Snap In One',
+			'Majtki Treningowe',
+			'Do Kąpieli',
+			'Warstwa Zewnętrzna'
+			]
+
+
+
+		// 'childsWeight',
+		// 'size',
+		// 'brand'
 
 // export let sideBarMenu = {
 // 	'categories': [
