@@ -20,14 +20,11 @@
           {{#each categories}}
             <li class="menu-template">
               <h1>{{name}}</h1>
-              {{#each list}}
-                <h2>{{this}}</h2>
-              {{/each}}
               {{#each submenu1}}
-                <h3>{{this}}</h3>
-              {{/each}}
-              {{#each submenu2}}
-                <h3>{{this}}</h3>
+                <h2>{{this.name}}</h2>
+                {{#each this.submenu2}}
+                  <h3>{{this.name}}</h3>
+                {{/each}}
               {{/each}}
             </li>
           {{/each}}

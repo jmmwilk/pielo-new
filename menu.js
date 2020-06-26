@@ -11,42 +11,216 @@ export let sideBarMenu = {
 	'categories': [
 		{
 			'name': 'Rodzaje Pieluszek',
-			'list': [
-				'All In One',
-				'Snap In One',
-				'Majtki Treningowe',
-				'Do Kąpieli',
-				'Warstwa Zewnętrzna'
-			],
 			'submenu1': [
-				'Otulacze',
-				'Gatki',
-				'Longi',
-				'Kieszonki',
-				'Wkładki'
+				{
+					'name': 'All In One'
+				},
+				{
+					'name': 'Snap In One'
+				},
+				{
+					'name': 'Majtki Treningowe'
+				},
+				{
+					'name': 'Do Kąpieli'
+				},
+				{
+					'name': 'Pieluchy Zewnętrzne',
+					'submenu2': [	
+						{
+							'name': 'Otulacze'
+						},
+						{
+							'name': 'Gatki'
+						},
+						{
+							'name': 'Longi'
+						},
+						{
+							'name': 'Kieszonki'
+						},
+						{
+							'name': 'Wkładki'
+						}
+					]
+				},
+				{
+					'name': 'Pieluchy Wewnętrzne',
+					'submenu2': [	
+						{
+							'name': 'Formowanki'
+						},
+						{
+							'name': 'Składane'
+						},
+						{
+							'name': 'Prefoldy'
+						},
+						{
+							'name': 'Wkłady Krótkie'
+						},
+						{
+							'name': 'Wkłady Długie'
+						},
+						{
+							'name': 'Wkłady z Burtami'
+						},
+						{
+							'name': 'Boostery'
+						},
+						{
+							'name': 'Inne'
+						}
+					]
+				}
 			],
-			'submenu2': [
-				'Formowanki',
-				'Składane',
-				'Prefoldy',
-				'Wkłady Krótkie',
-				'Wkłady Długie',
-				'Wkłady z Burtami',
-				'Boostery',
-				'Inne'
+		},
+		{
+			'name': 'Materiał',
+			'submenu1': [
+				{
+					'name': 'Wełna'
+				},
+				{
+					'name': 'PUL'
+				},
+				{
+					'name': 'Bawełna'
+				},
+				{
+					'name': 'Bawełna Organiczna'
+				},
+				{
+					'name': 'Bambus'
+				},
+				{
+					'name': 'Konopia'
+				},
+				{
+					'name': 'Len'
+				},
+				{
+					'name': 'Mikrofibra'
+				},
+				{
+					'name': 'Polar'
+				},
+				{
+					'name': 'Thermo / Coolmax'
+				}
 			]
 		},
 		{
-			'name': 'Materiał'
+			'name': 'Waga Dziecka'
+		},
+		{
+			'name': 'Rozmiar',
+			'submenu1': [
+				{
+					'name': 'New Born'
+				},
+				{
+					'name': 'Mini One Size'
+				},
+				{
+					'name': 'One Size'
+				},
+				{
+					'name': 'One Size Plus'
+				},
+				{
+					'name': 'Small'
+				},
+				{
+					'name': 'Medium'
+				},
+				{
+					'name': 'Large'
+				},
+				{
+					'name': 'X Large'
+				}
+			]
+		},
+		{
+			'name': 'Producent',
+			'submenu1': [
+				{
+					'name': 'Puppi'
+				},
+				{
+					'name': 'Kokosi'
+				},
+				{
+					'name': 'Xkko'
+				},
+				{
+					'name': 'Magabi'
+				},
+				{
+					'name': 'JellyFish'
+				},
+				{
+					'name': 'Sue&Sophie'
+				},
+				{
+					'name': 'Fomi'
+				},
+			]
 		}
+
 	]
 }
 
+// 		'brand': [
+// 			'puppi': {
+// 				'name': 'Puppi'
+// 			},
+// 			'kokosi': {
+// 				'name': 'Kokosi'
+// 			},
+// 			'xkko': {
+// 				'name': 'Xkko'
+// 			},
+// 			'magabi': {
+// 				'name': 'Magabi'
+// 			},
+// 			'jellyfish': {
+// 				'name': 'JellyFish'
+// 			},
+// 			'sue&sophie': {
+// 				'name': 'Sue&Sophie'
+// 			}
+// 		]
 
 
-		// 'childsWeight',
-		// 'size',
-		// 'brand'
+// 			'list': [
+// 				'newBorn': {
+// 					'name': 'New Born'
+// 				},
+// 				'miniOneSize': {
+// 					'name': 'Mini One Size'
+// 				},
+// 				'oneSize': {
+// 					'name': 'One Size'
+// 				},
+// 				'OneSizePlus': {
+// 					'name': 'One Size Plus'
+// 				},
+// 				'small': {
+// 					'name': 'Small'
+// 				},
+// 				'medium': {
+// 					'name': 'Medium'
+// 				},
+// 				'large': {
+// 					'name': 'Large'
+// 				},
+// 				'xLarge': {
+// 					'name': 'X Large'
+// 				}
+// 			]
+
 
 // export let sideBarMenu = {
 // 	'categories': [
