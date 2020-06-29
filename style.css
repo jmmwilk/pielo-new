@@ -1,56 +1,31 @@
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;  
   background-color: white;
 }
 
 #application {
-	border: black solid 1px;
-	width: 1300px;
-  height: 100vh;
-	display: grid;
-  grid-template-columns: 20% auto;
-  grid-template-rows: 100px auto;
-  grid-template-areas: 
-    "header header"
-    "sidebar main";
 }
 
 #title-bar {
-	border: red solid 1px;
-  grid-area: header;
-  font-size: 20px;
-  text-align: center;
-  display: flex;
+  height: 100px;
 }
 
 #side-bar {
-	border: black solid 1px;
-  grid-area: sidebar;
-  font-size: 20px;
-  position: sticky;
 }
 
 #main {
-	border: black solid 1px;
-  grid-area: main;
-  overflow-y: auto;
-  font-size: 40px;
   padding: 10px;
   display: flex;
   flex-direction: row;
 }
 
-.foto {
-  width: 300px;
-  height: 300px;
-  padding: 10px;
-}
-
 #menu-template {
   color: blue;
 }
+
+h5{
+    font-size: 1.4em;
+}  
+
+/*overflow-y: auto;*/

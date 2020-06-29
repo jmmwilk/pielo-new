@@ -1,11 +1,4 @@
 
-// export let sideBarMenu = {
-// 	'categories': [
-// 	'Rodzaje Pieluszek',
-// 	'Materiał',
-// 	'Waga Dziecka'
-// 	]
-// }
 
 export let sideBarMenu = {
 	'categories': [
@@ -26,6 +19,7 @@ export let sideBarMenu = {
 				},
 				{
 					'name': 'Pieluchy Zewnętrzne',
+					'issubmenu': true,
 					'submenu2': [	
 						{
 							'name': 'Otulacze'
@@ -46,6 +40,7 @@ export let sideBarMenu = {
 				},
 				{
 					'name': 'Pieluchy Wewnętrzne',
+					'issubmenu': true,
 					'submenu2': [	
 						{
 							'name': 'Formowanki'

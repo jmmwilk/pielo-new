@@ -7,30 +7,63 @@ let items = {
 			'name': 'Formowanka',
 			'type': 'Kieszonka',
 			'brand': 'Jellyfish',
-			'size': 'One Size'
+			'size': 'One Size',
+			'fabric': 'bawełniana'
 		},
 		{
-			'photo': 'puppi',
+			'photo': 'puppi2',
 			'name': 'Otulacz',
-			'type': 'blabla',
+			'type': '',
 			'brand': 'Puppi',
-			'size': 'New Born'
+			'size': 'New Born',
+			'fabric': 'wełniany'
+		},
+		{
+			'photo': 'drimi',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Drimi',
+			'size': 'New Born',
+			'fabric': 'wełniany'
+		},
+		{
+			'photo': 'puppi2',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Puppi',
+			'size': 'New Born',
+			'fabric': 'wełniany'
+		},
+		{
+			'photo': 'puppi2',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Puppi',
+			'size': 'New Born',
+			'fabric': 'wełniany'
+		},
+		{
+			'photo': 'puppi2',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Puppi',
+			'size': 'New Born',
+			'fabric': 'wełniany'
 		}
 	]
 }
 
-// $(document).ready(function(){
-// 	let menuTemplate = $('#menu-template').html();
-// 	let compiledMenuTemplate = Handlebars.compile(menuTemplate);
-// 	console.log(compiledMenuTemplate(menu.categories[0]));
-// 	$('#side-bar').html(compiledMenuTemplate(menu.categories[0]));
-// });
+let pieluchaTemplate = $('#pielucha-template').html();
 
-// $(document).ready(function(){
-// 	let pieluchaTemplate = $('#pielucha-template').html();
-// 	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
-// 	$('#pielucha').html(compiledPieluchaTemplate(items));
-// })
+Handlebars.registerHelper('printdiaper', function(name){
+		return this.name + ' ' + this.type + ' ' + this.fabric
+	})
+
+$(document).ready(function(){
+	let pieluchaTemplate = $('#pielucha-template').html();
+	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
+	$('#products-container').html(compiledPieluchaTemplate(items));
+})
 
 
 $(document).ready(function(){
