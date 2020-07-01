@@ -25,19 +25,23 @@
             <ul id="menu-template" class="nav navbar-nav nav-tabs">
               {{#each categories}}
                 <li class="nav-item dropdown menu-template">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <h5>{{name}}</h5> 
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     {{#each submenu1}}
-                      <a class="dropdown-item zupa">{{this.name}}</a>
+                      <a class="dropdown-item nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {{this.name}}
+                        {{#if issubmenu}}
+                          <div class="dropdown-menu dupa" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item">
+                              <p> dupa </p> 
+                            </a>
+                          </div>
+                        {{/if}}
+                      </a>
+                    {{/each}}
                   </div>
-                    <!-- {{#if issubmenu}}
-                      {{#each this.submenu2}}
-                        <a class="nav-link" href="#application">{{this.name}}</a>
-                      {{/each}}
-                    {{/if}} -->
-               {{/each}}
                 </li>
               {{/each}}
             </ul>
