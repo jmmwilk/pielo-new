@@ -21,21 +21,21 @@
       </div>
       <div class="row">
         <nav id="side-bar" class="navbar navbar-light bg-light col-md-2">
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul id="menu-template" class="navbar-nav" type="text/x-handlebars-template">
+          <div id="menu-template-container" class=" navbar-collapse" id="navbarNav">
+            <ul id="menu-template" class="nav navbar-nav nav-tabs">
               {{#each categories}}
                 <li class="nav-item dropdown menu-template">
-                  <a class="nav-link dropdown-toggle" href="#application" role="button" data-toggle="dropdown"><h5>{{name}}</h5></a>
+                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"<h5>{{name}}</h5> </a>
                   {{#each submenu1}}
                     <div class="dropdown-menu">
-                      <a class="nav-link dropdown-item dropdown-menu" href="#application">{{this.name}}</a>
+                      <a class="dropdown-item">{{this.name}}</a>
                     </div>
-                    {{#if issubmenu}}
+                    <!-- {{#if issubmenu}}
                       {{#each this.submenu2}}
                         <a class="nav-link" href="#application">{{this.name}}</a>
                       {{/each}}
-                    {{/if}}
-                  {{/each}}
+                    {{/if}} -->
+               {{/each}}
                 </li>
               {{/each}}
             </ul>

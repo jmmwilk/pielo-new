@@ -49,6 +49,38 @@ let items = {
 			'brand': 'Puppi',
 			'size': 'New Born',
 			'fabric': 'wełniany'
+		},
+		{
+			'photo': 'drimi',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Drimi',
+			'size': 'New Born',
+			'fabric': 'wełniany'
+		},
+		{
+			'photo': 'puppi2',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Puppi',
+			'size': 'New Born',
+			'fabric': 'wełniany'
+		},
+		{
+			'photo': 'puppi2',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Puppi',
+			'size': 'New Born',
+			'fabric': 'wełniany'
+		},
+		{
+			'photo': 'puppi2',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Puppi',
+			'size': 'New Born',
+			'fabric': 'wełniany'
 		}
 	]
 }
@@ -70,5 +102,5 @@ $(document).ready(function(){
 	let categories = menu.sideBarMenu
 	let menuTemplate = $('#menu-template').html();
 	let compiledMenuTemplate = Handlebars.compile(menuTemplate);
-	$('#side-bar').html(compiledMenuTemplate(categories))
+	$('#menu-template').html(compiledMenuTemplate(categories))
 })
