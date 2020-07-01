@@ -104,15 +104,3 @@ $(document).ready(function(){
 	let compiledMenuTemplate = Handlebars.compile(menuTemplate);
 	$('#menu-template').html(compiledMenuTemplate(categories))
 })
-
-
-                      // {{#if this.issubmenu}}
-                      //   <p> kupa </p>
-                      //   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      //     {{each submenu1.submenu2}}
-                      //       <a class="dropdown-item">
-                      //         <p> kupa </p>
-                      //       </a>
-                      //     {{/each}}
-                      //   </div>
-                      // {{/if}}

@@ -4,16 +4,16 @@ export let sideBarMenu = {
 			'name': 'Rodzaje Pieluszek',
 			'submenu1': [
 				{
-					'name': 'All In One'
+					'name': 'All In One',
 				},
 				{
-					'name': 'Snap In One'
+					'name': 'Snap In One',
 				},
 				{
-					'name': 'Majtki Treningowe'
+					'name': 'Majtki Treningowe',
 				},
 				{
-					'name': 'Do Kąpieli'
+					'name': 'Do Kąpieli',
 				},
 				{
 					'name': 'Pieluchy Zewnętrzne',

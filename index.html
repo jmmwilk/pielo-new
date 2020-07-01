@@ -20,26 +20,32 @@
         cholera o co chodzi????
       </div>
       <div class="row">
-        <nav id="side-bar" class="navbar navbar-light bg-light col-md-2">
+        <nav id="side-bar" class="navbar navbar-light bg-light col-md-3">
           <div id="menu-template-container" class=" navbar-collapse collaple" id="navbarNav">
             <ul id="menu-template" class="nav navbar-nav nav-tabs">
               {{#each categories}}
                 <li class="nav-item dropdown menu-template">
-                  <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle d-flex flex-row align-items-center" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                   <h5>{{name}}</h5> 
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     {{#each submenu1}}
-                      <a class="dropdown-item nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        {{this.name}}
-                        {{#if issubmenu}}
-                          <div class="dropdown-menu dupa" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item">
-                              <p> dupa </p> 
-                            </a>
+                      {{#if issubmenu}}
+                        <a class="dropdown-item nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                          {{this.name}}
+                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            {{#each this.submenu2}}
+                              <a class="dropdown-item submenu2">
+                                <p>{{name}}</p>
+                              </a>
+                            {{/each}}
                           </div>
-                        {{/if}}
-                      </a>
+                        </a>
+                      {{else}}
+                        <a class="dropdown-item">
+                          {{this.name}}
+                        </a>
+                      {{/if}}
                     {{/each}}
                   </div>
                 </li>
@@ -47,7 +53,7 @@
             </ul>
           </div>
         </nav>
-        <div id="main" class="col-md-10">
+        <div id="main" class="col-md-9">
           <div id="products-container" class="d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3">
             <div id="pielucha-template" type="text/x-handlebars-template">
               {{#each diapers}}
