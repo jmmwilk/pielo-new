@@ -21,33 +21,35 @@
       </div>
       <div class="row">
         <nav id="side-bar" class="navbar navbar-light bg-light col-md-3">
-          <div id="menu-template-container" class=" navbar-collapse collaple" id="navbarNav">
-            <ul id="menu-template" class="nav navbar-nav nav-tabs">
+          <div id="menu-template-container" class="navbar-collapse collaple fixed-top" id="navbarNav">
+            <ul id="menu-template" class="navbar-nav">
               {{#each categories}}
-                <li class="nav-item dropdown menu-template">
+                <li class="dropdown nav-item">
                   <a class="nav-link dropdown-toggle d-flex flex-row align-items-center" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                  <h5>{{name}}</h5> 
+                  {{name}}
                   </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <ul class="dropdown-menu border-0 sub-menu1">
                     {{#each submenu1}}
                       {{#if issubmenu}}
-                        <a class="dropdown-item nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          {{this.name}}
-                          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li class="dropdown-submenu">
+                          <a class="sub-menu1-item dropdown-toggle dropdown-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            {{this.name}}
+                          </a>
+                          <ul class="dropdown-menu border-0 sub-menu2">
                             {{#each this.submenu2}}
-                              <a class="dropdown-item submenu2">
-                                <p>{{name}}</p>
-                              </a>
+                              <li><a class="sub-menu2-item dropdown-item">
+                                {{name}}
+                              </a></li>
                             {{/each}}
-                          </div>
-                        </a>
+                          </ul>
+                        </li>
                       {{else}}
-                        <a class="dropdown-item">
+                        <li><a class="sub-menu1-item dropdown-item">
                           {{this.name}}
-                        </a>
+                        </a></li>
                       {{/if}}
                     {{/each}}
-                  </div>
+                  </ul>
                 </li>
               {{/each}}
             </ul>
