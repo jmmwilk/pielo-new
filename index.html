@@ -20,22 +20,22 @@
         cholera o co chodzi????
       </div>
       <div class="row">
-        <nav id="side-bar" class="col-md-3 align-items-start sticky-top">
-          <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto" id="navbarNav">
+        <nav id="side-bar" class="col-md-2 align-items-start">
+          <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">
             <ul id="menu-template" class="nav flex-column flex-nowrap overflow-hidden">
               {{#each categories}}
                 <li class="nav-item">
-                  <a class="nav-link collapsed text-truncate" href="SUBMENU1" data-toggle="collapse" data-target="SUBMENU1">
+                  <a class="nav-link collapsed text-truncate" href="#{{id}}" data-toggle="collapse" data-target="#{{id}}">
                   {{name}}
                   </a>
-                  <ul class="collapse flex-column pl-2 nav SUBMENU1" aria-expanded="false">
+                  <ul id="{{id}}" class="collapse flex-column pl-2 nav" aria-expanded="false">
                     {{#each submenu1}}
                       {{#if issubmenu}}
                         <li class="nav-item">
-                          <a class="nav-link collapsed py-1" href="SUBMENU2" data-toggle="collapse" data-target="SUBMENU2">
+                          <a class="nav-link collapsed py-1" href="#{{id}}" data-toggle="collapse" data-target="#{{id}}">
                             {{this.name}}
                           </a>
-                          <ul class="collapse flex-column nav pl-4" id="SUBMENU2" aria-expanded="false">
+                          <ul class="collapse flex-column nav pl-4" id={{id}} aria-expanded="false">
                             {{#each this.submenu2}}
                               <li class="nav-item">
                                 <a class="nav-link p-1">
@@ -59,14 +59,14 @@
             </ul>
           </div>
         </nav>
-        <div id="main" class="col-md-9">
+        <div id="main" class="col-md-10">
           <div id="products-container" class="d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3">
             <div id="pielucha-template" type="text/x-handlebars-template">
               {{#each diapers}}
-              <li class="card text-center col pielucha-template" style="width:24rem; height:26rem;">
-                <div class="class="card-body">
-                  <div class="image-box">
-                    <img src="{{photo}}.jpg" class="img-thumbnail photo"/>
+              <li class="card text-center col pielucha-template">
+                <div class="card-body">
+                  <div class="image-box embed-responsive embed-responsive-1by1">
+                    <img src="{{photo}}.jpg" class="img-thumbnail img-responsive embed-responsive-item"/>
                   </div>
                   <div class="flex-row d-flex justify-content-between">
                     <a href="#application" class="card-link">{{brand}}</a>

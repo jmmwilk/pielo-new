@@ -2,21 +2,27 @@ export let sideBarMenu = {
 	'categories': [
 		{
 			'name': 'Rodzaje Pieluszek',
+			'id': 'rodzaje-pieluszek',
 			'submenu1': [
 				{
 					'name': 'All In One',
+					'id': 'all-in-one',
 				},
 				{
 					'name': 'Snap In One',
+					'id': 'snap-in-one',
 				},
 				{
 					'name': 'Majtki Treningowe',
+					'id': 'majtki-treningowe',
 				},
 				{
 					'name': 'Do Kąpieli',
+					'id': 'do-kapieli',
 				},
 				{
 					'name': 'Pieluchy Zewnętrzne',
+					'id': 'pieluchy-zewnetrzne',
 					'issubmenu': true,
 					'submenu2': [	
 						{
@@ -38,6 +44,7 @@ export let sideBarMenu = {
 				},
 				{
 					'name': 'Pieluchy Wewnętrzne',
+					'id': 'pieluchy-wewnetrzne',
 					'issubmenu': true,
 					'submenu2': [	
 						{
@@ -70,161 +77,126 @@ export let sideBarMenu = {
 		},
 		{
 			'name': 'Materiał',
+			'id': 'material',
 			'submenu1': [
 				{
-					'name': 'Wełna'
+					'name': 'Wełna',
+					'id': 'welna',
 				},
 				{
-					'name': 'PUL'
+					'name': 'PUL',
+					'id': 'pul',
 				},
 				{
-					'name': 'Bawełna'
+					'name': 'Bawełna',
+					'id': 'bawelna',
 				},
 				{
-					'name': 'Bawełna Organiczna'
+					'name': 'Bawełna Organiczna',
+					'id': 'bawelna-organiczna',
 				},
 				{
-					'name': 'Bambus'
+					'name': 'Bambus',
+					'id': 'bambus',
 				},
 				{
-					'name': 'Konopia'
+					'name': 'Konopia',
+					'id': 'konopia',
 				},
 				{
-					'name': 'Len'
+					'name': 'Len',
+					'id': 'len',
 				},
 				{
-					'name': 'Mikrofibra'
+					'name': 'Mikrofibra',
+					'id': 'mikrofibra',
 				},
 				{
-					'name': 'Polar'
+					'name': 'Polar',
+					'id': 'polar',
 				},
 				{
-					'name': 'Thermo / Coolmax'
+					'name': 'Thermo / Coolmax',
+					'id': 'thermo/coolmax',
 				}
 			]
 		},
 		{
-			'name': 'Waga Dziecka'
+			'name': 'Waga Dziecka',
+			'id': 'wagadziecka',
 		},
 		{
 			'name': 'Rozmiar',
+			'id': 'rozmiar',
 			'submenu1': [
 				{
-					'name': 'New Born'
+					'name': 'New Born',
+					'id': 'new-born',
 				},
 				{
-					'name': 'Mini One Size'
+					'name': 'Mini One Size',
+					'id': 'mini-one-size',
 				},
 				{
-					'name': 'One Size'
+					'name': 'One Size',
+					'id': 'one-size',
 				},
 				{
-					'name': 'One Size Plus'
+					'name': 'One Size Plus',
+					'id': 'one-size-plus',
 				},
 				{
-					'name': 'Small'
+					'name': 'Small',
+					'id': 'small',
 				},
 				{
-					'name': 'Medium'
+					'name': 'Medium',
+					'id': 'medium',
 				},
 				{
-					'name': 'Large'
+					'name': 'Large',
+					'id': 'large',
 				},
 				{
-					'name': 'X Large'
+					'name': 'X Large',
+					'id': 'x-large',
 				}
 			]
 		},
 		{
 			'name': 'Producent',
+			'id': 'producent',
 			'submenu1': [
 				{
-					'name': 'Puppi'
+					'name': 'Puppi',
+					'id': 'puppi',
 				},
 				{
-					'name': 'Kokosi'
+					'name': 'Kokosi',
+					'id': 'kokosi',
 				},
 				{
-					'name': 'Xkko'
+					'name': 'Xkko',
+					'id': 'xkko',
 				},
 				{
-					'name': 'Magabi'
+					'name': 'Magabi',
+					'id': 'magabi',
 				},
 				{
-					'name': 'JellyFish'
+					'name': 'JellyFish',
+					'id': 'jellyfish',
 				},
 				{
-					'name': 'Sue&Sophie'
+					'name': 'Sue&Sophie',
+					'id': 'sue&sophie',
 				},
 				{
-					'name': 'Fomi'
-				},
-				{
-					'name': 'Puppi'
-				},
-				{
-					'name': 'Kokosi'
-				},
-				{
-					'name': 'Xkko'
-				},
-				{
-					'name': 'Magabi'
-				},
-				{
-					'name': 'JellyFish'
-				},
-				{
-					'name': 'Sue&Sophie'
-				},
-				{
-					'name': 'Fomi'
-				},
-				{
-					'name': 'Puppi'
-				},
-				{
-					'name': 'Kokosi'
-				},
-				{
-					'name': 'Xkko'
-				},
-				{
-					'name': 'Magabi'
-				},
-				{
-					'name': 'JellyFish'
-				},
-				{
-					'name': 'Sue&Sophie'
-				},
-				{
-					'name': 'Fomi'
-				},
-				{
-					'name': 'Puppi'
-				},
-				{
-					'name': 'Kokosi'
-				},
-				{
-					'name': 'Xkko'
-				},
-				{
-					'name': 'Magabi'
-				},
-				{
-					'name': 'JellyFish'
-				},
-				{
-					'name': 'Sue&Sophie'
-				},
-				{
-					'name': 'Fomi'
-				},
+					'name': 'Fomi',
+					'id': 'fomi,'
+				}
 			]
 		}
-
 	]
 }
 
