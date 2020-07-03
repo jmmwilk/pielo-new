@@ -11,8 +11,7 @@ body {
   height: 100px;
 }
 
-#side-bar {
-  overflow-x: hidden;
+#menu-template-container {
 }
 
 #main {

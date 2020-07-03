@@ -159,6 +159,69 @@ export let sideBarMenu = {
 				{
 					'name': 'Fomi'
 				},
+				{
+					'name': 'Puppi'
+				},
+				{
+					'name': 'Kokosi'
+				},
+				{
+					'name': 'Xkko'
+				},
+				{
+					'name': 'Magabi'
+				},
+				{
+					'name': 'JellyFish'
+				},
+				{
+					'name': 'Sue&Sophie'
+				},
+				{
+					'name': 'Fomi'
+				},
+				{
+					'name': 'Puppi'
+				},
+				{
+					'name': 'Kokosi'
+				},
+				{
+					'name': 'Xkko'
+				},
+				{
+					'name': 'Magabi'
+				},
+				{
+					'name': 'JellyFish'
+				},
+				{
+					'name': 'Sue&Sophie'
+				},
+				{
+					'name': 'Fomi'
+				},
+				{
+					'name': 'Puppi'
+				},
+				{
+					'name': 'Kokosi'
+				},
+				{
+					'name': 'Xkko'
+				},
+				{
+					'name': 'Magabi'
+				},
+				{
+					'name': 'JellyFish'
+				},
+				{
+					'name': 'Sue&Sophie'
+				},
+				{
+					'name': 'Fomi'
+				},
 			]
 		}
 
