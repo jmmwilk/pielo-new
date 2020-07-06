@@ -3,6 +3,7 @@ export let sideBarMenu = {
 		{
 			'name': 'Rodzaje Pieluszek',
 			'id': 'rodzaje-pieluszek',
+			'en-id': 'type',
 			'submenu1': [
 				{
 					'name': 'All In One',
@@ -22,54 +23,67 @@ export let sideBarMenu = {
 				},
 				{
 					'name': 'Pieluchy Zewnętrzne',
-					'id': 'pieluchy-zewnetrzne',
+					'id': 'pielucha-zewnetrzna',
 					'issubmenu': true,
 					'submenu2': [	
 						{
-							'name': 'Otulacze'
+							'name': 'Otulacze',
+							'id': 'otulacz',
 						},
 						{
-							'name': 'Gatki'
+							'name': 'Gatki',
+							'id': 'gatki',
 						},
 						{
-							'name': 'Longi'
+							'name': 'Longi',
+							'id': 'longi',
 						},
 						{
-							'name': 'Kieszonki'
+							'name': 'Kieszonki',
+							'id': 'kieszonka',
 						},
 						{
-							'name': 'Wkładki'
+							'name': 'Wkładki',
+							'id': 'wkladka',
 						}
 					]
 				},
 				{
 					'name': 'Pieluchy Wewnętrzne',
-					'id': 'pieluchy-wewnetrzne',
+					'id': 'pielucha-wewnetrzna',
 					'issubmenu': true,
 					'submenu2': [	
 						{
-							'name': 'Formowanki'
+							'name': 'Formowanki',
+							'id': 'formowanka',
 						},
 						{
-							'name': 'Składane'
+							'name': 'Składane',
+							'id': 'skladana',
 						},
 						{
-							'name': 'Prefoldy'
+							'name': 'Prefoldy',
+							'id': 'prefold',
 						},
 						{
-							'name': 'Wkłady Krótkie'
+							'name': 'Wkłady Krótkie',
+							'id': 'wklad-krotki',
 						},
 						{
-							'name': 'Wkłady Długie'
+							'name': 'Wkłady Długie',
+							'id': 'wklad-dlugi',
 						},
 						{
-							'name': 'Wkłady z Burtami'
+							'name': 'Wkłady z Burtami',
+							'id': 'wklad-z-burtami',
 						},
 						{
-							'name': 'Boostery'
+							'name': 'Boostery',
+							'id': 'booster',
 						},
 						{
-							'name': 'Inne'
+							'name': 'Inne',
+							'id': 'inna',
 						}
 					]
 				}
@@ -78,6 +92,7 @@ export let sideBarMenu = {
 		{
 			'name': 'Materiał',
 			'id': 'material',
+			'en-id': 'fabric',
 			'submenu1': [
 				{
 					'name': 'Wełna',
@@ -124,10 +139,12 @@ export let sideBarMenu = {
 		{
 			'name': 'Waga Dziecka',
 			'id': 'wagadziecka',
+			'en-id': 'childs-weight'
 		},
 		{
 			'name': 'Rozmiar',
 			'id': 'rozmiar',
+			'en-id': 'size',
 			'submenu1': [
 				{
 					'name': 'New Born',
@@ -166,6 +183,7 @@ export let sideBarMenu = {
 		{
 			'name': 'Producent',
 			'id': 'producent',
+			'en-id': 'brand',
 			'submenu1': [
 				{
 					'name': 'Puppi',
@@ -194,6 +212,14 @@ export let sideBarMenu = {
 				{
 					'name': 'Fomi',
 					'id': 'fomi,'
+				},
+				{
+					'name': 'Zufizo',
+					'id': 'zufizo'
+				},
+				{
+					'name': 'Little Birds Diapers',
+					'id': 'little-birds-diapers'
 				}
 			]
 		}

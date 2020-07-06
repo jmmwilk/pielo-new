@@ -25,20 +25,20 @@
             <ul id="menu-template" class="nav flex-column flex-nowrap overflow-hidden">
               {{#each categories}}
                 <li class="nav-item">
-                  <a class="nav-link collapsed text-truncate" href="#{{id}}" data-toggle="collapse" data-target="#{{id}}">
+                  <a id="{{id}}" class="nav-link collapsed text-truncate" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
                   {{name}}
                   </a>
-                  <ul id="{{id}}" class="collapse flex-column pl-2 nav" aria-expanded="false">
+                  <ul id="{{id}}-submenu" class="collapse flex-column pl-2 nav" aria-expanded="false">
                     {{#each submenu1}}
                       {{#if issubmenu}}
                         <li class="nav-item">
-                          <a class="nav-link collapsed py-1" href="#{{id}}" data-toggle="collapse" data-target="#{{id}}">
+                          <a id="{{id}}" class="nav-link collapsed py-1" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
                             {{this.name}}
                           </a>
-                          <ul class="collapse flex-column nav pl-4" id={{id}} aria-expanded="false">
+                          <ul id="{{id}}-submenu" class="collapse flex-column nav pl-4" aria-expanded="false">
                             {{#each this.submenu2}}
                               <li class="nav-item">
-                                <a class="nav-link p-1">
+                                <a id={{id}} class="menu-item {{../id}} nav-link p-1">
                                 {{name}}
                                 </a>
                               </li>
@@ -47,7 +47,7 @@
                         </li>
                       {{else}}
                         <li class="nav-item">
-                          <a class="nav-link">
+                          <a id="{{id}}" class="menu-item {{../id}} nav-link">
                           {{this.name}}
                           </a>
                         </li>
@@ -65,8 +65,8 @@
               {{#each diapers}}
               <li class="card text-center col pielucha-template">
                 <div class="card-body">
-                  <div>
-                    <img src="{{photo}}.jpg" class="img-fluid responsive img-thumbnail rounded"/>
+                  <div class="embed-responsive embed-responsive-1by1">
+                    <img src="/images/{{photo}}.jpg" class="img embed-responsive-item rounded pielucha-image"/>
                   </div>
                   <div class="flex-row d-flex justify-content-between">
                     <a href="#application" class="card-link">{{brand}}</a>

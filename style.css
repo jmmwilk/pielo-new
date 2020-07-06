@@ -26,5 +26,9 @@ body {
 	height: 100vh;
 }
 
+ .pielucha-image {
+ 	object-fit: cover;
+ }
+
 /*overflow-y: auto;*/
 
