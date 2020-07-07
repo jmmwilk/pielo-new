@@ -34,6 +34,7 @@ function fillDiaperCards () {
 function createNewDiapersTemplate (newItems) {
 	console.log(newItems)
 	let pieluchaTemplate = $('#pielucha-template').html();
+	console.log('pieluchaTemplate', pieluchaTemplate)
 	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
 	$('#products-container').html(compiledPieluchaTemplate(newItems));
 }
