@@ -6,7 +6,8 @@ export let items = {
 			'type': 'Kieszonka',
 			'brand': 'Jellyfish',
 			'size': 'One Size',
-			'fabric': 'bawełniana'
+			'fabricprint': 'bawełniana',
+			'fabric': 'bawelna'
 		},
 		{
 			'photo': 'puppi2',
@@ -14,7 +15,17 @@ export let items = {
 			'type': '',
 			'brand': 'Puppi',
 			'size': 'New Born',
-			'fabric': 'wełniany'
+			'fabricprint': 'wełniany',
+			'fabric': 'welna'
+		},
+		{
+			'photo': 'magabipul',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Magabi',
+			'size': 'New Born',
+			'fabricprint': 'PUL',
+			'fabric': 'pul'
 		},
 		{
 			'photo': 'sue&sophie',
@@ -22,7 +33,8 @@ export let items = {
 			'type': '',
 			'brand': 'Sue&Sophie',
 			'size': 'Mini One Size',
-			'fabric': 'bawełniana'
+			'fabricprint': 'bawełniana',
+			'fabric': 'bawelna'
 		},
 		{
 			'photo': 'drimi',
@@ -30,7 +42,8 @@ export let items = {
 			'type': '',
 			'brand': 'Drimi',
 			'size': 'New Born',
-			'fabric': 'wełniany'
+			'fabricprint': 'wełniany',
+			'fabric': 'welna'
 		},
 		{
 			'photo': 'kokosi',
@@ -38,7 +51,8 @@ export let items = {
 			'type': '',
 			'brand': 'Kokosi',
 			'size': 'One Size',
-			'fabric': 'PUL, bawełna, poliester'
+			'fabricprint': 'PUL, bawełna, poliester',
+			'fabric': 'PUL, bawelna, poliester'
 		},
 		{
 			'photo': 'formowankapuppi',
@@ -46,7 +60,8 @@ export let items = {
 			'type': '',
 			'brand': 'Puppi',
 			'size': 'One Size',
-			'fabric': 'bawełna, bambus, poliester'
+			'fabricprint': 'bawełna, bambus, poliester',
+			'fabric': 'bawelna, bambus, poliester'
 		},
 		{
 			'photo': 'magabi',
@@ -54,7 +69,17 @@ export let items = {
 			'type': '',
 			'brand': 'Magabi',
 			'size': 'New Born',
-			'fabric': 'wełniane'
+			'fabricprint': 'wełniane',
+			'fabric': 'welna'
+		},
+		{
+			'photo': 'manymonths',
+			'name': 'Longi',
+			'type': '',
+			'brand': 'Many Months',
+			'size': 'Medium',
+			'fabricprint': 'wełniane',
+			'fabric': 'welna'
 		},
 		{
 			'photo': 'gatkimagabi',
@@ -62,7 +87,8 @@ export let items = {
 			'type': '',
 			'brand': 'Magabi',
 			'size': 'New Born',
-			'fabric': 'wełniane'
+			'fabricprint': 'wełniane',
+			'fabric': 'welna',
 		},
 		{
 			'photo': 'zufizo',
@@ -70,7 +96,17 @@ export let items = {
 			'type': '',
 			'brand': 'Zufizo',
 			'size': 'New Born',
-			'fabric': 'wełniany'
+			'fabricprint': 'wełniany',
+			'fabric': 'welna'
+		},
+		{
+			'photo': 'kokosipul',
+			'name': 'Otulacz',
+			'type': '',
+			'brand': 'Kokosi',
+			'size': 'One Size',
+			'fabricprint': 'PUL',
+			'fabric': 'pul'
 		},
 		{
 			'photo': 'lbd',
@@ -78,15 +114,54 @@ export let items = {
 			'type': '',
 			'brand': 'Little Birds Diapers',
 			'size': 'New Born',
-			'fabric': 'PUL, bawełna organicza'
+			'fabricprint': 'PUL, bawełna organicza',
+			'fabric': 'PUL, bawelna organiczna'
 		},
 		{
-			'photo': 'puppi2',
-			'name': 'Otulacz',
+			'photo': 'wooli',
+			'name': 'Gatki',
 			'type': '',
-			'brand': 'Puppi',
+			'brand': 'Wooli',
 			'size': 'New Born',
-			'fabric': 'wełniany'
-		}
+			'fabricprint': 'wełninane',
+			'fabric': 'welna'
+		},
+		{
+			'photo': 'wooli-s',
+			'name': 'Gatki',
+			'type': '',
+			'brand': 'Wooli',
+			'size': 'Small',
+			'fabricprint': 'wełninane',
+			'fabric': 'welna'
+		},
+
+		{
+			'photo': 'pupeczkowo',
+			'name': 'Gatki',
+			'type': '',
+			'brand': 'Pupeczkowo',
+			'size': 'New Born',
+			'fabricprint': 'wełninane',
+			'fabric': 'welna'
+		},
+		{
+			'photo': 'pupeczkowo-m',
+			'name': 'Gatki',
+			'type': '',
+			'brand': 'Pupeczkowo',
+			'size': 'Medium',
+			'fabricprint': 'wełninane',
+			'fabric': 'welna'
+		},
+		{
+			'photo': 'magabi-m',
+			'name': 'Longi',
+			'type': '',
+			'brand': 'Magabi',
+			'size': 'Medium',
+			'fabricprint': 'wełniane',
+			'fabric': 'welna'
+		},
 	]
 }

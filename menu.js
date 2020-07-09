@@ -24,6 +24,7 @@ export let sideBarMenu = {
 				{
 					'name': 'Pieluchy Zewnętrzne',
 					'id': 'pielucha-zewnetrzna',
+					'en-id': 'type',
 					'issubmenu': true,
 					'submenu2': [	
 						{
@@ -51,6 +52,7 @@ export let sideBarMenu = {
 				{
 					'name': 'Pieluchy Wewnętrzne',
 					'id': 'pielucha-wewnetrzna',
+					'en-id': 'type',
 					'issubmenu': true,
 					'submenu2': [	
 						{
@@ -148,19 +150,19 @@ export let sideBarMenu = {
 			'submenu1': [
 				{
 					'name': 'New Born',
-					'id': 'new-born',
+					'id': 'new born',
 				},
 				{
 					'name': 'Mini One Size',
-					'id': 'mini-one-size',
+					'id': 'mini one size',
 				},
 				{
 					'name': 'One Size',
-					'id': 'one-size',
+					'id': 'one size',
 				},
 				{
 					'name': 'One Size Plus',
-					'id': 'one-size-plus',
+					'id': 'one size plus',
 				},
 				{
 					'name': 'Small',
@@ -176,7 +178,7 @@ export let sideBarMenu = {
 				},
 				{
 					'name': 'X Large',
-					'id': 'x-large',
+					'id': 'x large',
 				}
 			]
 		},
@@ -220,7 +222,15 @@ export let sideBarMenu = {
 				{
 					'name': 'Little Birds Diapers',
 					'id': 'little-birds-diapers'
-				}
+				},
+				{
+					'name': 'Wooli',
+					'id': 'wooli'
+				},
+				{
+					'name': 'Pupeczkowo',
+					'id': 'pupeczkowo'
+				},
 			]
 		}
 	]

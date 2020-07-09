@@ -17,7 +17,9 @@
   <body>
     <div id="application" class="container-fluid">
       <div id="title-bar" class="container-fluid">
-        cholera o co chodzi????
+        <button id="add-diaper">
+          Dodaj pieluchę
+        </button>
       </div>
       <div class="row">
         <nav id="side-bar" class="col-md-2 align-items-start">
@@ -38,7 +40,7 @@
                           <ul id="{{id}}-submenu" class="collapse flex-column nav pl-4" aria-expanded="false">
                             {{#each this.submenu2}}
                               <li class="nav-item">
-                                <a id={{id}} class="menu-item {{../id}} nav-link p-1">
+                                <a id={{id}} class="menu-item {{../en-id}} nav-link p-1">
                                 {{name}}
                                 </a>
                               </li>
@@ -47,7 +49,7 @@
                         </li>
                       {{else}}
                         <li class="nav-item">
-                          <a id="{{id}}" class="menu-item {{../id}} nav-link">
+                          <a id="{{id}}" class="menu-item {{../en-id}} nav-link">
                           {{this.name}}
                           </a>
                         </li>
@@ -61,29 +63,67 @@
         </nav>
         <div id="main" class="col-md-10">
           <div id="products-container" class="d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3">
-            <script id="pielucha-template" type="text/x-handlebars-template">
-              {{#each diapers}}
-              <li class="card text-center col pielucha-template">
-                <div class="card-body">
-                  <div class="embed-responsive embed-responsive-1by1">
-                    <img src="/images/{{photo}}.jpg" class="img embed-responsive-item rounded pielucha-image"/>
-                  </div>
-                  <div class="flex-row d-flex justify-content-between">
-                    <a href="#application" class="card-link">{{brand}}</a>
-                    <p>{{size}}</p>
-                  </div>
-                  <h5> {{printdiaper name}} </h5>
-<!--                   <h4>{{name}}</h4>
-                  <p>Rodzaj: {{#if type}} {{type}} {{else}} brak {{/if}} </p>
-                  <p>Producent: {{brand}}</p>
-                  <p>Rozmiar: {{size}}</p> -->
+          </div>
+          <div id="survey-screen">
+            <form>
+              <div class="form">
+                <div claass="form-group">
+                  <label for="input-name">Nazwa</label>
+                  <select id="input-name" class="form-control">
+                     <option selected>Wybierz...</option>
+                     <div id="form-input-name"></div>
+                  </select>
                 </div>
-              </li>
-              {{/each}}
-            </script>
+                <div class="form-group">
+                  <label for="input-size">Rozmiar</label>
+                  <select id="input-size" class="form-control">
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="input-fabric">Materiał</label>
+                  <select id="input-fabric" class="form-control">
+                  </select>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
   </body>
+  <script id="pielucha-template" type="text/x-handlebars-template">
+    {{#each diapers}}
+    <li class="card text-center col pielucha-template">
+      <div class="card-body">
+        <div class="embed-responsive embed-responsive-1by1">
+          <img src="/images/{{photo}}.jpg" class="img embed-responsive-item rounded pielucha-image"/>
+        </div>
+        <div class="flex-row d-flex justify-content-between">
+          <a href="#application" class="card-link">{{brand}}</a>
+          <p>{{size}}</p>
+        </div>
+        <h5> {{printdiaper name}} </h5>
+      </div>
+    </li>
+    {{/each}}
+  </script>
+  <script id="names-input-template" type="text/x-handlebars-template">
+    {{#each names}}
+      <option>{{name}}</option>
+    {{/each}}
+  </script>
+  <script id="sizes-input-template" type="text/x-handlebars-template">
+    {{#each submenu1}}
+      <option>{{name}}</option>
+    {{/each}}
+  </script>
+  <script id="fabrics-input-template" type="text/x-handlebars-template">
+    {{#each submenu1}}
+      <option>{{name}}</option>
+    {{/each}}
+  </script>
 </html>
+
+
+
+
