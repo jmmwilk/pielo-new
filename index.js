@@ -11,35 +11,45 @@ $(document).ready(function(){
 	createDiapersTemplate ();
 	printDiapers ();
 	enableButton ();
-	hideSurveyScreen ();
+	hideFormScreen ();
+	createFormTemplates ();
+})
+
+function createFormTemplates () {
 	createNamesInputTemplate ();
 	createSizesInputTemplate ();
 	createFabricsInputTemplate ();
-})
-
-function hideSurveyScreen () {
-	let surveyScreen = document.getElementById('survey-screen');
-	surveyScreen.classList.remove('d-block');
-	surveyScreen.classList.add('d-none');
+	createBrandsInputTemplate ();
 }
 
-function showSurveyScreen () {
-	let surveyScreen = document.getElementById('survey-screen');
-	surveyScreen.classList.remove('d-none');
-	surveyScreen.classList.add('d-block');
+function hideFormScreen () {
+	let formScreen = document.getElementById('form-screen');
+	formScreen.style.display = 'none';
+}
+
+function showFormScreen () {
+	let formScreen = document.getElementById('form-screen');
+	formScreen.style.display = '';
 }
 
 function enableButton () {
 	let button = document.getElementById('add-diaper');
 	button.onclick = function() {
+		removeCards ();
 		hideProductsScreen ();
-		showSurveyScreen ();
+		hideSideBar ();
+		showFormScreen ();
 	}
 }
 
 function hideProductsScreen () {
 	let productsContainer = document.getElementById('products-container');
-	productsContainer.classList.add('d-none')
+	productsContainer.style.display = 'none';
+}
+
+function hideSideBar () {
+	let sideBar = document.getElementById('side-bar');
+	sideBar.style.display = 'none';
 }
 
 function createSidebarMenu () {
@@ -125,7 +135,7 @@ function removeCards () {
 function createNamesInputTemplate () {
 	let namesInputTemplate = $('#names-input-template').html();
 	let compiledNamesInputTemplate = Handlebars.compile(namesInputTemplate);
-	$('#form-input-name').html(compiledNamesInputTemplate(nameslist.diapers));
+	$('#input-name').html(compiledNamesInputTemplate(nameslist.diapers));
 }
 
 function createSizesInputTemplate () {
@@ -136,8 +146,14 @@ function createSizesInputTemplate () {
 
 function createFabricsInputTemplate () {
 	let fabricsInputTemplate = $('#fabrics-input-template').html();
-	let compiledfabricsInputTemplate = Handlebars.compile(fabricsInputTemplate);
-	$('#input-fabric').html(compiledfabricsInputTemplate(menu.sideBarMenu.categories[1]));
+	let compiledFabricsInputTemplate = Handlebars.compile(fabricsInputTemplate);
+	$('#input-fabric').html(compiledFabricsInputTemplate(menu.sideBarMenu.categories[1]));
+}
+
+function createBrandsInputTemplate () {
+	let brandsInputTemplate = $('#brands-input-template').html();
+	let compiledBrandsInputTemplate = Handlebars.compile(brandsInputTemplate);
+	$('#input-brand').html(compiledBrandsInputTemplate(menu.sideBarMenu.categories[4]));
 }
 
 

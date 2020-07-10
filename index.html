@@ -64,29 +64,40 @@
         <div id="main" class="col-md-10">
           <div id="products-container" class="d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3">
           </div>
-          <div id="survey-screen">
-            <form>
-              <div class="form">
-                <div claass="form-group">
-                  <label for="input-name">Nazwa</label>
-                  <select id="input-name" class="form-control">
-                     <option selected>Wybierz...</option>
-                     <div id="form-input-name"></div>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="input-size">Rozmiar</label>
-                  <select id="input-size" class="form-control">
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="input-fabric">Materiał</label>
-                  <select id="input-fabric" class="form-control">
-                  </select>
-                </div>
+        </div>
+      </div>
+      <div class="row">
+        <div id="form-screen" class="col-12">
+          <form>
+            <h1>Zaczynamy!</h1>
+            <div class="form">
+              <div class="form-group col-lg-3 col-md-4">
+                <label for="input-image">Zdjęcie</label>
+                <input type="file" class="form-control-file" id="input-image">
               </div>
-            </form>
-          </div>
+              <div class="form-group col-lg-3 col-md-4">
+                <label for="input-name">Nazwa</label>
+                <select id="input-name" class="form-control">
+                </select>
+              </div>
+              <div class="form-group col-lg-3 col-md-4">
+                <label for="input-size">Rozmiar</label>
+                <select id="input-size" class="form-control">
+                </select>
+              </div>
+              <div class="form-group col-lg-3 col-md-4">
+                <label for="input-fabric">Materiał</label>
+                <select id="input-fabric" class="form-control">
+                </select>
+              </div>
+              <div class="form-group col-lg-3 col-md-4">
+                <label for="input-brand">Producent</label>
+                <select id="input-brand" class="form-control">
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Dodaj</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -108,16 +119,25 @@
     {{/each}}
   </script>
   <script id="names-input-template" type="text/x-handlebars-template">
+    <option selected>Wybierz...</option>
     {{#each names}}
       <option>{{name}}</option>
     {{/each}}
   </script>
   <script id="sizes-input-template" type="text/x-handlebars-template">
+    <option selected>Wybierz...</option>
     {{#each submenu1}}
       <option>{{name}}</option>
     {{/each}}
   </script>
   <script id="fabrics-input-template" type="text/x-handlebars-template">
+    <option selected>Wybierz...</option>
+    {{#each submenu1}}
+      <option>{{name}}</option>
+    {{/each}}
+  </script>
+  <script id="brands-input-template" type="text/x-handlebars-template">
+    <option selected>Wybierz...</option>
     {{#each submenu1}}
       <option>{{name}}</option>
     {{/each}}
