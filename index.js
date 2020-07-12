@@ -12,17 +12,17 @@ let formInputs = {
 		{
 			'text': 'Rozmiar',
 			'id': 'input-size',
-			'source': 'menu.sideBarMenu.categories[3]'
+			'source': menu.sideBarMenu.categories[3]
 		},
 		{
 			'text': 'Materiał',
 			'id': 'input-fabric',
-			'source': 'menu.sideBarMenu.categories[1]'
+			'source': menu.sideBarMenu.categories[1]
 		},
 		{
 			'text': 'Producent',
 			'id': 'input-brand',
-			'source': 'menu.sideBarMenu.categories[4]'
+			'source': menu.sideBarMenu.categories[4]
 		},
 	]
 }
@@ -37,7 +37,7 @@ $(document).ready(function(){
 	enableButton ();
 	hideFormScreen ();
 	createInputs ();
-	createFormTemplates ();
+	createForm ();
 	enableCardClick ();
 })
 
@@ -54,10 +54,6 @@ function enableCardClick () {
 
 function showDiaperScreen (card) {
 
-}
-
-function createFormTemplates () {
-	createForm ();
 }
 
 function hideFormScreen () {
@@ -181,9 +177,9 @@ function createFormInputTemplate (i) {
 }
 
 function createInputs () {
-	let formTemplate = $('#container').html();
+	let formTemplate = $('#inputs-container').html();
 	let compiledFormTemplate = Handlebars.compile(formTemplate);
-	$('#inputs-container').html(compiledFormTemplate(formInputs.inputs))
+	$('#inputs-container').html(compiledFormTemplate(formInputs))
 }
 
 function createForm () {
