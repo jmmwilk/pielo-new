@@ -2,6 +2,25 @@ import * as menu from './menu.js';
 import * as diaperslist  from './diapers.js';
 import * as nameslist  from './diaperstype.js';
 
+let formInputs = {
+	'inputs': [
+		{
+			'text': 'Rozmiar',
+			'id': 'input-size',
+			'number': 3
+		},
+		{
+			'text': 'Materiał',
+			'id': 'input-fabric',
+			'number': 1
+		},
+		{
+			'text': 'Producent',
+			'id': 'input-brand',
+			'number': 4
+		},
+	]
+}
 
 let clickedMenuItem;
 
@@ -12,14 +31,29 @@ $(document).ready(function(){
 	printDiapers ();
 	enableButton ();
 	hideFormScreen ();
+	createInputs ();
 	createFormTemplates ();
+	enableCardClick ();
 })
+
+function enableCardClick () {
+	let cards = document.getElementsByClassName('card');
+	Array.from(cards).forEach(function(card) {
+		card.onclick = function () {
+			removeCards ();
+			hideProductsScreen ();
+			showDiaperScreen (card);
+		}
+	})
+}
+
+function showDiaperScreen (card) {
+
+}
 
 function createFormTemplates () {
 	createNamesInputTemplate ();
-	createSizesInputTemplate ();
-	createFabricsInputTemplate ();
-	createBrandsInputTemplate ();
+	createForm ();
 }
 
 function hideFormScreen () {
@@ -138,25 +172,25 @@ function createNamesInputTemplate () {
 	$('#input-name').html(compiledNamesInputTemplate(nameslist.diapers));
 }
 
-function createSizesInputTemplate () {
-	let sizesInputTemplate = $('#sizes-input-template').html();
-	let compiledSizesInputTemplate = Handlebars.compile(sizesInputTemplate);
-	$('#input-size').html(compiledSizesInputTemplate(menu.sideBarMenu.categories[3]));
+function createFormInputTemplate (i) {
+	let number = formInputs.inputs[i].number;
+	let id = formInputs.inputs[i].id;
+	console.log(number)
+	console.log('#' + id)
+	let formInputTemplate = $('#input-template').html();
+	let compiledFormInputTemplate = Handlebars.compile(formInputTemplate);
+	$('#' + id).html(compiledFormInputTemplate(menu.sideBarMenu.categories[number]));
 }
 
-function createFabricsInputTemplate () {
-	let fabricsInputTemplate = $('#fabrics-input-template').html();
-	let compiledFabricsInputTemplate = Handlebars.compile(fabricsInputTemplate);
-	$('#input-fabric').html(compiledFabricsInputTemplate(menu.sideBarMenu.categories[1]));
+function createInputs () {
+	let formTemplate = $('#container').html();
+	let compiledFormTemplate = Handlebars.compile(formTemplate);
+	$('#inputs-container').html(compiledFormTemplate(formInputs.inputs))
 }
 
-function createBrandsInputTemplate () {
-	let brandsInputTemplate = $('#brands-input-template').html();
-	let compiledBrandsInputTemplate = Handlebars.compile(brandsInputTemplate);
-	$('#input-brand').html(compiledBrandsInputTemplate(menu.sideBarMenu.categories[4]));
+function createForm () {
+	for (let i=0; i<3; i++) {
+		createFormInputTemplate (i)
+	}
 }
-
-
-
-
 
