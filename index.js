@@ -4,20 +4,25 @@ import * as nameslist  from './diaperstype.js';
 
 let formInputs = {
 	'inputs': [
+		// {
+		// 	'text': 'Nazwa',
+		// 	'id': 'input-name',
+		// 	'source': 'nameslist.diapers'
+		// },
 		{
 			'text': 'Rozmiar',
 			'id': 'input-size',
-			'number': 3
+			'source': 'menu.sideBarMenu.categories[3]'
 		},
 		{
 			'text': 'Materiał',
 			'id': 'input-fabric',
-			'number': 1
+			'source': 'menu.sideBarMenu.categories[1]'
 		},
 		{
 			'text': 'Producent',
 			'id': 'input-brand',
-			'number': 4
+			'source': 'menu.sideBarMenu.categories[4]'
 		},
 	]
 }
@@ -166,20 +171,14 @@ function removeCards () {
 	})
 }
 
-function createNamesInputTemplate () {
-	let namesInputTemplate = $('#names-input-template').html();
-	let compiledNamesInputTemplate = Handlebars.compile(namesInputTemplate);
-	$('#input-name').html(compiledNamesInputTemplate(nameslist.diapers));
-}
-
 function createFormInputTemplate (i) {
-	let number = formInputs.inputs[i].number;
+	let src = formInputs.inputs[i].source;
 	let id = formInputs.inputs[i].id;
-	console.log(number)
+	console.log(src)
 	console.log('#' + id)
 	let formInputTemplate = $('#input-template').html();
 	let compiledFormInputTemplate = Handlebars.compile(formInputTemplate);
-	$('#' + id).html(compiledFormInputTemplate(menu.sideBarMenu.categories[number]));
+	$('#' + id).html(compiledFormInputTemplate(src));
 }
 
 function createInputs () {
