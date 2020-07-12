@@ -77,7 +77,7 @@
               </div>
               <div id="container">
                 <div id="inputs-container">
-                  {{each inputs}}
+                  {{#each inputs}}
                     <div class="form-group col-lg-3 col-md-4">
                       <label for="{{id}}">{{text}}</label>
                       <select id="{{id}}" class="form-control">
@@ -108,12 +108,12 @@
     </li>
     {{/each}}
   </script>
-  <script id="names-input-template" type="text/x-handlebars-template">
+<!--   <script id="names-input-template" type="text/x-handlebars-template">
     <option selected>Wybierz...</option>
     {{#each names}}
       <option>{{name}}</option>
     {{/each}}
-  </script>
+  </script> -->
   <script id="input-template" type="text/x-handlebars-template">
     <option selected>Wybierz...</option>
     {{#each submenu1}}

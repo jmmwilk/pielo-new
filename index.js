@@ -57,7 +57,6 @@ function showDiaperScreen (card) {
 }
 
 function createFormTemplates () {
-	createNamesInputTemplate ();
 	createForm ();
 }
 
