@@ -37,7 +37,8 @@ $(document).ready(function(){
 	enableButton ();
 	hideFormScreen ();
 	hideDiaperScreen ();
-	createInputs ();
+	createForm ();
+	createInputsTemplate ();
 	createFormInputTemplate ();
 	enableCardClick ();
 })
@@ -188,9 +189,18 @@ function createFormInputTemplate () {
 	}
 }
 
-function createInputs () {
-	let formTemplate = $('#inputs-container').html();
-	let compiledFormTemplate = Handlebars.compile(formTemplate);
-	$('#inputs-container').html(compiledFormTemplate(formInputs))
+function createInputsTemplate () {
+	let inputsContainersTemplate = $('#inputs-container').html();
+	let compiledInputsContainersTemplate = Handlebars.compile(inputsContainersTemplate);
+	$('#inputs-container').html(compiledInputsContainersTemplate(formInputs))
 }
+
+function createForm () {
+	let form = $('#form').html();
+	let compiledForm = Handlebars.compile(form);
+	$('#form-screen').html(compiledForm());
+}
+
+
+
 
