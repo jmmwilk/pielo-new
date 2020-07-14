@@ -4,11 +4,11 @@ import * as nameslist  from './diaperstype.js';
 
 let formInputs = {
 	'inputs': [
-		// {
-		// 	'text': 'Nazwa',
-		// 	'id': 'input-name',
-		// 	'source': 'nameslist.diapers'
-		// },
+		{
+			'text': 'Nazwa',
+			'id': 'input-name',
+			'source': menu.sideBarMenu.categories[0]
+		},
 		{
 			'text': 'Rozmiar',
 			'id': 'input-size',
@@ -36,8 +36,9 @@ $(document).ready(function(){
 	printDiapers ();
 	enableButton ();
 	hideFormScreen ();
+	hideDiaperScreen ();
 	createInputs ();
-	createForm ();
+	createFormInputTemplate ();
 	enableCardClick ();
 })
 
@@ -47,13 +48,24 @@ function enableCardClick () {
 		card.onclick = function () {
 			removeCards ();
 			hideProductsScreen ();
-			showDiaperScreen (card);
+			showDiaperScreen ();
+			fillDiaperScreen (card);
 		}
 	})
 }
 
-function showDiaperScreen (card) {
+function fillDiaperScreen (card) {
 
+}
+
+function showDiaperScreen () {
+	let diaperScreen = document.getElementById('diaper-screen');
+	diaperScreen.style.display = ''
+}
+
+function hideDiaperScreen () {
+	let diaperScreen = document.getElementById('diaper-screen');
+	diaperScreen.style.display = 'none'
 }
 
 function hideFormScreen () {
@@ -166,25 +178,19 @@ function removeCards () {
 	})
 }
 
-function createFormInputTemplate (i) {
-	let src = formInputs.inputs[i].source;
-	let id = formInputs.inputs[i].id;
-	console.log(src)
-	console.log('#' + id)
-	let formInputTemplate = $('#input-template').html();
-	let compiledFormInputTemplate = Handlebars.compile(formInputTemplate);
-	$('#' + id).html(compiledFormInputTemplate(src));
+function createFormInputTemplate () {
+	for (let i=0; i<4; i++) {
+		let src = formInputs.inputs[i].source;
+		let id = formInputs.inputs[i].id;
+		let formInputTemplate = $('#input-template').html();
+		let compiledFormInputTemplate = Handlebars.compile(formInputTemplate);
+		$('#' + id).html(compiledFormInputTemplate(src));
+	}
 }
 
 function createInputs () {
 	let formTemplate = $('#inputs-container').html();
 	let compiledFormTemplate = Handlebars.compile(formTemplate);
 	$('#inputs-container').html(compiledFormTemplate(formInputs))
-}
-
-function createForm () {
-	for (let i=0; i<3; i++) {
-		createFormInputTemplate (i)
-	}
 }
 

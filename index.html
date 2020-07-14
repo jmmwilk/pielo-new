@@ -64,11 +64,13 @@
         <div id="main" class="col-md-10">
           <div id="products-container" class="d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100">
           </div>
+          <div id="diaper-screen">
+          </div>
         </div>
       </div>
       <div class="row">
         <div id="form-screen" class="col-12">
-          <form>
+          <form id="form">
             <h1>Zaczynamy!</h1>
             <div class="form">
               <div class="form-group col-lg-3 col-md-4">
@@ -109,16 +111,16 @@
     </li>
     {{/each}}
   </script>
-<!--   <script id="names-input-template" type="text/x-handlebars-template">
-    <option selected>Wybierz...</option>
-    {{#each names}}
-      <option>{{name}}</option>
-    {{/each}}
-  </script> -->
   <script id="input-template" type="text/x-handlebars-template">
     <option selected>Wybierz...</option>
     {{#each submenu1}}
-      <option>{{name}}</option>
+      {{#if this.issubmenu}}
+        {{#each submenu2}}
+          <option>{{name}}</option>
+        {{/each}}
+      {{else}}
+        <option>{{name}}</option>
+      {{/if}}
     {{/each}}
   </script>
 </html>
