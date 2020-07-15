@@ -38,7 +38,7 @@ $(document).ready(function(){
 	hideFormScreen ();
 	hideDiaperScreen ();
 	createForm ();
-	createInputsTemplate ();
+	createInputsContainersTemplate ();
 	createFormInputTemplate ();
 	enableCardClick ();
 })
@@ -189,14 +189,14 @@ function createFormInputTemplate () {
 	}
 }
 
-function createInputsTemplate () {
+function createInputsContainersTemplate () {
 	let inputsContainersTemplate = $('#inputs-container').html();
 	let compiledInputsContainersTemplate = Handlebars.compile(inputsContainersTemplate);
 	$('#inputs-container').html(compiledInputsContainersTemplate(formInputs))
 }
 
 function createForm () {
-	let form = $('#form').html();
+	let form = $('#form-template').html();
 	let compiledForm = Handlebars.compile(form);
 	$('#form-screen').html(compiledForm());
 }
