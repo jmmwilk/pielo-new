@@ -21,59 +21,49 @@
           Dodaj pieluchę
         </button>
       </div>
-      <div class="row">
-        <nav id="side-bar" class="col-md-2 align-items-start">
-          <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">
-            <ul id="menu-template" class="nav flex-column flex-nowrap overflow-hidden">
-              {{#each categories}}
-                <li class="nav-item">
-                  <a id="{{id}}" class="nav-link collapsed text-truncate" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
-                  {{name}}
-                  </a>
-                  <ul id="{{id}}-submenu" class="collapse flex-column pl-2 nav" aria-expanded="false">
-                    {{#each submenu1}}
-                      {{#if issubmenu}}
-                        <li class="nav-item">
-                          <a id="{{id}}" class="nav-link collapsed py-1" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
-                            {{this.name}}
-                          </a>
-                          <ul id="{{id}}-submenu" class="collapse flex-column nav pl-4" aria-expanded="false">
-                            {{#each this.submenu2}}
-                              <li class="nav-item">
-                                <a id={{id}} class="menu-item {{../en-id}} nav-link p-1">
-                                {{name}}
-                                </a>
-                              </li>
-                            {{/each}}
-                          </ul>
-                        </li>
-                      {{else}}
-                        <li class="nav-item">
-                          <a id="{{id}}" class="menu-item {{../en-id}} nav-link">
-                          {{this.name}}
-                          </a>
-                        </li>
-                      {{/if}}
-                    {{/each}}
-                  </ul>
-                </li>
-              {{/each}}
-            </ul>
-          </div>
-        </nav>
-        <div id="main" class="col-md-10">
-          <div id="products-container" class="d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100">
-          </div>
-          <div id="diaper-screen">
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div id="form-screen" class="col-12">
-        </div>
+      <div id="page" class="row d-flex">
       </div>
     </div>
   </body>
+  <script id="sidebar-template" type="text/x-handlebars-template">
+    <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">
+      <ul id="menu-template" class="nav flex-column flex-nowrap overflow-hidden">
+        {{#each categories}}
+          <li class="nav-item">
+            <a id="{{id}}" class="nav-link collapsed text-truncate" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
+            {{name}}
+            </a>
+            <ul id="{{id}}-submenu" class="collapse flex-column pl-2 nav" aria-expanded="false">
+              {{#each submenu1}}
+                {{#if issubmenu}}
+                  <li class="nav-item">
+                    <a id="{{id}}" class="nav-link collapsed py-1" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
+                      {{this.name}}
+                    </a>
+                    <ul id="{{id}}-submenu" class="collapse flex-column nav pl-4" aria-expanded="false">
+                      {{#each this.submenu2}}
+                        <li class="nav-item">
+                          <a id={{id}} class="menu-item {{../en-id}} nav-link p-1">
+                          {{name}}
+                          </a>
+                        </li>
+                      {{/each}}
+                    </ul>
+                  </li>
+                {{else}}
+                  <li class="nav-item">
+                    <a id="{{id}}" class="menu-item {{../en-id}} nav-link">
+                    {{this.name}}
+                    </a>
+                  </li>
+                {{/if}}
+              {{/each}}
+            </ul>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  </script>
   <script id="pielucha-template" type="text/x-handlebars-template">
     {{#each diapers}}
     <li class="card text-center col pielucha-template">
