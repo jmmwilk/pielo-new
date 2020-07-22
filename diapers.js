@@ -7,7 +7,9 @@ export let items = {
 			'brand': 'Jellyfish',
 			'size': 'One Size',
 			'fabricprint': 'bawełniana',
-			'fabric': 'bawelna'
+			'fabric': 'bawelna',
+			'indexnum': 'jellyfish-1',
+			'description': 'To jest super pielucha.\nTaka super że ja pierdzielę'
 		},
 		{
 			'photo': 'puppi2',
@@ -16,7 +18,8 @@ export let items = {
 			'brand': 'Puppi',
 			'size': 'New Born',
 			'fabricprint': 'wełniany',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'puppi-1'
 		},
 		{
 			'photo': 'magabipul',
@@ -25,7 +28,8 @@ export let items = {
 			'brand': 'Magabi',
 			'size': 'New Born',
 			'fabricprint': 'PUL',
-			'fabric': 'pul'
+			'fabric': 'pul',
+			'indexnum': 'magabi-1'
 		},
 		{
 			'photo': 'sue&sophie',
@@ -34,7 +38,8 @@ export let items = {
 			'brand': 'Sue&Sophie',
 			'size': 'Mini One Size',
 			'fabricprint': 'bawełniana',
-			'fabric': 'bawelna'
+			'fabric': 'bawelna',
+			'indexnum': 'sue&sophie-1'
 		},
 		{
 			'photo': 'drimi',
@@ -43,7 +48,8 @@ export let items = {
 			'brand': 'Drimi',
 			'size': 'New Born',
 			'fabricprint': 'wełniany',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'drimi-1'
 		},
 		{
 			'photo': 'kokosi',
@@ -52,7 +58,8 @@ export let items = {
 			'brand': 'Kokosi',
 			'size': 'One Size',
 			'fabricprint': 'PUL, bawełna, poliester',
-			'fabric': 'PUL, bawelna, poliester'
+			'fabric': 'PUL, bawelna, poliester',
+			'indexnum': 'kokosi-1'
 		},
 		{
 			'photo': 'formowankapuppi',
@@ -61,7 +68,8 @@ export let items = {
 			'brand': 'Puppi',
 			'size': 'One Size',
 			'fabricprint': 'bawełna, bambus, poliester',
-			'fabric': 'bawelna, bambus, poliester'
+			'fabric': 'bawelna, bambus, poliester',
+			'indexnum': 'puppi-2'
 		},
 		{
 			'photo': 'magabi',
@@ -70,7 +78,8 @@ export let items = {
 			'brand': 'Magabi',
 			'size': 'New Born',
 			'fabricprint': 'wełniane',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'magabi-2'
 		},
 		{
 			'photo': 'manymonths',
@@ -79,7 +88,8 @@ export let items = {
 			'brand': 'Many Months',
 			'size': 'Medium',
 			'fabricprint': 'wełniane',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'manymonths-1'
 		},
 		{
 			'photo': 'gatkimagabi',
@@ -89,6 +99,7 @@ export let items = {
 			'size': 'New Born',
 			'fabricprint': 'wełniane',
 			'fabric': 'welna',
+			'indexnum': 'magabi-3'
 		},
 		{
 			'photo': 'zufizo',
@@ -97,7 +108,8 @@ export let items = {
 			'brand': 'Zufizo',
 			'size': 'New Born',
 			'fabricprint': 'wełniany',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'zufizo-1'
 		},
 		{
 			'photo': 'kokosipul',
@@ -106,7 +118,8 @@ export let items = {
 			'brand': 'Kokosi',
 			'size': 'One Size',
 			'fabricprint': 'PUL',
-			'fabric': 'pul'
+			'fabric': 'pul',
+			'indexnum': 'kokosi-2'
 		},
 		{
 			'photo': 'lbd',
@@ -115,7 +128,8 @@ export let items = {
 			'brand': 'Little Birds Diapers',
 			'size': 'New Born',
 			'fabricprint': 'PUL, bawełna organicza',
-			'fabric': 'PUL, bawelna organiczna'
+			'fabric': 'PUL, bawelna organiczna',
+			'indexnum': 'lbd-1'
 		},
 		{
 			'photo': 'wooli',
@@ -124,7 +138,8 @@ export let items = {
 			'brand': 'Wooli',
 			'size': 'New Born',
 			'fabricprint': 'wełninane',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'wooli-1'
 		},
 		{
 			'photo': 'wooli-s',
@@ -133,7 +148,8 @@ export let items = {
 			'brand': 'Wooli',
 			'size': 'Small',
 			'fabricprint': 'wełninane',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'wooli-2'
 		},
 
 		{
@@ -143,7 +159,8 @@ export let items = {
 			'brand': 'Pupeczkowo',
 			'size': 'New Born',
 			'fabricprint': 'wełninane',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'pupeczkowo-1'
 		},
 		{
 			'photo': 'pupeczkowo-m',
@@ -152,7 +169,8 @@ export let items = {
 			'brand': 'Pupeczkowo',
 			'size': 'Medium',
 			'fabricprint': 'wełninane',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'pupeczkowo-2'
 		},
 		{
 			'photo': 'magabi-m',
@@ -161,7 +179,8 @@ export let items = {
 			'brand': 'Magabi',
 			'size': 'Medium',
 			'fabricprint': 'wełniane',
-			'fabric': 'welna'
+			'fabric': 'welna',
+			'indexnum': 'magabi-4'
 		},
 	]
 }

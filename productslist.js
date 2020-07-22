@@ -6,7 +6,7 @@ let clickedMenuItem;
 export function createProductsList () {
 	let productsContainer = document.createElement('div');
 	productsContainer.id = 'products-container';
-	productsContainer.className = 'col-md-10 d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100';
+	productsContainer.className = 'col-md-10 d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100 order-1';
 	let page = document.getElementById('page');
 	page.appendChild(productsContainer);
 	fillDiaperCards ();
@@ -23,7 +23,7 @@ export function removeProductsList () {
 
 function fillDiaperCards () {
 	let pieluchaTemplate = $('#pielucha-template').html();
-	Handlebars.registerHelper('printdiaper', function(name){
+	Handlebars.registerHelper('printdiaper', function(){
 		return this.name + ' ' + this.type + ' ' + this.fabricprint
 	})
 }
@@ -58,6 +58,7 @@ function printDiapers () {
 			removeCards ();
 			createNewDiapersTemplate (newItems);
 			fillDiaperCards ();
+			enableCardClick ();
 		}
 	})
 }

@@ -25,34 +25,4 @@ function removePage () {
 	application.removeChild(page);
 }
 
-// function showDiaperScreen () {
-// 	let diaperScreen = document.getElementById('diaper-screen');
-// 	diaperScreen.style.display = ''
-// }
-
-// function hideDiaperScreen () {
-// 	let diaperScreen = document.getElementById('diaper-screen');
-// 	diaperScreen.style.display = 'none'
-// }
-
-// function hideFormScreen () {
-// 	let formScreen = document.getElementById('form-screen');
-// 	formScreen.style.display = 'none';
-// }
-
-// function showFormScreen () {
-// 	let formScreen = document.getElementById('form-screen');
-// 	formScreen.style.display = '';
-// }
-
-// function hideProductsScreen () {
-// 	let productsContainer = document.getElementById('products-container');
-// 	productsContainer.style.display = 'none';
-// }
-
-// function hideSideBar () {
-// 	let sideBar = document.getElementById('side-bar');
-// 	sideBar.style.display = 'none';
-// }
-
 
