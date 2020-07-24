@@ -1,4 +1,5 @@
 import * as menu from './menu.js';
+import * as productslist from './productslist.js';
 
 export function removeSidebarMenu () {
 	let sideBarMenu = document.getElementById('side-bar');
@@ -16,8 +17,9 @@ function createSideBarTemplate () {
 export function createSideBar () {
 	let sideBar = document.createElement('nav');
 	sideBar.id = 'side-bar';
-	sideBar.className = 'col-md-2 align-items-start order-1 order-1';
+	sideBar.className = 'col-md-2 align-items-start order-1';
 	let page = document.getElementById('page');
 	page.appendChild(sideBar);
 	createSideBarTemplate ();
+	productslist.enableAllDiapersClick ();
 }

@@ -3,12 +3,20 @@ import * as productpage from './productpage.js';
 
 let clickedMenuItem;
 
-export function createProductsList () {
+function createProductsContainer () {
 	let productsContainer = document.createElement('div');
 	productsContainer.id = 'products-container';
-	productsContainer.className = 'col-md-10 d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100 order-1';
+	productsContainer.className = 'd-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100';
+	let main = document.createElement('div');
+	main.id = 'main';
+	main.className = 'col-md-10 order-1';
 	let page = document.getElementById('page');
-	page.appendChild(productsContainer);
+	page.appendChild(main);
+	main.appendChild(productsContainer);
+}
+
+export function createProductsList () {
+	createProductsContainer ();
 	fillDiaperCards ();
 	createDiapersTemplate ();
 	printDiapers ();
@@ -16,9 +24,9 @@ export function createProductsList () {
 }
 
 export function removeProductsList () {
-	let productsContainer = document.getElementById('products-container');
 	let page = document.getElementById('page');
-	page.removeChild('productsContainer');
+	let main = document.getElementById('main');
+	page.removeChild(main);
 }
 
 function fillDiaperCards () {
@@ -55,12 +63,21 @@ function printDiapers () {
 				} else {
 				}
 			}
-			removeCards ();
+			removeProductsContainer ();
+			createProductsContainer ();
 			createNewDiapersTemplate (newItems);
 			fillDiaperCards ();
 			enableCardClick ();
 		}
 	})
+}
+
+export function enableAllDiapersClick () {
+	let allDiapers = document.getElementById('all-diapers-nav');
+	allDiapers.onclick = function () {
+		removeProductsContainer ();
+		createProductsList ();
+	}
 }
 
 function enableCardClick () {
@@ -74,9 +91,9 @@ function enableCardClick () {
 }
 
 function removeProductsContainer () {
-	let productsContainer = document.getElementById('products-container');
 	let page = document.getElementById('page');
-	page.removeChild(productsContainer);
+	let main = document.getElementById('main');
+	page.removeChild(main);
 }
 
 function findCategory () {

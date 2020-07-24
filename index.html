@@ -43,6 +43,11 @@
   <script id="sidebar-template" type="text/x-handlebars-template">
     <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">
       <ul id="menu-template" class="nav flex-column flex-nowrap overflow-hidden">
+        <li class="nav-item">
+          <a id="all-diapers-nav" class="nav-link" href="#application">
+            Wszystkie Pieluszki
+          </a>
+        </li>
         {{#each categories}}
           <li class="nav-item">
             <a id="{{id}}" class="nav-link collapsed text-truncate" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
