@@ -1,4 +1,4 @@
-import * as menu from './menu.js';
+import * as menu from '../mocks/menu.js';
 
 export function createForm () {
 	let formScreen = document.createElement('div');
