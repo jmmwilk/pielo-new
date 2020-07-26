@@ -3,11 +3,13 @@ import * as diaperslist  from '../mocks/diapers.js';
 import * as productslist from '../views/productslist.js';
 import * as sidebarmenu from '../views/sidebarmenu.js';
 import * as form from '../views/form.js';
+import * as login from '../views/login.js'
 
 $(document).ready(function(){
 	sidebarmenu.createSideBar ();
 	productslist.createProductsList ();
 	enableButton ();
+	login.enableLogin ();
 })
 
 function enableButton () {

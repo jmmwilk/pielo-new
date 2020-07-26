@@ -16,15 +16,31 @@
   </head>
   <body>
     <div id="application" class="container-fluid">
-      <div id="title-bar" class="container-fluid">
+      <div id="title-bar" class="container-fluid d-flex justify-content-between">
         <button id="add-diaper">
           Dodaj pieluchę
         </button>
+        <div id="login-icon-box">
+          <img id="login-icon" src="/images/login-icon.png"/>
+        </div>
       </div>
       <div id="page" class="row d-flex">
       </div>
     </div>
   </body>
+  <script id="login-page-template" type="text">
+    <div id="log-in-box" class="form">
+      <div id="login" class="form-group">
+        <label for="exampleInputEmail1">Email</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      </div>
+      <div id="password" class="form-group">
+        <label for="exampleInputPassword1">Hasło</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
+      </div>
+      <button type="submit" class="btn btn-primary">Zaloguj</button>
+    </div>
+  </script>
   <script id="product-page-template" type="text/x-handlebars-template">
     <div class="main-info-box row">
       <div class="image-box col-md-6">
@@ -38,7 +54,11 @@
       </div>
     </div>
     <div class="info-box">
+      <h5>Informacje</h>
+    </div class="reviews-box">
+      <h5>Opinie</h>
     </div>
+
   </script>
   <script id="sidebar-template" type="text/x-handlebars-template">
     <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">

@@ -29,3 +29,8 @@ body {
  .pielucha-image {
  	object-fit: cover;
  }
+
+ #login-icon {
+ 	height: 50px;
+ 	width: 50px;
+ }
