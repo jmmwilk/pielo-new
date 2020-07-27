@@ -8,18 +8,19 @@ export function removeSidebarMenu () {
 }
 
 function createSideBarTemplate () {
-	let categories = menu.sideBarMenu
+	console.log('banana')
+	let categories = menu.sideBarMenu;
 	let sideBarTemplate = $('#sidebar-template').html();
 	let compiledSideBarTemplate = Handlebars.compile(sideBarTemplate)
-	$('#side-bar').html(compiledSideBarTemplate(categories))
+	$('#page').html(compiledSideBarTemplate(categories))
 }
 
 export function createSideBar () {
-	let sideBar = document.createElement('nav');
-	sideBar.id = 'side-bar';
-	sideBar.className = 'col-md-2 align-items-start order-1';
-	let page = document.getElementById('page');
-	page.appendChild(sideBar);
+	// let sideBar = document.createElement('nav');
+	// sideBar.id = 'side-bar';
+	// sideBar.className = 'col-md-2 align-items-start order-1';
+	// let page = document.getElementById('page');
+	// page.appendChild(sideBar);
 	createSideBarTemplate ();
-	productslist.enableAllDiapersClick ();
+//	productslist.enableAllDiapersClick ();
 }

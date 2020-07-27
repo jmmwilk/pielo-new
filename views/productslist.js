@@ -3,20 +3,19 @@ import * as productpage from '../views/productpage.js';
 
 let clickedMenuItem;
 
-function createProductsContainer () {
-	let productsContainer = document.createElement('div');
-	productsContainer.id = 'products-container';
-	productsContainer.className = 'd-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100';
-	let main = document.createElement('div');
-	main.id = 'main';
-	main.className = 'col-md-10 order-1';
-	let page = document.getElementById('page');
-	page.appendChild(main);
-	main.appendChild(productsContainer);
-}
+// function createProductsContainer () {
+// 	let productsContainer = document.createElement('div');
+// 	productsContainer.id = 'products-container';
+// 	productsContainer.className = 'd-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100';
+// 	let main = document.createElement('div');
+// 	main.id = 'main';
+// 	main.className = 'col-md-10 order-1';
+// 	let page = document.getElementById('page');
+// 	page.appendChild(main);
+// 	main.appendChild(productsContainer);
+// }
 
 export function createProductsList () {
-	createProductsContainer ();
 	fillDiaperCards ();
 	createDiapersTemplate ();
 	printDiapers ();
@@ -39,7 +38,7 @@ function fillDiaperCards () {
 function createDiapersTemplate () {
 	let pieluchaTemplate = $('#pielucha-template').html();
 	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
-	$('#products-container').html(compiledPieluchaTemplate(diaperslist.items));
+	$('#page').html(compiledPieluchaTemplate(diaperslist.items));
 }
 
 function createNewDiapersTemplate (newItems) {

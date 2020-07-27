@@ -10,7 +10,6 @@
     <script type="module" src="index.js"></script>
     <script src='../libs/handlebars-v4.7.6.js'></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
   </head>
@@ -31,8 +30,8 @@
   <script id="login-page-template" type="text">
     <div id="log-in-box" class="form">
       <div id="login" class="form-group">
-        <label for="exampleInputEmail1">Email</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <label for="inputEmail">Email</label>
+        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
       </div>
       <div id="password" class="form-group">
         <label for="exampleInputPassword1">Hasło</label>
@@ -42,23 +41,26 @@
     </div>
   </script>
   <script id="product-page-template" type="text/x-handlebars-template">
-    <div class="main-info-box row">
-      <div class="image-box col-md-6">
-        <img class="product-image mx-auto img-fluid" src="/images/{{photo}}.jpg""/>
-      </div>
-      <div class="title-box col-md-6">
-        <h5> {{printinfo this}} </h5>
-        <p>{{brand}}</p>
-        <p>{{size}}</p>
-        <p>{{description}}</p>
+    <div id="main" class="col-md-10 order-1">
+      <div id="product-page" class="col-md-10 d-flex flex-column order-1">
+        <div class="main-info-box row">
+          <div class="image-box col-md-6">
+            <img class="product-image mx-auto img-fluid" src="/images/{{photo}}.jpg""/>
+          </div>
+          <div class="title-box col-md-6">
+            <h5> {{printinfo this}} </h5>
+            <p>{{brand}}</p>
+            <p>{{size}}</p>
+            <p>{{description}}</p>
+          </div>
+        </div>
+        <div class="info-box">
+          <h5>Informacje</h>
+        </div class="reviews-box">
+          <h5>Opinie</h>
+        </div>
       </div>
     </div>
-    <div class="info-box">
-      <h5>Informacje</h>
-    </div class="reviews-box">
-      <h5>Opinie</h>
-    </div>
-
   </script>
   <script id="sidebar-template" type="text/x-handlebars-template">
     <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">
@@ -105,20 +107,24 @@
     </div>
   </script>
   <script id="pielucha-template" type="text/x-handlebars-template">
-    {{#each diapers}}
-    <li class="card text-center col pielucha-template" data-indexnumber="{{indexnum}}">
-      <div class="card-body">
-        <div class="embed-responsive embed-responsive-1by1">
-          <img src="/images/{{photo}}.jpg" class="img embed-responsive-item rounded pielucha-image"/>
-        </div>
-        <div class="flex-row d-flex justify-content-between">
-          <a href="#application" class="card-link">{{brand}}</a>
-          <p>{{size}}</p>
-        </div>
-        <h5> {{printdiaper name}} </h5>
+    <div id="main" class="col-md-10 order-1">
+      <div id="products-container class="d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100">
+        {{#each diapers}}
+        <li class="card text-center col pielucha-template" data-indexnumber="{{indexnum}}">
+          <div class="card-body">
+            <div class="embed-responsive embed-responsive-1by1">
+              <img src="/images/{{photo}}.jpg" class="img embed-responsive-item rounded pielucha-image"/>
+            </div>
+            <div class="flex-row d-flex justify-content-between">
+              <a href="#application" class="card-link">{{brand}}</a>
+              <p>{{size}}</p>
+            </div>
+            <h5> {{printdiaper name}} </h5>
+          </div>
+        </li>
+        {{/each}}
       </div>
-    </li>
-    {{/each}}
+    </div>
   </script>
   <script id="input-template" type="text/x-handlebars-template">
     <option selected>Wybierz...</option>

@@ -2,15 +2,6 @@ import * as diaperslist from '../mocks/diapers.js';
 import * as productslist from '../views/productslist.js';
 
 export function createProductScreen (card) {
-	let productPage = document.createElement('div');
-	productPage.id = 'product-page';
-	productPage.className = 'col-md-10 d-flex flex-column order-1';
-	let main = document.createElement('div');
-	main.id = 'main';
-	main.className = 'col-md-10 order-1';
-	let page = document.getElementById('page');
-	page.appendChild(main);
-	main.appendChild(productPage);
 	let indexNumber = card.dataset.indexnumber;
 	let diapers = diaperslist.items.diapers;
 	for (let i=0; i<diapers.length; i++) {
