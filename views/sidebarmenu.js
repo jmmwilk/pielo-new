@@ -12,15 +12,10 @@ function createSideBarTemplate () {
 	let categories = menu.sideBarMenu;
 	let sideBarTemplate = $('#sidebar-template').html();
 	let compiledSideBarTemplate = Handlebars.compile(sideBarTemplate)
-	$('#page').html(compiledSideBarTemplate(categories))
+	$('#page').append(compiledSideBarTemplate(categories))
 }
 
 export function createSideBar () {
-	// let sideBar = document.createElement('nav');
-	// sideBar.id = 'side-bar';
-	// sideBar.className = 'col-md-2 align-items-start order-1';
-	// let page = document.getElementById('page');
-	// page.appendChild(sideBar);
 	createSideBarTemplate ();
-//	productslist.enableAllDiapersClick ();
+	productslist.enableAllDiapersClick ();
 }
