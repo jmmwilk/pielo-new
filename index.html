@@ -26,6 +26,29 @@
       <div id="page" class="row d-flex">
       </div>
     </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
+
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyAIpPvZ3RCdPV9o4VOEo16YTKI7rqrgsF8",
+        authDomain: "wielo-pielo.firebaseapp.com",
+        databaseURL: "https://wielo-pielo.firebaseio.com",
+        projectId: "wielo-pielo",
+        storageBucket: "wielo-pielo.appspot.com",
+        messagingSenderId: "104016685413",
+        appId: "1:104016685413:web:9bc39931f4251a2da2198c",
+        measurementId: "G-4KKS4BMPSJ"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
   </body>
   <script id="login-page-template" type="text">
     <div id="log-in-box" class="form">

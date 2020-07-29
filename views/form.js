@@ -1,6 +1,9 @@
 import * as menu from '../mocks/menu.js';
 
 export function createForm () {
+
+
+export function createForm () {
 	let formScreen = document.createElement('div');
 	formScreen.id = 'form-screen';
 	formScreen.className = 'row';
@@ -39,7 +42,6 @@ let formInputs = {
 
 function createFormInputTemplate () {
 	for (let i=0; i<4; i++) {
-		console.log('dupa')
 		let src = formInputs.inputs[i].source;
 		let id = formInputs.inputs[i].id;
 		let formInputTemplate = $('#input-template').html();
@@ -49,7 +51,6 @@ function createFormInputTemplate () {
 }
 
 function createInputsContainersTemplate () {
-	console.log('kupa')
 	let inputsContainersTemplate = $('#inputs-container').html();
 	let compiledInputsContainersTemplate = Handlebars.compile(inputsContainersTemplate);
 	$('#inputs-container').html(compiledInputsContainersTemplate(formInputs))
@@ -69,7 +70,16 @@ function printValue () {
 		let valueSize = document.getElementById('input-size').value;
 		let valueFabric = document.getElementById('input-fabric').value;
 		let valueBrand = document.getElementById('input-brand').value;
-		console.log (valueName, valueSize, valueFabric, valueBrand)
+		console.log (valueName, valueSize, valueFabric, valueBrand);
+		setData ();
+	}
+}
+
+function setData () {
+	function writeUserData(Zenon) {
+		firebase.database().ref('form/' + userId).set({
+		    name: valueName,
+		});
 	}
 }
 
