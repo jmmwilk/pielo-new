@@ -1,7 +1,6 @@
 import * as menu from '../mocks/menu.js';
 
-export function createForm () {
-
+let database = firebase.database();
 
 export function createForm () {
 	let formScreen = document.createElement('div');
