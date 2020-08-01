@@ -7,7 +7,7 @@ export function createProductScreen (card) {
 	for (let i=0; i<diapers.length; i++) {
 		if (indexNumber == diapers[i].indexnum) {
 			fillProductMainInfo ();
-			createProductPageTempate (i);
+			createProductPageTempate (i, diapers);
 		}
 	}
 }
@@ -15,7 +15,7 @@ export function createProductScreen (card) {
 function createProductPageTempate (i, diapers) {
 	let productPageTemplate = $('#product-page-template').html();
 	let compiledProductPageTemplate = Handlebars.compile(productPageTemplate);
-	$('#product-page').html(compiledProductPageTemplate(diaperslist.items.diapers[i]));
+	$('#page').append(compiledProductPageTemplate(diaperslist.items.diapers[i]));
 }
 
 function fillProductMainInfo () {
