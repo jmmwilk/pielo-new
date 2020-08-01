@@ -8,7 +8,6 @@ export function removeSidebarMenu () {
 }
 
 function createSideBarTemplate () {
-	console.log('banana')
 	let categories = menu.sideBarMenu;
 	let sideBarTemplate = $('#sidebar-template').html();
 	let compiledSideBarTemplate = Handlebars.compile(sideBarTemplate)

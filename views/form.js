@@ -1,7 +1,5 @@
 import * as menu from '../mocks/menu.js';
 
-let database = firebase.database();
-
 export function createForm () {
 	let formScreen = document.createElement('div');
 	formScreen.id = 'form-screen';
@@ -70,15 +68,7 @@ function printValue () {
 		let valueFabric = document.getElementById('input-fabric').value;
 		let valueBrand = document.getElementById('input-brand').value;
 		console.log (valueName, valueSize, valueFabric, valueBrand);
-		setData ();
-	}
-}
-
-function setData () {
-	function writeUserData(Zenon) {
-		firebase.database().ref('form/' + userId).set({
-		    name: valueName,
-		});
+//		setData ();
 	}
 }
 
