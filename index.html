@@ -80,12 +80,23 @@
           </div>
         </div>
         <div class="info-box">
-          <h5>Informacje</h>
-        </div class="reviews-box">
+          <h5>Informacje od producenta</h>
+        </div>
+        <div class="reviews-box">
           <h5>Opinie</h>
+          <div id="reviews-container">
+          </div>
         </div>
       </div>
     </div>
+  </script>
+  <script id="review-template" type="text/x-handlebars-template">
+    {{#each reviews}}
+    <div id="review-{{id}}" class="review">
+      <p>{{username}}</p>
+      <p>{{text}}</p>
+    </div>
+    {{/each}}
   </script>
   <script id="sidebar-template" type="text/x-handlebars-template">
     <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">
