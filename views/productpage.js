@@ -10,6 +10,7 @@ export function createProductScreen (card) {
 			fillProductMainInfo ();
 			createProductPageTempate (i, diapers);
 			createReviews (indexNumber);
+			console.log(diapers[i].indexnum)
 		}
 	}
 }

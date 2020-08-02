@@ -13,13 +13,13 @@ export let items = {
 			'id': 'review-2'
 		},
 		{
-			'indexnumber': 'puppy-1',
+			'indexnumber': 'puppi-1',
 			'username': 'Zenon',
 			'text': 'Beznadziejna.',
 			'id': 'review-3'
 		},
 		{
-			'indexnumber': 'puppy-1',
+			'indexnumber': 'puppi-1',
 			'username': 'Ksenia',
 			'text': 'Nie kupuj.',
 			'id': 'review-4'

@@ -70,20 +70,32 @@
       <div id="product-page" class="col-md-10 d-flex flex-column order-1">
         <div class="main-info-box row">
           <div class="image-box col-md-6">
-            <img class="product-image mx-auto img-fluid" src="/images/{{photo}}.jpg""/>
+            <img class="product-image mx-auto img-fluid img-thumbnail" src="/images/{{photo}}.jpg""/>
           </div>
           <div class="title-box col-md-6">
             <h5> {{printinfo this}} </h5>
-            <p>{{brand}}</p>
+            <p>od {{brand}}</p>
+            <div class="stars-box d-flex flex-row text-muted">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+            </div>
             <p>{{size}}</p>
             <p>{{description}}</p>
+            <button type="button" class="btn btn-primary">Napisz opinię</button>
           </div>
         </div>
-        <div class="info-box">
-          <h5>Informacje od producenta</h>
+        <div class="info-box card">
+          <div id="info-title" class="card-body">
+            <h5 class="card-title">Informacje od producenta</h5>
+          </div>
         </div>
-        <div class="reviews-box">
-          <h5>Opinie</h>
+        <div class="reviews-box card">
+          <div id="reviews-title" class="card-body">
+            <h5 class="card-title">Opinie</h5>
+          </div>
           <div id="reviews-container">
           </div>
         </div>
@@ -91,12 +103,27 @@
     </div>
   </script>
   <script id="review-template" type="text/x-handlebars-template">
-    {{#each reviews}}
-    <div id="review-{{id}}" class="review">
-      <p>{{username}}</p>
-      <p>{{text}}</p>
-    </div>
-    {{/each}}
+    <ul id="box" class="">
+      {{#each reviews}}
+      <li id="review-{{id}}" class="card review mb-3">
+        <div class="card-header d-flex" flex-row>
+          <p>{{username}}</p>
+          <p class="text-muted">-6 opinii</p>
+        </div>
+        <div class="card-body">
+          <div class="stars-box d-flex flex-row text-muted">
+            <img src="/images/star.png"/ class="star">
+            <img src="/images/star.png"/ class="star">
+            <img src="/images/star.png"/ class="star">
+            <img src="/images/star.png"/ class="star">
+            <img src="/images/star.png"/ class="star">
+            <p>2 tygodnie temu</p>
+          </div>
+          <p class="card-text">{{text}}</p>
+        </div>
+      </li>
+      {{/each}}
+    </ul>
   </script>
   <script id="sidebar-template" type="text/x-handlebars-template">
     <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">

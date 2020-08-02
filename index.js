@@ -33,6 +33,7 @@ function setData () {
 	let zupa = document.getElementById('zupa');
 	let dbRef = firebase.database().ref('zupy/').child('pomidorowa');
 	 dbRef.on('value', snap => console.log(snap.val()));
+	// get() = moge uzyc once()
 		// firebase.database().ref('zupy/').set({
 	 //    'kalafiorowa': 'niesmaczna',
 	 //  });
