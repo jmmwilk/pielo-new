@@ -3,7 +3,7 @@ export let items = {
 		{
 			'indexnumber': 'jellyfish-1',
 			'username': 'Halinka',
-			'text': 'Ta pielucha jest piękna.',
+			'text': 'Ta pielucha jest piękna. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc non diam erat. In fringilla massa ut nisi ullamcorper pellentesque. Quisque non luctus sem.',
 			'id': 'review-1'
 		},
 		{

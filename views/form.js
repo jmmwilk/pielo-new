@@ -1,5 +1,7 @@
 import * as menu from '../mocks/menu.js';
 
+let database = firebase.database();
+
 export function createForm () {
 	let formScreen = document.createElement('div');
 	formScreen.id = 'form-screen';
@@ -68,8 +70,30 @@ function printValue () {
 		let valueFabric = document.getElementById('input-fabric').value;
 		let valueBrand = document.getElementById('input-brand').value;
 		console.log (valueName, valueSize, valueFabric, valueBrand);
-//		setData ();
+		addDiaper (valueName, valueSize, valueFabric, valueBrand);
 	}
+}
+
+function addDiaper (valueName, valueSize, valueFabric, valueBrand) {
+	let dbRef = firebase.database().ref('diapers/');
+	var newDbRef = dbRef.push();
+	newDbRef.set({
+	  name: valueName,
+	  size: valueSize,
+	  fabric: valueFabric,
+	  brand: valueBrand
+	});
+	let key = newDbRef.getKey();
+	console.log(key);
+	printData (key);
+}
+
+function printData (key) {
+	let result = document.getElementById('form-result');
+	console.log(key)
+	 let dbRef = firebase.database().ref('diapers/key/');
+	 dbRef.on('value', snap => console.log(snap.val()));
+	 dbRef.on('value', snap => result.innerText = snap.val());
 }
 
 

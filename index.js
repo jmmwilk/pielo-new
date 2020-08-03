@@ -4,14 +4,12 @@ import * as sidebarmenu from '../views/sidebarmenu.js';
 import * as form from '../views/form.js';
 import * as login from '../views/login.js';
 
-let database = firebase.database();
-
 $(document).ready(function(){
 	sidebarmenu.createSideBar ();
 	productslist.createProductsList ();
 	enableButton ();
 	login.enableLogin ();
-	setData();
+//	enableHomeClick ();
 })
 
 function enableButton () {
@@ -22,6 +20,13 @@ function enableButton () {
 	}
 }
 
+// function enableHomeClick () {
+// 	let home = document.getElementById('home');
+// 	home.onclick = function () {
+// 		productslist.createProductsList ();
+// 	}
+// }
+
 function removePage () {
 	let application = document.getElementById('application');
 	let page = document.getElementById('page');
@@ -30,17 +35,37 @@ function removePage () {
 
 
 function setData () {
-	let zupa = document.getElementById('zupa');
-	let dbRef = firebase.database().ref('zupy/').child('pomidorowa');
-	 dbRef.on('value', snap => console.log(snap.val()));
-	// get() = moge uzyc once()
-		// firebase.database().ref('zupy/').set({
-	 //    'kalafiorowa': 'niesmaczna',
-	 //  });
-	console.log('kupa kupa');
-	// function writeUserData(Zenon) {
-	// 	firebase.database().ref('form/' + userId).set({
-	// 	    name: valueName,
-	// 	});
-	// }
+	 let zupa = document.getElementById('zupa');
+
+	 let dbRef = firebase.database().ref('zupy/');
+	// dbRef.on('value', snap => console.log(snap.val()));
+	  dbRef.on('value', snap => zupa.innerText = snap.val());
+	 
+//	 addNewZupa ();
+	 addAnotherZupa ();
+}
+
+function addAnotherZupa () {
+	var zupaRef = firebase.database().ref("zupy");
+
+	var newZupaRef = zupaRef.push();
+	newZupaRef.set({
+	  3: "pomidorowa",
+	});
+}
+
+function addNewZupa() {
+  // A post entry.
+  var postData = {
+    '1': 'ogorkowa',
+  };
+
+  // Get a key for a new Post.
+  var newPostKey = firebase.database().ref('zupy/').push().key;
+
+  // Write the new post's data simultaneously in the posts list and the user's post list.
+  var updates = {};
+  updates['/zupy/'] = postData;
+
+  return firebase.database().ref().update(updates);
 }
