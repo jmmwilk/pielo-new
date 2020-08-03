@@ -91,9 +91,13 @@ function addDiaper (valueName, valueSize, valueFabric, valueBrand) {
 function printData (key) {
 	let result = document.getElementById('form-result');
 	console.log(key)
-	 let dbRef = firebase.database().ref('diapers/key/');
+	 let dbRef = firebase.database().ref('diapers/key/brand/');
 	 dbRef.on('value', snap => console.log(snap.val()));
 	 dbRef.on('value', snap => result.innerText = snap.val());
+	 //to pod spodem działa a to na górze nie działa
+	 // let dbRef = firebase.database().ref('zupy/1/');
+	 // dbRef.on('value', snap => console.log(snap.val()));
+	 // dbRef.on('value', snap => result.innerText = snap.val());
 }
 
 
