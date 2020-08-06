@@ -1,6 +1,7 @@
 import * as menu from '../mocks/menu.js';
 
 let database = firebase.database();
+let storage = firebase.storage();
 
 export function createForm () {
 	let formScreen = document.createElement('div');
@@ -11,6 +12,7 @@ export function createForm () {
 	createFormTemplate ();
 	createInputsContainersTemplate ();
 	createFormInputTemplate ();
+//	deleteDiapers ();
 	printValue ();
 }
 
@@ -69,30 +71,52 @@ function printValue () {
 		let valueSize = document.getElementById('input-size').value;
 		let valueFabric = document.getElementById('input-fabric').value;
 		let valueBrand = document.getElementById('input-brand').value;
-		console.log (valueName, valueSize, valueFabric, valueBrand);
+		let valueImage = document.getElementById('input-image').value;
+		console.log (valueName, valueSize, valueFabric, valueBrand, valueImage);
 		addDiaper (valueName, valueSize, valueFabric, valueBrand);
+		addImage ();
 	}
 }
 
+function addImage (valueImage) {
+	// let image = document.createElement('img');
+	// image.src = '/images/drimi.jpg';
+
+	let imageRef = storage.ref().child('drimi.jpg');
+	imageRef.put(valueImage).then(function(snapshot) {
+  		console.log('Uploaded a blob or file!');
+	});
+
+	// let img = document.getElementById('image');
+	// console.log(img)
+ //  	img.src = 'https://firebasestorage.googleapis.com/v0/b/wielo-pielo.appspot.com/o/puppi2.jpg?alt=media&token=fe6b5281-721b-48f4-b840-a0a4f756f6c0';
+
+	// let gsReference = storageRef.getReferenceFromUrl("gs://wielo-pielo.appspot.com/puppi2.jpg");
+
+
+	// // Upload the file and metadata
+	// var uploadTask = storageRef.child('puppi2.jpg').put(gsReference, metadata);
+}
+
 function addDiaper (valueName, valueSize, valueFabric, valueBrand) {
+	let imageUrl = 'gs://wielo-pielo.appspot.com/puppi2.jpg';
 	let dbRef = firebase.database().ref('diapers/');
 	var newDbRef = dbRef.push();
 	newDbRef.set({
 	  name: valueName,
 	  size: valueSize,
 	  fabric: valueFabric,
-	  brand: valueBrand
+	  brand: valueBrand,
+	  image: imageUrl
 	});
 	let key = newDbRef.getKey();
-	console.log(key);
 	printData (key);
 }
 
 function printData (key) {
 	let result = document.getElementById('form-result');
-	console.log(key)
 	 let dbRef = firebase.database().ref('diapers/' + key + '/brand/');
-	 dbRef.on('value', snap => console.log(snap.val()));
+	 let imgRef = firebase.database().ref('diapers/' + key + '/image/')
 	 dbRef.on('value', snap => result.innerText = snap.val());
 	 //to pod spodem działa a to na górze nie działa
 	 // let dbRef = firebase.database().ref('zupy/1/');
@@ -100,6 +124,10 @@ function printData (key) {
 	 // dbRef.on('value', snap => result.innerText = snap.val());
 }
 
+function deleteDiapers () {
+	let dbRef = firebase.database().ref('diapers/');
+	dbRef.set(null);
+}
 
 
 

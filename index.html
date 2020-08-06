@@ -33,6 +33,7 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-storage.js"></script>
 
     <!-- TODO: Add SDKs for Firebase products that you want to use
          https://firebase.google.com/docs/web/setup#available-libraries -->
@@ -56,7 +57,7 @@
     </script>
   </body>
   <script id="login-page-template" type="text">
-    <div id="log-in-box" class="form">
+    <div id="log-in-box" class="form mx-auto">
       <div id="login" class="form-group">
         <label for="inputEmail">Email</label>
         <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
@@ -69,9 +70,9 @@
     </div>
   </script>
   <script id="product-page-template" type="text/x-handlebars-template">
-    <div id="main" class="col-md-10 order-1">
-      <div id="product-page" class="col-md-10 d-flex flex-column order-1">
-        <div class="main-info-box row">
+    <div id="main" class="col-md-10 order-1 mx-auto">
+      <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">
+        <div class="main-info-box row my-2">
           <div class="image-box col-md-6">
             <img class="product-image mx-auto img-fluid img-thumbnail" src="/images/{{photo}}.jpg""/>
           </div>
@@ -90,12 +91,12 @@
             <button type="button" class="btn btn-primary">Napisz opinię</button>
           </div>
         </div>
-        <div class="info-box card">
+        <div class="info-box card my-2">
           <div id="info-title" class="card-body">
             <h5 class="card-title">Informacje od producenta</h5>
           </div>
         </div>
-        <div class="reviews-box card">
+        <div class="reviews-box card my-2">
           <div id="reviews-title" class="card-body">
             <h5 class="card-title">Opinie</h5>
           </div>
@@ -106,9 +107,9 @@
     </div>
   </script>
   <script id="review-template" type="text/x-handlebars-template">
-    <ul id="box" class="">
+    <div id="box" class="">
       {{#each reviews}}
-      <li id="review-{{id}}" class="card review mb-3">
+      <div id="review-{{id}}" class="card review my-3 mx-4">
         <div class="card-header d-flex" flex-row>
           <p>{{username}}</p>
           <p class="text-muted">-6 opinii</p>
@@ -124,9 +125,9 @@
           </div>
           <p class="card-text">{{text}}</p>
         </div>
-      </li>
+      </div>
       {{/each}}
-    </ul>
+    </div>
   </script>
   <script id="sidebar-template" type="text/x-handlebars-template">
     <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">
@@ -173,8 +174,8 @@
     </div>
   </script>
   <script id="pielucha-template" type="text/x-handlebars-template">
-    <div id="main" class="col-md-10 order-1">
-      <div id="products-container" class="d-flex flex-row row row-cols-1 row-cols-md-2 row-cols-lg-3 w-100">
+    <div id="main" class="col-md-10 order-1 mx-auto">
+      <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
         {{#each diapers}}
         <li class="card text-center col pielucha-template" data-indexnumber="{{indexnum}}">
           <div class="card-body">
@@ -227,6 +228,9 @@
       </div>
     </form>
     <div id="form-result">
+      <div id="image-box">
+        <img id="image" src="https://firebasestorage.googleapis.com/v0/b/wielo-pielo.appspot.com/o/puppi2.jpg?alt=media&token=fe6b5281-721b-48f4-b840-a0a4f756f6c0"/>
+      </div>
     </div>
   </script>
 </html>
