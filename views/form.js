@@ -73,9 +73,9 @@ function printValue () {
 		let valueBrand = document.getElementById('input-brand').value;
 		let valueImage = document.getElementById('input-image').value;
 		console.log (valueName, valueSize, valueFabric, valueBrand, valueImage);
-		let url = addImage ();
-		console.log('url', url);
-		addDiaper (valueName, valueSize, valueFabric, valueBrand, url);
+		addImage().then(function(url){
+			addDiaper (valueName, valueSize, valueFabric, valueBrand, url)
+		});
 	}
 }
 
@@ -104,15 +104,19 @@ function addImage () {
 
 function createPreviewTemplate (key) {
 	let dbRef = firebase.database().ref('diapers/' + key);
-	console.log(dbRef)
+	console.log('key', key)
+	console.log('dbRef', dbRef)
 	let previewTemplate = $('#item-preview').html();
 	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
-	$('#page').html(compiledPreviewTemplate(dbRef))
+	dbRef.on('value', function(snap){
+		$('#form-screen').html(compiledPreviewTemplate(snap.val()))
+	})
+	
 }
 
 function addDiaper (valueName, valueSize, valueFabric, valueBrand, url) {
 	console.log('uuurl', url)
-	let imageUrl = 'gs://wielo-pielo.appspot.com/puppi2.jpg';
+	let imageUrl = url;
 	let dbRef = firebase.database().ref('diapers/');
 	var newDbRef = dbRef.push();
 	newDbRef.set({
