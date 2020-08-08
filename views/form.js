@@ -73,19 +73,23 @@ function printValue () {
 		let valueBrand = document.getElementById('input-brand').value;
 		let valueImage = document.getElementById('input-image').value;
 		console.log (valueName, valueSize, valueFabric, valueBrand, valueImage);
-		addDiaper (valueName, valueSize, valueFabric, valueBrand);
-		addImage ();
+		let url = addImage ();
+		console.log('url', url);
+		addDiaper (valueName, valueSize, valueFabric, valueBrand, url);
 	}
 }
 
-function addImage (valueImage) {
-	// let image = document.createElement('img');
-	// image.src = '/images/drimi.jpg';
-
+function addImage () {
+	const selectedFile = document.getElementById('input-image').files[0];
 	let imageRef = storage.ref().child('drimi.jpg');
-	imageRef.put(valueImage).then(function(snapshot) {
+	imageRef.put(selectedFile).then(function(snapshot) {
   		console.log('Uploaded a blob or file!');
 	});
+	let url = imageRef.getDownloadURL().then(function(downloadURL) {
+		console.log('File available at', downloadURL);
+		return downloadURL
+  	});
+  	return url
 
 	// let img = document.getElementById('image');
 	// console.log(img)
@@ -98,7 +102,16 @@ function addImage (valueImage) {
 	// var uploadTask = storageRef.child('puppi2.jpg').put(gsReference, metadata);
 }
 
-function addDiaper (valueName, valueSize, valueFabric, valueBrand) {
+function createPreviewTemplate (key) {
+	let dbRef = firebase.database().ref('diapers/' + key);
+	console.log(dbRef)
+	let previewTemplate = $('#item-preview').html();
+	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
+	$('#page').html(compiledPreviewTemplate(dbRef))
+}
+
+function addDiaper (valueName, valueSize, valueFabric, valueBrand, url) {
+	console.log('uuurl', url)
 	let imageUrl = 'gs://wielo-pielo.appspot.com/puppi2.jpg';
 	let dbRef = firebase.database().ref('diapers/');
 	var newDbRef = dbRef.push();
@@ -110,7 +123,8 @@ function addDiaper (valueName, valueSize, valueFabric, valueBrand) {
 	  image: imageUrl
 	});
 	let key = newDbRef.getKey();
-	printData (key);
+//	printData (key);
+	createPreviewTemplate (key)
 }
 
 function printData (key) {
