@@ -49,3 +49,15 @@ body {
  	height: 50px;
  	width: 50px;
  }
+
+.size-box {
+	height: 40px;
+	width: 40px;
+	border: solid black 1px;
+}
+
+.small-image {
+	height: 100px;
+	width: 100px;
+}
+
