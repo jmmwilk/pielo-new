@@ -75,13 +75,8 @@ function printValue () {
 			name: valueName,
 			size: valueSize,
 			fabric: valueFabric,
-			brand: valueBrand,
-
+			brand: valueBrand
 		}
-		// console.log (valueName, valueSize, valueFabric, valueBrand, valueImage);
-		// addImage().then(function(url){
-		// 	addDiaper (valueName, valueSize, valueFabric, valueBrand, url)
-		// });
 		addImage(newDiaper)
 	}
 }
@@ -89,15 +84,6 @@ function printValue () {
 function addImage (newDiaper) {
 	const selectedFile = document.getElementById('input-image').files[0];
 	let imageRef = storage.ref().child('nowapielucha.jpg');
-	// let url;
-	// imageRef.put(selectedFile).then(function(snapshot) {
- //  		console.log('Uploaded a blob or file!');
- //  		url = imageRef.getDownloadURL().then(function(downloadURL) {
-	// 	console.log('File available at', downloadURL);
-	// 	return downloadURL
- //  		});
-	// });
- //  	return url
 
   	imageRef.put(selectedFile)
 	.then(function(snapshot, newDiaper) {
@@ -110,22 +96,6 @@ function addImage (newDiaper) {
 	.then(function(downloadURL){
 		addDiaper (downloadURL, newDiaper)
 	})
-	// .then(function(newResult) {
-	//   return doThirdThing(newResult);
-	// })
-	// .then(function(finalResult) {
-	//   console.log('Got the final result: ' + finalResult);
-	// })
-
-	// let img = document.getElementById('image');
-	// console.log(img)
- //  	img.src = 'https://firebasestorage.googleapis.com/v0/b/wielo-pielo.appspot.com/o/puppi2.jpg?alt=media&token=fe6b5281-721b-48f4-b840-a0a4f756f6c0';
-
-	// let gsReference = storageRef.getReferenceFromUrl("gs://wielo-pielo.appspot.com/puppi2.jpg");
-
-
-	// // Upload the file and metadata
-	// var uploadTask = storageRef.child('puppi2.jpg').put(gsReference, metadata);
 }
 
 function createPreviewTemplate (key) {
@@ -153,19 +123,7 @@ function addDiaper (downloadURL, newDiaper) {
 	  image: imageUrl
 	});
 	let key = newDbRef.getKey();
-//	printData (key);
 	createPreviewTemplate (key)
-}
-
-function printData (key) {
-	let result = document.getElementById('form-result');
-	 let dbRef = firebase.database().ref('diapers/' + key + '/brand/');
-	 let imgRef = firebase.database().ref('diapers/' + key + '/image/')
-	 dbRef.on('value', snap => result.innerText = snap.val());
-	 //to pod spodem działa a to na górze nie działa
-	 // let dbRef = firebase.database().ref('zupy/1/');
-	 // dbRef.on('value', snap => console.log(snap.val()));
-	 // dbRef.on('value', snap => result.innerText = snap.val());
 }
 
 function deleteDiapers () {
