@@ -71,25 +71,51 @@ function printValue () {
 		let valueSize = document.getElementById('input-size').value;
 		let valueFabric = document.getElementById('input-fabric').value;
 		let valueBrand = document.getElementById('input-brand').value;
-		let valueImage = document.getElementById('input-image').value;
-		console.log (valueName, valueSize, valueFabric, valueBrand, valueImage);
-		addImage().then(function(url){
-			addDiaper (valueName, valueSize, valueFabric, valueBrand, url)
-		});
+		let newDiaper = {
+			name: valueName,
+			size: valueSize,
+			fabric: valueFabric,
+			brand: valueBrand,
+
+		}
+		// console.log (valueName, valueSize, valueFabric, valueBrand, valueImage);
+		// addImage().then(function(url){
+		// 	addDiaper (valueName, valueSize, valueFabric, valueBrand, url)
+		// });
+		addImage(newDiaper)
 	}
 }
 
-function addImage () {
+function addImage (newDiaper) {
 	const selectedFile = document.getElementById('input-image').files[0];
-	let imageRef = storage.ref().child('drimi.jpg');
-	imageRef.put(selectedFile).then(function(snapshot) {
-  		console.log('Uploaded a blob or file!');
-	});
-	let url = imageRef.getDownloadURL().then(function(downloadURL) {
-		console.log('File available at', downloadURL);
+	let imageRef = storage.ref().child('nowapielucha.jpg');
+	// let url;
+	// imageRef.put(selectedFile).then(function(snapshot) {
+ //  		console.log('Uploaded a blob or file!');
+ //  		url = imageRef.getDownloadURL().then(function(downloadURL) {
+	// 	console.log('File available at', downloadURL);
+	// 	return downloadURL
+ //  		});
+	// });
+ //  	return url
+
+  	imageRef.put(selectedFile)
+	.then(function(snapshot, newDiaper) {
+		console.log('Uploaded a blob or file!');
+	  	return imageRef.getDownloadURL();
+	})
+	.then(function(downloadURL) {
 		return downloadURL
-  	});
-  	return url
+	})
+	.then(function(downloadURL){
+		addDiaper (downloadURL, newDiaper)
+	})
+	// .then(function(newResult) {
+	//   return doThirdThing(newResult);
+	// })
+	// .then(function(finalResult) {
+	//   console.log('Got the final result: ' + finalResult);
+	// })
 
 	// let img = document.getElementById('image');
 	// console.log(img)
@@ -114,16 +140,16 @@ function createPreviewTemplate (key) {
 	
 }
 
-function addDiaper (valueName, valueSize, valueFabric, valueBrand, url) {
-	console.log('uuurl', url)
-	let imageUrl = url;
+function addDiaper (downloadURL, newDiaper) {
+	console.log('downloadURL', downloadURL)
+	let imageUrl = downloadURL;
 	let dbRef = firebase.database().ref('diapers/');
 	var newDbRef = dbRef.push();
 	newDbRef.set({
-	  name: valueName,
-	  size: valueSize,
-	  fabric: valueFabric,
-	  brand: valueBrand,
+	  name: newDiaper.name,
+	  size: newDiaper.size,
+	  fabric: newDiaper.fabric,
+	  brand: newDiaper.brand,
 	  image: imageUrl
 	});
 	let key = newDbRef.getKey();
