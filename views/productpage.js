@@ -10,9 +10,10 @@ export function createProductScreen (card) {
 			fillProductMainInfo ();
 			createProductPageTempate (i, diapers);
 			createReviews (indexNumber);
-			console.log(diapers[i].indexnum)
+			console.log(diapers[i].indexnum);
+			enableSizeButton();
 		}
-	}
+	};
 }
 
 function createProductPageTempate (i, diapers) {
@@ -56,3 +57,21 @@ function createReviewsTemplate (selectedReviews) {
 	let compiledReviewTemplate = Handlebars.compile(reviewTemplate);
 	$('#reviews-container').html(compiledReviewTemplate(selectedReviews))
 }
+
+function enableSizeButton () {
+	let nbText = 'New Born 3-5 kg';
+	let mosText = 'Mini One Size 4-9 kg';
+	let osText = 'One Size 6-12 kg';
+
+	let nb = document.getElementById('nb');
+	let mos = document.getElementById('mos');
+	let os = document.getElementById('os');
+
+	let text = document.getElementById('size-description');
+
+	nb.onclick = function(){text.innerText = nbText};
+	mos.onclick = function(){text.innerText = mosText};
+	os.onclick = function(){text.innerText = osText};
+}
+
+

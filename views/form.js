@@ -4,6 +4,11 @@ let database = firebase.database();
 let storage = firebase.storage();
 
 export function createForm () {
+//	addSizesToDatabase ()
+	let data = getSizes ();
+	console.log('data', data)
+	let newSizes = {'sizes': data};
+	console.log('newSizes', newSizes)
 	let formScreen = document.createElement('div');
 	formScreen.id = 'form-screen';
 	formScreen.className = 'row';
@@ -14,6 +19,7 @@ export function createForm () {
 	createFormInputTemplate ();
 //	deleteDiapers ();
 	printValue ();
+	createSizesTemplate (newSizes)
 }
 
 let formInputs = {
@@ -131,6 +137,44 @@ function deleteDiapers () {
 	dbRef.set(null);
 }
 
+function addSizesToDatabase () {
+	let sizes = menu.sideBarMenu.categories[3].submenu1;
+	console.log(sizes);
+	let dbRef = firebase.database().ref('sizes/');
+	for (let i=0; i<sizes.length; i++) {
+		let value1 = sizes[i].name;
+		let value2 = sizes[i].id;
+		var newDbRef = dbRef.push();
+		newDbRef.set({
+		  name: value1,
+		  id: value2
+		});
+	}
+//	createSizesTemplate (keys)
+}
 
+function getSizes () {
+	let dbRef = firebase.database().ref('sizes/');
+	let keys = [];
+	let data = [];
+	dbRef.once('value',   function(snapshot) {
+	    snapshot.forEach(function(childSnapshot) {
+	      var childKey = childSnapshot.key;
+	      var childData = childSnapshot.val();
+//	      console.log(childKey);
+//	      console.log(childData);
+	      keys.push(childKey);
+	      data.push(childData);
+	    });
+  	});
+  	console.log('data', data)
+  	return data
+}
+
+function createSizesTemplate (newSizes) {
+	let sizesBox = $('#sizes-template').html();
+	let compiledsizesBox = Handlebars.compile(sizesBox);
+	$('#new-sizes').html(compiledsizesBox(newSizes));
+}
 
 

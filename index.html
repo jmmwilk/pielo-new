@@ -77,19 +77,33 @@
             <img class="product-image mx-auto img-fluid img-thumbnail" src="/images/{{photo}}.jpg"/>
           </div>
           <div class="title-box col-md-6">
-            <h5> {{printinfo this}} </h5>
-            <p>od {{brand}}</p>
-            <div class="stars-box d-flex flex-row text-muted">
-              <p>5,0</p>
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <p>2 recenzje</p>
-            </div>
+            <h5 class="text-primary"> {{printinfo this}} </h5>
             <div>
-              <p>Kolory / Wzory</p>
+              <p>
+                od <a href="#application" class="text-warning">{{brand}}</a>
+              </p>
+            </div>
+            <div class="stars-box d-flex flex-row text-muted">
+              <p class="mr-1">5,0</p>
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <p class="ml-1">2 recenzje</p>
+            </div>
+            <div class="text-muted">
+              <p class="mb-0">Rozmiary</p>
+              <div class="d-flex flex-row mt-1">
+                <button id="nb" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">NB</button>
+                <button id="mos" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">MOS</button>
+                <button id="os" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">OS</button>
+                <div id="size-description" class="ml-2">
+                </div>
+              </div>
+            </div>
+            <div class="text-muted my-2">
+              <p class="mb-0">Kolory / Wzory</p>
               <div class="flex-row justify-content-start">
                 <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
                 <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
@@ -99,26 +113,57 @@
                 <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
               </div>
             </div>
-            <div>
-              <p>Rozmiary</p>
-              <div class="flex-column">
-                <div class="size-box">
-                  <p class="mb-0 text-justify">MOS</p>
-                </div>
-                <div class="size-box">
-                  <p>OS</p>
-                </div>
-              </div>
-            </div>
             <button type="button" class="btn btn-primary">Napisz opinię</button>
           </div>
         </div>
         <div class="info-box card my-2">
           <div id="info-title" class="card-body">
-            <h5 class="card-title">Informacje od producenta</h5>
+            <h5>
+              <a class="card-title stretched-link text-secondary" aria-expanded="false" aria-controls="collapseExample" data-toggle="collapse" href="#collapseExample">Informacje od producenta</a>
+            </h5>
+          </div>
+          <div class="collapse" id="collapseExample">
+            <div id="parameters-box row">
+              <div class="col-6">
+                <li id="pars-fabric" class="row">
+                  <div class="col-6">
+                    Materiał dominujący:
+                  </div>
+                  <div class="col-6">
+                    Bawełna
+                  </div>
+                </li>
+                <li id="pars-composition" class="row">
+                  <div class="col-6">
+                    Skład surowcowy:
+                  </div>
+                  <div class="col-6">
+                    Bawełna: 90%, bambus: 30%
+                  </div>
+                </li>
+              </div>
+              <div class="col-6">
+                <li id="pars-fabric" class="row">
+                  <div class="col-6">
+                    Materiał dominujący:
+                  </div>
+                  <div class="col-6">
+                    Bawełna
+                  </div>
+                </li>
+                <li id="pars-composition" class="row">
+                  <div class="col-6">
+                    Skład surowcowy:
+                  </div>
+                  <div class="col-6">
+                    Bawełna: 90%, bambus: 30%
+                  </div>
+                </li>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="reviews-box card my-2">
+        <div class="reviews-box card my-2 text-secondary">
           <div id="reviews-title" class="card-body">
             <h5 class="card-title">Opinie</h5>
           </div>
@@ -248,11 +293,24 @@
         </div>
         <button id="form-add" type="submit" class="btn btn-primary">Dodaj</button>
       </div>
+      <div id="new-sizes">
+      </div>
     </form>
     <div id="form-result">
       <div id="image-box">
         <img id="image" src="https://firebasestorage.googleapis.com/v0/b/wielo-pielo.appspot.com/o/puppi2.jpg?alt=media&token=fe6b5281-721b-48f4-b840-a0a4f756f6c0"/>
       </div>
+    </div>
+  </script>
+  <script id="sizes-template" type="text/x-handlebars-template">
+    <div class="form-group">
+      <label for="sizes">sizes</label>
+      <select id="sizes" class="form-control">
+        <option selected>Wybierz...</option>
+        {{#each sizes}}
+          <option>{{name}}</option>
+        {{/each}}
+      </select>
     </div>
   </script>
   <script id="item-preview" type="text/x-handlebars-template">
