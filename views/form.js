@@ -13,10 +13,9 @@ export function createForm () {
 	//   console.log(value);
 	//   // expected output: "Success!"
 	// });
-	const promise1 = new Promise ((resolve, reject) => {
-		resolve (getSizes())
-	});
-	promise1
+	const promise2 = getSizes()
+	console.log('promise2', promise2)
+	promise2
 	.then(function(data) {
 	  	console.log('dataaa', data);
 	  	let newSizes = {'sizes': data};
@@ -162,16 +161,18 @@ function addSizesToDatabase () {
 }
 
 function getSizes () {
-	let dbRef = firebase.database().ref('sizes/');
-	let data = [];
-	dbRef.once('value',   function(snapshot) {
-	    snapshot.forEach(function(childSnapshot) {
-	      var childData = childSnapshot.val();
-	      data.push(childData);
-	    });
-  	});
-	return data
-  	console.log('data123', data)
+	const promise1 = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('sizes/');
+		let data = [];
+		dbRef.once('value',   function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      data.push(childData);
+		    });
+		    resolve (data)
+	  	});
+	});
+	return promise1
 }
 
 function createSizesTemplate (newSizes) {
