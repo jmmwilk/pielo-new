@@ -166,13 +166,11 @@ function getSizes () {
 	let data = [];
 	dbRef.once('value',   function(snapshot) {
 	    snapshot.forEach(function(childSnapshot) {
-	      var childKey = childSnapshot.key;
 	      var childData = childSnapshot.val();
 	      data.push(childData);
 	    });
-	    console.log('data128763', data)
-	    return data
   	});
+	return data
   	console.log('data123', data)
 }
 
