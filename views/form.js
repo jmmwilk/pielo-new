@@ -163,18 +163,17 @@ function addSizesToDatabase () {
 
 function getSizes () {
 	let dbRef = firebase.database().ref('sizes/');
-	let keys = [];
 	let data = [];
 	dbRef.once('value',   function(snapshot) {
 	    snapshot.forEach(function(childSnapshot) {
 	      var childKey = childSnapshot.key;
 	      var childData = childSnapshot.val();
-	      keys.push(childKey);
 	      data.push(childData);
 	    });
+	    console.log('data128763', data)
+	    return data
   	});
-  	console.log('data', data)
-  	return data
+  	console.log('data123', data)
 }
 
 function createSizesTemplate (newSizes) {
