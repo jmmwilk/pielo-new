@@ -10,7 +10,6 @@ export function createProductScreen (card) {
 			fillProductMainInfo ();
 			createProductPageTempate (i, diapers);
 			createReviews (indexNumber);
-			console.log(diapers[i].indexnum);
 			enableSizeButton();
 		}
 	};
@@ -52,7 +51,6 @@ function selectReviews (indexNumber) {
 }
 
 function createReviewsTemplate (selectedReviews) {
-	console.log(selectedReviews.reviews)
 	let reviewTemplate = $('#review-template').html();
 	let compiledReviewTemplate = Handlebars.compile(reviewTemplate);
 	$('#reviews-container').html(compiledReviewTemplate(selectedReviews))

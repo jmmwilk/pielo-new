@@ -5,10 +5,24 @@ let storage = firebase.storage();
 
 export function createForm () {
 //	addSizesToDatabase ()
-	let data = getSizes ();
-	console.log('data', data)
-	let newSizes = {'sizes': data};
-	console.log('newSizes', newSizes)
+	// const promise1 = new Promise((resolve, reject) => {
+	//   resolve('Success!');
+	// });
+
+	// promise1.then((value) => {
+	//   console.log(value);
+	//   // expected output: "Success!"
+	// });
+	const promise1 = new Promise ((resolve, reject) => {
+		resolve (getSizes())
+	});
+	promise1
+	.then(function(data) {
+	  	console.log('dataaa', data);
+	  	let newSizes = {'sizes': data};
+	  	console.log('newSizes', newSizes)
+	  	createSizesTemplate (newSizes);
+	})
 	let formScreen = document.createElement('div');
 	formScreen.id = 'form-screen';
 	formScreen.className = 'row';
@@ -19,7 +33,6 @@ export function createForm () {
 	createFormInputTemplate ();
 //	deleteDiapers ();
 	printValue ();
-	createSizesTemplate (newSizes)
 }
 
 let formInputs = {
@@ -93,7 +106,6 @@ function addImage (newDiaper) {
 
   	imageRef.put(selectedFile)
 	.then(function(snapshot, newDiaper) {
-		console.log('Uploaded a blob or file!');
 	  	return imageRef.getDownloadURL();
 	})
 	.then(function(downloadURL) {
@@ -106,8 +118,6 @@ function addImage (newDiaper) {
 
 function createPreviewTemplate (key) {
 	let dbRef = firebase.database().ref('diapers/' + key);
-	console.log('key', key)
-	console.log('dbRef', dbRef)
 	let previewTemplate = $('#item-preview').html();
 	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
 	dbRef.on('value', function(snap){
@@ -117,7 +127,6 @@ function createPreviewTemplate (key) {
 }
 
 function addDiaper (downloadURL, newDiaper) {
-	console.log('downloadURL', downloadURL)
 	let imageUrl = downloadURL;
 	let dbRef = firebase.database().ref('diapers/');
 	var newDbRef = dbRef.push();
@@ -139,7 +148,6 @@ function deleteDiapers () {
 
 function addSizesToDatabase () {
 	let sizes = menu.sideBarMenu.categories[3].submenu1;
-	console.log(sizes);
 	let dbRef = firebase.database().ref('sizes/');
 	for (let i=0; i<sizes.length; i++) {
 		let value1 = sizes[i].name;
@@ -161,8 +169,6 @@ function getSizes () {
 	    snapshot.forEach(function(childSnapshot) {
 	      var childKey = childSnapshot.key;
 	      var childData = childSnapshot.val();
-//	      console.log(childKey);
-//	      console.log(childData);
 	      keys.push(childKey);
 	      data.push(childData);
 	    });
