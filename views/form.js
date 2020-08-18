@@ -24,6 +24,10 @@ export function createForm () {
 		createNewFormTemplate (formCategories);
 		createNewInputs (formCategories);
 	})
+	.then(function(){
+		$('select').selectpicker();
+		console.log('papaja')
+	})
 
 	let formScreen = document.createElement('div');
 	formScreen.id = 'form-screen';
@@ -303,6 +307,7 @@ function createNewInputs (formCategories) {
 		promise2
 		.then(function(data) {
 		  	createNewInputTemplate (category, data);
+		  	console.log('data',data)
 		})
 	}
 }
