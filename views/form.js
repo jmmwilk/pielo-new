@@ -21,12 +21,8 @@ export function createForm () {
 	promise4
 	.then(function(data) {
 		let formCategories = {'categories': data};
-		createNewFormTemplate (formCategories);
+//		createNewFormTemplate ();
 		createNewInputs (formCategories);
-	})
-	.then(function(){
-		$('select').selectpicker();
-		console.log('papaja')
 	})
 
 	let formScreen = document.createElement('div');
@@ -161,48 +157,6 @@ function deleteDiapers () {
 	dbRef.set(null);
 }
 
-function addFabricsToDatabase () {
-	let fabrics = menu.sideBarMenu.categories[1].submenu1;
-	let dbRef = firebase.database().ref('fabrics/');
-	for (let i=0; i<fabrics.length; i++) {
-		let value1 = fabrics[i].name;
-		let value2 = fabrics[i].id;
-		var newDbRef = dbRef.push();
-		newDbRef.set({
-		  name: value1,
-		  id: value2
-		});
-	}
-}
-
-function addSizesToDatabase () {
-	let sizes = menu.sideBarMenu.categories[3].submenu1;
-	let dbRef = firebase.database().ref('sizes/');
-	for (let i=0; i<sizes.length; i++) {
-		let value1 = sizes[i].name;
-		let value2 = sizes[i].id;
-		var newDbRef = dbRef.push();
-		newDbRef.set({
-		  name: value1,
-		  id: value2
-		});
-	}
-}
-
-function addBrandsToDatabase () {
-	let brands = menu.sideBarMenu.categories[4].submenu1;
-	let dbRef = firebase.database().ref('brands/');
-	for (let i=0; i<brands.length; i++) {
-		let value1 = brands[i].name;
-		let value2 = brands[i].id;
-		var newDbRef = dbRef.push();
-		newDbRef.set({
-		  name: value1,
-		  id: value2
-		});
-	}
-}
-
 function addCategoriesToDatabase () {
 	let categories = [
 		{'name': 'Rozmiar', 'id': 'size'},
@@ -263,11 +217,11 @@ function createFabricsTemplate (newFabrics) {
 	$('#new-fabrics').html(compiledFabricsBox(newFabrics))
 }
 
-function createNewFormTemplate (formCategories) {
-	let formTemplate = $('#form-input-template').html();
-	let compiledFormTemplate = Handlebars.compile(formTemplate);
-	$('#new-form').html(compiledFormTemplate(formCategories));
-}
+// function createNewFormTemplate () {
+// 	let formTemplate = $('#form-input-template').html();
+// 	let compiledFormTemplate = Handlebars.compile(formTemplate);
+// 	$('#new-form').html(compiledFormTemplate());
+// }
 
 function getCategories () {
 	const promise1 = new Promise ((resolve, reject) => {
@@ -286,7 +240,7 @@ function getCategories () {
 
 function getCategoryData (category) {
 	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref(category + 's/');
+		let dbRef = firebase.database().ref(category + '/');
 		let data = [];
 		dbRef.once('value',   function(snapshot) {
 		    snapshot.forEach(function(childSnapshot) {
@@ -301,22 +255,33 @@ function getCategoryData (category) {
 
 function createNewInputs (formCategories) {
 	let categories = formCategories["categories"];
+	console.log ('categories', categories)
 	for (let i=0; i<categories.length; i++) {
-		let category = categories[i].id;
+		let category = categories[i].reference;
 		const promise2 = getCategoryData (category);
 		promise2
 		.then(function(data) {
-		  	createNewInputTemplate (category, data);
-		  	console.log('data',data)
+		  	createNewInputTemplate (category, data, categories, i);
+		  	createSelectPicker (categories, i)
 		})
 	}
 }
 
-function createNewInputTemplate (category, data) {
+function createSelectPicker (categories, i) {
+	let category = categories[i];
+	// if (category['multiple-choice'] == true) {
+	// 	$('#' + category.id + '-input').selectpicker();
+	// }
+	$('#' + category.id + '-input').selectpicker();
+}
+
+function createNewInputTemplate (category, data, categories, i) {
 	let inputCategory = {category: data};
+	console.log('inputCategory', inputCategory);
+	console.log ('categoryyy', category)
 	let inputTemplate = $('#new-input-template').html();
 	let compiledInputTemplate = Handlebars.compile(inputTemplate);
-	$('#' + category + '-input').html(compiledInputTemplate(inputCategory));
+	$('#' + categories[i].id + '-input').html(compiledInputTemplate(inputCategory));
 }
 
 

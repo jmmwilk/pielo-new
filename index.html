@@ -275,7 +275,7 @@
     {{/each}}
   </script>
   <script id="form-template" type="text/x-handlebars-template">
-    <form id="form">
+<!--     <form id="form">
       <h1>Zaczynamy!</h1>
       <div class="form">
         <div class="form-group">
@@ -295,28 +295,74 @@
         </div>
         <button id="form-add" type="submit" class="btn btn-primary">Dodaj</button>
       </div>
-      <div id="new-sizes">
+      <div id="new-sizes">f
       </div>
       <div id="new-fabrics">
       </div>
-    </form>
+    </form> -->
     <div id="new-form" class="form">
+      <div id="form-page-1">
+        <div id="pierdziele">
+          duuuupaaa
+        </div>
+        <div class="form-group">
+          <label for="input-image">Zdjęcie</label>
+          <input type="file" class="form-control-file" id="input-image">
+        </div>
+<!--         <div class="form-group d-flex flex-column">
+          <label for="diaper-categories-input">Rodzaj</label>
+          <select id="diaper-categories-input" class="selectpicker" multiple data-max-options="1">
+        </div> -->
+        <div id="pierdzieleeeee">
+          duuuupaaa
+        </div>
+        <div id="dupa" class="form-group d-flex flex-column">
+          <label for="sizes-input">Rozmiary</label>
+          <select id="sizes-input" class="selectpicker" multiple>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label>Kraj Produkcji</label>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="country-poland" value="option1">
+          <label class="form-check-label" for="country-poland">Polska</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="country-other" value="option2">
+          <label class="form-check-label" for="country-other">Inny</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="attests">Atesty i Certyfikaty</label>
+        <textarea class="form-control" id="attests" rows="3"></textarea>
+      </div>
     </div>
   </script>
-  <script id="form-input-template" type="text/x-handlebars-template">
-    {{#each categories}}
-    <div class="form-group">
-      <label for="{{id}}-input">{{name}}</label>
-      <select id="{{id}}-input" class="selectpicker" multiple>
-      </select>
+<!--   <script id="form-input-template" type="text/x-handlebars-template">
+    <div id="form-page-1">
+      <div id="pierdziele">
+        duuuupaaa
+      </div>
+      <div class="form-group">
+        <label for="input-image">Zdjęcie</label>
+        <input type="file" class="form-control-file" id="input-image">
+      </div>
+      <div class="form-group d-flex flex-column">
+        <label for="diaper-categories-input">Rodzaj</label>
+        <select id="diaper-categories-input" class="selectpicker" multiple data-max-options="1">
+      </div>
+      <div id="dupa" class="form-group d-flex flex-column">
+        <label for="sizes-input">Rozmiary</label>
+        <select id="sizes-input" class="selectpicker" multiple>
+      </div>
     </div>
-    {{/each}}
-  </script>
+  </script> -->
   <script id="new-input-template" type="text/x-handlebars-template">
-      <option selected>Wybierz...</option>
-        {{#each category}}
-          <option>{{name}}</option>
-        {{/each}}
+    {{#each category}}
+      <option>{{name}}</option>
+    {{/each}}
   </script>
   <script id="sizes-template" type="text/x-handlebars-template">
     <div class="form-group">
@@ -333,7 +379,6 @@
     <div class="form-group">
       <label for="fabrics">fabrics</label>
       <select id="fabrics" class="selectpicker" multiple>
-        <option selected>Wybierz...</option>
         {{#each fabrics}}
           <option>{{name}}</option>
         {{/each}}
