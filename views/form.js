@@ -10,20 +10,20 @@ export function createForm () {
 	  	let newSizes = {'sizes': data};
 	  	createSizesTemplate (newSizes);
 	})
-	const promise3 = getFabrics();
-	promise3
-	.then(function(data) {
-		let newFabrics = {'fabrics': data};
-		createFabricsTemplate (newFabrics);
-	})
+	// const promise3 = getFabrics();
+	// promise3
+	// .then(function(data) {
+	// 	let newFabrics = {'fabrics': data};
+	// 	createFabricsTemplate (newFabrics);
+	// })
 
-	const promise4 = getCategories ();
-	promise4
-	.then(function(data) {
-		let formCategories = {'categories': data};
-//		createNewFormTemplate ();
-		createNewInputs (formCategories);
-	})
+// 	const promise4 = getCategories ();
+// 	promise4
+// 	.then(function(data) {
+// 		let formCategories = {'categories': data};
+// //		createNewFormTemplate ();
+// 		createNewInputs (formCategories);
+// 	})
 
 	let formScreen = document.createElement('div');
 	formScreen.id = 'form-screen';
@@ -31,10 +31,94 @@ export function createForm () {
 	let application = document.getElementById('application');
 	application.appendChild(formScreen);
 	createFormTemplate ();
-	createInputsContainersTemplate ();
-	createFormInputTemplate ();
-//	deleteDiapers ();
-	printValue ();
+	// createInputsContainersTemplate ();
+	// createFormInputTemplate ();
+	// printValue ();
+
+	// const promise = getCategory ('diaper-categories');
+	// promise.
+	// then(function(data) {
+	// 	createPage1 (data);
+	// 	let button = document.getElementById('page1-button');
+	// 	button.onclick = function () {
+	// 		createPage2 ();
+	// 	}
+	// })
+	const promise = getCategories ();
+	promise.
+	then(function(data) {
+		createPage1 (data);
+		let d = document.getElementById('diaper-categories-input');
+		d.setAttribute('disabled', '');
+		let checkbox = document.getElementById('outside-layer-input');
+
+		let outsideFabrics = document.getElementById('outside-fabrics-input');
+//		outsideFabrics.removeAttribute('disabled');
+
+		checkbox.onclick = function() {
+			showFabrics ()
+		}
+		let button = document.getElementById('page1-button');
+		button.onclick = function () {
+			createPage2 ();
+		}
+	})
+}
+
+function showFabrics () {
+	console.log('stonoga')
+	let checkbox = document.getElementById('outside-layer-input');
+	let outsideFabrics = document.getElementById('outside-fabrics-input');
+	if (checkbox.checked == true){
+		console.log('zuczek')
+	    outsideFabrics.removeAttribute('disabled');
+	} else {
+	    outsideFabrics.setAttribute('disabled', 'disabled');
+	    console.log('nie ma zuczka')
+	}
+}
+
+function createPage1 (data) {
+	createPage1Template ();
+	createNewInput (data, 'diaper-categories', 'diaper-categories-input');
+	createNewInput (data, 'sizes', 'sizes-input');
+	createNewInput (data, 'composition', 'outside-fabrics-input');
+}
+
+function createPage2 () {
+	let diaper = {}
+	saveInputs (diaper);
+	const promise = getCategories ();
+	promise.
+	then(function(data) {
+		createPage2Template (diaper);
+		createNewInput (data, 'composition', 'outside-fabrics-input');
+		createNewInput (data, 'composition', 'inner-fabrics-input');
+	})
+}
+
+function createPage1Template () {
+	let page1Template = $('#form-page1-template').html();
+	let compiledPage1Template = Handlebars.compile(page1Template);
+	$('#new-form').html(compiledPage1Template());
+}
+
+function createPage2Template (diaper) {
+	let page2Template = $('#form-page2-template').html();
+	let compiledPage2Template = Handlebars.compile(page2Template);
+	$('#new-form').html(compiledPage2Template(diaper));
+}
+
+function saveInputs (diaper) {
+	let diaperCategory = document.getElementById('diaper-categories-input');
+	let sizes = $('#sizes-input');
+	let outside = document.getElementById('outside-layer-input');
+	let inner = document.getElementById('inner-layer-input');
+	diaper.diaperCategory = diaperCategory.value;
+	diaper.sizes = sizes.val();
+	diaper.outside = outside.checked;
+	diaper.inner = inner.checked;
+	return diaper
 }
 
 let formInputs = {
@@ -214,13 +298,28 @@ function createSizesTemplate (newSizes) {
 function createFabricsTemplate (newFabrics) {
 	let fabricsBox = $('#fabrics-template').html();
 	let compiledFabricsBox = Handlebars.compile(fabricsBox);
-	$('#new-fabrics').html(compiledFabricsBox(newFabrics))
+	$('#outside-fabrics-input').html(compiledFabricsBox(newFabrics))
 }
 
 // function createNewFormTemplate () {
 // 	let formTemplate = $('#form-input-template').html();
 // 	let compiledFormTemplate = Handlebars.compile(formTemplate);
 // 	$('#new-form').html(compiledFormTemplate());
+// }
+
+// function getCategories () {
+// 	const promise1 = new Promise ((resolve, reject) => {
+// 		let dbRef = firebase.database().ref('categories/');
+// 		let data = [];
+// 		dbRef.once('value',   function(snapshot) {
+// 		    snapshot.forEach(function(childSnapshot) {
+// 		      var childData = childSnapshot.val();
+// 		      data.push(childData);
+// 		    });
+// 		    resolve (data)
+// 	  	});
+// 	});
+// 	return promise1
 // }
 
 function getCategories () {
@@ -238,6 +337,23 @@ function getCategories () {
 	return promise1
 }
 
+function getCategory (category) {
+	const promise = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('categories/');
+		let data;
+		dbRef.once('value',   function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      if (childData.id == category) {
+		      	data = childData;
+		      };
+		    });
+		    resolve (data)
+	  	});
+	});
+	return promise
+}
+
 function getCategoryData (category) {
 	const promise1 = new Promise ((resolve, reject) => {
 		let dbRef = firebase.database().ref(category + '/');
@@ -253,35 +369,73 @@ function getCategoryData (category) {
 	return promise1
 }
 
-function createNewInputs (formCategories) {
-	let categories = formCategories["categories"];
-	console.log ('categories', categories)
-	for (let i=0; i<categories.length; i++) {
-		let category = categories[i].reference;
-		const promise2 = getCategoryData (category);
-		promise2
-		.then(function(data) {
-		  	createNewInputTemplate (category, data, categories, i);
-		  	createSelectPicker (categories, i)
-		})
+// function getCategoryData (category) {
+// 	const promise1 = new Promise ((resolve, reject) => {
+// 		let dbRef = firebase.database().ref(category + '/');
+// 		let data = [];
+// 		dbRef.once('value',   function(snapshot) {
+// 		    snapshot.forEach(function(childSnapshot) {
+// 		      var childData = childSnapshot.val();
+// 		      data.push(childData);
+// 		    });
+// 		    resolve (data)
+// 	  	});
+// 	});
+// 	return promise1
+// }
+
+function createNewInput (data, category, inputId) {
+	let categoryData;
+	for (let i=0; i<data.length; i++) {
+		if (data[i].id == category) {
+			categoryData = data[i];
+		}
 	}
+	let categoryReference = categoryData.reference;
+	const promise = getCategoryData (categoryReference);
+	promise
+	.then(function(data) {
+	  	createNewInputTemplate (categoryReference, data, inputId);
+	  	$('#' + inputId).selectpicker();
+	})
 }
 
-function createSelectPicker (categories, i) {
-	let category = categories[i];
-	// if (category['multiple-choice'] == true) {
-	// 	$('#' + category.id + '-input').selectpicker();
-	// }
-	$('#' + category.id + '-input').selectpicker();
-}
-
-function createNewInputTemplate (category, data, categories, i) {
+function createNewInputTemplate (category, data, inputId) {
 	let inputCategory = {category: data};
-	console.log('inputCategory', inputCategory);
-	console.log ('categoryyy', category)
 	let inputTemplate = $('#new-input-template').html();
 	let compiledInputTemplate = Handlebars.compile(inputTemplate);
-	$('#' + categories[i].id + '-input').html(compiledInputTemplate(inputCategory));
+	$('#' + inputId).html(compiledInputTemplate(inputCategory));
 }
+
+// function createNewInputTemplate (category, data, categories, i) {
+// 	let inputCategory = {category: data};
+// 	let inputTemplate = $('#new-input-template').html();
+// 	let compiledInputTemplate = Handlebars.compile(inputTemplate);
+// 	$('#' + categories[i].id + '-input').html(compiledInputTemplate(inputCategory));
+// }
+
+// function createNewInputs (formCategories) {
+// 	let categories = formCategories["categories"];
+// 	console.log ('categories', categories)
+// 	for (let i=0; i<categories.length; i++) {
+// 		let category = categories[i].reference;
+// 		const promise2 = getCategoryData (category);
+// 		promise2
+// 		.then(function(data) {
+// 		  	createNewInputTemplate (category, data, categories, i);
+// 		  	createSelectPicker (categories, i)
+// 		})
+// 	}
+// }
+
+// function createSelectPicker (categories, i) {
+// 	let category = categories[i];
+// 	// if (category['multiple-choice'] == true) {
+// 	// 	$('#' + category.id + '-input').selectpicker();
+// 	// }
+// 	$('#' + category.id + '-input').selectpicker();
+// }
+
+
 
 

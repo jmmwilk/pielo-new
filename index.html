@@ -295,32 +295,12 @@
         </div>
         <button id="form-add" type="submit" class="btn btn-primary">Dodaj</button>
       </div>
-      <div id="new-sizes">f
+      <div id="new-sizes">
       </div>
       <div id="new-fabrics">
       </div>
     </form> -->
     <div id="new-form" class="form">
-      <div id="form-page-1">
-        <div id="pierdziele">
-          duuuupaaa
-        </div>
-        <div class="form-group">
-          <label for="input-image">Zdjęcie</label>
-          <input type="file" class="form-control-file" id="input-image">
-        </div>
-<!--         <div class="form-group d-flex flex-column">
-          <label for="diaper-categories-input">Rodzaj</label>
-          <select id="diaper-categories-input" class="selectpicker" multiple data-max-options="1">
-        </div> -->
-        <div id="pierdzieleeeee">
-          duuuupaaa
-        </div>
-        <div id="dupa" class="form-group d-flex flex-column">
-          <label for="sizes-input">Rozmiary</label>
-          <select id="sizes-input" class="selectpicker" multiple>
-        </div>
-      </div>
     </div>
     <div>
       <div>
@@ -338,6 +318,61 @@
         <label for="attests">Atesty i Certyfikaty</label>
         <textarea class="form-control" id="attests" rows="3"></textarea>
       </div>
+    </div>
+  </script>
+  <script id="form-page1-template" type="text/x-handlebars-template">
+    <div id="form-page-1">
+      <div class="form-group">
+        <label for="input-image">Zdjęcie</label>
+        <input type="file" class="form-control-file" id="input-image">
+      </div>
+      <div class="form-group d-flex flex-column">
+        <label for="diaper-categories-input">Rodzaj</label>
+        <select id="diaper-categories-input" class="selectpicker" multiple data-max-options="1">
+        </select>
+      </div> 
+      <div class="form-group d-flex flex-column">
+        <label for="sizes-input">Rozmiary</label>
+        <select id="sizes-input" class="selectpicker" multiple disabled>
+        </select>
+      </div>
+      <div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="outside-layer-input" value="">
+          <label class="form-check-label" for="outside-layer-input">warstwa izolująca (zewnętrzna)</label>
+        </div>
+        <div id="outside-fabrics" class="form-group d-flex flex-column">
+          <label for="outside-fabrics-input">Materiały</label>
+          <select id="outside-fabrics-input" class="selectpicker" multiple disabled>
+          </select>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="inner-layer-input" value="">
+          <label class="form-check-label" for="inner-layer-input">warstwa chłonna (wewnętrzna)</label>
+        </div>
+      </div>
+      <button id="page1-button" type="submit" class="btn btn-primary mb-2">Dalej</button>
+    </div>
+  </script>
+  <script id="form-page2-template" type="text/x-handlebars-template">
+    <div id="form-page-2">
+      <div>
+        {{#if outside}}
+          <div class="form-group d-flex flex-column">
+            <label for="outside-fabrics-input">Warstwa izolująca (zewnętrzna)</label>
+            <select id="outside-fabrics-input" class="selectpicker" multiple>
+            </select>
+          </div>
+        {{/if}}
+        {{#if inner}}
+          <div class="form-group d-flex flex-column">
+            <label for="inner-fabrics-input">Warstwa chłonna (wewnętrzna)</label>
+            <select id="inner-fabrics-input" class="selectpicker" multiple>
+            </select>
+          </div>
+        {{/if}}
+      </div>
+      <button id="page2-button" type="submit" class="btn btn-primary mb-2">Dalej</button>
     </div>
   </script>
 <!--   <script id="form-input-template" type="text/x-handlebars-template">
