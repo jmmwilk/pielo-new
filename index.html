@@ -329,7 +329,7 @@
       </div>
       <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
         <label for="diaper-categories-input">Rodzaj</label>
-        <select id="diaper-categories-input" class="selectpicker" multiple data-max-options="1">
+        <select id="diaper-categories-input" class="selectpicker col-12" multiple data-max-options="1">
         </select>
       </div> 
       <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
@@ -350,13 +350,16 @@
             </small>
           </div>
           <div id="outside-fabrics" class="form-group d-flex flex-column">
-            <label for="outside-fabrics-input">Materiały</label>
-            <select id="outside-fabrics-input" class="selectpicker" multiple disabled>
+            <label for="outside-fabrics-input" class="ml-4 mt-3">Materiały</label>
+            <select id="outside-fabrics-input" class="selectpicker col-12" multiple disabled>
             </select>
+            <small id="helpBlockOutsideFabrics" class="form-text text-muted">
+              Zaznacz wszystkie materiały, które wchodzą w skład warstwy izolującej.
+            </small>
           </div>
         </div>
         <div>
-          <div class="form-check form-check-inline">
+          <div class="form-check">
             <input class="form-check-input" type="checkbox" id="inner-layer-input" value="">
             <label class="form-check-label" for="inner-layer-input">Warstwa chłonna (wewnętrzna)</label>
             <small id="helpBlockInner" class="form-text text-muted">
@@ -364,9 +367,12 @@
             </small>
           </div>
           <div id="inner-fabrics" class="form-group d-flex flex-column">
-            <label for="inner-fabrics-input">Materiały</label>
-            <select id="inner-fabrics-input" class="selectpicker" multiple>
+            <label for="inner-fabrics-input" class="ml-4 mt-3">Materiały</label>
+            <select id="inner-fabrics-input" class="selectpicker col-12" multiple>
             </select>
+            <small id="helpBlockInnerFabrics" class="form-text text-muted">
+              Zaznacz wszystkie materiały, które wchodzą w skład warstwy chłonnej.
+            </small>
           </div>
         </div>
       </div>
