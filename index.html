@@ -300,9 +300,9 @@
       <div id="new-fabrics">
       </div>
     </form> -->
-    <div id="new-form" class="form">
+    <div id="new-form" class="form col-6">
     </div>
-    <div>
+    <!-- <div>
       <div>
         <label>Kraj Produkcji</label>
         <div class="form-check form-check-inline">
@@ -318,40 +318,59 @@
         <label for="attests">Atesty i Certyfikaty</label>
         <textarea class="form-control" id="attests" rows="3"></textarea>
       </div>
-    </div>
+    </div> -->
   </script>
   <script id="form-page1-template" type="text/x-handlebars-template">
-    <div id="form-page-1">
-      <div class="form-group">
+    <div id="form-page-1" class="row align-items-center m-3 bg-light d-flex flex-column">
+      <h5 class="m-3">Formularz </h5>
+      <div class="form-group col-10 bg-white m-3 p-2">
         <label for="input-image">Zdjęcie</label>
         <input type="file" class="form-control-file" id="input-image">
       </div>
-      <div class="form-group d-flex flex-column">
+      <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
         <label for="diaper-categories-input">Rodzaj</label>
         <select id="diaper-categories-input" class="selectpicker" multiple data-max-options="1">
         </select>
       </div> 
-      <div class="form-group d-flex flex-column">
+      <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
         <label for="sizes-input">Rozmiary</label>
-        <select id="sizes-input" class="selectpicker" multiple disabled>
+        <select id="sizes-input" class="selectpicker col-12" multiple>
         </select>
+        <small id="helpBlockSizes" class="form-text text-muted">
+          Wybierz wszystkie rozmiary, w jakich jest produkowana pieluszka.
+        </small>
       </div>
-      <div>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="outside-layer-input" value="">
-          <label class="form-check-label" for="outside-layer-input">warstwa izolująca (zewnętrzna)</label>
+      <div class="bg-white m-3 p-2 col-10">
+        <div class="mb-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="outside-layer-input" value="">
+            <label class="form-check-label" for="outside-layer-input">Warstwa izolująca (zewnętrzna)</label>
+            <small id="helpBlockOutside" class="form-text text-muted">
+              Zaznacz, jeżeli pieluszka posiada warstwę izolującą.
+            </small>
+          </div>
+          <div id="outside-fabrics" class="form-group d-flex flex-column">
+            <label for="outside-fabrics-input">Materiały</label>
+            <select id="outside-fabrics-input" class="selectpicker" multiple disabled>
+            </select>
+          </div>
         </div>
-        <div id="outside-fabrics" class="form-group d-flex flex-column">
-          <label for="outside-fabrics-input">Materiały</label>
-          <select id="outside-fabrics-input" class="selectpicker" multiple disabled>
-          </select>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="checkbox" id="inner-layer-input" value="">
-          <label class="form-check-label" for="inner-layer-input">warstwa chłonna (wewnętrzna)</label>
+        <div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="inner-layer-input" value="">
+            <label class="form-check-label" for="inner-layer-input">Warstwa chłonna (wewnętrzna)</label>
+            <small id="helpBlockInner" class="form-text text-muted">
+              Zaznacz, jeżeli pieluszka posiada warstwę chłonną.
+            </small>
+          </div>
+          <div id="inner-fabrics" class="form-group d-flex flex-column">
+            <label for="inner-fabrics-input">Materiały</label>
+            <select id="inner-fabrics-input" class="selectpicker" multiple>
+            </select>
+          </div>
         </div>
       </div>
-      <button id="page1-button" type="submit" class="btn btn-primary mb-2">Dalej</button>
+      <button id="page1-button" type="submit" class="btn btn-primary m-3 align-self-end">Dalej</button>
     </div>
   </script>
   <script id="form-page2-template" type="text/x-handlebars-template">

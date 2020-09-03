@@ -66,7 +66,6 @@ export function createForm () {
 }
 
 function showFabrics () {
-	console.log('stonoga')
 	let checkbox = document.getElementById('outside-layer-input');
 	let outsideFabrics = document.getElementById('outside-fabrics-input');
 	if (checkbox.checked == true){
@@ -83,6 +82,7 @@ function createPage1 (data) {
 	createNewInput (data, 'diaper-categories', 'diaper-categories-input');
 	createNewInput (data, 'sizes', 'sizes-input');
 	createNewInput (data, 'composition', 'outside-fabrics-input');
+	createNewInput (data, 'composition', 'inner-fabrics-input');
 }
 
 function createPage2 () {
@@ -112,12 +112,13 @@ function createPage2Template (diaper) {
 function saveInputs (diaper) {
 	let diaperCategory = document.getElementById('diaper-categories-input');
 	let sizes = $('#sizes-input');
-	let outside = document.getElementById('outside-layer-input');
-	let inner = document.getElementById('inner-layer-input');
+	let outside = document.getElementById('outside-fabrics-input');
+	let inner = document.getElementById('inner-fabrics-input');
 	diaper.diaperCategory = diaperCategory.value;
 	diaper.sizes = sizes.val();
-	diaper.outside = outside.checked;
-	diaper.inner = inner.checked;
+	diaper.outside = outside.value;
+	diaper.inner = inner.value;
+	console.log (diaper)
 	return diaper
 }
 
