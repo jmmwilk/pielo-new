@@ -262,7 +262,7 @@
       </div>
     </div>
   </script>
-  <script id="input-template" type="text/x-handlebars-template">
+<!--   <script id="input-template" type="text/x-handlebars-template">
     <option selected>Wybierz...</option>
     {{#each submenu1}}
       {{#if this.issubmenu}}
@@ -273,132 +273,191 @@
         <option>{{name}}</option>
       {{/if}}
     {{/each}}
-  </script>
-  <script id="form-template" type="text/x-handlebars-template">
-<!--     <form id="form">
-      <h1>Zaczynamy!</h1>
-      <div class="form">
-        <div class="form-group">
-          <label for="input-image">Zdjęcie</label>
-          <input type="file" class="form-control-file" id="input-image">
-        </div>
-        <div id="container">
-          <div id="inputs-container">
-            {{#each inputs}}
-              <div class="form-group">
-                <label for="{{id}}">{{text}}</label>
-                <select id="{{id}}" class="form-control">
-                </select>
-              </div>
-            {{/each}}
-          </div>
-        </div>
-        <button id="form-add" type="submit" class="btn btn-primary">Dodaj</button>
-      </div>
-      <div id="new-sizes">
-      </div>
-      <div id="new-fabrics">
-      </div>
-    </form> -->
-    <div id="new-form" class="form col-6">
+  </script> -->
+  <script id="upload-photo-template" type="text/x-handlebars-template">
+    <div class"upload-photo-box">
+      <input type="file" class="form-control-file required" id="new-input-image" style="display:none">
+      <button id="btnfile"> 
+        <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/addphoto.png" id="upload-img"/>
+      </button>
     </div>
-    <!-- <div>
-      <div>
-        <label>Kraj Produkcji</label>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="country-poland" value="option1">
-          <label class="form-check-label" for="country-poland">Polska</label>
-        </div>
-        <div class="form-check form-check-inline">
-          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="country-other" value="option2">
-          <label class="form-check-label" for="country-other">Inny</label>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="attests">Atesty i Certyfikaty</label>
-        <textarea class="form-control" id="attests" rows="3"></textarea>
-      </div>
-    </div> -->
   </script>
   <script id="form-page1-template" type="text/x-handlebars-template">
-    <div id="form-page-1" class="row align-items-center m-3 bg-light d-flex flex-column">
-      <h5 class="m-3">Formularz </h5>
-      <div class="form-group col-10 bg-white m-3 p-2">
-        <label for="input-image">Zdjęcie</label>
-        <input type="file" class="form-control-file" id="input-image">
-      </div>
-      <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
-        <label for="diaper-categories-input">Rodzaj</label>
-        <select id="diaper-categories-input" class="selectpicker col-12" multiple data-max-options="1">
-        </select>
-      </div> 
-      <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
-        <label for="sizes-input">Rozmiary</label>
-        <select id="sizes-input" class="selectpicker col-12" multiple>
-        </select>
-        <small id="helpBlockSizes" class="form-text text-muted">
-          Wybierz wszystkie rozmiary, w jakich jest produkowana pieluszka.
-        </small>
-      </div>
-      <div class="bg-white m-3 p-2 col-10">
-        <div class="mb-4">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="outside-layer-input" value="">
+    <form id="new-form" class="form col-6">
+      <div id="form-page-1" class="row align-items-center m-3 bg-light d-flex flex-column">
+        <h5 class="m-3">Formularz </h5>
+        <div class="form-group col-10 bg-white m-3 p-2">
+          <label for="input-image">Zdjęcie profilowe pieluszki</label>
+          <input type="file" class="form-control-file required" id="input-image">
+          <div class="invalid-feedback">
+            Wybierz.
+          </div>
+        </div>
+        <div class="form-group col-10 bg-white m-3 p-2">
+          <p>Pozostałe zdjęcia</p>
+          <div id="upload-photos-container" class="d-flex flex-row">
+          </div>
+        </div>
+        <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
+          <label for="diaper-categories-input">Rodzaj</label>
+          <select id="diaper-categories-input" class=" selectpicker col-12" multiple data-max-options="1" required>
+          </select>
+          <div class="invalid-feedback">
+            Wybierz.
+          </div>
+        </div> 
+        <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
+          <label for="sizes-input">Rozmiary</label>
+          <select id="sizes-input" class="selectpicker col-12" multiple required>
+          </select>
+          <div class="invalid-feedback">
+            Wybierz.
+          </div>
+          <small id="helpBlockSizes" class="form-text text-muted">
+            Wybierz wszystkie rozmiary, w jakich jest produkowana pieluszka.
+          </small>
+        </div>
+        <div class="bg-white m-3 p-2 col-10">
+          <div id="outside-checkbox" class="form-check">
+            <input data-toggle="collapse" data-target='#outside-fabrics' class="form-check-input" type="checkbox" id="outside-layer-input" value="">
             <label class="form-check-label" for="outside-layer-input">Warstwa izolująca (zewnętrzna)</label>
             <small id="helpBlockOutside" class="form-text text-muted">
               Zaznacz, jeżeli pieluszka posiada warstwę izolującą.
             </small>
           </div>
-          <div id="outside-fabrics" class="form-group d-flex flex-column">
-            <label for="outside-fabrics-input" class="ml-4 mt-3">Materiały</label>
-            <select id="outside-fabrics-input" class="selectpicker col-12" multiple disabled>
-            </select>
-            <small id="helpBlockOutsideFabrics" class="form-text text-muted">
-              Zaznacz wszystkie materiały, które wchodzą w skład warstwy izolującej.
-            </small>
+          <div id="outside-fabrics" class="collapse">
+            <div class="form-group d-flex flex-column">
+              <label for="outside-fabrics-input" class="ml-4 mt-3">Materiały</label>
+              <select id="outside-fabrics-input" class="selectpicker col-12" multiple>
+              </select>
+              <small id="helpBlockOutsideFabrics" class="form-text text-muted">
+                Zaznacz wszystkie materiały, które wchodzą w skład warstwy izolującej.
+              </small>
+            </div>
           </div>
         </div>
-        <div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="inner-layer-input" value="">
+        <div class="bg-white m-3 p-2 col-10">
+          <div id="inner-checkbox" class="form-check">
+            <input data-toggle="collapse" data-target='#inner-fabrics' class="form-check-input" type="checkbox" id="inner-layer-input" value="">
             <label class="form-check-label" for="inner-layer-input">Warstwa chłonna (wewnętrzna)</label>
             <small id="helpBlockInner" class="form-text text-muted">
               Zaznacz, jeżeli pieluszka posiada warstwę chłonną.
             </small>
           </div>
-          <div id="inner-fabrics" class="form-group d-flex flex-column">
-            <label for="inner-fabrics-input" class="ml-4 mt-3">Materiały</label>
-            <select id="inner-fabrics-input" class="selectpicker col-12" multiple>
-            </select>
-            <small id="helpBlockInnerFabrics" class="form-text text-muted">
-              Zaznacz wszystkie materiały, które wchodzą w skład warstwy chłonnej.
-            </small>
+          <div id="inner-fabrics" class="collapse">
+            <div class="form-group d-flex flex-column">
+              <label for="inner-fabrics-input" class="ml-4 mt-3">Materiały</label>
+              <select id="inner-fabrics-input" class="selectpicker col-12" multiple>
+              </select>
+              <small id="helpBlockInnerFabrics" class="form-text text-muted">
+                Zaznacz wszystkie materiały, które wchodzą w skład warstwy chłonnej.
+              </small>
+            </div>
           </div>
         </div>
+        <button id="page1-button" type="submit" class="btn btn-primary m-3 align-self-end">Dalej</button>
       </div>
-      <button id="page1-button" type="submit" class="btn btn-primary m-3 align-self-end">Dalej</button>
-    </div>
+    </form>
   </script>
   <script id="form-page2-template" type="text/x-handlebars-template">
-    <div id="form-page-2">
-      <div>
+    <form id="new-form" class="form col-6">
+      <div id="form-page-2" class="row align-items-center m-3 bg-light d-flex flex-column">
+        <h5 class="m-3">Formularz </h5>
         {{#if outside}}
-          <div class="form-group d-flex flex-column">
-            <label for="outside-fabrics-input">Warstwa izolująca (zewnętrzna)</label>
-            <select id="outside-fabrics-input" class="selectpicker" multiple>
-            </select>
+          <div class="col-10 bg-white m-3 p-2">
+            <p>Warstwa izolująca (zewnętrzna)</p>
+            {{#each outsideFabrics}}
+            <div class="form-group row">
+              <label class="col-form-label col-5" for="outside-percentage-input">{{this}}</label>
+              <div class="col-3">
+                <input class="page2input page2-outside-fab-input form-control" type="number" id="outside-percentage-input" required>
+              </div>
+              <label class="col-form-label col-4 pl-0" for="outside-percentage-input">%</label>
+            </div>
+            {{/each}}
           </div>
         {{/if}}
         {{#if inner}}
-          <div class="form-group d-flex flex-column">
-            <label for="inner-fabrics-input">Warstwa chłonna (wewnętrzna)</label>
-            <select id="inner-fabrics-input" class="selectpicker" multiple>
-            </select>
+          <div class="col-10 bg-white m-3 p-2">
+            <p>Warstwa chłonna (wewnętrzna)</p>
+            {{#each innerFabrics}}
+            <div class="form-group row">
+              <label class="col-form-label col-5" for="outside-percentage-input">{{this}}</label>
+              <div class="col-3">
+                <input class="page2input page2-inner-fab-input form-control" type="number" id="inner-percentage-input" required>
+              </div>
+              <label class="col-form-label col-4 pl-0" for="inner-percentage-input">%</label>
+            </div>
+            {{/each}}
           </div>
         {{/if}}
+        <div class="col-10 bg-white m-3 p-2">
+          <p>Przedziały wagowe rozmiarów</p>
+          {{#each sizes}}
+            <div class="form-group row">
+              <label class="col-form-label col-4" for="sizes-range-min-input">{{this}}</label>
+              <div class="col-3">
+                <input class="page2input page2-sizes-min form-control px-1" type="number" id="sizes-range-min-input" required>
+              </div>
+              <label class="col-form-label col-1" for="sizes-range-max-input">do</label>
+              <div class="col-3">
+                <input class="page2input page2-sizes-max form-control" type="number" id="sizes-range-max-input" required>
+              </div>
+              <label class="col-form-label col-1 pl-0" for="sizes-range-max-input">kg</label>
+            </div>
+          {{/each}}
+          <div class="form-group">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="checkbox-sizes">
+              <label class="form-check-label" for="checkbox-sizes">
+                Zapamiętaj rozmiary
+              </label>
+              <small class="form-text text-muted">
+                Zaznacz, jeżeli chcesz zapisać przedziały wagowe rozmiarów i użyć ich dla innych pieluszek.
+              </small>
+            </div>
+          </div>
+        </div>
+        <div class="col-10 bg-white m-3 p-2">
+          <div class="form-group">
+            <div class="row">
+              <div class="col-4">
+                <legend class="col-form-label">Kraj Produkcji</legend>
+              </div>
+              <div class="form-check form-check-inline col-4 m-0">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="country-poland" required>
+                <label class="form-check-label" for="country-poland">Polska</label>
+              </div>
+              <div class="form-check form-check-inline col-4 m-0">
+                <input class="form-check-input" data-toggle="collapse" data-target="#country-other-text" type="radio" name="inlineRadioOptions" id="country-other" required>
+                <label class="form-check-label" for="country-other">Inny</label>
+              </div>
+            </div>
+          </div>
+          <div id="country-other-text" class="collapse form-group">
+            <input type="text" id="country-other-text-input" placeholder="Wpisz kraj">
+          </div>
+        </div>
+        <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
+          <label for="closures-input">Zapięcia</label>
+          <select id="closures-input" class="selectpicker col-12" multiple required>
+          </select>
+        </div>
+        <div class="col-10 bg-white m-3 p-2">
+          <div class="form-group">
+            <label for="attests">Atesty i Certyfikaty</label>
+            <textarea class="form-control" id="attests" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="col-10 bg-white m-3 p-2">
+          <div class="form-group">
+            <label for="description">Opis producenta</label>
+            <textarea class="form-control" id="description" rows="6"></textarea>
+          </div>
+        </div>
+        <button id="page2-button" type="submit" class="btn btn-primary m-3 align-self-end">Dalej</button>
       </div>
-      <button id="page2-button" type="submit" class="btn btn-primary mb-2">Dalej</button>
-    </div>
+    </form>
   </script>
 <!--   <script id="form-input-template" type="text/x-handlebars-template">
     <div id="form-page-1">
@@ -424,7 +483,7 @@
       <option>{{name}}</option>
     {{/each}}
   </script>
-  <script id="sizes-template" type="text/x-handlebars-template">
+<!--   <script id="sizes-template" type="text/x-handlebars-template">
     <div class="form-group">
       <label for="sizes">sizes</label>
       <select id="sizes" class="form-control">
@@ -444,7 +503,7 @@
         {{/each}}
       </select>
     </div>
-  </script>
+  </script> -->
   <script id="item-preview" type="text/x-handlebars-template">
     <div class="main-info-box row my-2">
       <div class="image-box col-md-6">

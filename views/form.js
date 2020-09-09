@@ -4,12 +4,12 @@ let database = firebase.database();
 let storage = firebase.storage();
 
 export function createForm () {
-	const promise2 = getSizes();
-	promise2
-	.then(function(data) {
-	  	let newSizes = {'sizes': data};
-	  	createSizesTemplate (newSizes);
-	})
+	// const promise2 = getSizes();
+	// promise2
+	// .then(function(data) {
+	//   	let newSizes = {'sizes': data};
+	//   	createSizesTemplate (newSizes);
+	// })
 	// const promise3 = getFabrics();
 	// promise3
 	// .then(function(data) {
@@ -25,12 +25,12 @@ export function createForm () {
 // 		createNewInputs (formCategories);
 // 	})
 
-	let formScreen = document.createElement('div');
-	formScreen.id = 'form-screen';
-	formScreen.className = 'row';
-	let application = document.getElementById('application');
-	application.appendChild(formScreen);
-	createFormTemplate ();
+	// let formScreen = document.createElement('div');
+	// formScreen.id = 'form-screen';
+	// formScreen.className = 'row';
+	// let application = document.getElementById('application');
+	// application.appendChild(formScreen);
+//	createFormTemplate ();
 	// createInputsContainersTemplate ();
 	// createFormInputTemplate ();
 	// printValue ();
@@ -48,34 +48,58 @@ export function createForm () {
 	promise.
 	then(function(data) {
 		createPage1 (data);
-		let d = document.getElementById('diaper-categories-input');
-		d.setAttribute('disabled', '');
-		let checkbox = document.getElementById('outside-layer-input');
-
-		let outsideFabrics = document.getElementById('outside-fabrics-input');
-//		outsideFabrics.removeAttribute('disabled');
-
-		checkbox.onclick = function() {
-			showFabrics ()
-		}
+		createUploadPhotoTemplate ();
+		enablePhotoButton ();
+		let firebaseData = data;
 		let button = document.getElementById('page1-button');
 		button.onclick = function () {
-			createPage2 ();
+			let validation = layersValidation ();
+			console.log('validation', validation)
+			if (validation == true) {
+				let diaper = createPage2 (firebaseData);
+				let buttonPage2 = document.getElementById('page2-button');
+				buttonPage2.onclick = function () {
+					saveInputsPage2 (diaper);
+				}
+			}
 		}
 	})
 }
 
-function showFabrics () {
-	let checkbox = document.getElementById('outside-layer-input');
-	let outsideFabrics = document.getElementById('outside-fabrics-input');
-	if (checkbox.checked == true){
-		console.log('zuczek')
-	    outsideFabrics.removeAttribute('disabled');
-	} else {
-	    outsideFabrics.setAttribute('disabled', 'disabled');
-	    console.log('nie ma zuczka')
+function enablePhotoButton () {
+	$('#btnfile').click(function () {
+	    $('#new-input-image').click();
+	});
+	$('#new-input-image').change(function(event) {
+		showNewPreview (event);
+		createUploadPhotoTemplate ();
+	});
+}
+
+function showNewPreview (event) {
+	if (event.target.files.length > 0) {
+		let src = URL.createObjectURL(event.target.files[0]);
+		let preview = document.getElementById('upload-img');
+		preview.src = src;
+		let button = document.getElementById('btnfile');
+		button.setAttribute('disabled', 'disabled');
 	}
 }
+
+function addUploadPhotoButton () {
+}
+
+function createUploadPhotoTemplate () {
+	let uploadPhotoTemplate = $('#upload-photo-template').html();
+	let compiledUploadPhotoTemplate = Handlebars.compile(uploadPhotoTemplate);
+	$('#upload-photos-container').append(compiledUploadPhotoTemplate());
+}
+
+// function createOutsideTemplate () {
+// 	let outsideTemplate = $('#outside-template').html();
+// 	let compiledOutsideTemplate = Handlebars.compile(outsideTemplate);
+// 	$('#outside-container').append(compiledOutsideTemplate);
+// }
 
 function createPage1 (data) {
 	createPage1Template ();
@@ -85,41 +109,164 @@ function createPage1 (data) {
 	createNewInput (data, 'composition', 'inner-fabrics-input');
 }
 
-function createPage2 () {
+function layersValidation () {
+	let validation;
+	let outsideCheckbox = document.getElementById('outside-layer-input');
+	let innerCheckbox = document.getElementById('inner-layer-input');
+	let outsideFabrics = document.getElementById('outside-fabrics-input');
+	let innerFabrics = document.getElementById('inner-fabrics-input');
+	if (outsideCheckbox.checked == false && innerCheckbox.checked == false) {
+		validation = false;
+	} else {
+		validation = true;
+	}
+	if (outsideCheckbox.checked == true) {
+		outsideFabrics.setAttribute('required', 'required');
+	} else {
+		outsideFabrics.removeAttribute('required');
+	}
+	if (innerCheckbox.checked == true) {
+		innerFabrics.setAttribute('required', 'required');
+	} else {
+		innerFabrics.removeAttribute('required');
+	}
+
+// 	if (checkbox.checked == true){
+// //		createOutsideTemplate ();
+// 	    // outsideFabrics.removeAttribute('disabled');
+// 	    // $('#outside-fabrics-input').selectpicker('refresh');
+// 	} else {
+// 	     // outsideFabrics.setAttribute('disabled', 'disabled');
+// 	     // $('#outside-fabrics-input').selectpicker('refresh');
+// 	}
+
+	return validation
+}
+
+function createPage2 (firebaseData) {
 	let diaper = {}
 	saveInputs (diaper);
-	const promise = getCategories ();
-	promise.
-	then(function(data) {
-		createPage2Template (diaper);
-		createNewInput (data, 'composition', 'outside-fabrics-input');
-		createNewInput (data, 'composition', 'inner-fabrics-input');
-	})
+	console.log ('diaper', diaper)
+	createPage2Template (diaper);
+	$('.page2input').selectpicker();
+	createNewInput (firebaseData, 'closures', 'closures-input');
+	return diaper
 }
 
 function createPage1Template () {
 	let page1Template = $('#form-page1-template').html();
 	let compiledPage1Template = Handlebars.compile(page1Template);
-	$('#new-form').html(compiledPage1Template());
+	$('#page').html(compiledPage1Template());
 }
 
 function createPage2Template (diaper) {
 	let page2Template = $('#form-page2-template').html();
 	let compiledPage2Template = Handlebars.compile(page2Template);
-	$('#new-form').html(compiledPage2Template(diaper));
+	$('#page').html(compiledPage2Template(diaper));
 }
 
 function saveInputs (diaper) {
-	let diaperCategory = document.getElementById('diaper-categories-input');
+	let diaperCategory = $('#diaper-categories-input');
 	let sizes = $('#sizes-input');
-	let outside = document.getElementById('outside-fabrics-input');
-	let inner = document.getElementById('inner-fabrics-input');
-	diaper.diaperCategory = diaperCategory.value;
+	let outsideFabrics = $('#outside-fabrics-input');
+	let innerFabrics = $('#inner-fabrics-input');
+	let outside = document.getElementById('outside-layer-input');
+	let inner = document.getElementById('inner-layer-input');
+	diaper.diaperCategory = diaperCategory.val();
 	diaper.sizes = sizes.val();
-	diaper.outside = outside.value;
-	diaper.inner = inner.value;
-	console.log (diaper)
+
+	if (outside.checked == true && outsideFabrics.val().length > 1){
+		diaper.outside = true;
+		diaper.outsideFabrics = outsideFabrics.val();
+	};
+	if (outside.checked == true && outsideFabrics.val().length <= 1){
+		diaper.outside = false;
+		diaper.outsideFabrics = outsideFabrics.val();
+	};
+	if (outside.checked == false){
+		diaper.outside = false;
+	};
+
+	if (inner.checked == true && innerFabrics.val().length > 1){
+		diaper.inner = true;
+		diaper.innerFabrics = innerFabrics.val();
+	};
+	if (inner.checked == true && innerFabrics.val().length <= 1){
+		diaper.inner = false;
+		diaper.innerFabrics = innerFabrics.val();
+	};
+	if (outside.inner == false){
+		diaper.inner = false;
+	};
 	return diaper
+}
+
+function saveInputsPage2 (diaper) {
+	saveFabInputPage2 (diaper, 'outsideFabrics', 'outsideFabPers', 'page2-outside-fab-input');
+	saveFabInputPage2 (diaper, 'innerFabrics', 'innerFabPers', 'page2-inner-fab-input');
+	saveSizesInputsPage2 (diaper, 'page2-sizes-min', 'page2-sizes-max');
+	saveCountry (diaper);
+	saveAttestsInputPage2 (diaper);
+	console.log('diaper', diaper)
+}
+
+function saveAttestsInputPage2 (diaper) {
+	let attestsInput = document.getElementById('attests');
+	diaper.attests = attestsInput.value;
+	console.log ('diaper', diaper)
+}
+
+function saveCountry (diaper) {
+	let country;
+	let polandInput = document.getElementById('country-poland');
+	let otherInput = document.getElementById('country-other-text-input');
+	if (polandInput.checked == true) {
+		country = 'Polska';
+	} else {
+		country = otherInput.value
+	};
+	diaper.country = country;
+}
+
+function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id) {
+	let fabrics = diaper[diaperFabId];
+	let inputs = document.getElementsByClassName(id);
+	let numbers = [];
+	Array.from(inputs).forEach(function(input){
+	    let number = input.value;
+	    numbers.push(number)
+	  })
+	diaper[diaperNumId] = [];
+	for (let i=0; i<fabrics.length; i++) {
+		let fabricPer = {};
+		fabricPer.name = fabrics[i];
+		fabricPer.percentage = numbers[i];
+		diaper[diaperNumId].push(fabricPer);
+	}
+}
+
+function saveSizesInputsPage2 (diaper, minId, maxId) {
+	let sizes = diaper.sizes;
+	let minInputs = document.getElementsByClassName(minId);
+	let numbersMin = [];
+	Array.from(minInputs).forEach(function(minInput){
+	    let number = minInput.value;
+	    numbersMin.push(number)
+	})
+	let numbersMax = [];
+	let maxInputs = document.getElementsByClassName(maxId);
+	Array.from(maxInputs).forEach(function(maxInput){
+	    let number = maxInput.value;
+	    numbersMax.push(number)
+	})
+	diaper.sizesRange = [];
+	for (let i=0; i<sizes.length; i++) {
+		let sizesNum = {};
+		sizesNum.name = sizes[i];
+		sizesNum.min = numbersMin[i];
+		sizesNum.max = numbersMax[i];
+		diaper.sizesRange.push(sizesNum);
+	}
 }
 
 let formInputs = {
@@ -147,69 +294,78 @@ let formInputs = {
 	]
 }
 
-function createFormInputTemplate () {
-	for (let i=0; i<4; i++) {
-		let src = formInputs.inputs[i].source;
-		let id = formInputs.inputs[i].id;
-		let formInputTemplate = $('#input-template').html();
-		let compiledFormInputTemplate = Handlebars.compile(formInputTemplate);
-		$('#' + id).html(compiledFormInputTemplate(src));
-	}
-}
+// function createFormInputTemplate () {
+// 	for (let i=0; i<4; i++) {
+// 		let src = formInputs.inputs[i].source;
+// 		let id = formInputs.inputs[i].id;
+// 		let formInputTemplate = $('#input-template').html();
+// 		let compiledFormInputTemplate = Handlebars.compile(formInputTemplate);
+// 		$('#' + id).html(compiledFormInputTemplate(src));
+// 	}
+// }
 
-function createInputsContainersTemplate () {
-	let inputsContainersTemplate = $('#inputs-container').html();
-	let compiledInputsContainersTemplate = Handlebars.compile(inputsContainersTemplate);
-	$('#inputs-container').html(compiledInputsContainersTemplate(formInputs))
-}
+// function createInputsContainersTemplate () {
+// 	let inputsContainersTemplate = $('#inputs-container').html();
+// 	let compiledInputsContainersTemplate = Handlebars.compile(inputsContainersTemplate);
+// 	$('#inputs-container').html(compiledInputsContainersTemplate(formInputs))
+// }
 
-function createFormTemplate () {
-	let form = $('#form-template').html();
-	let compiledForm = Handlebars.compile(form);
-	$('#form-screen').html(compiledForm(formInputs));
-}
+// function createFormTemplate () {
+// 	let form = $('#form-template').html();
+// 	let compiledForm = Handlebars.compile(form);
+// 	$('#page').html(compiledForm(formInputs));
+// }
 
-function printValue () {
-	let button = document.getElementById('form-add');
+// function printValue () {
+// 	let button = document.getElementById('form-add');
 
-	button.onclick = function () {
-		let valueName = document.getElementById('input-name').value;
-		let valueSize = document.getElementById('input-size').value;
-		let valueFabric = document.getElementById('input-fabric').value;
-		let valueBrand = document.getElementById('input-brand').value;
-		let newDiaper = {
-			name: valueName,
-			size: valueSize,
-			fabric: valueFabric,
-			brand: valueBrand
-		}
-		addImage(newDiaper)
-	}
-}
+// 	button.onclick = function () {
+// 		let valueName = document.getElementById('input-name').value;
+// 		let valueSize = document.getElementById('input-size').value;
+// 		let valueFabric = document.getElementById('input-fabric').value;
+// 		let valueBrand = document.getElementById('input-brand').value;
+// 		let newDiaper = {
+// 			name: valueName,
+// 			size: valueSize,
+// 			fabric: valueFabric,
+// 			brand: valueBrand
+// 		}
+// 		addImage(newDiaper)
+// 	}
+// }
 
-function addImage (newDiaper) {
-	const selectedFile = document.getElementById('input-image').files[0];
-	let imageRef = storage.ref().child('nowapielucha.jpg');
+// function addImage (newDiaper) {
+// 	const selectedFile = document.getElementById('input-image').files[0];
+// 	let imageRef = storage.ref().child('nowapielucha.jpg');
 
-  	imageRef.put(selectedFile)
-	.then(function(snapshot, newDiaper) {
-	  	return imageRef.getDownloadURL();
-	})
-	.then(function(downloadURL) {
-		return downloadURL
-	})
-	.then(function(downloadURL){
-		addDiaper (downloadURL, newDiaper)
-	})
-}
+//   	imageRef.put(selectedFile)
+// 	.then(function(snapshot, newDiaper) {
+// 	  	return imageRef.getDownloadURL();
+// 	})
+// 	.then(function(downloadURL) {
+// 		return downloadURL
+// 	})
+// 	.then(function(downloadURL){
+// 		addDiaper (downloadURL, newDiaper)
+// 	})
+// }
 
 function addCategoryToDatabase (newName, newId) {
 	let dbRef = firebase.database().ref('categories/');
 	let newDbRef = dbRef.push();
-		newDbRef.set({
-		  name: newName,
-		  id: newId
-		});
+	newDbRef.set({
+	  name: newName,
+	  id: newId
+	});
+}
+
+function addClosuresToDatabase (newName, newId) {
+	let dbRef = firebase.database().ref('closures/');
+	let newDbRef = dbRef.push();
+	newDbRef.set({
+	  name: newName,
+	  id: newId
+	});
 }
 
 function createPreviewTemplate (key) {
@@ -260,47 +416,47 @@ function addCategoriesToDatabase () {
 	}
 }
 
-function getSizes () {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref('sizes/');
-		let data = [];
-		dbRef.once('value',   function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      data.push(childData);
-		    });
-		    resolve (data)
-	  	});
-	});
-	return promise1
-}
+// function getSizes () {
+// 	const promise1 = new Promise ((resolve, reject) => {
+// 		let dbRef = firebase.database().ref('sizes/');
+// 		let data = [];
+// 		dbRef.once('value',   function(snapshot) {
+// 		    snapshot.forEach(function(childSnapshot) {
+// 		      var childData = childSnapshot.val();
+// 		      data.push(childData);
+// 		    });
+// 		    resolve (data)
+// 	  	});
+// 	});
+// 	return promise1
+// }
 
-function getFabrics () {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref('fabrics/');
-		let data = [];
-		dbRef.once('value', function(snapshot) {
-			snapshot.forEach(function(childSnapshot) {
-			var childData = childSnapshot.val();
-		      data.push(childData);
-			});
-			resolve (data)
-		})
-	});
-	return promise1
-}
+// function getFabrics () {
+// 	const promise1 = new Promise ((resolve, reject) => {
+// 		let dbRef = firebase.database().ref('fabrics/');
+// 		let data = [];
+// 		dbRef.once('value', function(snapshot) {
+// 			snapshot.forEach(function(childSnapshot) {
+// 			var childData = childSnapshot.val();
+// 		      data.push(childData);
+// 			});
+// 			resolve (data)
+// 		})
+// 	});
+// 	return promise1
+// }
 
-function createSizesTemplate (newSizes) {
-	let sizesBox = $('#sizes-template').html();
-	let compiledsizesBox = Handlebars.compile(sizesBox);
-	$('#new-sizes').html(compiledsizesBox(newSizes));
-}
+// function createSizesTemplate (newSizes) {
+// 	let sizesBox = $('#sizes-template').html();
+// 	let compiledsizesBox = Handlebars.compile(sizesBox);
+// 	$('#new-sizes').html(compiledsizesBox(newSizes));
+// }
 
-function createFabricsTemplate (newFabrics) {
-	let fabricsBox = $('#fabrics-template').html();
-	let compiledFabricsBox = Handlebars.compile(fabricsBox);
-	$('#outside-fabrics-input').html(compiledFabricsBox(newFabrics))
-}
+// function createFabricsTemplate (newFabrics) {
+// 	let fabricsBox = $('#fabrics-template').html();
+// 	let compiledFabricsBox = Handlebars.compile(fabricsBox);
+// 	$('#outside-fabrics-input').html(compiledFabricsBox(newFabrics))
+// }
 
 // function createNewFormTemplate () {
 // 	let formTemplate = $('#form-input-template').html();
@@ -338,22 +494,22 @@ function getCategories () {
 	return promise1
 }
 
-function getCategory (category) {
-	const promise = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref('categories/');
-		let data;
-		dbRef.once('value',   function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      if (childData.id == category) {
-		      	data = childData;
-		      };
-		    });
-		    resolve (data)
-	  	});
-	});
-	return promise
-}
+// function getCategory (category) {
+// 	const promise = new Promise ((resolve, reject) => {
+// 		let dbRef = firebase.database().ref('categories/');
+// 		let data;
+// 		dbRef.once('value',   function(snapshot) {
+// 		    snapshot.forEach(function(childSnapshot) {
+// 		      var childData = childSnapshot.val();
+// 		      if (childData.id == category) {
+// 		      	data = childData;
+// 		      };
+// 		    });
+// 		    resolve (data)
+// 	  	});
+// 	});
+// 	return promise
+// }
 
 function getCategoryData (category) {
 	const promise1 = new Promise ((resolve, reject) => {

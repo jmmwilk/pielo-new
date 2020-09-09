@@ -15,7 +15,7 @@ $(document).ready(function(){
 function enableButton () {
 	let button = document.getElementById('add-diaper');
 	button.onclick = function() {
-		removePage ();
+		clearPage ();
 		form.createForm ();
 	}
 }
@@ -27,10 +27,9 @@ function enableButton () {
 // 	}
 // }
 
-function removePage () {
-	let application = document.getElementById('application');
-	let page = document.getElementById('page');
-	application.removeChild(page);
+function clearPage () {
+	let page = $('#page');
+	page.html();
 }
 
 
