@@ -274,13 +274,16 @@
       {{/if}}
     {{/each}}
   </script> -->
-  <script id="upload-photo-template" type="text/x-handlebars-template">
+<!--   <script id="upload-photo-template" type="text/x-handlebars-template">
     <div class"upload-photo-box">
       <input type="file" class="form-control-file required" id="new-input-image" style="display:none">
       <button id="btnfile"> 
         <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/addphoto.png" id="upload-img"/>
       </button>
     </div>
+  </script> -->
+  <script id="upload-file-template" type="text/x-handlebars-template">
+    <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{file.src}}/>
   </script>
   <script id="form-page1-template" type="text/x-handlebars-template">
     <form id="new-form" class="form col-6">
@@ -288,14 +291,11 @@
         <h5 class="m-3">Formularz </h5>
         <div class="form-group col-10 bg-white m-3 p-2">
           <label for="input-image">Zdjęcie profilowe pieluszki</label>
-          <input type="file" class="form-control-file required" id="input-image">
+          <input type="file" class="form-control-file multiple required" id="input-image">
+          <div id="file-preview">
+          </div>
           <div class="invalid-feedback">
             Wybierz.
-          </div>
-        </div>
-        <div class="form-group col-10 bg-white m-3 p-2">
-          <p>Pozostałe zdjęcia</p>
-          <div id="upload-photos-container" class="d-flex flex-row">
           </div>
         </div>
         <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
@@ -363,7 +363,7 @@
     <form id="new-form" class="form col-6">
       <div id="form-page-2" class="row align-items-center m-3 bg-light d-flex flex-column">
         <h5 class="m-3">Formularz </h5>
-        {{#if outside}}
+        {{#if outsideMoreThan1}}
           <div class="col-10 bg-white m-3 p-2">
             <p>Warstwa izolująca (zewnętrzna)</p>
             {{#each outsideFabrics}}
@@ -377,7 +377,7 @@
             {{/each}}
           </div>
         {{/if}}
-        {{#if inner}}
+        {{#if innerMoreThan1}}
           <div class="col-10 bg-white m-3 p-2">
             <p>Warstwa chłonna (wewnętrzna)</p>
             {{#each innerFabrics}}

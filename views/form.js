@@ -48,52 +48,71 @@ export function createForm () {
 	promise.
 	then(function(data) {
 		createPage1 (data);
-		createUploadPhotoTemplate ();
-		enablePhotoButton ();
+		showPreview ();
+//		createUploadPhotoTemplate ();
+//		enablePhotoButton ();
 		let firebaseData = data;
 		let button = document.getElementById('page1-button');
 		button.onclick = function () {
 			let validation = layersValidation ();
-			console.log('validation', validation)
 			if (validation == true) {
 				let diaper = createPage2 (firebaseData);
 				let buttonPage2 = document.getElementById('page2-button');
 				buttonPage2.onclick = function () {
 					saveInputsPage2 (diaper);
+					addMockDiaper (diaper)
+					console.log ('diaper', diaper)
 				}
 			}
 		}
 	})
 }
 
-function enablePhotoButton () {
-	$('#btnfile').click(function () {
-	    $('#new-input-image').click();
+
+
+// function enablePhotoButton () {
+// 	$('#btnfile').click(function () {
+// 	    $('#new-input-image').click();
+// 	});
+// 	$('#new-input-image').change(function(event) {
+// 		showNewPreview (event);
+// 		createUploadPhotoTemplate ();
+// 	});
+// }
+
+// function showNewPreview (event) {
+// 	if (event.target.files.length > 0) {
+// 		let src = URL.createObjectURL(event.target.files[0]);
+// 		let preview = document.getElementById('upload-img');
+// 		preview.src = src;
+// 		let button = document.getElementById('btnfile');
+// 		button.setAttribute('disabled', 'disabled');
+// 	}
+// }
+
+function showPreview () {
+	$('#input-image').change(function(event) {
+		if (event.target.files.length > 0) {
+			let source = URL.createObjectURL(event.target.files[0]);
+			console.log('source', source)
+			let data = {'file':{'src': source}};
+			createUploadFileTemplate (data);
+		};
 	});
-	$('#new-input-image').change(function(event) {
-		showNewPreview (event);
-		createUploadPhotoTemplate ();
-	});
 }
 
-function showNewPreview (event) {
-	if (event.target.files.length > 0) {
-		let src = URL.createObjectURL(event.target.files[0]);
-		let preview = document.getElementById('upload-img');
-		preview.src = src;
-		let button = document.getElementById('btnfile');
-		button.setAttribute('disabled', 'disabled');
-	}
+function createUploadFileTemplate (data) {
+	console.log('data', data)
+	let uploadFileTemplate = $('#upload-file-template').html();
+	let compiledUploadFileTemplate = Handlebars.compile(uploadFileTemplate);
+	$('#file-preview').append(compiledUploadFileTemplate(data));
 }
 
-function addUploadPhotoButton () {
-}
-
-function createUploadPhotoTemplate () {
-	let uploadPhotoTemplate = $('#upload-photo-template').html();
-	let compiledUploadPhotoTemplate = Handlebars.compile(uploadPhotoTemplate);
-	$('#upload-photos-container').append(compiledUploadPhotoTemplate());
-}
+// function createUploadPhotoTemplate () {
+// 	let uploadPhotoTemplate = $('#upload-photo-template').html();
+// 	let compiledUploadPhotoTemplate = Handlebars.compile(uploadPhotoTemplate);
+// 	$('#upload-photos-container').append(compiledUploadPhotoTemplate());
+// }
 
 // function createOutsideTemplate () {
 // 	let outsideTemplate = $('#outside-template').html();
@@ -146,7 +165,6 @@ function layersValidation () {
 function createPage2 (firebaseData) {
 	let diaper = {}
 	saveInputs (diaper);
-	console.log ('diaper', diaper)
 	createPage2Template (diaper);
 	$('.page2input').selectpicker();
 	createNewInput (firebaseData, 'closures', 'closures-input');
@@ -176,11 +194,13 @@ function saveInputs (diaper) {
 	diaper.sizes = sizes.val();
 
 	if (outside.checked == true && outsideFabrics.val().length > 1){
+		diaper.outsideMoreThan1 = true;
 		diaper.outside = true;
 		diaper.outsideFabrics = outsideFabrics.val();
 	};
-	if (outside.checked == true && outsideFabrics.val().length <= 1){
-		diaper.outside = false;
+	if (outside.checked == true && outsideFabrics.val().length == 1){
+		diaper.outsideMoreThan1 = false;
+		diaper.outside = true;
 		diaper.outsideFabrics = outsideFabrics.val();
 	};
 	if (outside.checked == false){
@@ -188,11 +208,13 @@ function saveInputs (diaper) {
 	};
 
 	if (inner.checked == true && innerFabrics.val().length > 1){
+		diaper.innerMoreThan1 = true;
 		diaper.inner = true;
 		diaper.innerFabrics = innerFabrics.val();
 	};
-	if (inner.checked == true && innerFabrics.val().length <= 1){
-		diaper.inner = false;
+	if (inner.checked == true && innerFabrics.val().length == 1){
+		diaper.innerMoreThan1 = false;
+		diaper.inner = true;
 		diaper.innerFabrics = innerFabrics.val();
 	};
 	if (outside.inner == false){
@@ -201,19 +223,37 @@ function saveInputs (diaper) {
 	return diaper
 }
 
+function addMockDiaper (diaper) {
+//	let imageUrl = downloadURL;
+	let dbRef = firebase.database().ref('diapers-mocks/');
+	var newDbRef = dbRef.push();
+	newDbRef.set({
+	  diaper
+	});
+//	let key = newDbRef.getKey();
+//	createPreviewTemplate (key)
+}
+
+// function addFabricToDatabase () {
+// 	let dbRef = firebase.database().ref('fabrics/');
+// 	var newDbRef = dbRef.push();
+// 	newDbRef.set({
+// 	  name: 'Poliester',
+// 	  id: 'poliester'
+// 	});
+// }
+
 function saveInputsPage2 (diaper) {
 	saveFabInputPage2 (diaper, 'outsideFabrics', 'outsideFabPers', 'page2-outside-fab-input');
 	saveFabInputPage2 (diaper, 'innerFabrics', 'innerFabPers', 'page2-inner-fab-input');
 	saveSizesInputsPage2 (diaper, 'page2-sizes-min', 'page2-sizes-max');
 	saveCountry (diaper);
 	saveAttestsInputPage2 (diaper);
-	console.log('diaper', diaper)
 }
 
 function saveAttestsInputPage2 (diaper) {
 	let attestsInput = document.getElementById('attests');
 	diaper.attests = attestsInput.value;
-	console.log ('diaper', diaper)
 }
 
 function saveCountry (diaper) {
@@ -230,18 +270,29 @@ function saveCountry (diaper) {
 
 function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id) {
 	let fabrics = diaper[diaperFabId];
-	let inputs = document.getElementsByClassName(id);
-	let numbers = [];
-	Array.from(inputs).forEach(function(input){
-	    let number = input.value;
-	    numbers.push(number)
-	  })
-	diaper[diaperNumId] = [];
-	for (let i=0; i<fabrics.length; i++) {
+	if (fabrics == undefined ) {
+		return
+	} else {
+		diaper[diaperNumId] = [];
 		let fabricPer = {};
-		fabricPer.name = fabrics[i];
-		fabricPer.percentage = numbers[i];
-		diaper[diaperNumId].push(fabricPer);
+		if (diaper[diaperFabId].length == 1) {
+			fabricPer.name = fabrics[0];
+			fabricPer.percentage = 100;
+			diaper[diaperNumId].push(fabricPer);
+		} else {
+			let inputs = document.getElementsByClassName(id);
+			let numbers = [];
+			Array.from(inputs).forEach(function(input){
+			    let number = input.value;
+			    numbers.push(number)
+			  })
+			for (let i=0; i<fabrics.length; i++) {
+				let fabricPer = {};
+				fabricPer.name = fabrics[i];
+				fabricPer.percentage = numbers[i];
+				diaper[diaperNumId].push(fabricPer);
+			}
+		}
 	}
 }
 

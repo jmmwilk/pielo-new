@@ -46,12 +46,26 @@ function setData () {
 
 function addAnotherZupa () {
 	var zupaRef = firebase.database().ref("zupy");
+	
 
 	var newZupaRef = zupaRef.push();
 	newZupaRef.set({
-	  3: "pomidorowa",
+	  name: "grzybowa",
+	  taste: "niesmaczna",
+	  ingredients: "grzyby"
 	});
 }
+
+function addIngredients () {
+	var ingredients = ['grzyby', 'woda', 'ziemniaki']
+	let object = {}
+	for (let i=0; i<ingredients.length; i++) {
+		object[i] = ingredients[i]
+	}
+	console.log('object', object)
+}
+
+
 
 function addNewZupa() {
   // A post entry.
