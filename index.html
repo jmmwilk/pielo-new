@@ -32,17 +32,12 @@
       <div id="page" class="row d-flex">
       </div>
     </div>
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-storage.js"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
 
     <script>
-      // Your web app's Firebase configuration
       var firebaseConfig = {
         apiKey: "AIzaSyAIpPvZ3RCdPV9o4VOEo16YTKI7rqrgsF8",
         authDomain: "wielo-pielo.firebaseapp.com",
@@ -262,28 +257,28 @@
       </div>
     </div>
   </script>
-<!--   <script id="input-template" type="text/x-handlebars-template">
-    <option selected>Wybierz...</option>
-    {{#each submenu1}}
-      {{#if this.issubmenu}}
-        {{#each submenu2}}
-          <option>{{name}}</option>
+  <script id="new-pielucha-template" type="text/x-handlebars-template">
+    <div id="main" class="col-md-10 order-1 mx-auto">
+      <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
+        {{#each diapers}}
+        <li class="card text-center col pielucha-template">
+          <div class="card-body">
+            <div class="embed-responsive embed-responsive-1by1">
+              <img src="/images/{{photo}}.jpg" class="img embed-responsive-item rounded pielucha-image"/>
+            </div>
+            <div class="flex-row d-flex justify-content-between">
+              <a href="#application" class="card-link">{{brand}}</a>
+              <p>{{size}}</p>
+            </div>
+            <h5> {{printdiaper name}} </h5>
+          </div>
+        </li>
         {{/each}}
-      {{else}}
-        <option>{{name}}</option>
-      {{/if}}
-    {{/each}}
-  </script> -->
-<!--   <script id="upload-photo-template" type="text/x-handlebars-template">
-    <div class"upload-photo-box">
-      <input type="file" class="form-control-file required" id="new-input-image" style="display:none">
-      <button id="btnfile"> 
-        <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/addphoto.png" id="upload-img"/>
-      </button>
+      </div>
     </div>
-  </script> -->
+  </script>
   <script id="upload-file-template" type="text/x-handlebars-template">
-    <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{file.src}}/>
+    <img class="small-image mx-auto img-fluid img-thumbnail m-1"/>
   </script>
   <script id="form-page1-template" type="text/x-handlebars-template">
     <form id="new-form" class="form col-6">
@@ -291,7 +286,7 @@
         <h5 class="m-3">Formularz </h5>
         <div class="form-group col-10 bg-white m-3 p-2">
           <label for="input-image">Zdjęcie profilowe pieluszki</label>
-          <input type="file" class="form-control-file multiple required" id="input-image">
+          <input type="file" class="form-control-file multiple" id="input-image">
           <div id="file-preview">
           </div>
           <div class="invalid-feedback">
@@ -299,8 +294,12 @@
           </div>
         </div>
         <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
+          <label for="brand-input">Nazwa Producenta</label>
+          <textarea class="form-control" id="brand-input" rows="1"></textarea>
+        </div> 
+        <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
           <label for="diaper-categories-input">Rodzaj</label>
-          <select id="diaper-categories-input" class=" selectpicker col-12" multiple data-max-options="1" required>
+          <select id="diaper-categories-input" class=" selectpicker col-12" multiple data-max-options="1">
           </select>
           <div class="invalid-feedback">
             Wybierz.
@@ -308,7 +307,7 @@
         </div> 
         <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
           <label for="sizes-input">Rozmiary</label>
-          <select id="sizes-input" class="selectpicker col-12" multiple required>
+          <select id="sizes-input" class="selectpicker col-12" multiple>
           </select>
           <div class="invalid-feedback">
             Wybierz.
@@ -370,7 +369,7 @@
             <div class="form-group row">
               <label class="col-form-label col-5" for="outside-percentage-input">{{this}}</label>
               <div class="col-3">
-                <input class="page2input page2-outside-fab-input form-control" type="number" id="outside-percentage-input" required>
+                <input class="page2input page2-outside-fab-input form-control" type="number" id="outside-percentage-input">
               </div>
               <label class="col-form-label col-4 pl-0" for="outside-percentage-input">%</label>
             </div>
@@ -384,7 +383,7 @@
             <div class="form-group row">
               <label class="col-form-label col-5" for="outside-percentage-input">{{this}}</label>
               <div class="col-3">
-                <input class="page2input page2-inner-fab-input form-control" type="number" id="inner-percentage-input" required>
+                <input class="page2input page2-inner-fab-input form-control" type="number" id="inner-percentage-input">
               </div>
               <label class="col-form-label col-4 pl-0" for="inner-percentage-input">%</label>
             </div>
@@ -397,11 +396,11 @@
             <div class="form-group row">
               <label class="col-form-label col-4" for="sizes-range-min-input">{{this}}</label>
               <div class="col-3">
-                <input class="page2input page2-sizes-min form-control px-1" type="number" id="sizes-range-min-input" required>
+                <input class="page2input page2-sizes-min form-control px-1" type="number" id="sizes-range-min-input">
               </div>
               <label class="col-form-label col-1" for="sizes-range-max-input">do</label>
               <div class="col-3">
-                <input class="page2input page2-sizes-max form-control" type="number" id="sizes-range-max-input" required>
+                <input class="page2input page2-sizes-max form-control" type="number" id="sizes-range-max-input">
               </div>
               <label class="col-form-label col-1 pl-0" for="sizes-range-max-input">kg</label>
             </div>
@@ -425,11 +424,11 @@
                 <legend class="col-form-label">Kraj Produkcji</legend>
               </div>
               <div class="form-check form-check-inline col-4 m-0">
-                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="country-poland" required>
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="country-poland">
                 <label class="form-check-label" for="country-poland">Polska</label>
               </div>
               <div class="form-check form-check-inline col-4 m-0">
-                <input class="form-check-input" data-toggle="collapse" data-target="#country-other-text" type="radio" name="inlineRadioOptions" id="country-other" required>
+                <input class="form-check-input" data-toggle="collapse" data-target="#country-other-text" type="radio" name="inlineRadioOptions" id="country-other">
                 <label class="form-check-label" for="country-other">Inny</label>
               </div>
             </div>
@@ -440,7 +439,7 @@
         </div>
         <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">
           <label for="closures-input">Zapięcia</label>
-          <select id="closures-input" class="selectpicker col-12" multiple required>
+          <select id="closures-input" class="selectpicker col-12" multiple>
           </select>
         </div>
         <div class="col-10 bg-white m-3 p-2">
@@ -459,60 +458,20 @@
       </div>
     </form>
   </script>
-<!--   <script id="form-input-template" type="text/x-handlebars-template">
-    <div id="form-page-1">
-      <div id="pierdziele">
-        duuuupaaa
-      </div>
-      <div class="form-group">
-        <label for="input-image">Zdjęcie</label>
-        <input type="file" class="form-control-file" id="input-image">
-      </div>
-      <div class="form-group d-flex flex-column">
-        <label for="diaper-categories-input">Rodzaj</label>
-        <select id="diaper-categories-input" class="selectpicker" multiple data-max-options="1">
-      </div>
-      <div id="dupa" class="form-group d-flex flex-column">
-        <label for="sizes-input">Rozmiary</label>
-        <select id="sizes-input" class="selectpicker" multiple>
-      </div>
-    </div>
-  </script> -->
-  <script id="new-input-template" type="text/x-handlebars-template">
-    {{#each category}}
-      <option>{{name}}</option>
-    {{/each}}
-  </script>
-<!--   <script id="sizes-template" type="text/x-handlebars-template">
-    <div class="form-group">
-      <label for="sizes">sizes</label>
-      <select id="sizes" class="form-control">
-        <option selected>Wybierz...</option>
-        {{#each sizes}}
-          <option>{{name}}</option>
-        {{/each}}
-      </select>
-    </div>
-  </script>
-  <script id="fabrics-template" type="text/x-handlebars-template">
-    <div class="form-group">
-      <label for="fabrics">fabrics</label>
-      <select id="fabrics" class="selectpicker" multiple>
-        {{#each fabrics}}
-          <option>{{name}}</option>
-        {{/each}}
-      </select>
-    </div>
-  </script> -->
-  <script id="item-preview" type="text/x-handlebars-template">
+    <script id="new-input-template" type="text/x-handlebars-template">
+      {{#each category}}
+        <option>{{name}}</option>
+      {{/each}}
+    </script>
+    <script id="item-preview" type="text/x-handlebars-template">
     <div class="main-info-box row my-2">
       <div class="image-box col-md-6">
-        <img class="product-image mx-auto img-fluid img-thumbnail" src="{{image}}"/>
+        <img class="image mx-auto img-fluid img-thumbnail" src="{{diaper.url}}"/>
       </div>
       <div class="title-box col-md-6">
-        <h5> {{name}} {{fabric}} </h5>
-        <p>od {{brand}}</p>
-        <p>{{size}}</p>
+        <h5> {{diaper.diaperCategory.[0]}} {{diaper.outsideFabrics.[0]}} </h5>
+        <p>od {{diaper.brand}}</p>
+        <p>{{diaper.sizes.[0]}}</p>
       </div>
     </div>
   </script>

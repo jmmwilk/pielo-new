@@ -4,121 +4,64 @@ let database = firebase.database();
 let storage = firebase.storage();
 
 export function createForm () {
-	// const promise2 = getSizes();
-	// promise2
-	// .then(function(data) {
-	//   	let newSizes = {'sizes': data};
-	//   	createSizesTemplate (newSizes);
-	// })
-	// const promise3 = getFabrics();
-	// promise3
-	// .then(function(data) {
-	// 	let newFabrics = {'fabrics': data};
-	// 	createFabricsTemplate (newFabrics);
-	// })
-
-// 	const promise4 = getCategories ();
-// 	promise4
-// 	.then(function(data) {
-// 		let formCategories = {'categories': data};
-// //		createNewFormTemplate ();
-// 		createNewInputs (formCategories);
-// 	})
-
-	// let formScreen = document.createElement('div');
-	// formScreen.id = 'form-screen';
-	// formScreen.className = 'row';
-	// let application = document.getElementById('application');
-	// application.appendChild(formScreen);
-//	createFormTemplate ();
-	// createInputsContainersTemplate ();
-	// createFormInputTemplate ();
-	// printValue ();
-
-	// const promise = getCategory ('diaper-categories');
-	// promise.
-	// then(function(data) {
-	// 	createPage1 (data);
-	// 	let button = document.getElementById('page1-button');
-	// 	button.onclick = function () {
-	// 		createPage2 ();
-	// 	}
-	// })
+	let imageNumber = 1;
 	const promise = getCategories ();
 	promise.
 	then(function(data) {
 		createPage1 (data);
-		showPreview ();
-//		createUploadPhotoTemplate ();
-//		enablePhotoButton ();
+		let diaper = {}
+		$('#input-image').change(function(event) {
+			if (event.target.files.length > 0) {
+				showPreview (event);
+				addImageToStorage (imageNumber, diaper);
+				imageNumber = imageNumber + 1;
+			}
+		});
 		let firebaseData = data;
 		let button = document.getElementById('page1-button');
 		button.onclick = function () {
 			let validation = layersValidation ();
 			if (validation == true) {
-				let diaper = createPage2 (firebaseData);
+				createPage2 (firebaseData, diaper);
+				console.log('diaper', diaper)
 				let buttonPage2 = document.getElementById('page2-button');
 				buttonPage2.onclick = function () {
 					saveInputsPage2 (diaper);
-					addMockDiaper (diaper)
-					console.log ('diaper', diaper)
+					console.log ('diaper', diaper);
+					addMockDiaper (diaper);
 				}
 			}
 		}
 	})
 }
 
+function showPreview (event) {
+	let source = URL.createObjectURL(event.target.files[0]);
+	let image = document.createElement('img');
+	let box = document.getElementById('file-preview');
+	image.className = 'small-image mx-auto img-fluid img-thumbnail m-1';
+	image.src = source;
+	box.appendChild(image);
+}
 
-
-// function enablePhotoButton () {
-// 	$('#btnfile').click(function () {
-// 	    $('#new-input-image').click();
-// 	});
-// 	$('#new-input-image').change(function(event) {
-// 		showNewPreview (event);
-// 		createUploadPhotoTemplate ();
-// 	});
-// }
-
-// function showNewPreview (event) {
-// 	if (event.target.files.length > 0) {
-// 		let src = URL.createObjectURL(event.target.files[0]);
-// 		let preview = document.getElementById('upload-img');
-// 		preview.src = src;
-// 		let button = document.getElementById('btnfile');
-// 		button.setAttribute('disabled', 'disabled');
-// 	}
-// }
-
-function showPreview () {
-	$('#input-image').change(function(event) {
-		if (event.target.files.length > 0) {
-			let source = URL.createObjectURL(event.target.files[0]);
-			console.log('source', source)
-			let data = {'file':{'src': source}};
-			createUploadFileTemplate (data);
-		};
-	});
+function addImageToStorage (imageNumber, diaper) {
+	const selectedFile = document.getElementById('input-image').files[0];
+	let imageRef = storage.ref().child('brand' + imageNumber);
+	imageRef.put(selectedFile)
+	.then(function(snapshot) {
+	  	return imageRef.getDownloadURL();
+	})
+	.then(function(downloadURL) {
+		diaper.url = downloadURL;
+		return downloadURL
+	})
 }
 
 function createUploadFileTemplate (data) {
-	console.log('data', data)
 	let uploadFileTemplate = $('#upload-file-template').html();
 	let compiledUploadFileTemplate = Handlebars.compile(uploadFileTemplate);
 	$('#file-preview').append(compiledUploadFileTemplate(data));
 }
-
-// function createUploadPhotoTemplate () {
-// 	let uploadPhotoTemplate = $('#upload-photo-template').html();
-// 	let compiledUploadPhotoTemplate = Handlebars.compile(uploadPhotoTemplate);
-// 	$('#upload-photos-container').append(compiledUploadPhotoTemplate());
-// }
-
-// function createOutsideTemplate () {
-// 	let outsideTemplate = $('#outside-template').html();
-// 	let compiledOutsideTemplate = Handlebars.compile(outsideTemplate);
-// 	$('#outside-container').append(compiledOutsideTemplate);
-// }
 
 function createPage1 (data) {
 	createPage1Template ();
@@ -149,26 +92,15 @@ function layersValidation () {
 	} else {
 		innerFabrics.removeAttribute('required');
 	}
-
-// 	if (checkbox.checked == true){
-// //		createOutsideTemplate ();
-// 	    // outsideFabrics.removeAttribute('disabled');
-// 	    // $('#outside-fabrics-input').selectpicker('refresh');
-// 	} else {
-// 	     // outsideFabrics.setAttribute('disabled', 'disabled');
-// 	     // $('#outside-fabrics-input').selectpicker('refresh');
-// 	}
-
 	return validation
 }
 
-function createPage2 (firebaseData) {
-	let diaper = {}
+function createPage2 (firebaseData, diaper) {
 	saveInputs (diaper);
 	createPage2Template (diaper);
 	$('.page2input').selectpicker();
 	createNewInput (firebaseData, 'closures', 'closures-input');
-	return diaper
+	return
 }
 
 function createPage1Template () {
@@ -184,6 +116,7 @@ function createPage2Template (diaper) {
 }
 
 function saveInputs (diaper) {
+	let brand = $('#brand-input');
 	let diaperCategory = $('#diaper-categories-input');
 	let sizes = $('#sizes-input');
 	let outsideFabrics = $('#outside-fabrics-input');
@@ -192,6 +125,7 @@ function saveInputs (diaper) {
 	let inner = document.getElementById('inner-layer-input');
 	diaper.diaperCategory = diaperCategory.val();
 	diaper.sizes = sizes.val();
+	diaper.brand = brand.val();
 
 	if (outside.checked == true && outsideFabrics.val().length > 1){
 		diaper.outsideMoreThan1 = true;
@@ -224,24 +158,31 @@ function saveInputs (diaper) {
 }
 
 function addMockDiaper (diaper) {
-//	let imageUrl = downloadURL;
 	let dbRef = firebase.database().ref('diapers-mocks/');
 	var newDbRef = dbRef.push();
 	newDbRef.set({
 	  diaper
 	});
-//	let key = newDbRef.getKey();
-//	createPreviewTemplate (key)
+	let key = newDbRef.getKey();
+	console.log('key', key)
+	createPreviewTemplate (key)
 }
 
-// function addFabricToDatabase () {
-// 	let dbRef = firebase.database().ref('fabrics/');
-// 	var newDbRef = dbRef.push();
-// 	newDbRef.set({
-// 	  name: 'Poliester',
-// 	  id: 'poliester'
-// 	});
-// }
+function addDiaper (downloadURL, newDiaper) {
+	let imageUrl = downloadURL;
+	let dbRef = firebase.database().ref('diapers/');
+	var newDbRef = dbRef.push();
+	newDbRef.set({
+	  name: newDiaper.name,
+	  size: newDiaper.size,
+	  fabric: newDiaper.fabric,
+	  brand: newDiaper.brand,
+	  image: imageUrl
+	});
+	let key = newDbRef.getKey();
+	console.log ('key', key)
+	createPreviewTemplate (key);
+}
 
 function saveInputsPage2 (diaper) {
 	saveFabInputPage2 (diaper, 'outsideFabrics', 'outsideFabPers', 'page2-outside-fab-input');
@@ -345,62 +286,6 @@ let formInputs = {
 	]
 }
 
-// function createFormInputTemplate () {
-// 	for (let i=0; i<4; i++) {
-// 		let src = formInputs.inputs[i].source;
-// 		let id = formInputs.inputs[i].id;
-// 		let formInputTemplate = $('#input-template').html();
-// 		let compiledFormInputTemplate = Handlebars.compile(formInputTemplate);
-// 		$('#' + id).html(compiledFormInputTemplate(src));
-// 	}
-// }
-
-// function createInputsContainersTemplate () {
-// 	let inputsContainersTemplate = $('#inputs-container').html();
-// 	let compiledInputsContainersTemplate = Handlebars.compile(inputsContainersTemplate);
-// 	$('#inputs-container').html(compiledInputsContainersTemplate(formInputs))
-// }
-
-// function createFormTemplate () {
-// 	let form = $('#form-template').html();
-// 	let compiledForm = Handlebars.compile(form);
-// 	$('#page').html(compiledForm(formInputs));
-// }
-
-// function printValue () {
-// 	let button = document.getElementById('form-add');
-
-// 	button.onclick = function () {
-// 		let valueName = document.getElementById('input-name').value;
-// 		let valueSize = document.getElementById('input-size').value;
-// 		let valueFabric = document.getElementById('input-fabric').value;
-// 		let valueBrand = document.getElementById('input-brand').value;
-// 		let newDiaper = {
-// 			name: valueName,
-// 			size: valueSize,
-// 			fabric: valueFabric,
-// 			brand: valueBrand
-// 		}
-// 		addImage(newDiaper)
-// 	}
-// }
-
-// function addImage (newDiaper) {
-// 	const selectedFile = document.getElementById('input-image').files[0];
-// 	let imageRef = storage.ref().child('nowapielucha.jpg');
-
-//   	imageRef.put(selectedFile)
-// 	.then(function(snapshot, newDiaper) {
-// 	  	return imageRef.getDownloadURL();
-// 	})
-// 	.then(function(downloadURL) {
-// 		return downloadURL
-// 	})
-// 	.then(function(downloadURL){
-// 		addDiaper (downloadURL, newDiaper)
-// 	})
-// }
-
 function addCategoryToDatabase (newName, newId) {
 	let dbRef = firebase.database().ref('categories/');
 	let newDbRef = dbRef.push();
@@ -420,29 +305,16 @@ function addClosuresToDatabase (newName, newId) {
 }
 
 function createPreviewTemplate (key) {
-	let dbRef = firebase.database().ref('diapers/' + key);
+	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
 	let previewTemplate = $('#item-preview').html();
 	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
 	dbRef.on('value', function(snap){
-		$('#form-screen').html(compiledPreviewTemplate(snap.val()))
+		$('#page').html(compiledPreviewTemplate(snap.val()))
 	})
 	
 }
 
-function addDiaper (downloadURL, newDiaper) {
-	let imageUrl = downloadURL;
-	let dbRef = firebase.database().ref('diapers/');
-	var newDbRef = dbRef.push();
-	newDbRef.set({
-	  name: newDiaper.name,
-	  size: newDiaper.size,
-	  fabric: newDiaper.fabric,
-	  brand: newDiaper.brand,
-	  image: imageUrl
-	});
-	let key = newDbRef.getKey();
-	createPreviewTemplate (key)
-}
+
 
 function deleteDiapers () {
 	let dbRef = firebase.database().ref('diapers/');
@@ -467,69 +339,6 @@ function addCategoriesToDatabase () {
 	}
 }
 
-// function getSizes () {
-// 	const promise1 = new Promise ((resolve, reject) => {
-// 		let dbRef = firebase.database().ref('sizes/');
-// 		let data = [];
-// 		dbRef.once('value',   function(snapshot) {
-// 		    snapshot.forEach(function(childSnapshot) {
-// 		      var childData = childSnapshot.val();
-// 		      data.push(childData);
-// 		    });
-// 		    resolve (data)
-// 	  	});
-// 	});
-// 	return promise1
-// }
-
-// function getFabrics () {
-// 	const promise1 = new Promise ((resolve, reject) => {
-// 		let dbRef = firebase.database().ref('fabrics/');
-// 		let data = [];
-// 		dbRef.once('value', function(snapshot) {
-// 			snapshot.forEach(function(childSnapshot) {
-// 			var childData = childSnapshot.val();
-// 		      data.push(childData);
-// 			});
-// 			resolve (data)
-// 		})
-// 	});
-// 	return promise1
-// }
-
-// function createSizesTemplate (newSizes) {
-// 	let sizesBox = $('#sizes-template').html();
-// 	let compiledsizesBox = Handlebars.compile(sizesBox);
-// 	$('#new-sizes').html(compiledsizesBox(newSizes));
-// }
-
-// function createFabricsTemplate (newFabrics) {
-// 	let fabricsBox = $('#fabrics-template').html();
-// 	let compiledFabricsBox = Handlebars.compile(fabricsBox);
-// 	$('#outside-fabrics-input').html(compiledFabricsBox(newFabrics))
-// }
-
-// function createNewFormTemplate () {
-// 	let formTemplate = $('#form-input-template').html();
-// 	let compiledFormTemplate = Handlebars.compile(formTemplate);
-// 	$('#new-form').html(compiledFormTemplate());
-// }
-
-// function getCategories () {
-// 	const promise1 = new Promise ((resolve, reject) => {
-// 		let dbRef = firebase.database().ref('categories/');
-// 		let data = [];
-// 		dbRef.once('value',   function(snapshot) {
-// 		    snapshot.forEach(function(childSnapshot) {
-// 		      var childData = childSnapshot.val();
-// 		      data.push(childData);
-// 		    });
-// 		    resolve (data)
-// 	  	});
-// 	});
-// 	return promise1
-// }
-
 function getCategories () {
 	const promise1 = new Promise ((resolve, reject) => {
 		let dbRef = firebase.database().ref('categories/');
@@ -545,23 +354,6 @@ function getCategories () {
 	return promise1
 }
 
-// function getCategory (category) {
-// 	const promise = new Promise ((resolve, reject) => {
-// 		let dbRef = firebase.database().ref('categories/');
-// 		let data;
-// 		dbRef.once('value',   function(snapshot) {
-// 		    snapshot.forEach(function(childSnapshot) {
-// 		      var childData = childSnapshot.val();
-// 		      if (childData.id == category) {
-// 		      	data = childData;
-// 		      };
-// 		    });
-// 		    resolve (data)
-// 	  	});
-// 	});
-// 	return promise
-// }
-
 function getCategoryData (category) {
 	const promise1 = new Promise ((resolve, reject) => {
 		let dbRef = firebase.database().ref(category + '/');
@@ -576,21 +368,6 @@ function getCategoryData (category) {
 	});
 	return promise1
 }
-
-// function getCategoryData (category) {
-// 	const promise1 = new Promise ((resolve, reject) => {
-// 		let dbRef = firebase.database().ref(category + '/');
-// 		let data = [];
-// 		dbRef.once('value',   function(snapshot) {
-// 		    snapshot.forEach(function(childSnapshot) {
-// 		      var childData = childSnapshot.val();
-// 		      data.push(childData);
-// 		    });
-// 		    resolve (data)
-// 	  	});
-// 	});
-// 	return promise1
-// }
 
 function createNewInput (data, category, inputId) {
 	let categoryData;
@@ -614,36 +391,6 @@ function createNewInputTemplate (category, data, inputId) {
 	let compiledInputTemplate = Handlebars.compile(inputTemplate);
 	$('#' + inputId).html(compiledInputTemplate(inputCategory));
 }
-
-// function createNewInputTemplate (category, data, categories, i) {
-// 	let inputCategory = {category: data};
-// 	let inputTemplate = $('#new-input-template').html();
-// 	let compiledInputTemplate = Handlebars.compile(inputTemplate);
-// 	$('#' + categories[i].id + '-input').html(compiledInputTemplate(inputCategory));
-// }
-
-// function createNewInputs (formCategories) {
-// 	let categories = formCategories["categories"];
-// 	console.log ('categories', categories)
-// 	for (let i=0; i<categories.length; i++) {
-// 		let category = categories[i].reference;
-// 		const promise2 = getCategoryData (category);
-// 		promise2
-// 		.then(function(data) {
-// 		  	createNewInputTemplate (category, data, categories, i);
-// 		  	createSelectPicker (categories, i)
-// 		})
-// 	}
-// }
-
-// function createSelectPicker (categories, i) {
-// 	let category = categories[i];
-// 	// if (category['multiple-choice'] == true) {
-// 	// 	$('#' + category.id + '-input').selectpicker();
-// 	// }
-// 	$('#' + category.id + '-input').selectpicker();
-// }
-
 
 
 
