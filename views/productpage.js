@@ -1,6 +1,7 @@
 import * as diaperslist from '../mocks/diapers.js';
 import * as productslist from '../views/productslist.js';
 import * as reviewslist from '../mocks/reviews.js';
+import * as form from '../views/form.js';
 
 export function createProductScreen (card) {
 	let indexNumber = card.dataset.indexnumber;
@@ -71,5 +72,70 @@ function enableSizeButton () {
 	mos.onclick = function(){text.innerText = mosText};
 	os.onclick = function(){text.innerText = osText};
 }
+
+function createSizeButtons (diaper) {
+	const promise = form.getCategoryData ('sizes');
+	promise.then(function(data) {
+		let sizeInfo = getSizesShortcuts (diaper, data);
+		let object = {'sizes': sizeInfo};
+		console.log('object', object)
+		createSizeButtonsTemplate (object);
+		let buttons = document.getElementsByClassName('size-button');
+		Array.from(buttons).forEach(function(button){
+			button.onclick = function (event) {
+				let sizeData = {};
+				console.log('event', event)
+				let buttonId = event.target.id;
+				for (let i=0; i<sizeInfo.length; i++) {
+					if (buttonId == sizeInfo[i].id) {
+						sizeData = {'size': sizeInfo[i]};
+					}
+				}
+				console.log('sizeData', sizeData)
+				createSizeRangeTemplate (sizeData);
+			}
+		})
+	});
+}
+
+function createSizeRangeTemplate (sizeData) {
+	let sizeRangeTemplate = $('#size-range-template').html();
+	let compiledSizeRangeTemplate = Handlebars.compile(sizeRangeTemplate);
+	$('#size-description').html(compiledSizeRangeTemplate(sizeData));
+}
+
+function createSizeButtonsTemplate (object) {
+	let sizeButtonsTemplate = $('#size-buttons-template').html();
+	let compiledSizeButtonsTemplate = Handlebars.compile(sizeButtonsTemplate);
+	$('#size-buttons-container').append(compiledSizeButtonsTemplate(object));
+}
+
+function getSizesShortcuts (diaper, data) {
+	console.log('data', data)
+	console.log('diaper', diaper)
+	let sizeInfo = [];
+	for (let i=0; i<diaper.sizes.length; i++) {
+		for (let x=0; x<data.length; x++) {
+			if (diaper.sizes[i] == data[x].name) {
+				let size = {};
+				size.shortcut = data[x].shortcut;
+				size.name = data[x].name;
+				size.id = data[x].id;
+				size.min = diaper.sizesRange[i].min;
+				size.max = diaper.sizesRange[i].max;
+				sizeInfo.push(size);
+			}
+		}
+	}
+	return sizeInfo
+}
+
+export function fillMockDiaperPreview (diaper) {
+	console.log('mock-diaper', diaper)
+	createSizeButtons (diaper);
+}
+
+
+
 
 

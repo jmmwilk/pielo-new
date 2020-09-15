@@ -1,4 +1,5 @@
 import * as menu from '../mocks/menu.js';
+import * as productPage from '../views/productpage.js';
 
 let database = firebase.database();
 let storage = firebase.storage();
@@ -23,12 +24,11 @@ export function createForm () {
 			let validation = layersValidation ();
 			if (validation == true) {
 				createPage2 (firebaseData, diaper);
-				console.log('diaper', diaper)
 				let buttonPage2 = document.getElementById('page2-button');
 				buttonPage2.onclick = function () {
 					saveInputsPage2 (diaper);
-					console.log ('diaper', diaper);
 					addMockDiaper (diaper);
+					productPage.fillMockDiaperPreview (diaper)
 				}
 			}
 		}
@@ -164,8 +164,15 @@ function addMockDiaper (diaper) {
 	  diaper
 	});
 	let key = newDbRef.getKey();
-	console.log('key', key)
+	fillProductMainInfo ();
 	createPreviewTemplate (key)
+}
+
+function fillProductMainInfo () {
+	let itemPreview = $('#item-preview').html();
+	Handlebars.registerHelper('printnewinfo', function(){
+		return this.diaperCategory[0] + ' ' + this.outsideFabrics[0]
+	})
 }
 
 function addDiaper (downloadURL, newDiaper) {
@@ -180,7 +187,6 @@ function addDiaper (downloadURL, newDiaper) {
 	  image: imageUrl
 	});
 	let key = newDbRef.getKey();
-	console.log ('key', key)
 	createPreviewTemplate (key);
 }
 
@@ -354,7 +360,7 @@ function getCategories () {
 	return promise1
 }
 
-function getCategoryData (category) {
+export function getCategoryData (category) {
 	const promise1 = new Promise ((resolve, reject) => {
 		let dbRef = firebase.database().ref(category + '/');
 		let data = [];

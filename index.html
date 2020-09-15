@@ -91,10 +91,7 @@
             </div>
             <div class="text-muted">
               <p class="mb-0">Rozmiary</p>
-              <div class="d-flex flex-row mt-1">
-                <button id="nb" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">NB</button>
-                <button id="mos" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">MOS</button>
-                <button id="os" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">OS</button>
+              <div id="size-buttons-container" class="d-flex flex-row mt-1">
                 <div id="size-description" class="ml-2">
                 </div>
               </div>
@@ -458,12 +455,125 @@
       </div>
     </form>
   </script>
-    <script id="new-input-template" type="text/x-handlebars-template">
-      {{#each category}}
-        <option>{{name}}</option>
-      {{/each}}
-    </script>
-    <script id="item-preview" type="text/x-handlebars-template">
+  <script id="new-input-template" type="text/x-handlebars-template">
+    {{#each category}}
+      <option>{{name}}</option>
+    {{/each}}
+  </script>
+    <script id="size-buttons-template" type="text/x-handlebars-template">
+    {{#each sizes}}
+      <button id="{{this.id}}" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">{{this.shortcut}}</button>
+    {{/each}}
+    <div id="size-description" class="ml-2">
+    </div>
+  </script>
+  <script id="size-range-template" type="text/x-handlebars-template">
+    {{#with size}}
+      <p>{{this.name}}  {{this.min}}-{{this.max}} kg</p>
+    {{/with}}
+  </script>
+  <script id="item-preview" type="text/x-handlebars-template">
+    {{#with diaper}}
+    <div id="main" class="col-md-10 order-1 mx-auto">
+      <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">
+        <div class="main-info-box row my-2">
+          <div class="image-box col-md-6">
+            <img class="product-image mx-auto img-fluid img-thumbnail" src={{url}}/>
+          </div>
+          <div class="title-box col-md-6">
+            <h5 class="text-primary"> {{printnewinfo this}} </h5>
+            <div>
+              <p>
+                od <a href="#application" class="text-warning">{{brand}}</a>
+              </p>
+            </div>
+            <div class="stars-box d-flex flex-row text-muted">
+              <p class="mr-1">5,0</p>
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <img src="/images/star.png"/ class="star">
+              <p class="ml-1">2 recenzje</p>
+            </div>
+            <div class="text-muted">
+              <p class="mb-0">Rozmiary</p>
+              <div id="size-buttons-container" class="d-flex flex-row mt-1">
+              </div>
+            </div>
+            <div class="text-muted my-2">
+              <p class="mb-0">Kolory / Wzory</p>
+              <div class="flex-row justify-content-start">
+                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
+                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
+                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
+                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
+                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
+                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
+              </div>
+            </div>
+            <button type="button" class="btn btn-primary">Napisz opinię</button>
+          </div>
+        </div>
+        <div class="info-box card my-2">
+          <div id="info-title" class="card-body">
+            <h5>
+              <a class="card-title stretched-link text-secondary" aria-expanded="false" aria-controls="collapseExample" data-toggle="collapse" href="#collapseExample">Informacje od producenta</a>
+            </h5>
+          </div>
+          <div class="collapse" id="collapseExample">
+            <div id="parameters-box row">
+              <div class="col-6">
+                <li id="pars-fabric" class="row">
+                  <div class="col-6">
+                    Materiał dominujący:
+                  </div>
+                  <div class="col-6">
+                    Bawełna
+                  </div>
+                </li>
+                <li id="pars-composition" class="row">
+                  <div class="col-6">
+                    Skład surowcowy:
+                  </div>
+                  <div class="col-6">
+                    Bawełna: 90%, bambus: 30%
+                  </div>
+                </li>
+              </div>
+              <div class="col-6">
+                <li id="pars-fabric" class="row">
+                  <div class="col-6">
+                    Materiał dominujący:
+                  </div>
+                  <div class="col-6">
+                    Bawełna
+                  </div>
+                </li>
+                <li id="pars-composition" class="row">
+                  <div class="col-6">
+                    Skład surowcowy:
+                  </div>
+                  <div class="col-6">
+                    Bawełna: 90%, bambus: 30%
+                  </div>
+                </li>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="reviews-box card my-2 text-secondary">
+          <div id="reviews-title" class="card-body">
+            <h5 class="card-title">Opinie</h5>
+          </div>
+          <div id="reviews-container">
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/with}}
+  </script>
+<!--   <script id="item-preview" type="text/x-handlebars-template">
     <div class="main-info-box row my-2">
       <div class="image-box col-md-6">
         <img class="image mx-auto img-fluid img-thumbnail" src="{{diaper.url}}"/>
@@ -474,7 +584,7 @@
         <p>{{diaper.sizes.[0]}}</p>
       </div>
     </div>
-  </script>
+  </script> -->
 </html>
 
 
