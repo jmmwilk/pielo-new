@@ -3,6 +3,8 @@ import * as productslist from '../views/productslist.js';
 import * as reviewslist from '../mocks/reviews.js';
 import * as form from '../views/form.js';
 
+let database = firebase.database();
+
 export function createProductScreen (card) {
 	let indexNumber = card.dataset.indexnumber;
 	let diapers = diaperslist.items.diapers;
@@ -20,13 +22,6 @@ function createProductPageTempate (i, diapers) {
 	let productPageTemplate = $('#product-page-template').html();
 	let compiledProductPageTemplate = Handlebars.compile(productPageTemplate);
 	$('#page').append(compiledProductPageTemplate(diaperslist.items.diapers[i]));
-}
-
-function fillProductMainInfo () {
-	let productPageTemplate = $('#product-page-template').html();
-	Handlebars.registerHelper('printinfo', function(){
-		return this.name + ' ' + this.type + ' ' + this.fabricprint
-	})
 }
 
 export function removeProductScreen () {
@@ -91,7 +86,6 @@ function createSizeButtons (diaper) {
 						sizeData = {'size': sizeInfo[i]};
 					}
 				}
-				console.log('sizeData', sizeData)
 				createSizeRangeTemplate (sizeData);
 			}
 		})
@@ -110,19 +104,25 @@ function createSizeButtonsTemplate (object) {
 	$('#size-buttons-container').append(compiledSizeButtonsTemplate(object));
 }
 
+function createParametersTemplate (diaper) {
+	let parametersTemplate = $('#parameters-template').html();
+	let compiledParametersTemplate = Handlebars.compile(parametersTemplate);
+	$('#parameters').html(compiledParametersTemplate(diaper));
+}
+
 function getSizesShortcuts (diaper, data) {
-	console.log('data', data)
 	console.log('diaper', diaper)
+	console.log('diaper.sizes.length', diaper.diaper.sizes.length)
 	let sizeInfo = [];
-	for (let i=0; i<diaper.sizes.length; i++) {
+	for (let i=0; i<diaper.diaper.sizes.length; i++) {
 		for (let x=0; x<data.length; x++) {
-			if (diaper.sizes[i] == data[x].name) {
+			if (diaper.diaper.sizes[i] == data[x].name) {
 				let size = {};
 				size.shortcut = data[x].shortcut;
 				size.name = data[x].name;
 				size.id = data[x].id;
-				size.min = diaper.sizesRange[i].min;
-				size.max = diaper.sizesRange[i].max;
+				size.min = diaper.diaper.sizesRange[i].min;
+				size.max = diaper.diaper.sizesRange[i].max;
 				sizeInfo.push(size);
 			}
 		}
@@ -130,12 +130,72 @@ function getSizesShortcuts (diaper, data) {
 	return sizeInfo
 }
 
-export function fillMockDiaperPreview (diaper) {
-	console.log('mock-diaper', diaper)
+function fillMockDiaperPreview (diaper) {
 	createSizeButtons (diaper);
+	createParametersTemplate (diaper);
 }
 
+export function createPreviewScreen (key) {
+	fillProductMainInfo ();
+	fillSizesInfo ();
+	let diaper = loadItemData (key);
+	createPreviewTemplate (key)
+	fillMockDiaperPreview (diaper);
+	setClassesToParameters ();
+}
 
+function createPreviewTemplate (key) {
+	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
+	let previewTemplate = $('#item-preview').html();
+	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
+	dbRef.on('value', function(snap){
+		$('#page').html(compiledPreviewTemplate(snap.val()))
+	})
+}
 
+function loadItemData (key) {
+	let diaper;
+	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
+	dbRef.on('value', function(snap){
+		diaper = snap.val()
+	})
+	console.log ('diaper', diaper)
+	return diaper
+}
 
+function fillProductMainInfo () {
+	let itemPreview = $('#item-preview').html();
+	Handlebars.registerHelper('printnewinfo', function(){
+		return this.diaperCategory[0] + ' ' + this.outsideFabrics[0]
+	})
+}
+
+function fillSizesInfo () {
+	let itemPreview = $('#item-preview').html();
+	Handlebars.registerHelper('printsizesinfo', function(){
+		return this.name + ' ' + this.min + ' - ' + this.max + ' kg';
+	})
+}
+
+function addMarginToParameters () {
+	let parameters = document.getElementsByClassName('parameters-row');
+	Array.from(parameters).forEach(function(parameter){
+		parameter.classList.add("mb-3");
+	})
+}
+
+function setClassesToParameters () {
+	let parameters = document.getElementsByClassName('parameters-row');
+	Array.from(parameters).forEach(function(parameter){
+		parameter.classList.add("mb-2");
+	});
+	let parametersLeft = document.getElementsByClassName('parameter-column-left');
+	Array.from(parametersLeft).forEach(function(parameter){
+		parameter.classList.add("col-6");
+	});
+	let parametersRight = document.getElementsByClassName('parameter-column-right');
+	Array.from(parametersRight).forEach(function(parameter){
+		parameter.classList.add("col-6");
+	})
+}
 

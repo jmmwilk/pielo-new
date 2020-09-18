@@ -110,49 +110,49 @@
             <button type="button" class="btn btn-primary">Napisz opinię</button>
           </div>
         </div>
-        <div class="info-box card my-2">
+        <div class="info-box card my-2 text-secondary">
           <div id="info-title" class="card-body">
             <h5>
-              <a class="card-title stretched-link text-secondary" aria-expanded="false" aria-controls="collapseExample" data-toggle="collapse" href="#collapseExample">Informacje od producenta</a>
+              <a class="card-title stretched-link" aria-expanded="false" aria-controls="collapseExample" data-toggle="collapse" href="#collapseExample">Informacje od producenta</a>
             </h5>
           </div>
           <div class="collapse" id="collapseExample">
             <div id="parameters-box row">
               <div class="col-6">
-                <li id="pars-fabric" class="row">
+                <div id="main-fabric-pars" class="row">
                   <div class="col-6">
                     Materiał dominujący:
                   </div>
                   <div class="col-6">
                     Bawełna
                   </div>
-                </li>
-                <li id="pars-composition" class="row">
+                </div>
+                <div id="pars-composition" class="row">
                   <div class="col-6">
                     Skład surowcowy:
                   </div>
                   <div class="col-6">
                     Bawełna: 90%, bambus: 30%
                   </div>
-                </li>
+                </div>
               </div>
               <div class="col-6">
-                <li id="pars-fabric" class="row">
+                <div id="pars-fabric" class="row">
                   <div class="col-6">
                     Materiał dominujący:
                   </div>
                   <div class="col-6">
                     Bawełna
                   </div>
-                </li>
-                <li id="pars-composition" class="row">
+                </div>
+                <div id="pars-composition" class="row">
                   <div class="col-6">
                     Skład surowcowy:
                   </div>
                   <div class="col-6">
                     Bawełna: 90%, bambus: 30%
                   </div>
-                </li>
+                </div>
               </div>
             </div>
           </div>
@@ -469,7 +469,7 @@
   </script>
   <script id="size-range-template" type="text/x-handlebars-template">
     {{#with size}}
-      <p>{{this.name}}  {{this.min}}-{{this.max}} kg</p>
+      <a>{{this.name}}  {{this.min}}-{{this.max}} kg</a>
     {{/with}}
   </script>
   <script id="item-preview" type="text/x-handlebars-template">
@@ -515,49 +515,23 @@
             <button type="button" class="btn btn-primary">Napisz opinię</button>
           </div>
         </div>
-        <div class="info-box card my-2">
-          <div id="info-title" class="card-body">
+        <div class="info-box card my-2 text-secondary bg-light">
+          <div id="info-title" class="card-body text-center">
             <h5>
-              <a class="card-title stretched-link text-secondary" aria-expanded="false" aria-controls="collapseExample" data-toggle="collapse" href="#collapseExample">Informacje od producenta</a>
+              <a class="card-title stretched-link text-secondary" aria-expanded="false" aria-controls="parameters-wrapper" data-toggle="collapse" href="#parameters-wrapper">Informacje od producenta</a>
             </h5>
           </div>
-          <div class="collapse" id="collapseExample">
-            <div id="parameters-box row">
-              <div class="col-6">
-                <li id="pars-fabric" class="row">
-                  <div class="col-6">
-                    Materiał dominujący:
-                  </div>
-                  <div class="col-6">
-                    Bawełna
-                  </div>
-                </li>
-                <li id="pars-composition" class="row">
-                  <div class="col-6">
-                    Skład surowcowy:
-                  </div>
-                  <div class="col-6">
-                    Bawełna: 90%, bambus: 30%
-                  </div>
-                </li>
+          <div class="collapse" id="parameters-wrapper">
+            <div id="parameters">
+            </div>
+            <div id="description">
+              <div class="text-center">
+                <h5>Opis</h5>
               </div>
-              <div class="col-6">
-                <li id="pars-fabric" class="row">
-                  <div class="col-6">
-                    Materiał dominujący:
-                  </div>
-                  <div class="col-6">
-                    Bawełna
-                  </div>
-                </li>
-                <li id="pars-composition" class="row">
-                  <div class="col-6">
-                    Skład surowcowy:
-                  </div>
-                  <div class="col-6">
-                    Bawełna: 90%, bambus: 30%
-                  </div>
-                </li>
+              <div class="row">
+                <div class="col-10">
+                  <p>{{description}}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -572,6 +546,105 @@
       </div>
     </div>
     {{/with}}
+  </script>
+  <script id="parameters-template" type="text/x-handlebars-template">
+    <div class="text-center">
+      <h5>Parametry</h5>
+    </div>
+    <div class="row justify-content-around">
+      {{#with diaper}}
+      <div class="col-5">
+        {{#if outside}}
+        <div>
+          <p>Warstwa izolująca (zewnętrzna)</p>
+          <div id="outside-main-fabric-pars" class="row parameters-row">
+            <div class="parameter-column-left">
+              Materiał dominujący:
+            </div>
+            <div class="parameter-column-right">
+              {{outsideMainFabric}}
+            </div>
+          </div>
+          <div id="outside-pars-composition" class="row parameters-row">
+            <div class="parameter-column-left">
+              Skład surowcowy:
+            </div>
+            <div class="parameter-column-right">
+              {{#each outsideFabPers}}
+              <div>
+                <a>{{name}} {{percentage}}%</a>
+              </div>
+              {{/each}}
+            </div>
+          </div>
+          {{/if}}
+        </div>
+        {{#if inner}}
+        <a>Warstwa chłonna (wewnętrzna)</a>
+        <div id="inner-main-fabric-pars" class="row parameters-row">
+          <div class="parameter-column-left">
+            Materiał dominujący:
+          </div>
+          <div class="parameter-column-right">
+            {{innerMainFabric}}
+          </div>
+        </div>
+        <div id="inner-pars-composition" class="row parameters-row">
+          <div class="parameter-column-left">
+            Skład surowcowy:
+          </div>
+          <div class="parameter-column-right">
+            {{#each innerFabPers}}
+            <div>
+              <a>{{name}} {{percentage}}%</a>
+            </div>
+            {{/each}}
+          </div>
+        </div>
+        {{/if}}
+        <div id="sizes-pars" class="row parameters-row">
+          <div class="parameter-column-left">
+            Rozmiary:
+          </div>
+          <div class="parameter-column-right">
+            <div>
+              {{#each sizesRange}}
+                <div>
+                  {{printsizesinfo}}
+                </div>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-5">
+        <div id="closures-pars" class="row parameters-row">
+          <div class="parameter-column-left">
+            Zapięcia:
+          </div>
+          <div class="parameter-column-right">
+            {{closures}}
+          </div>
+        </div>
+        <div id="country" class="row parameters-row">
+          <div class="parameter-column-left">
+            Kraj produkcji:
+          </div>
+          <div class="parameter-column-right">
+            {{country}}
+          </div>
+        </div>
+        <div id="attests" class="row parameters-row">
+          <div class="parameter-column-left">
+            Atesty, certyfikaty:
+          </div>
+          <div class="parameter-column-right">
+            {{attests}}
+          </div>
+        </div>
+      </div>
+      {{/with}}
+    </div>
   </script>
 <!--   <script id="item-preview" type="text/x-handlebars-template">
     <div class="main-info-box row my-2">

@@ -27,8 +27,8 @@ export function createForm () {
 				let buttonPage2 = document.getElementById('page2-button');
 				buttonPage2.onclick = function () {
 					saveInputsPage2 (diaper);
-					addMockDiaper (diaper);
-					productPage.fillMockDiaperPreview (diaper)
+					let key = addMockDiaper (diaper);
+					productPage.createPreviewScreen (key);
 				}
 			}
 		}
@@ -164,8 +164,18 @@ function addMockDiaper (diaper) {
 	  diaper
 	});
 	let key = newDbRef.getKey();
-	fillProductMainInfo ();
-	createPreviewTemplate (key)
+	return key
+	// productPage.createPreviewScreen (key);
+	// const promise = createPreviewTemplate (key);
+	// promise
+	// .then(function(databaseDiaper) {
+	//   	createNewInputTemplate (categoryReference, data, inputId);
+	//   	$('#' + inputId).selectpicker();
+	// })
+
+	// let databaseDiaper = createPreviewTemplate (key)
+	// console.log ('databaseDiaper', databaseDiaper);
+	// return databaseDiaper
 }
 
 function fillProductMainInfo () {
@@ -191,11 +201,25 @@ function addDiaper (downloadURL, newDiaper) {
 }
 
 function saveInputsPage2 (diaper) {
-	saveFabInputPage2 (diaper, 'outsideFabrics', 'outsideFabPers', 'page2-outside-fab-input');
-	saveFabInputPage2 (diaper, 'innerFabrics', 'innerFabPers', 'page2-inner-fab-input');
+	saveFabInputPage2 (diaper, 'outsideFabrics', 'outsideFabPers', 'page2-outside-fab-input', 'outsideMainFabric');
+	saveFabInputPage2 (diaper, 'innerFabrics', 'innerFabPers', 'page2-inner-fab-input', 'innerMainFabric');
 	saveSizesInputsPage2 (diaper, 'page2-sizes-min', 'page2-sizes-max');
 	saveCountry (diaper);
 	saveAttestsInputPage2 (diaper);
+	saveClosuresInputPage2 (diaper);
+	saveDescription (diaper);
+}
+
+function saveDescription (diaper) {
+	let descriptionInput = $('#description');
+	let description = descriptionInput.val();
+	diaper.description = description;
+}
+
+function saveClosuresInputPage2 (diaper) {
+	let closuresInput = $('#closures-input');
+	let closures = closuresInput.val();
+	diaper.closures = closures;
 }
 
 function saveAttestsInputPage2 (diaper) {
@@ -215,7 +239,7 @@ function saveCountry (diaper) {
 	diaper.country = country;
 }
 
-function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id) {
+function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id, mainFabric) {
 	let fabrics = diaper[diaperFabId];
 	if (fabrics == undefined ) {
 		return
@@ -226,19 +250,33 @@ function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id) {
 			fabricPer.name = fabrics[0];
 			fabricPer.percentage = 100;
 			diaper[diaperNumId].push(fabricPer);
+			diaper[mainFabric] = fabrics[0];
+
 		} else {
 			let inputs = document.getElementsByClassName(id);
 			let numbers = [];
+			let biggestNumber = 0;
+			let fabWithBiggestNum;
 			Array.from(inputs).forEach(function(input){
 			    let number = input.value;
-			    numbers.push(number)
-			  })
+			    numbers.push(number);
+			})
 			for (let i=0; i<fabrics.length; i++) {
 				let fabricPer = {};
 				fabricPer.name = fabrics[i];
 				fabricPer.percentage = numbers[i];
 				diaper[diaperNumId].push(fabricPer);
-			}
+				console.log ('numbers[i]', numbers[i]);
+				console.log ('biggestNumber', biggestNumber)
+				if (numbers[i] > biggestNumber) {
+					console.log('bigger')
+			    	biggestNumber = numbers[i];
+			    	fabWithBiggestNum = fabrics[i];
+			    	console.log ('fabWithBiggestNum', fabWithBiggestNum)
+			    }
+			};
+			console.log('fabWithBiggestNum', fabWithBiggestNum)
+			diaper[mainFabric] = fabWithBiggestNum;
 		}
 	}
 }
@@ -310,18 +348,6 @@ function addClosuresToDatabase (newName, newId) {
 	});
 }
 
-function createPreviewTemplate (key) {
-	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
-	let previewTemplate = $('#item-preview').html();
-	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
-	dbRef.on('value', function(snap){
-		$('#page').html(compiledPreviewTemplate(snap.val()))
-	})
-	
-}
-
-
-
 function deleteDiapers () {
 	let dbRef = firebase.database().ref('diapers/');
 	dbRef.set(null);
@@ -376,6 +402,9 @@ export function getCategoryData (category) {
 }
 
 function createNewInput (data, category, inputId) {
+	console.log('data', data);
+	console.log('category', category)
+	console.log('inputId', inputId)
 	let categoryData;
 	for (let i=0; i<data.length; i++) {
 		if (data[i].id == category) {
