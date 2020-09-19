@@ -166,7 +166,7 @@ function loadItemData (key) {
 function fillProductMainInfo () {
 	let itemPreview = $('#item-preview').html();
 	Handlebars.registerHelper('printnewinfo', function(){
-		return this.diaperCategory[0] + ' ' + this.outsideFabrics[0]
+		return this.diaperCategory[0]
 	})
 }
 

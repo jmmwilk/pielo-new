@@ -1,13 +1,20 @@
 import * as diaperslist from '../mocks/diapers.js';
 import * as productpage from '../views/productpage.js';
+let database = firebase.database();
 
 let clickedMenuItem;
 
 export function createProductsList () {
-	fillDiaperCards ();
-	createDiapersTemplate ();
-	printDiapers ();
-	enableCardClick ();
+	const promise = getDatabaseDiapers ();
+	promise
+	.then(function(diapers) {
+	  	console.log ('diapers', diapers)
+	  	let loadedDiapers = {'data': diapers};
+		fillDiaperCards ();
+		createDiapersTemplate (loadedDiapers);
+		printDiapers ();
+		enableCardClick ();
+	})
 }
 
 export function removeProductsList () {
@@ -23,10 +30,26 @@ function fillDiaperCards () {
 	})
 }
 
-function createDiapersTemplate () {
+function getDatabaseDiapers () {
+	const promise1 = new Promise ((resolve, reject) => {
+		let ref = firebase.database().ref('diapers-mocks/');
+		let diapers = [];
+		ref.once('value', function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val().diaper;
+		      diapers.push(childData);
+		    });
+		    resolve (diapers)
+	  	});
+	});
+	return promise1
+}
+
+function createDiapersTemplate (loadedDiapers) {
+	console.log ('loadedDiapers', loadedDiapers)
 	let pieluchaTemplate = $('#pielucha-template').html();
 	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
-	$('#page').append(compiledPieluchaTemplate(diaperslist.items));
+	$('#page').append(compiledPieluchaTemplate(loadedDiapers))
 }
 
 function createNewDiapersTemplate (newItems) {

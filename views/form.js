@@ -9,6 +9,9 @@ export function createForm () {
 	const promise = getCategories ();
 	promise.
 	then(function(data) {
+		return getCategoriesData (data);
+	})
+	.then(function(data){
 		createPage1 (data);
 		let diaper = {}
 		$('#input-image').change(function(event) {
@@ -34,6 +37,47 @@ export function createForm () {
 		}
 	})
 }
+
+export function getCategoriesData (data) {
+	let categoriesNames = [];
+	Array.from(data).forEach(function(data){
+	    let categoryName = data.id;
+	    categoriesNames.push(categoryName);
+	});
+	let categoriesData = {};
+	const promise = new Promise ((resolve, reject) => {
+		Array.from(categoriesNames).forEach(function(categoryName){
+		    let dbRef = firebase.database().ref(categoryName + '/');
+		    let categoryData = [];
+		    dbRef.once('value',   function(snapshot) {
+			    snapshot.forEach(function(childSnapshot) {
+			      var childData = childSnapshot.val();
+			      categoryData.push(childData);
+			    });
+			    categoriesData[categoryName] = categoryData;
+		  	});
+		  	// console.log ('categoriesData', categoriesData)
+		  	// console.log ('categoriesData.brands', categoriesData.brands)
+			resolve (categoriesData)
+		})
+	});
+	return promise
+}
+
+// export function getCategoryData (category) {
+// 	const promise1 = new Promise ((resolve, reject) => {
+// 		let dbRef = firebase.database().ref(category + '/');
+// 		let data = [];
+// 		dbRef.once('value',   function(snapshot) {
+// 		    snapshot.forEach(function(childSnapshot) {
+// 		      var childData = childSnapshot.val();
+// 		      data.push(childData);
+// 		    });
+// 		    resolve (data)
+// 	  	});
+// 	});
+// 	return promise1
+// }
 
 function showPreview (event) {
 	let source = URL.createObjectURL(event.target.files[0]);
@@ -118,13 +162,21 @@ function createPage2Template (diaper) {
 function saveInputs (diaper) {
 	let brand = $('#brand-input');
 	let diaperCategory = $('#diaper-categories-input');
-	let sizes = $('#sizes-input');
+	let sizesInput = $('#sizes-input');
 	let outsideFabrics = $('#outside-fabrics-input');
 	let innerFabrics = $('#inner-fabrics-input');
 	let outside = document.getElementById('outside-layer-input');
 	let inner = document.getElementById('inner-layer-input');
+	let sizeNames = sizesInput.val();
+	let sizes = [];
+	console.log('sizeNames', sizeNames)
+	Array.from(sizeNames).forEach(function(sizeName){
+	    let size = {};
+	    size.name = sizeName;
+	    sizes.push(size);
+	})
 	diaper.diaperCategory = diaperCategory.val();
-	diaper.sizes = sizes.val();
+	diaper.sizes = sizes;
 	diaper.brand = brand.val();
 
 	if (outside.checked == true && outsideFabrics.val().length > 1){
@@ -295,13 +347,10 @@ function saveSizesInputsPage2 (diaper, minId, maxId) {
 	    let number = maxInput.value;
 	    numbersMax.push(number)
 	})
-	diaper.sizesRange = [];
 	for (let i=0; i<sizes.length; i++) {
-		let sizesNum = {};
-		sizesNum.name = sizes[i];
-		sizesNum.min = numbersMin[i];
-		sizesNum.max = numbersMax[i];
-		diaper.sizesRange.push(sizesNum);
+		diaper.sizes[i].min = numbersMin[i];
+		diaper.sizes[i].max = numbersMax[i];
+//		sizesNum.shortcut = ???
 	}
 }
 
@@ -371,7 +420,7 @@ function addCategoriesToDatabase () {
 	}
 }
 
-function getCategories () {
+export function getCategories () {
 	const promise1 = new Promise ((resolve, reject) => {
 		let dbRef = firebase.database().ref('categories/');
 		let data = [];
@@ -401,23 +450,36 @@ export function getCategoryData (category) {
 	return promise1
 }
 
+// function createNewInput (data, category, inputId) {
+// 	console.log('data', data);
+// 	console.log('category', category)
+// 	console.log('inputId', inputId)
+// 	let categoryData;
+// 	for (let i=0; i<data.length; i++) {
+// 		if (data[i].id == category) {
+// 			categoryData = data[i];
+// 		}
+// 	}
+// 	let categoryReference = categoryData.reference;
+// 	const promise = getCategoryData (categoryReference);
+// 	promise
+// 	.then(function(data) {
+// 		console.log('categorydataaaa', data)
+// 	  	createNewInputTemplate (categoryReference, data, inputId);
+// 	  	$('#' + inputId).selectpicker();
+// 	})
+// }
+
 function createNewInput (data, category, inputId) {
 	console.log('data', data);
 	console.log('category', category)
 	console.log('inputId', inputId)
-	let categoryData;
-	for (let i=0; i<data.length; i++) {
-		if (data[i].id == category) {
-			categoryData = data[i];
-		}
-	}
-	let categoryReference = categoryData.reference;
-	const promise = getCategoryData (categoryReference);
-	promise
-	.then(function(data) {
-	  	createNewInputTemplate (categoryReference, data, inputId);
-	  	$('#' + inputId).selectpicker();
-	})
+	let categoryReference = data[category];
+	console.log ('data[category]', data[category])
+	console.log ('data[0]', data[0])
+	console.log('categoryReference', categoryReference)
+	createNewInputTemplate (categoryReference, data, inputId);
+	$('#' + inputId).selectpicker();
 }
 
 function createNewInputTemplate (category, data, inputId) {
