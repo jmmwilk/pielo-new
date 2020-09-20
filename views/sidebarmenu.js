@@ -6,12 +6,16 @@ export function createSideBar () {
 	const promise = form.getCategories ();
 	promise.
 	then(function(data) {
-		return form.getCategoriesData (data);
+		const promise2 = form.getCategoriesData (data);
+		console.log(JSON.stringify('333data', data));
+		promise2.
+		then(function(data) {
+			console.log(JSON.stringify('222data', data));
+			console.log ('111data', data)
+			createSideBarTemplate (data);
+			productslist.enableAllDiapersClick ();
+		})
 	})
-	.then (function(data){
-		createSideBarTemplate (data);
-		productslist.enableAllDiapersClick ();
-	});
 }
 
 export function removeSidebarMenu () {
@@ -21,6 +25,7 @@ export function removeSidebarMenu () {
 }
 
 function createSideBarTemplate (data) {
+
 	console.log('data', data)
 	console.log('data.brands', data.brands)
 	console.log('data[brands]', data['brands'])

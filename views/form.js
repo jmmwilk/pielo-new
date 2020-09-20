@@ -169,7 +169,7 @@ function saveInputs (diaper) {
 	let inner = document.getElementById('inner-layer-input');
 	let sizeNames = sizesInput.val();
 	let sizes = [];
-	console.log('sizeNames', sizeNames)
+	// console.log('sizeNames', sizeNames)
 	Array.from(sizeNames).forEach(function(sizeName){
 	    let size = {};
 	    size.name = sizeName;
@@ -318,16 +318,16 @@ function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id, mainFabric) {
 				fabricPer.name = fabrics[i];
 				fabricPer.percentage = numbers[i];
 				diaper[diaperNumId].push(fabricPer);
-				console.log ('numbers[i]', numbers[i]);
-				console.log ('biggestNumber', biggestNumber)
+				// console.log ('numbers[i]', numbers[i]);
+				// console.log ('biggestNumber', biggestNumber)
 				if (numbers[i] > biggestNumber) {
-					console.log('bigger')
+					// console.log('bigger')
 			    	biggestNumber = numbers[i];
 			    	fabWithBiggestNum = fabrics[i];
-			    	console.log ('fabWithBiggestNum', fabWithBiggestNum)
+			    	// console.log ('fabWithBiggestNum', fabWithBiggestNum)
 			    }
 			};
-			console.log('fabWithBiggestNum', fabWithBiggestNum)
+			// console.log('fabWithBiggestNum', fabWithBiggestNum)
 			diaper[mainFabric] = fabWithBiggestNum;
 		}
 	}
@@ -471,13 +471,13 @@ export function getCategoryData (category) {
 // }
 
 function createNewInput (data, category, inputId) {
-	console.log('data', data);
-	console.log('category', category)
-	console.log('inputId', inputId)
+	// console.log('data', data);
+	// console.log('category', category)
+	// console.log('inputId', inputId)
 	let categoryReference = data[category];
-	console.log ('data[category]', data[category])
-	console.log ('data[0]', data[0])
-	console.log('categoryReference', categoryReference)
+	// console.log ('data[category]', data[category])
+	// console.log ('data[0]', data[0])
+	// console.log('categoryReference', categoryReference)
 	createNewInputTemplate (categoryReference, data, inputId);
 	$('#' + inputId).selectpicker();
 }
