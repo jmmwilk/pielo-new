@@ -38,32 +38,6 @@ export function createForm () {
 	})
 }
 
-export function getCategoriesData (data) {
-	let categoriesNames = [];
-	Array.from(data).forEach(function(data){
-	    let categoryName = data.id;
-	    categoriesNames.push(categoryName);
-	});
-	let categoriesData = {};
-	const promise = new Promise ((resolve, reject) => {
-		Array.from(categoriesNames).forEach(function(categoryName){
-		    let dbRef = firebase.database().ref(categoryName + '/');
-		    let categoryData = [];
-		    dbRef.once('value',   function(snapshot) {
-			    snapshot.forEach(function(childSnapshot) {
-			      var childData = childSnapshot.val();
-			      categoryData.push(childData);
-			    });
-			    categoriesData[categoryName] = categoryData;
-		  	});
-		  	// console.log ('categoriesData', categoriesData)
-		  	// console.log ('categoriesData.brands', categoriesData.brands)
-			resolve (categoriesData)
-		})
-	});
-	return promise
-}
-
 // export function getCategoryData (category) {
 // 	const promise1 = new Promise ((resolve, reject) => {
 // 		let dbRef = firebase.database().ref(category + '/');
@@ -431,9 +405,41 @@ export function getCategories () {
 		    });
 		    resolve (data)
 	  	});
+	  	
 	});
 	return promise1
 }
+
+export function getCategoriesData (data) {
+	let categoriesNames = [];
+	Array.from(data).forEach(function(data){
+	    let categoryName = data.id;
+	    categoriesNames.push(categoryName);
+	});
+	let categoriesData = {};
+	const promise = new Promise ((resolve, reject) => {
+		Array.from(categoriesNames).forEach(function(categoryName){
+		    let dbRef = firebase.database().ref(categoryName + '/');
+		    let categoryData = [];
+		    dbRef.once('value',   function(snapshot) {
+			    snapshot.forEach(function(childSnapshot) {
+			      var childData = childSnapshot.val();
+			      categoryData.push(childData);
+			    });
+//			    console.log(JSON.stringify(categoryName));
+//			    console.log(JSON.stringify(categoryData));
+			    categoriesData[categoryName] = categoryData;
+			    console.log(JSON.stringify(categoriesData));
+			    
+		  	});
+		  	console.log(JSON.stringify(categoriesData));
+		})
+//		console.log(JSON.stringify(categoriesData));
+		resolve (categoriesData)
+	});
+	return promise
+}
+
 
 export function getCategoryData (category) {
 	const promise1 = new Promise ((resolve, reject) => {

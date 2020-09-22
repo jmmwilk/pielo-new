@@ -6,12 +6,11 @@ export function createSideBar () {
 	const promise = form.getCategories ();
 	promise.
 	then(function(data) {
+		console.log(JSON.stringify(data));
 		const promise2 = form.getCategoriesData (data);
-		console.log(JSON.stringify('333data', data));
 		promise2.
 		then(function(data) {
-			console.log(JSON.stringify('222data', data));
-			console.log ('111data', data)
+			console.log(JSON.stringify(data));
 			createSideBarTemplate (data);
 			productslist.enableAllDiapersClick ();
 		})
