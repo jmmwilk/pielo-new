@@ -24,7 +24,6 @@
         <button id="add-diaper">
           Dodaj pieluchę
         </button>
-        <p1 id="zupa"></p1>
         <div id="login-icon-box">
           <img id="login-icon" src="/images/login-icon.png"/>
         </div>
@@ -198,41 +197,24 @@
             Wszystkie Pieluszki
           </a>
         </li>
-        {{#each categories}}
-          <li class="nav-item">
-            <a id="{{id}}" class="nav-link collapsed text-truncate" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
-            {{name}}
-            </a>
-            <ul id="{{id}}-submenu" class="collapse flex-column pl-2 nav" aria-expanded="false">
-              {{#each submenu1}}
-                {{#if issubmenu}}
-                  <li class="nav-item">
-                    <a id="{{id}}" class="nav-link collapsed py-1" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
-                      {{this.name}}
-                    </a>
-                    <ul id="{{id}}-submenu" class="collapse flex-column nav pl-4" aria-expanded="false">
-                      {{#each this.submenu2}}
-                        <li class="nav-item">
-                          <a id={{id}} class="menu-item {{../en-id}} nav-link p-1">
-                          {{name}}
-                          </a>
-                        </li>
-                      {{/each}}
-                    </ul>
-                  </li>
-                {{else}}
-                  <li class="nav-item">
-                    <a id="{{id}}" class="menu-item {{../en-id}} nav-link">
-                    {{this.name}}
-                    </a>
-                  </li>
-                {{/if}}
-              {{/each}}
-            </ul>
-          </li>
-        {{/each}}
       </ul>
     </div>
+  </script>
+  <script id="nav-template" type="text/x-handlebars-template">
+    <li class="nav-item">
+      <a id="{{id}}" class="nav-link collapsed text-truncate" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
+      {{menu-name}}
+      </a>
+      <ul id="{{id}}-submenu" class="collapse flex-column pl-2 nav" aria-expanded="false">
+        {{#each data}}
+        <li class="nav-item">
+          <a id="{{id}}" class="menu-item nav-link" data-categorygroup="{{../id}}" data-category="{{id}}">
+          {{this.name}}
+          </a>
+        </li>
+        {{/each}}
+      </ul>
+    </li>
   </script>
 <!--   <script id="pielucha-template" type="text/x-handlebars-template">
     <div id="main" class="col-md-10 order-1 mx-auto">
@@ -258,36 +240,24 @@
     <div id="main" class="col-md-10 order-1 mx-auto">
       <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
         {{#each data}}
-        <li class="card text-center col pielucha-template">
+        <li class="card text-center col pielucha-template" data-key="{{key}}">
           <div class="card-body">
             <div class="embed-responsive embed-responsive-1by1">
               <img src={{"url"}} class="img embed-responsive-item rounded pielucha-image"/>
             </div>
-            <div class="flex-row d-flex justify-content-between">
-              <a href="#application" class="card-link">{{brand}}</a>
-              <p>{{sizes}}</p>
+            <div class="row justify-content-between">
+              <div class="col-auto">
+                <a href="#application" class="card-link text-warning">{{brand.name}}</a>
+              </div>
+              <div class="col-auto">
+                <div class="row m-0 text-muted">
+                  {{#each sizes}}
+                  <a>{{printsizes}}</a>
+                  {{/each}}
+                </div>
+              </div>
             </div>
-            <h5>{{diaperCategory}}</h5>
-          </div>
-        </li>
-        {{/each}}
-      </div>
-    </div>
-  </script>
-  <script id="new-pielucha-template" type="text/x-handlebars-template">
-    <div id="main" class="col-md-10 order-1 mx-auto">
-      <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
-        {{#each diapers}}
-        <li class="card text-center col pielucha-template">
-          <div class="card-body">
-            <div class="embed-responsive embed-responsive-1by1">
-              <img src="/images/{{photo}}.jpg" class="img embed-responsive-item rounded pielucha-image"/>
-            </div>
-            <div class="flex-row d-flex justify-content-between">
-              <a href="#application" class="card-link">{{brand}}</a>
-              <p>{{size}}</p>
-            </div>
-            <h5> {{printdiaper name}} </h5>
+            <h5 class="text-primary">{{diaperCategory.name}}</h5>
           </div>
         </li>
         {{/each}}
@@ -384,7 +354,7 @@
             <p>Warstwa izolująca (zewnętrzna)</p>
             {{#each outsideFabrics}}
             <div class="form-group row">
-              <label class="col-form-label col-5" for="outside-percentage-input">{{this}}</label>
+              <label class="col-form-label col-5" for="outside-percentage-input">{{this.name}}</label>
               <div class="col-3">
                 <input class="page2input page2-outside-fab-input form-control" type="number" id="outside-percentage-input">
               </div>
@@ -398,7 +368,7 @@
             <p>Warstwa chłonna (wewnętrzna)</p>
             {{#each innerFabrics}}
             <div class="form-group row">
-              <label class="col-form-label col-5" for="outside-percentage-input">{{this}}</label>
+              <label class="col-form-label col-5" for="outside-percentage-input">{{this.name}}</label>
               <div class="col-3">
                 <input class="page2input page2-inner-fab-input form-control" type="number" id="inner-percentage-input">
               </div>
@@ -411,7 +381,7 @@
           <p>Przedziały wagowe rozmiarów</p>
           {{#each sizes}}
             <div class="form-group row">
-              <label class="col-form-label col-4" for="sizes-range-min-input">{{this}}</label>
+              <label class="col-form-label col-4" for="sizes-range-min-input">{{name}}</label>
               <div class="col-3">
                 <input class="page2input page2-sizes-min form-control px-1" type="number" id="sizes-range-min-input">
               </div>
@@ -476,13 +446,13 @@
     </form>
   </script>
   <script id="new-input-template" type="text/x-handlebars-template">
-    {{#each category}}
+    {{#each data}}
       <option>{{name}}</option>
     {{/each}}
   </script>
     <script id="size-buttons-template" type="text/x-handlebars-template">
-    {{#each sizes}}
-      <button id="{{this.id}}" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">{{this.shortcut}}</button>
+    {{#each diaper.sizes}}
+      <button id="{{this.shortcut}}" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">{{this.shortcut}}</button>
     {{/each}}
     <div id="size-description" class="ml-2">
     </div>
@@ -504,17 +474,10 @@
             <h5 class="text-primary"> {{printnewinfo this}} </h5>
             <div>
               <p>
-                od <a href="#application" class="text-warning">{{brand}}</a>
+                od <a href="#application" class="text-warning">{{brand.name}}</a>
               </p>
             </div>
-            <div class="stars-box d-flex flex-row text-muted">
-              <p class="mr-1">5,0</p>
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <p class="ml-1">2 recenzje</p>
+            <div id="stars-box-wrapper">
             </div>
             <div class="text-muted">
               <p class="mb-0">Rozmiary</p>
@@ -542,30 +505,43 @@
             </h5>
           </div>
           <div class="collapse" id="parameters-wrapper">
-            <div id="parameters">
+            <div id="parameters" class="mb-3">
             </div>
             <div id="description">
               <div class="text-center">
                 <h5>Opis</h5>
               </div>
-              <div class="row">
-                <div class="col-10">
+              <div class="row justify-content-center">
+                <div class="col-11">
                   <p>{{description}}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="reviews-box card my-2 text-secondary">
-          <div id="reviews-title" class="card-body">
-            <h5 class="card-title">Opinie</h5>
-          </div>
-          <div id="reviews-container">
-          </div>
-        </div>
       </div>
     </div>
     {{/with}}
+  </script>
+  <script id="stars-box-template" type="text/x-handlebars-template">
+    <div class="stars-box d-flex flex-row text-muted">
+      <p class="mr-1">5,0</p>
+      <img src="/images/star.png"/ class="star">
+      <img src="/images/star.png"/ class="star">
+      <img src="/images/star.png"/ class="star">
+      <img src="/images/star.png"/ class="star">
+      <img src="/images/star.png"/ class="star">
+      <p class="ml-1">2 recenzje</p>
+    </div>
+  </script>
+  <script id="reviews-box-template" type="text/x-handlebars-template">
+    <div class="reviews-box card my-2 text-secondary">
+      <div id="reviews-title" class="card-body">
+        <h5 class="card-title">Opinie</h5>
+      </div>
+      <div id="reviews-container">
+      </div>
+    </div>
   </script>
   <script id="parameters-template" type="text/x-handlebars-template">
     <div class="text-center">
@@ -576,7 +552,7 @@
       <div class="col-5">
         {{#if outside}}
         <div class="parameters-row">
-          <p>Warstwa izolująca (zewnętrzna)</p>
+          <a class="font-italic">Warstwa izolująca (zewnętrzna)</a>
           <div id="outside-main-fabric-pars" class="row parameters-row">
             <div class="parameter-column-left">
               Materiał dominujący:
@@ -597,11 +573,11 @@
               {{/each}}
             </div>
           </div>
-          {{/if}}
         </div>
+        {{/if}}
         {{#if inner}}
         <div class="parameters-row">
-          <a>Warstwa chłonna (wewnętrzna)</a>
+          <a class="font-italic">Warstwa chłonna (wewnętrzna)</a>
           <div id="inner-main-fabric-pars" class="row">
             <div class="parameter-column-left">
               Materiał dominujący:
@@ -630,7 +606,7 @@
           </div>
           <div class="parameter-column-right">
             <div>
-              {{#each sizesRange}}
+              {{#each sizes}}
                 <div>
                   {{printsizesinfo}}
                 </div>

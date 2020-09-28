@@ -4,54 +4,34 @@ import * as productPage from '../views/productpage.js';
 let database = firebase.database();
 let storage = firebase.storage();
 
-export function createForm () {
+export function createForm (data) {
 	let imageNumber = 1;
-	const promise = getCategories ();
-	promise.
-	then(function(data) {
-		return getCategoriesData (data);
-	})
-	.then(function(data){
-		createPage1 (data);
-		let diaper = {}
-		$('#input-image').change(function(event) {
-			if (event.target.files.length > 0) {
-				showPreview (event);
-				addImageToStorage (imageNumber, diaper);
-				imageNumber = imageNumber + 1;
-			}
-		});
-		let firebaseData = data;
-		let button = document.getElementById('page1-button');
-		button.onclick = function () {
-			let validation = layersValidation ();
-			if (validation == true) {
-				createPage2 (firebaseData, diaper);
-				let buttonPage2 = document.getElementById('page2-button');
-				buttonPage2.onclick = function () {
-					saveInputsPage2 (diaper);
-					let key = addMockDiaper (diaper);
-					productPage.createPreviewScreen (key);
-				}
+	createPage1 (data);
+	let diaper = {}
+	$('#input-image').change(function(event) {
+		if (event.target.files.length > 0) {
+			showPreview (event);
+			addImageToStorage (imageNumber, diaper);
+			imageNumber = imageNumber + 1;
+		}
+	});
+	let firebaseData = data;
+	let button = document.getElementById('page1-button');
+	button.onclick = function () {
+		let validation = layersValidation ();
+		if (validation == true) {
+			createPage2 (firebaseData, diaper);
+			let buttonPage2 = document.getElementById('page2-button');
+			buttonPage2.onclick = function () {
+				saveInputsPage2 (diaper);
+				let key = addMockDiaper (diaper);
+				let page= document.getElementById('page');
+				page.innerHTML = '';
+				productPage.createProductScreen (key, 'preview');
 			}
 		}
-	})
+	}
 }
-
-// export function getCategoryData (category) {
-// 	const promise1 = new Promise ((resolve, reject) => {
-// 		let dbRef = firebase.database().ref(category + '/');
-// 		let data = [];
-// 		dbRef.once('value',   function(snapshot) {
-// 		    snapshot.forEach(function(childSnapshot) {
-// 		      var childData = childSnapshot.val();
-// 		      data.push(childData);
-// 		    });
-// 		    resolve (data)
-// 	  	});
-// 	});
-// 	return promise1
-// }
 
 function showPreview (event) {
 	let source = URL.createObjectURL(event.target.files[0]);
@@ -64,7 +44,7 @@ function showPreview (event) {
 
 function addImageToStorage (imageNumber, diaper) {
 	const selectedFile = document.getElementById('input-image').files[0];
-	let imageRef = storage.ref().child('brand' + imageNumber);
+	let imageRef = storage.ref().child('kokosi' + imageNumber);
 	imageRef.put(selectedFile)
 	.then(function(snapshot) {
 	  	return imageRef.getDownloadURL();
@@ -85,8 +65,8 @@ function createPage1 (data) {
 	createPage1Template ();
 	createNewInput (data, 'diaper-categories', 'diaper-categories-input');
 	createNewInput (data, 'sizes', 'sizes-input');
-	createNewInput (data, 'composition', 'outside-fabrics-input');
-	createNewInput (data, 'composition', 'inner-fabrics-input');
+	createNewInput (data, 'fabrics', 'outside-fabrics-input');
+	createNewInput (data, 'fabrics', 'inner-fabrics-input');
 }
 
 function layersValidation () {
@@ -114,11 +94,10 @@ function layersValidation () {
 }
 
 function createPage2 (firebaseData, diaper) {
-	saveInputs (diaper);
+	saveInputs (firebaseData, diaper);
 	createPage2Template (diaper);
 	$('.page2input').selectpicker();
 	createNewInput (firebaseData, 'closures', 'closures-input');
-	return
 }
 
 function createPage1Template () {
@@ -128,58 +107,112 @@ function createPage1Template () {
 }
 
 function createPage2Template (diaper) {
+	console.log('diaper', diaper)
 	let page2Template = $('#form-page2-template').html();
 	let compiledPage2Template = Handlebars.compile(page2Template);
 	$('#page').html(compiledPage2Template(diaper));
 }
 
-function saveInputs (diaper) {
-	let brand = $('#brand-input');
-	let diaperCategory = $('#diaper-categories-input');
+function saveInputs (categories, diaper) {
+	let brandInput = $('#brand-input');
+	let diaperCategoryInput = $('#diaper-categories-input');
 	let sizesInput = $('#sizes-input');
-	let outsideFabrics = $('#outside-fabrics-input');
-	let innerFabrics = $('#inner-fabrics-input');
+	let outsideFabricsInput = $('#outside-fabrics-input');
+	let innerFabricsInput = $('#inner-fabrics-input');
 	let outside = document.getElementById('outside-layer-input');
 	let inner = document.getElementById('inner-layer-input');
 	let sizeNames = sizesInput.val();
-	let sizes = [];
+	let diaperCategories = diaperCategoryInput.val();
 	// console.log('sizeNames', sizeNames)
-	Array.from(sizeNames).forEach(function(sizeName){
-	    let size = {};
-	    size.name = sizeName;
-	    sizes.push(size);
-	})
-	diaper.diaperCategory = diaperCategory.val();
-	diaper.sizes = sizes;
-	diaper.brand = brand.val();
+	Array.from(categories).forEach(function(category){
+		if (category.id == 'sizes') {
+			let sizes = [];
+			Array.from(sizeNames).forEach(function(sizeName){
+			    let size = {};
+			    size.name = sizeName;
+			    for (let i=0; i<category.data.length; i++) {
+					if (sizeName == category.data[i].name) {
+						size.shortcut = category.data[i].shortcut;
+						size.id = category.data[i].id;
+					}
+				}
+			    sizes.push(size);
+			})
+			diaper.sizes = sizes;
+		}
+		if (category.id == 'diaper-categories') {
+		    let cat = {};
+		    cat.name = diaperCategories[0];
+		    for (let i=0; i<category.data.length; i++) {
+				if (diaperCategories[0] == category.data[i].name) {
+					cat.id = category.data[i].id;
+				}
+			}
+		    diaper.diaperCategory = cat;
+		}
+		if (category.id == 'brands') {
+		    let brand = {};
+		    brand.name = brandInput.val();
+		    for (let i=0; i<category.data.length; i++) {
+				if (brandInput.val() == category.data[i].name) {
+					brand.id = category.data[i].id;
+				}
+			}
+		    diaper.brand = brand;
+		}
+		if (category.id == 'fabrics') {
+			let outsideFabs = outsideFabricsInput.val();
+			if (outside.checked == false) {
+				diaper.outside = false;
+			} else {
+				if (outsideFabricsInput.val().length > 1) {
+					diaper.outsideMoreThan1 = true;
+				} else {
+					diaper.outsideMoreThan1 = false;
+				}
+				diaper.outside = true;
+				let outsideFabrics = [];
+				outsideFabs.forEach(function(outsideFab) {
+					let fabric = {};
+					for (let i=0; i<category.data.length; i++) {
+						if (outsideFab == category.data[i].name) {
+							fabric.name = outsideFab;
+							fabric.id = category.data[i].id;
+						}
+					}
+					outsideFabrics.push(fabric)
+				})
+				diaper.outsideFabrics = outsideFabrics
+			}
 
-	if (outside.checked == true && outsideFabrics.val().length > 1){
-		diaper.outsideMoreThan1 = true;
-		diaper.outside = true;
-		diaper.outsideFabrics = outsideFabrics.val();
-	};
-	if (outside.checked == true && outsideFabrics.val().length == 1){
-		diaper.outsideMoreThan1 = false;
-		diaper.outside = true;
-		diaper.outsideFabrics = outsideFabrics.val();
-	};
-	if (outside.checked == false){
-		diaper.outside = false;
-	};
-
-	if (inner.checked == true && innerFabrics.val().length > 1){
-		diaper.innerMoreThan1 = true;
-		diaper.inner = true;
-		diaper.innerFabrics = innerFabrics.val();
-	};
-	if (inner.checked == true && innerFabrics.val().length == 1){
-		diaper.innerMoreThan1 = false;
-		diaper.inner = true;
-		diaper.innerFabrics = innerFabrics.val();
-	};
-	if (outside.inner == false){
-		diaper.inner = false;
-	};
+			let innerFabs = innerFabricsInput.val();
+			if (outside.inner == false) {
+				diaper.inner = false;
+			} else {
+				if (innerFabricsInput.val().length > 1) {
+					diaper.innerMoreThan1 = true;
+				} else {
+					diaper.innerMoreThan1 = false;
+				}
+				diaper.inner = true;
+				let innerFabrics = [];
+				
+				innerFabs.forEach(function(innerFab) {
+					let fabric = {};
+					for (let i=0; i<category.data.length; i++) {
+						if (innerFab == category.data[i].name) {
+							fabric.name = innerFab;
+							fabric.id = category.data[i].id;
+						}
+					}
+					innerFabrics.push(fabric)
+				})
+				diaper.innerFabrics = innerFabrics;
+			}
+		}
+	});
+	
+	console.log('diaper', diaper)
 	return diaper
 }
 
@@ -267,16 +300,17 @@ function saveCountry (diaper) {
 
 function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id, mainFabric) {
 	let fabrics = diaper[diaperFabId];
+	console.log ('fabrics', fabrics)
 	if (fabrics == undefined ) {
 		return
 	} else {
 		diaper[diaperNumId] = [];
 		let fabricPer = {};
 		if (diaper[diaperFabId].length == 1) {
-			fabricPer.name = fabrics[0];
+			fabricPer.name = fabrics[0].name;
 			fabricPer.percentage = 100;
 			diaper[diaperNumId].push(fabricPer);
-			diaper[mainFabric] = fabrics[0];
+			diaper[mainFabric] = fabrics[0].name;
 
 		} else {
 			let inputs = document.getElementsByClassName(id);
@@ -289,7 +323,7 @@ function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id, mainFabric) {
 			})
 			for (let i=0; i<fabrics.length; i++) {
 				let fabricPer = {};
-				fabricPer.name = fabrics[i];
+				fabricPer.name = fabrics[i].name;
 				fabricPer.percentage = numbers[i];
 				diaper[diaperNumId].push(fabricPer);
 				// console.log ('numbers[i]', numbers[i]);
@@ -297,7 +331,7 @@ function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id, mainFabric) {
 				if (numbers[i] > biggestNumber) {
 					// console.log('bigger')
 			    	biggestNumber = numbers[i];
-			    	fabWithBiggestNum = fabrics[i];
+			    	fabWithBiggestNum = fabrics[i].name;
 			    	// console.log ('fabWithBiggestNum', fabWithBiggestNum)
 			    }
 			};
@@ -308,7 +342,7 @@ function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id, mainFabric) {
 }
 
 function saveSizesInputsPage2 (diaper, minId, maxId) {
-	let sizes = diaper.sizes;
+	console.log('diaper', diaper)
 	let minInputs = document.getElementsByClassName(minId);
 	let numbersMin = [];
 	Array.from(minInputs).forEach(function(minInput){
@@ -321,37 +355,38 @@ function saveSizesInputsPage2 (diaper, minId, maxId) {
 	    let number = maxInput.value;
 	    numbersMax.push(number)
 	})
-	for (let i=0; i<sizes.length; i++) {
+	for (let i=0; i<diaper.sizes.length; i++) {
 		diaper.sizes[i].min = numbersMin[i];
 		diaper.sizes[i].max = numbersMax[i];
-//		sizesNum.shortcut = ???
 	}
+	
+	
 }
 
-let formInputs = {
-	'inputs': [
-		{
-			'text': 'Nazwa',
-			'id': 'input-name',
-			'source': menu.sideBarMenu.categories[0]
-		},
-		{
-			'text': 'Rozmiar',
-			'id': 'input-size',
-			'source': menu.sideBarMenu.categories[3]
-		},
-		{
-			'text': 'Materiał',
-			'id': 'input-fabric',
-			'source': menu.sideBarMenu.categories[1]
-		},
-		{
-			'text': 'Producent',
-			'id': 'input-brand',
-			'source': menu.sideBarMenu.categories[4]
-		},
-	]
-}
+// let formInputs = {
+// 	'inputs': [
+// 		{
+// 			'text': 'Nazwa',
+// 			'id': 'input-name',
+// 			'source': menu.sideBarMenu.categories[0]
+// 		},
+// 		{
+// 			'text': 'Rozmiar',
+// 			'id': 'input-size',
+// 			'source': menu.sideBarMenu.categories[3]
+// 		},
+// 		{
+// 			'text': 'Materiał',
+// 			'id': 'input-fabric',
+// 			'source': menu.sideBarMenu.categories[1]
+// 		},
+// 		{
+// 			'text': 'Producent',
+// 			'id': 'input-brand',
+// 			'source': menu.sideBarMenu.categories[4]
+// 		},
+// 	]
+// }
 
 function addCategoryToDatabase (newName, newId) {
 	let dbRef = firebase.database().ref('categories/');
@@ -394,67 +429,20 @@ function addCategoriesToDatabase () {
 	}
 }
 
-export function getCategories () {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref('categories/');
-		let data = [];
-		dbRef.once('value',   function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      data.push(childData);
-		    });
-		    resolve (data)
-	  	});
-	  	
-	});
-	return promise1
-}
-
-export function getCategoriesData (data) {
-	let categoriesNames = [];
-	Array.from(data).forEach(function(data){
-	    let categoryName = data.id;
-	    categoriesNames.push(categoryName);
-	});
-	let categoriesData = {};
-	const promise = new Promise ((resolve, reject) => {
-		Array.from(categoriesNames).forEach(function(categoryName){
-		    let dbRef = firebase.database().ref(categoryName + '/');
-		    let categoryData = [];
-		    dbRef.once('value',   function(snapshot) {
-			    snapshot.forEach(function(childSnapshot) {
-			      var childData = childSnapshot.val();
-			      categoryData.push(childData);
-			    });
-//			    console.log(JSON.stringify(categoryName));
-//			    console.log(JSON.stringify(categoryData));
-			    categoriesData[categoryName] = categoryData;
-			    console.log(JSON.stringify(categoriesData));
-			    
-		  	});
-		  	console.log(JSON.stringify(categoriesData));
-		})
-//		console.log(JSON.stringify(categoriesData));
-		resolve (categoriesData)
-	});
-	return promise
-}
-
-
-export function getCategoryData (category) {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref(category + '/');
-		let data = [];
-		dbRef.once('value',   function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      data.push(childData);
-		    });
-		    resolve (data)
-	  	});
-	});
-	return promise1
-}
+// export function getCategoryData (category) {
+// 	const promise1 = new Promise ((resolve, reject) => {
+// 		let dbRef = firebase.database().ref(category + '/');
+// 		let data = [];
+// 		dbRef.once('value',   function(snapshot) {
+// 		    snapshot.forEach(function(childSnapshot) {
+// 		      var childData = childSnapshot.val();
+// 		      data.push(childData);
+// 		    });
+// 		    resolve (data)
+// 	  	});
+// 	});
+// 	return promise1
+// }
 
 // function createNewInput (data, category, inputId) {
 // 	console.log('data', data);
@@ -477,22 +465,20 @@ export function getCategoryData (category) {
 // }
 
 function createNewInput (data, category, inputId) {
-	// console.log('data', data);
-	// console.log('category', category)
-	// console.log('inputId', inputId)
-	let categoryReference = data[category];
-	// console.log ('data[category]', data[category])
-	// console.log ('data[0]', data[0])
-	// console.log('categoryReference', categoryReference)
-	createNewInputTemplate (categoryReference, data, inputId);
+	let catData;
+	for (let i=0; i<data.length; i++) {
+		if (data[i].id == category) {
+			catData = data[i];
+		}
+	}
+	createNewInputTemplate (category, catData, inputId);
 	$('#' + inputId).selectpicker();
 }
 
-function createNewInputTemplate (category, data, inputId) {
-	let inputCategory = {category: data};
+function createNewInputTemplate (category, catData, inputId) {
 	let inputTemplate = $('#new-input-template').html();
 	let compiledInputTemplate = Handlebars.compile(inputTemplate);
-	$('#' + inputId).html(compiledInputTemplate(inputCategory));
+	$('#' + inputId).html(compiledInputTemplate(catData));
 }
 
 

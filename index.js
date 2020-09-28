@@ -5,80 +5,103 @@ import * as form from '../views/form.js';
 import * as login from '../views/login.js';
 
 $(document).ready(function(){
-	sidebarmenu.createSideBar ();
-	productslist.createProductsList ();
-	enableButton ();
-	login.enableLogin ();
-//	enableHomeClick ();
+	const promise = getCategories ();
+	promise.
+	then(function(data) {
+		const promise2 = getCategoriesData (data);
+		promise2.
+		then(function(categoriesData) {
+			createStartPage (categoriesData);
+			enableHomeClick (categoriesData);
+		});
+	});
 })
 
-function enableButton () {
+function createStartPage (categoriesData) {
+	sidebarmenu.createSideBar (categoriesData);
+	productslist.createProductsList ();
+	enableButton (categoriesData);
+	login.enableLogin ();
+}
+
+function enableButton (categoriesData) {
 	let button = document.getElementById('add-diaper');
 	button.onclick = function() {
 		clearPage ();
-		form.createForm ();
+		form.createForm (categoriesData);
 	}
 }
 
-// function enableHomeClick () {
-// 	let home = document.getElementById('home');
-// 	home.onclick = function () {
-// 		productslist.createProductsList ();
-// 	}
-// }
+function enableHomeClick (categoriesData) {
+	let home = document.getElementById('home');
+	home.onclick = function () {
+		clearPage ();
+		createStartPage (categoriesData);
+	}
+}
 
 function clearPage () {
-	let page = $('#page');
-	page.html();
+	let page = document.getElementById('page');
+	page.innerHTML = '';
 }
 
-
-function setData () {
-	 let zupa = document.getElementById('zupa');
-
-	 let dbRef = firebase.database().ref('zupy/');
-	// dbRef.on('value', snap => console.log(snap.val()));
-	  dbRef.on('value', snap => zupa.innerText = snap.val());
-	 
-//	 addNewZupa ();
-	 addAnotherZupa ();
-}
-
-function addAnotherZupa () {
-	var zupaRef = firebase.database().ref("zupy");
-	
-
-	var newZupaRef = zupaRef.push();
-	newZupaRef.set({
-	  name: "grzybowa",
-	  taste: "niesmaczna",
-	  ingredients: "grzyby"
+export function getCategories () {
+	const promise1 = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('categories/');
+		let data = [];
+		dbRef.once('value',   function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      data.push(childData);
+		    });
+		    resolve (data)
+	  	});
+	  	
 	});
+	return promise1
 }
 
-function addIngredients () {
-	var ingredients = ['grzyby', 'woda', 'ziemniaki']
-	let object = {}
-	for (let i=0; i<ingredients.length; i++) {
-		object[i] = ingredients[i]
-	}
-	console.log('object', object)
+export function getCategoriesData (data) {
+	// let categoriesNames = [];
+	// Array.from(data).forEach(function(data){
+	//     let categoryName = data.id;
+	//     categoriesNames.push(categoryName);
+	// });
+	let categories = data;
+	let categoriesData = [];
+	let count = 0;
+	const promise = new Promise ((resolve, reject) => {
+		Array.from(categories).forEach(function(category){
+		    let dbRef = firebase.database().ref(category.id + '/');
+		    let categoryData = [];
+		    dbRef.once('value',   function(snapshot) {
+			    snapshot.forEach(function(childSnapshot) {
+			      var childData = childSnapshot.val();
+			      categoryData.push(childData);
+			    });
+//			    console.log(JSON.stringify(count));
+			    count = count + 1;
+//			    console.log(JSON.stringify(categoryName));
+//			    console.log(JSON.stringify(categoryData));
+
+				let object = {};
+				object.data = categoryData;
+				object.name = category.name;
+				object['menu-name'] = category['menu-name'];
+				object.id = category.id;
+				object.issubmenu = category.issubmenu;
+
+
+			    categoriesData.push(object);
+				// category.categoryData = categoryData;
+				// category.name = categoryName;
+
+			    if (count == categories.length) {
+			    	resolve (categoriesData)
+			    }
+		  	});
+		})
+	});
+	return promise
 }
 
-
-
-function addNewZupa() {
-  // A post entry.
-  var postData = {
-    '1': 'ogorkowa',
-  };
-
-  // Get a key for a new Post.
-  var newPostKey = firebase.database().ref('zupy/').push().key;
-
-  // Write the new post's data simultaneously in the posts list and the user's post list.
-  var updates = {};
-  updates['/zupy/'] = postData;
-
-  return firebase.database().ref().update(updates);
-}

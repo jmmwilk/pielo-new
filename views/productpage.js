@@ -5,18 +5,26 @@ import * as form from '../views/form.js';
 
 let database = firebase.database();
 
-export function createProductScreen (card) {
-	let indexNumber = card.dataset.indexnumber;
-	let diapers = diaperslist.items.diapers;
-	for (let i=0; i<diapers.length; i++) {
-		if (indexNumber == diapers[i].indexnum) {
-			fillProductMainInfo ();
-			createProductPageTempate (i, diapers);
-			createReviews (indexNumber);
-			enableSizeButton();
-		}
-	};
+export function createProductScreen (key, view) {
+	const promise = loadItemData (key);
+	promise
+	.then (function (diaper) {
+		createPreviewScreen (diaper, view);
+	})
 }
+
+// export function createProductScreen (card) {
+// 	console.log('card', card)
+// 	let indexNumber = card.dataset.indexnumber;
+// 	let diapers = diaperslist.items.diapers;
+// 	for (let i=0; i<diapers.length; i++) {
+// 		if (indexNumber == diapers[i].indexnum) {
+// 			fillProductMainInfo ();
+// 			createProductPageTempate (i, diapers);
+// 			createReviews (indexNumber);
+// 		}
+// 	};
+// }
 
 function createProductPageTempate (i, diapers) {
 	let productPageTemplate = $('#product-page-template').html();
@@ -52,44 +60,38 @@ function createReviewsTemplate (selectedReviews) {
 	$('#reviews-container').html(compiledReviewTemplate(selectedReviews))
 }
 
-function enableSizeButton () {
-	let nbText = 'New Born 3-5 kg';
-	let mosText = 'Mini One Size 4-9 kg';
-	let osText = 'One Size 6-12 kg';
+// function enableSizeButton () {
+// 	let nbText = 'New Born 3-5 kg';
+// 	let mosText = 'Mini One Size 4-9 kg';
+// 	let osText = 'One Size 6-12 kg';
 
-	let nb = document.getElementById('nb');
-	let mos = document.getElementById('mos');
-	let os = document.getElementById('os');
+// 	let nb = document.getElementById('nb');
+// 	let mos = document.getElementById('mos');
+// 	let os = document.getElementById('os');
 
-	let text = document.getElementById('size-description');
+// 	let text = document.getElementById('size-description');
 
-	nb.onclick = function(){text.innerText = nbText};
-	mos.onclick = function(){text.innerText = mosText};
-	os.onclick = function(){text.innerText = osText};
-}
+// 	nb.onclick = function(){text.innerText = nbText};
+// 	mos.onclick = function(){text.innerText = mosText};
+// 	os.onclick = function(){text.innerText = osText};
+// }
 
 function createSizeButtons (diaper) {
-	const promise = form.getCategoryData ('sizes');
-	promise.then(function(data) {
-		let sizeInfo = getSizesShortcuts (diaper, data);
-		let object = {'sizes': sizeInfo};
-		console.log('object', object)
-		createSizeButtonsTemplate (object);
-		let buttons = document.getElementsByClassName('size-button');
-		Array.from(buttons).forEach(function(button){
-			button.onclick = function (event) {
-				let sizeData = {};
-				console.log('event', event)
-				let buttonId = event.target.id;
-				for (let i=0; i<sizeInfo.length; i++) {
-					if (buttonId == sizeInfo[i].id) {
-						sizeData = {'size': sizeInfo[i]};
-					}
+	createSizeButtonsTemplate (diaper);
+	let buttons = document.getElementsByClassName('size-button');
+	Array.from(buttons).forEach(function(button){
+		button.onclick = function (event) {
+			let sizeData = {};
+			let buttonId = event.target.id;
+			let sizes = diaper.diaper.sizes;
+			for (let i=0; i<sizes.length; i++) {
+				if (buttonId == sizes[i].shortcut) {
+					sizeData = {'size': sizes[i]};
 				}
-				createSizeRangeTemplate (sizeData);
 			}
-		})
-	});
+			 createSizeRangeTemplate (sizeData);
+		}
+	})
 }
 
 function createSizeRangeTemplate (sizeData) {
@@ -98,10 +100,10 @@ function createSizeRangeTemplate (sizeData) {
 	$('#size-description').html(compiledSizeRangeTemplate(sizeData));
 }
 
-function createSizeButtonsTemplate (object) {
+function createSizeButtonsTemplate (diaper) {
 	let sizeButtonsTemplate = $('#size-buttons-template').html();
 	let compiledSizeButtonsTemplate = Handlebars.compile(sizeButtonsTemplate);
-	$('#size-buttons-container').append(compiledSizeButtonsTemplate(object));
+	$('#size-buttons-container').append(compiledSizeButtonsTemplate(diaper));
 }
 
 function createParametersTemplate (diaper) {
@@ -110,63 +112,65 @@ function createParametersTemplate (diaper) {
 	$('#parameters').html(compiledParametersTemplate(diaper));
 }
 
-function getSizesShortcuts (diaper, data) {
-	console.log('diaper', diaper)
-	console.log('diaper.sizes.length', diaper.diaper.sizes.length)
-	let sizeInfo = [];
-	for (let i=0; i<diaper.diaper.sizes.length; i++) {
-		for (let x=0; x<data.length; x++) {
-			if (diaper.diaper.sizes[i] == data[x].name) {
-				let size = {};
-				size.shortcut = data[x].shortcut;
-				size.name = data[x].name;
-				size.id = data[x].id;
-				size.min = diaper.diaper.sizesRange[i].min;
-				size.max = diaper.diaper.sizesRange[i].max;
-				sizeInfo.push(size);
-			}
-		}
-	}
-	return sizeInfo
-}
-
 function fillMockDiaperPreview (diaper) {
 	createSizeButtons (diaper);
 	createParametersTemplate (diaper);
 }
 
-export function createPreviewScreen (key) {
+export function createPreviewScreen (diaper, view) {
+	console.log ('diaper', diaper)
 	fillProductMainInfo ();
 	fillSizesInfo ();
-	let diaper = loadItemData (key);
-	createPreviewTemplate (key)
+	createPreviewTemplate (diaper);
+	if (view == 'productScreen') {
+		createStarsBoxTemplate ();
+		createReviewsBoxTemplate ();
+	}
 	fillMockDiaperPreview (diaper);
 	setClassesToParameters ();
 }
 
-function createPreviewTemplate (key) {
-	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
+function createPreviewTemplate (diaper) {
 	let previewTemplate = $('#item-preview').html();
 	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
-	dbRef.on('value', function(snap){
-		$('#page').html(compiledPreviewTemplate(snap.val()))
-	})
+	$('#page').html(compiledPreviewTemplate(diaper));
 }
 
+// function createPreviewTemplate (key) {
+// 	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
+// 	let previewTemplate = $('#item-preview').html();
+// 	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
+// 	dbRef.on('value', function(snap){
+// 		$('#page').html(compiledPreviewTemplate(snap.val()))
+// 	})
+// }
+
 function loadItemData (key) {
-	let diaper;
-	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
-	dbRef.on('value', function(snap){
-		diaper = snap.val()
-	})
-	console.log ('diaper', diaper)
-	return diaper
+
+	const promise = new Promise ((resolve, reject) => {
+		let diaper;
+		let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
+		dbRef.on('value', function(snap){
+			diaper = snap.val();
+			resolve (diaper)
+		})
+	});
+	return promise
+
+	// let diaper;
+	// let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
+	// dbRef.on('value', function(snap){
+	// 	diaper = snap.val();
+	// 	console.log ('diaper', diaper)
+	// })
+	// console.log ('diaper', diaper)
+	// return diaper
 }
 
 function fillProductMainInfo () {
 	let itemPreview = $('#item-preview').html();
 	Handlebars.registerHelper('printnewinfo', function(){
-		return this.diaperCategory[0]
+		return this.diaperCategory.name
 	})
 }
 
@@ -198,4 +202,35 @@ function setClassesToParameters () {
 		parameter.classList.add("col-6");
 	})
 }
+
+function getCategoryData (category) {
+	const promise1 = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref(category + '/');
+		let data = [];
+		dbRef.once('value',   function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      data.push(childData);
+		    });
+		    resolve (data)
+	  	});
+	});
+	return promise1
+}
+
+function createReviewsBoxTemplate () {
+	let reviewsBoxTemplate = $('#reviews-box-template').html();
+	let compiledReviewsBoxTemplate = Handlebars.compile(reviewsBoxTemplate);
+	$('#product-page').append(compiledReviewsBoxTemplate());
+}
+
+function createStarsBoxTemplate () {
+	let starsBoxTemplate = $('#stars-box-template').html();
+	let compiledStarsBoxTemplate = Handlebars.compile(starsBoxTemplate);
+	$('#stars-box-wrapper').html(compiledStarsBoxTemplate());
+}
+
+
+
+
 
