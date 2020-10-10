@@ -21,7 +21,7 @@ function createStartPage (categoriesData) {
 	sidebarmenu.createSideBar (categoriesData);
 	productslist.createProductsList ();
 	enableButton (categoriesData);
-	login.enableLogin ();
+	login.goToLoginScreen ();
 }
 
 function enableButton (categoriesData) {

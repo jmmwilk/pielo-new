@@ -32,6 +32,7 @@
       </div>
     </div>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-storage.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
@@ -54,15 +55,17 @@
   </body>
   <script id="login-page-template" type="text">
     <div id="log-in-box" class="form mx-auto">
-      <div id="login" class="form-group">
+      <div id="email-box" class="form-group">
         <label for="inputEmail">Email</label>
-        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+        <input id="email" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
       </div>
-      <div id="password" class="form-group">
+      <div id="password-box" class="form-group">
         <label for="exampleInputPassword1">Hasło</label>
-        <input type="password" class="form-control" id="exampleInputPassword1">
+        <input id="password" type="password" class="form-control" id="exampleInputPassword1">
       </div>
-      <button type="submit" class="btn btn-primary">Zaloguj</button>
+      <button id="log-in" type="submit" class="btn btn-primary">Zaloguj</button>
+      <button id="sign-up" type="button" class="btn btn-primary">Zarejestruj</button>
+      <button id="log-out" type="button" class="btn btn-primary d.none">Wyloguj</button>
     </div>
   </script>
   <script id="product-page-template" type="text/x-handlebars-template">
