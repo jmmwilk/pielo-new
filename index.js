@@ -13,15 +13,15 @@ $(document).ready(function(){
 		then(function(categoriesData) {
 			createStartPage (categoriesData);
 			enableHomeClick (categoriesData);
+			login.goToLoginScreen (categoriesData);
+			enableButton (categoriesData);
 		});
 	});
 })
 
-function createStartPage (categoriesData) {
+export function createStartPage (categoriesData) {
 	sidebarmenu.createSideBar (categoriesData);
 	productslist.createProductsList ();
-	enableButton (categoriesData);
-	login.goToLoginScreen ();
 }
 
 function enableButton (categoriesData) {
