@@ -24,6 +24,8 @@
         <button id="add-diaper">
           Dodaj pieluchę
         </button>
+        <div id="user-name-box">
+        </div>
         <div id="login-icon-box">
           <img id="login-icon" src="/images/login-icon.png"/>
         </div>
@@ -64,8 +66,29 @@
         <input id="password" type="password" class="form-control" id="exampleInputPassword1">
       </div>
       <button id="log-in" type="submit" class="btn btn-primary">Zaloguj</button>
-      <button id="sign-up" type="button" class="btn btn-primary">Zarejestruj</button>
+      <div id="create-account">
+        <a href="#application">Załóż konto</a>
+      </div>
       <button id="log-out" type="button" class="btn btn-primary d-none">Wyloguj</button>
+    </div>
+  </script>
+  <script id="subscribe-template" type="text">
+    <div id="subscribe-box" class="form mx-auto">
+      <div id="email-box" class="form-group">
+        <label for="inputEmail">Email</label>
+        <input id="email" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+      </div>
+      <div id="password-box" class="form-group">
+        <label for="exampleInputPassword1">Hasło</label>
+        <input id="password" type="password" class="form-control" id="exampleInputPassword1">
+      </div>
+      <div class="form-group">
+        <div id="role-checkbox" class="form-check">
+          <input data-toggle="collapse" data-target='#outside-fabrics' class="form-check-input" type="checkbox" id="producer" value="">
+          <label class="form-check-label" for="producer">Jestem producentem</label>
+        </div>
+      </div>
+      <button id="sign-up" type="button" class="btn btn-primary">Zarejestruj</button>
     </div>
   </script>
   <script id="product-page-template" type="text/x-handlebars-template">
@@ -444,7 +467,7 @@
             <textarea class="form-control" id="description" rows="6"></textarea>
           </div>
         </div>
-        <button id="page2-button" type="submit" class="btn btn-primary m-3 align-self-end">Dalej</button>
+        <button id="page2-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
       </div>
     </form>
   </script>

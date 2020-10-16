@@ -2,14 +2,17 @@ import * as diaperslist from '../mocks/diapers.js';
 import * as productslist from '../views/productslist.js';
 import * as reviewslist from '../mocks/reviews.js';
 import * as form from '../views/form.js';
+import * as state from '../state.js';
 
 let database = firebase.database();
 
 export function createProductScreen (key, view) {
+	console.log('zupa')
 	const promise = loadItemData (key);
 	promise
 	.then (function (diaper) {
 		createPreviewScreen (diaper, view);
+		console.log('state.eventBus', state.eventBus)
 	})
 }
 

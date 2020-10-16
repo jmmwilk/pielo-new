@@ -25,7 +25,7 @@ export function createForm (data) {
 			buttonPage2.onclick = function () {
 				saveInputsPage2 (diaper);
 				let key = addMockDiaper (diaper);
-				let page= document.getElementById('page');
+				let page = document.getElementById('page');
 				page.innerHTML = '';
 				productPage.createProductScreen (key, 'preview');
 			}
@@ -217,6 +217,7 @@ function saveInputs (categories, diaper) {
 }
 
 function addMockDiaper (diaper) {
+	console.log('diaper', diaper)
 	let dbRef = firebase.database().ref('diapers-mocks/');
 	var newDbRef = dbRef.push();
 	newDbRef.set({
@@ -300,8 +301,7 @@ function saveCountry (diaper) {
 
 function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id, mainFabric) {
 	let fabrics = diaper[diaperFabId];
-	console.log ('fabrics', fabrics)
-	if (fabrics == undefined ) {
+	if (fabrics.length == 0 ) {
 		return
 	} else {
 		diaper[diaperNumId] = [];
@@ -313,6 +313,7 @@ function saveFabInputPage2 (diaper, diaperFabId, diaperNumId, id, mainFabric) {
 			diaper[mainFabric] = fabrics[0].name;
 
 		} else {
+			console.log(diaperFabId, diaperNumId, id, mainFabric)
 			let inputs = document.getElementsByClassName(id);
 			let numbers = [];
 			let biggestNumber = 0;

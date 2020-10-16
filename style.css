@@ -67,3 +67,9 @@ body {
 	width: 100px;
 }
 
+#user-name-box {
+	height: 50px;
+	width: 200px;
+	border: black solid 1px;
+}
+
