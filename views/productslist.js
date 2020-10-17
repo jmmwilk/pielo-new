@@ -14,6 +14,22 @@ export function createProductsList () {
 		createDiapersTemplate (loadedDiapers);
 //		printDiapers ();
 		enableCardClick ();
+		enableHeartChange ();
+	})
+}
+
+function enableHeartChange () {
+	let hearts = document.getElementsByClassName('heart');
+	Array.from(hearts).forEach(function(heart){
+		heart.onmouseover = function () {
+			heart.src = "/images/heart-red-border.png";
+		}
+		heart.onmouseout = function () {
+			heart.src = "/images/hear2.png";
+		}
+		heart.onclick = function () {
+			heart.src = "/images/heart-red-filled.png";
+		}
 	})
 }
 

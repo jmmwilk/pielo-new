@@ -3,6 +3,8 @@ import * as productslist from '../views/productslist.js';
 import * as sidebarmenu from '../views/sidebarmenu.js';
 import * as form from '../views/form.js';
 import * as login from '../views/login.js';
+import * as eventBus from '../eventBus.js';
+import * as state from '../state.js';
 
 $(document).ready(function(){
 	const promise = getCategories ();
@@ -15,9 +17,15 @@ $(document).ready(function(){
 			enableHomeClick (categoriesData);
 			login.goToLoginScreen (categoriesData);
 			enableButton (categoriesData);
+			eventBus.eventBus.subscribe('createUser', fillUserName);
 		});
 	});
 })
+
+function fillUserName () {
+	let userNameBox = document.getElementById('user-name-box');
+ 	userNameBox.innerText = state.state.user.email
+}
 
 export function createStartPage (categoriesData) {
 	sidebarmenu.createSideBar (categoriesData);

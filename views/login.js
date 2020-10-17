@@ -1,5 +1,6 @@
 import * as index from '../index.js';
 import * as state from '../state.js';
+import * as eventBus from '../eventBus.js';
 
 let user;
 
@@ -58,6 +59,8 @@ function goToStartPage (categoriesData) {
 }
 
 function enableSignUp (categoriesData) {
+	eventBus.eventBus.subscribe('setNewUser', state.changeState);
+	eventBus.eventBus.subscribe('createUser', createUserInFirestore);
 	const btnSignUp = document.getElementById('sign-up');
 	btnSignUp.addEventListener ('click', e => {
 		console.log('happy hindus')
@@ -77,10 +80,18 @@ function enableSignUp (categoriesData) {
 		    firebase.auth().onAuthStateChanged(firebaseUser => {
 				if (firebaseUser) {
 					console.log('role', role)
-					const promise = state.changeEventBus (role);
+
+					const promise = new Promise ((resolve, reject) => {
+						eventBus.eventBus.trigger('setNewUser', role);
+						resolve()
+					});
+
+					
+					console.log('promise', promise)
 					promise
 					.then (function () {
-						state.eventBus.subscribe();
+						eventBus.eventBus.trigger('createUser');
+						console.log('eventBus.eventBus', eventBus.eventBus)
 					})
 				} else {
 				}
@@ -90,19 +101,34 @@ function enableSignUp (categoriesData) {
 	})
 }
 
+function createUserInFirestore () {
+	let user = {};
+	console.log('state.state', state.state)
+	user.uid = state.state.user.uid;
+	user.email = state.state.user.email;
+	user.role = state.state.userRole
+	let dbRef = firebase.database().ref('users/');
+	var newDbRef = dbRef.push();
+	newDbRef.set({
+	  user
+	});
+	// let key = newDbRef.getKey();
+	// return key
+}
+
 function checkForAuthStateChange () {
 	const btnLogOut = document.getElementById('log-out');
 	firebase.auth().onAuthStateChanged(firebaseUser => {
 		if (firebaseUser) {
 			btnLogOut.classList.remove('d-none');
-			console.log('firebaseUser', firebaseUser)
 			user = firebaseUser;
-			console.log('user123', user)
-			const promise = state.changeEventBus ();
-			promise
-			.then (function () {
-				state.eventBus.trigger();
-			})
+//			eventBus.eventBus.trigger('subscribe')
+
+			// const promise = state.changeEventBus ();
+			// promise
+			// .then (function () {
+			// 	state.eventBus.trigger();
+			// })
 		} else {
 			btnLogOut.classList.add('d-none');
 		}
