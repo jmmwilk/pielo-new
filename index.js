@@ -17,7 +17,7 @@ $(document).ready(function(){
 			enableHomeClick (categoriesData);
 			login.goToLoginScreen (categoriesData);
 			enableButton (categoriesData);
-			eventBus.eventBus.subscribe('createUser', fillUserName);
+			eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 		});
 	});
 })

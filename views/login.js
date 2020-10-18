@@ -49,8 +49,57 @@ function enablelogIn (categoriesData) {
 		const auth = firebase.auth();
 		const promise = auth.signInWithEmailAndPassword(email, password);
 
+		promise.then(function() {
+		    firebase.auth().onAuthStateChanged(firebaseUser => {
+				if (firebaseUser) {
+					const promise2 = findUserInDatabase (firebaseUser);
+					promise2.then(function(user) {
+						let role = user.role;
+						const promise3 = new Promise ((resolve, reject) => {
+							changeState (role)
+							resolve()
+						});
+						promise3.then (function () {
+							eventBus.eventBus.trigger('userLoggedIn');
+						})
+					})
+				} else {
+				}
+			})
+		})
+
 		goToStartPage (categoriesData);
 	})
+}
+
+function findUserInDatabase (firebaseUser) {
+	const promise = new Promise ((resolve, reject) => {
+		const promise2 = getAllUsersFromDatabase ();
+		promise2.then(function(data) {
+			for (let i=0; i<data.length; i++) {
+				if (firebaseUser.uid == data[i].user.uid) {
+					resolve (data[i].user)
+				}
+			}
+		})
+	})
+	return promise
+}
+
+function getAllUsersFromDatabase () {
+	const promise1 = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('users/');
+		let data = [];
+		dbRef.once('value',   function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      data.push(childData);
+		    });
+		    resolve (data)
+	  	});
+	  	
+	});
+	return promise1
 }
 
 function goToStartPage (categoriesData) {
@@ -59,16 +108,13 @@ function goToStartPage (categoriesData) {
 }
 
 function enableSignUp (categoriesData) {
-	eventBus.eventBus.subscribe('setNewUser', state.changeState);
-	eventBus.eventBus.subscribe('createUser', createUserInFirestore);
+	eventBus.eventBus.subscribe('userLoggedIn', createUserInFirestore);
 	const btnSignUp = document.getElementById('sign-up');
 	btnSignUp.addEventListener ('click', e => {
-		console.log('happy hindus')
 		const email = document.getElementById('email').value;
 		const password = document.getElementById('password').value;
 		const roleCheckbox = document.getElementById('producer');
 		let role;
-		console.log('roleCheckbox.checked', roleCheckbox.checked);
 		if (roleCheckbox.checked == true) {
 			role = 'producer';
 		} else {
@@ -79,31 +125,32 @@ function enableSignUp (categoriesData) {
 		promise.then(function() {
 		    firebase.auth().onAuthStateChanged(firebaseUser => {
 				if (firebaseUser) {
-					console.log('role', role)
-
 					const promise = new Promise ((resolve, reject) => {
-						eventBus.eventBus.trigger('setNewUser', role);
+						changeState (role)
 						resolve()
 					});
-
-					
-					console.log('promise', promise)
-					promise
-					.then (function () {
-						eventBus.eventBus.trigger('createUser');
-						console.log('eventBus.eventBus', eventBus.eventBus)
+					promise.then (function () {
+						eventBus.eventBus.trigger('userLoggedIn');
 					})
 				} else {
 				}
 			})
-		  })
+		})
 		goToStartPage (categoriesData);
+	})
+}
+
+function changeState (role) {
+	firebase.auth().onAuthStateChanged(firebaseUser => {
+		if (firebaseUser) {
+			state.state.user = firebaseUser;
+			state.state.userRole = role;
+		}
 	})
 }
 
 function createUserInFirestore () {
 	let user = {};
-	console.log('state.state', state.state)
 	user.uid = state.state.user.uid;
 	user.email = state.state.user.email;
 	user.role = state.state.userRole
@@ -132,10 +179,8 @@ function checkForAuthStateChange () {
 		} else {
 			btnLogOut.classList.add('d-none');
 		}
-		console.log('state.eventBus', state.eventBus)
 		return firebaseUser
 	})
-	console.log ('user', user)
 }
 
 function enableLogOut () {
