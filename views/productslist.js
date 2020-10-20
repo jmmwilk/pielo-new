@@ -1,5 +1,8 @@
 import * as diaperslist from '../mocks/diapers.js';
 import * as productpage from '../views/productpage.js';
+import * as eventBus from '../eventBus.js';
+import * as state from '../state.js';
+
 let database = firebase.database();
 
 let clickedMenuItem;
@@ -9,28 +12,71 @@ export function createProductsList () {
 	promise
 	.then(function(diapers) {
 	  	let loadedDiapers = {'data': diapers};
+	  	eventBus.eventBus.subscribe('heartClick', changeHeartClicked);
+	  	eventBus.eventBus.subscribe('heartUnClick', changeHeartUnClicked);
+	  	eventBus.eventBus.subscribe('heartClick', addDiaperToFavourites);
+//	  	eventBus.eventBus.subscribe('heartunClick', removeHeartFromFavourites);
 	  	fillSizesInCard ();
 		fillDiaperCards ();
 		createDiapersTemplate (loadedDiapers);
-//		printDiapers ();
 		enableCardClick ();
 		enableHeartChange ();
 	})
 }
 
+function addDiaperToFavourites (heart) {
+	console.log('state', state.state)
+	let diaperKey = heart.getAttribute('key')
+	console.log('diaperKey', diaperKey)
+	let userKey = state.state.userKey;
+	console.log('userKey', userKey)
+	let dbRef = firebase.database().ref('users/' + userKey + '/favourites');
+	var newDbRef = dbRef.push();
+	newDbRef.set({
+	  'key': diaperKey,
+	});
+
+
+	// let key = newDbRef.getKey();
+	// return key
+}
+
 function enableHeartChange () {
 	let hearts = document.getElementsByClassName('heart');
 	Array.from(hearts).forEach(function(heart){
+		let userClick = false;
+		heart.onclick = function () {
+			userClick = !userClick
+			if (userClick == false) {
+				eventBus.eventBus.trigger('heartUnClick', heart);
+			} else {
+				eventBus.eventBus.trigger('heartClick', heart);
+			}
+		}
 		heart.onmouseover = function () {
+			if (userClick == true) {
+				return
+			}
 			heart.src = "/images/heart-red-border.png";
 		}
 		heart.onmouseout = function () {
+			if (userClick == true) {
+				return
+			}
 			heart.src = "/images/hear2.png";
 		}
-		heart.onclick = function () {
-			heart.src = "/images/heart-red-filled.png";
-		}
-	})
+	});
+	$('.heart-box').click(function( event ) {
+	  	event.stopPropagation();
+	});
+}
+
+function changeHeartClicked (heart) {
+	heart.src = "/images/heart-red-filled.png";
+}
+
+function changeHeartUnClicked (heart) {
+	heart.src = "/images/hear2.png";
 }
 
 export function createNewProductsList (navCategoryGroup, navCategory) {

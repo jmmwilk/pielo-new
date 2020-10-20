@@ -55,8 +55,9 @@ function enablelogIn (categoriesData) {
 					const promise2 = findUserInDatabase (firebaseUser);
 					promise2.then(function(user) {
 						let role = user.role;
+						let key = user.key
 						const promise3 = new Promise ((resolve, reject) => {
-							changeState (role)
+							changeStateLogIn (role, key)
 							resolve()
 						});
 						promise3.then (function () {
@@ -75,10 +76,13 @@ function enablelogIn (categoriesData) {
 function findUserInDatabase (firebaseUser) {
 	const promise = new Promise ((resolve, reject) => {
 		const promise2 = getAllUsersFromDatabase ();
-		promise2.then(function(data) {
-			for (let i=0; i<data.length; i++) {
-				if (firebaseUser.uid == data[i].user.uid) {
-					resolve (data[i].user)
+		promise2.then(function(usersData) {
+			for (let i=0; i<usersData.length; i++) {
+				let user = usersData[i].data[0].user
+				if (firebaseUser.uid == user.uid) {
+					let key = usersData[i].key;
+					user.key = key;
+					resolve (user)
 				}
 			}
 		})
@@ -89,13 +93,17 @@ function findUserInDatabase (firebaseUser) {
 function getAllUsersFromDatabase () {
 	const promise1 = new Promise ((resolve, reject) => {
 		let dbRef = firebase.database().ref('users/');
-		let data = [];
+		let usersData = [];
 		dbRef.once('value',   function(snapshot) {
 		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      data.push(childData);
+		    	let data = [];
+			    var key = childSnapshot.key;
+			    var childData = childSnapshot.val();
+			    data.push(childData);
+			    let userData = {'data': data, 'key': key};
+			   	usersData.push(userData);
 		    });
-		    resolve (data)
+		    resolve (usersData)
 	  	});
 	  	
 	});
@@ -126,11 +134,14 @@ function enableSignUp (categoriesData) {
 		    firebase.auth().onAuthStateChanged(firebaseUser => {
 				if (firebaseUser) {
 					const promise = new Promise ((resolve, reject) => {
-						changeState (role)
+						changeStateSignUp (role)
 						resolve()
 					});
 					promise.then (function () {
 						eventBus.eventBus.trigger('userLoggedIn');
+					})
+					.then(function(key) {
+						state.state.userKey = key;
 					})
 				} else {
 				}
@@ -140,7 +151,7 @@ function enableSignUp (categoriesData) {
 	})
 }
 
-function changeState (role) {
+function changeStateSignUp (role) {
 	firebase.auth().onAuthStateChanged(firebaseUser => {
 		if (firebaseUser) {
 			state.state.user = firebaseUser;
@@ -149,18 +160,29 @@ function changeState (role) {
 	})
 }
 
+function changeStateLogIn (role, key) {
+	firebase.auth().onAuthStateChanged(firebaseUser => {
+		if (firebaseUser) {
+			state.state.user = firebaseUser;
+			state.state.userRole = role;
+			state.state.userKey = key;
+		}
+	})
+}
+
 function createUserInFirestore () {
 	let user = {};
 	user.uid = state.state.user.uid;
 	user.email = state.state.user.email;
-	user.role = state.state.userRole
+	user.role = state.state.userRole;
+	user.favourites = {0: 0};
 	let dbRef = firebase.database().ref('users/');
 	var newDbRef = dbRef.push();
 	newDbRef.set({
 	  user
 	});
-	// let key = newDbRef.getKey();
-	// return key
+	let key = newDbRef.getKey();
+	return key
 }
 
 function checkForAuthStateChange () {
