@@ -116,7 +116,7 @@ function goToStartPage (categoriesData) {
 }
 
 function enableSignUp (categoriesData) {
-	eventBus.eventBus.subscribe('userLoggedIn', createUserInFirestore);
+//	eventBus.eventBus.subscribe('userLoggedIn', createUserInFirestore);
 	const btnSignUp = document.getElementById('sign-up');
 	btnSignUp.addEventListener ('click', e => {
 		const email = document.getElementById('email').value;
@@ -139,8 +139,8 @@ function enableSignUp (categoriesData) {
 					});
 					promise.then (function () {
 						eventBus.eventBus.trigger('userLoggedIn');
-					})
-					.then(function(key) {
+						let key = createUserInFirestore ()
+						console.log('key', key)
 						state.state.userKey = key;
 					})
 				} else {
@@ -175,13 +175,14 @@ function createUserInFirestore () {
 	user.uid = state.state.user.uid;
 	user.email = state.state.user.email;
 	user.role = state.state.userRole;
-	user.favourites = {0: 0};
+//	user.favourites = {0: 0};
 	let dbRef = firebase.database().ref('users/');
 	var newDbRef = dbRef.push();
 	newDbRef.set({
 	  user
 	});
 	let key = newDbRef.getKey();
+	console.log('key', key)
 	return key
 }
 
