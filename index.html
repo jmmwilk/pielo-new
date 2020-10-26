@@ -24,10 +24,17 @@
         <button id="add-diaper">
           Dodaj pieluchę
         </button>
-        <div id="user-name-box">
-        </div>
-        <div id="login-icon-box">
-          <img id="login-icon" src="/images/login-icon.png"/>
+        <div id="user-box" class="row">
+          <div id="favourites-icon-box">
+            <button id="heart-button" class="btn">
+              <img src="/images/heart-red-filled.png" id="heart-icon">
+            </button>
+          </div>
+          <div id="user-name-box">
+          </div>
+          <div id="login-icon-box">
+            <img id="login-icon" src="/images/login-icon.png"/>
+          </div>
         </div>
       </div>
       <div id="page" class="row d-flex">
@@ -91,7 +98,7 @@
       <button id="sign-up" type="button" class="btn btn-primary">Zarejestruj</button>
     </div>
   </script>
-  <script id="product-page-template" type="text/x-handlebars-template">
+<!--   <script id="product-page-template" type="text/x-handlebars-template">
     <div id="main" class="col-md-10 order-1 mx-auto">
       <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">
         <div class="main-info-box row my-2">
@@ -191,7 +198,7 @@
         </div>
       </div>
     </div>
-  </script>
+  </script> -->
   <script id="review-template" type="text/x-handlebars-template">
     <div id="box" class="">
       {{#each reviews}}
@@ -262,42 +269,55 @@
       </div>
     </div>
   </script> -->
-  <script id="pielucha-template" type="text/x-handlebars-template">
+    <script id="favourites-page" type="text/x-handlebars-template">
     <div id="main" class="col-md-10 order-1 mx-auto">
-      <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
-        {{#each data}}
-        <li class="card text-center col pielucha-template" data-key="{{key}}">
-          <div class="card-body">
-            <div class="card-top row justify-content-between">
-              <div class="stars-box text-muted row">
-                <img src="/images/star.png" class="star">
-                <p class="mr-1">5,0</p>
-              </div>
-              <div class="heart-box">
-                <img src="/images/hear2.png" class="heart" key="{{key}}">
-              </div>
-            </div>
-            <div class="embed-responsive embed-responsive-1by1">
-              <img src={{"url"}} class="img embed-responsive-item rounded pielucha-image"/>
-            </div>
-            <div class="row justify-content-between">
-              <div class="col-auto">
-                <a href="#application" class="card-link text-warning">{{brand.name}}</a>
-              </div>
-              <div class="col-auto">
-                <div class="row m-0 text-muted">
-                  {{#each sizes}}
-                  <a>{{printsizes}}</a>
-                  {{/each}}
-                </div>
-              </div>
-            </div>
-            <h5 class="text-primary">{{diaperCategory.name}}</h5>
-          </div>
-        </li>
-        {{/each}}
+      <div class="col">
+        <div id="favourites-title">
+          <a>Moje Ulubione</a>
+        </div>
+        <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
+        </div>
       </div>
     </div>
+  </script>
+  <script id="items-page-template" type="text/x-handlebars-template">
+    <div id="main" class="col-md-10 order-1 mx-auto">
+      <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
+      </div>
+    </div>
+  </script>
+  <script id="items-list-template" type="text/x-handlebars-template">
+    {{#each data}}
+      <li class="card text-center col pielucha-template" data-key="{{key}}">
+        <div class="card-body">
+          <div class="card-top row justify-content-between">
+            <div class="stars-box text-muted row">
+              <img src="/images/star.png" class="star">
+              <p class="mr-1">5,0</p>
+            </div>
+            <div class="heart-box">
+              <img src="/images/hear2.png" class="heart" key="{{key}}">
+            </div>
+          </div>
+          <div class="embed-responsive embed-responsive-1by1">
+            <img src={{"url"}} class="img embed-responsive-item rounded pielucha-image"/>
+          </div>
+          <div class="row justify-content-between">
+            <div class="col-auto">
+              <a href="#application" class="card-link text-warning">{{brand.name}}</a>
+            </div>
+            <div class="col-auto">
+              <div class="row m-0 text-muted">
+                {{#each sizes}}
+                <a>{{printsizes}}</a>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+          <h5 class="text-primary">{{diaperCategory.name}}</h5>
+        </div>
+      </li>
+    {{/each}}
   </script>
   <script id="upload-file-template" type="text/x-handlebars-template">
     <img class="small-image mx-auto img-fluid img-thumbnail m-1"/>
