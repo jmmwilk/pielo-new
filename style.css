@@ -83,6 +83,15 @@ body {
 	width: 30px;
 }
 
+.bar {
+	border: solid black 1px;
+	height: 20px;
+	width: 100%;
+}
 
+#star-review {
+	height: 40px;
+ 	width: 40px;
+}
 
 

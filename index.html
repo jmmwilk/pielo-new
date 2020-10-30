@@ -550,16 +550,15 @@
                 <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
               </div>
             </div>
-            <button type="button" class="btn btn-primary">Napisz opinię</button>
           </div>
         </div>
-        <div class="info-box card my-2 text-secondary bg-light">
+        <div class="info-box card my-2 bg-light">
           <div id="info-title" class="card-body text-center">
             <h5>
-              <a class="card-title stretched-link text-secondary" aria-expanded="false" aria-controls="parameters-wrapper" data-toggle="collapse" href="#parameters-wrapper">Informacje od producenta</a>
+              <a class="card-title stretched-link text-primary" aria-expanded="false" aria-controls="parameters-wrapper" data-toggle="collapse" href="#parameters-wrapper">Informacje od producenta</a>
             </h5>
           </div>
-          <div class="collapse" id="parameters-wrapper">
+          <div class="collapse text-secondary" id="parameters-wrapper">
             <div id="parameters" class="mb-3">
             </div>
             <div id="description">
@@ -590,11 +589,190 @@
     </div>
   </script>
   <script id="reviews-box-template" type="text/x-handlebars-template">
-    <div class="reviews-box card my-2 text-secondary">
-      <div id="reviews-title" class="card-body">
-        <h5 class="card-title">Opinie</h5>
+    <div class="reviews-box my-2">
+      <div id="reviews-header-wrapper" class="mb-2 mx-4">
+        <div id="reviews-header" class="row d-flex justify-content-between">
+          <div id="reviews-title" class="text-primary">
+            <h5>Opinie</h5>
+          </div>
+          <button type="button" class="btn btn-primary">Napisz opinię</button>
+        </div>
       </div>
-      <div id="reviews-container">
+      <div id="reviews-summary-wrapper" class="">
+        <div id="reviews-summary" class="row">
+          <div id="rating-box" class="col-6">
+            <div class="d-flex flex-column align-items-center">
+              <div id="reviews-rating" class="m-1">
+                <h1>4,6</h1>
+              </div>
+              <div id="reviews-stars" class="m-1">
+                <img src="/images/star.png"/ class="star">
+                <img src="/images/star.png"/ class="star">
+                <img src="/images/star.png"/ class="star">
+                <img src="/images/star.png"/ class="star">
+                <img src="/images/star.png"/ class="star">
+              </div>
+              <div id="reviews-comments-nr" class="m-1">
+                45 opinii
+              </div>
+            </div>
+          </div>
+          <div id="detail-summary-wrapper" class="col-6">
+          </div>
+        </div>
+      </div>
+      <div id="add-review-form-wrapper" class="my-3 mx-3 form">
+      </div>
+      <div id="reviews-container-wrapper" class="">
+        <div id="reviews-container" class="col">
+        </div>
+      </div>
+    </div>
+  </script>
+  <script id="add-review-template" type="text/x-handlebars-template">
+    {{#with diaper}}
+    <div class="">
+      <div id="your-review-title" class="text-primary">
+        <h5>Twoja opinia</h5>
+      </div>
+      <div id="ar-sizes-wrapper" class="form-group row">
+        <div class="col-form-label col-auto">
+          <a class="">Używany rozmiar pieluszki</a>
+        </div>
+        <div class="col-auto d-flex align-content-center">
+          {{#each sizes}}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="checkbox" id="add-sizes-checkbox-{{this.shortcut}}" value="option1">
+              <label class="form-check-label" for="add-sizes-checkbox-{{this.shortcut}}">{{this.shortcut}}</label>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+      <div id="ar-child-title" class="my-2">
+        <h6>
+          <a class="text-primary">Dodaj opis budowy dziecka</a>
+        </h6>
+      </div>
+      <div id="ar-child-wrapper" class="my-2">
+      
+      </div>
+      <div id="ar-text-wrapper" class="my-3">
+        <div class="form-group">
+          <textarea class="form-control" id="ar-text" rows="5" placeholder="Twoja opinia" ></textarea>
+        </div>
+      </div>
+      <div id="ar-photo-wrapper" class="my-2">
+        <div>
+          <label for="input-image">Dodaj zdjęcie</label>
+          <input type="file" class="form-control-file multiple" id="input-image">
+        </div>
+      </div>
+      <div id="ar-stars-wrapper" class="my-3">
+        <a class="my-1">Twoja ocena</a>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+          <label class="form-check-label" for="inlineRadio1">1</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+          <label class="form-check-label" for="inlineRadio2">2</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+          <label class="form-check-label" for="inlineRadio3">3</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+          <label class="form-check-label" for="inlineRadio4">4</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+          <label class="form-check-label" for="inlineRadio5">5</label>
+        </div>
+        <img src="/images/star.png"/ id="star-review">
+      </div>
+      <div class="row d-flex flex-row-reverse">
+        <div class="col-auto">
+          <button class="btn btn-primary">Dodaj opinię</button>
+        </div>
+      </div>
+    </div>
+    {{/with}}
+  </script>
+  <script id="add-review-child-template" type="text/x-handlebars-template">
+    <div id="ar-child-basic-data-wrapper" class="form-group row">
+      <div class="col-form-label col-auto">
+        <a class="">Wiek dziecka</a>
+      </div>
+      <input class="form-control col-1" type="number" id="age-from-input">
+      <div class="col-form-label mx-2">
+        <a class="">do</a>
+      </div>
+      <input class="form-control col-1" type="number" id="age-to-input">
+      <div class="col-form-label ml-2 mr-5">
+        <a class="">miesięcy</a>
+      </div>
+      <div class="col-form-label col-auto">
+        <a class="">Waga dziecka</a>
+      </div>
+      <input class="form-control col-1" type="number" id="weight-from-input">
+      <div class="col-form-label mx-2">
+        <a class="">do</a>
+      </div>
+      <input class="form-control col-1" type="number" id="weight-to-input">
+      <div class="col-form-label ml-2">
+        <a class="">kg</a>
+      </div>
+    </div>
+    <div id="ar-child-desciption-wrapper" class="my-2">
+      <div class="py-1">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="pulchne" value="option1">
+          <label class="form-check-label" for="pulchne">pulchne</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="szczuple" value="option1">
+          <label class="form-check-label" for="szczuple">szczupłe</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="srednie" value="option1">
+          <label class="form-check-label" for="srednie">średnie</label>
+        </div>
+      </div>
+      <div class="py-1">
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="pulchne-udka" value="option1">
+          <label class="form-check-label" for="pulchne-udka">pulchne udka</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="szczuple-udka" value="option1">
+          <label class="form-check-label" for="szczuple-udka">szczupłe udka</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="srednie-udka" value="option1">
+          <label class="form-check-label" for="srednie udka">średnie udka</label>
+        </div>
+      </div>
+    </div>
+  </script>
+  <script id="detail-reviews-summary-template" type="text/x-handlebars-template">
+    <div class="row">
+      <div class="col-2 d-flex">
+        <img src="/images/star.png"/ class="star">
+        <div>
+          <a>5</a>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="d-flex">
+          <div class="bar">
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div>
+          <a>37</a>
+        </div>
       </div>
     </div>
   </script>
