@@ -5,17 +5,33 @@ let database = firebase.database();
 let storage = firebase.storage();
 
 export function createForm (data) {
-	let imageNumber = 1;
 	createPage1 (data);
-	let diaper = {}
+	let diaper = {};
+	diaper.images =[];
 	$('#input-image').change(function(event) {
 		if (event.target.files.length > 0) {
 			showPreview (event);
-			addImageToStorage (imageNumber, diaper);
-			imageNumber = imageNumber + 1;
+			addProfileImageToStorage (diaper);
+		}
+	});
+	let image = {'image-number': 1}
+	addImageInputTemplate (image);
+	let currentImageInput = 'input-image-' + 1;
+	$('#' + currentImageInput).change(function(event) {
+		console.log('frytki')
+		if (event.target.files.length > 0) {
+			console.log('mamalyga')
+//			showPreview (event);
+			addImageToStorage (diaper, currentImageInput);
+			image['image-number'] = image['image-number'] + 1
+			addImageInputTemplate (image);
+			
+			currentImageInput = 'input-image-' + image['image-number']
+			console.log('currentImageInput', currentImageInput)
 		}
 	});
 	let firebaseData = data;
+
 	let button = document.getElementById('page1-button');
 	button.onclick = function () {
 		let validation = layersValidation ();
@@ -33,6 +49,14 @@ export function createForm (data) {
 	}
 }
 
+function addImageInputTemplate (image) {
+	console.log('image', image)
+	let template = $('#add-image-template').html();
+	let compiledTemplate = Handlebars.compile(template);
+	$('#image-inputs-box').append(compiledTemplate(image));
+
+}
+
 function showPreview (event) {
 	let source = URL.createObjectURL(event.target.files[0]);
 	let image = document.createElement('img');
@@ -42,15 +66,47 @@ function showPreview (event) {
 	box.appendChild(image);
 }
 
-function addImageToStorage (imageNumber, diaper) {
+function addImageToStorage (diaper, currentImageInput) {
+	const selectedFile = document.getElementById(currentImageInput).files[0];
+
+	let dbRef = firebase.database().ref('images/');
+	var newDbRef = dbRef.push();
+	newDbRef.set({
+	  'image': 'small'
+	});
+	let key = newDbRef.getKey();
+
+	let imageRef = storage.ref().child(key);
+	imageRef.put(selectedFile)
+	.then(function(snapshot) {
+	  	return imageRef.getDownloadURL();
+	})
+	.then(function(downloadURL) {
+		diaper.images.push(downloadURL);
+		console.log('downloadURL', downloadURL)
+		console.log('diaper', diaper)
+		return downloadURL
+	})
+}
+
+function addProfileImageToStorage (diaper) {
 	const selectedFile = document.getElementById('input-image').files[0];
-	let imageRef = storage.ref().child('kokosi' + imageNumber);
+
+	let dbRef = firebase.database().ref('images/');
+	var newDbRef = dbRef.push();
+	newDbRef.set({
+	  'image': 'profile'
+	});
+	let key = newDbRef.getKey();
+
+	let imageRef = storage.ref().child(key);
 	imageRef.put(selectedFile)
 	.then(function(snapshot) {
 	  	return imageRef.getDownloadURL();
 	})
 	.then(function(downloadURL) {
 		diaper.url = downloadURL;
+		console.log('downloadURL', downloadURL)
 		return downloadURL
 	})
 }

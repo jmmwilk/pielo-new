@@ -322,17 +322,28 @@
   <script id="upload-file-template" type="text/x-handlebars-template">
     <img class="small-image mx-auto img-fluid img-thumbnail m-1"/>
   </script>
+  <script id="add-image-template" type="text/x-handlebars-template">
+    <a>blabla</a>
+    <div class="form-group col-10 bg-white m-3 p-2">
+      <label for="input-image-{{image-number}}">Zdjęcie</label>
+      <input type="file" class="form-control-file multiple" id="input-image-{{image-number}}">
+      <div id="file-preview">
+      </div>
+    </div>
+  </script>
   <script id="form-page1-template" type="text/x-handlebars-template">
     <form id="new-form" class="form col-6">
       <div id="form-page-1" class="row align-items-center m-3 bg-light d-flex flex-column">
         <h5 class="m-3">Formularz </h5>
-        <div class="form-group col-10 bg-white m-3 p-2">
-          <label for="input-image">Zdjęcie profilowe pieluszki</label>
-          <input type="file" class="form-control-file multiple" id="input-image">
-          <div id="file-preview">
-          </div>
-          <div class="invalid-feedback">
-            Wybierz.
+        <div id="image-inputs-box">
+          <div class="form-group col-10 bg-white m-3 p-2">
+            <label for="input-image">Zdjęcie profilowe pieluszki</label>
+            <input type="file" class="form-control-file multiple" id="input-image">
+            <div id="file-preview">
+            </div>
+            <div class="invalid-feedback">
+              Wybierz.
+            </div>
           </div>
         </div>
         <div class="form-group d-flex flex-column bg-white m-3 p-2 col-10">

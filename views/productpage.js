@@ -244,6 +244,8 @@ function stopProp () {
 	});
 }
 
+
+
 // aria-expanded="false" aria-controls="ar-child-wrapper" data-toggle="collapse" href="#ar-child-wrapper"
 //streched-link
 //button
