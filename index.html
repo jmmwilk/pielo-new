@@ -16,29 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
   </head>
   <body>
-    <div id="application" class="container-fluid">
-      <div id="title-bar" class="container-fluid d-flex justify-content-between">
-        <div id="home">
-          <img id="home-icon" src="/images/home.png"/>
-        </div>
-        <button id="add-diaper">
-          Dodaj pieluchę
-        </button>
-        <div id="user-box" class="row">
-          <div id="favourites-icon-box">
-            <button id="heart-button" class="btn">
-              <img src="/images/heart-red-filled.png" id="heart-icon">
-            </button>
-          </div>
-          <div id="user-name-box">
-          </div>
-          <div id="login-icon-box">
-            <img id="login-icon" src="/images/login-icon.png"/>
-          </div>
-        </div>
-      </div>
-      <div id="page" class="row d-flex">
-      </div>
+    <div id="application" class="container-fluid bg-light">
     </div>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
@@ -62,6 +40,88 @@
       firebase.analytics();
     </script>
   </body>
+  <script id="application-template" type="text">
+    <div id="title-bar" class="container-fluid d-flex justify-content-between">
+      <div id="home">
+        <img id="home-icon" src="/images/home.png"/>
+      </div>
+      <button id="add-diaper">
+        Dodaj pieluchę
+      </button>
+      <div id="user-box" class="row">
+        <div id="favourites-icon-box">
+          <button id="heart-button" class="btn">
+            <img src="/images/heart-red-filled.png" id="heart-icon">
+          </button>
+        </div>
+        <div id="user-name-box">
+        </div>
+        <div id="login-icon-box">
+          <img id="login-icon" src="/images/login-icon.png"/>
+        </div>
+      </div>
+    </div>
+    <div id="page" class="row d-flex">
+    </div>
+  </script>
+  <script id="newsletter-page-template" type="text/x-handlebars-template">
+    <div id="newsletter-page-box" class="row justify-content-center h-100">
+      <div class="col-lg-10 d-flex flex-column justify-content-center">
+        <div class="text-center text-warning my-3">
+          <h1>Pielo.pl</h1>
+        </div>
+        <div class="text-center my-3">
+          <div class="my-2 text-info">
+            <h3>Witaj na stronie pierwszej porównywarki nowoczesnych pieluszek wielorazowych.<h3>
+          </div>
+          <div id="leave-email-text" class="my-2 text-secondary">
+            <h4>Zostaw swój email, a dowiesz się jako pierwsza, kiedy tylko strona ruszy.</h4>
+          </div>
+        </div>
+        <div class="form my-3 needs-validation" novalidate>
+          <div class="form-row d-flex justify-content-center">
+            <div class="form-group mx-2">
+              <input id="email-input" type="email" class="form-control" id="inputEmail" placeholder="Email" value="" required required>
+              <div class="invalid-feedback">
+                Wpisz adres email.
+              </div>
+            </div>
+            <div class="form-group mx-2">
+              <input id="name-input" type="text" class="form-control" id="validationCustom01" placeholder="Imię i Nazwisko" value="" required>
+              <div class="invalid-feedback">
+                Wpisz imię i nazwisko.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-secondary row justify-content-md-center">
+          <div class="col-auto">
+            <div class="form-check m-2">
+              <input class="form-check-input" type="checkbox" value="nappies-user" id="nappies-user-checkbox">
+              <label class="form-check-label" for="nappies-user-checkbox">
+                Używam lub chcę używać pieluszek wielorazowych.
+              </label>
+            </div>
+            <div class="form-check m-2">
+              <input  class="form-check-input" type="checkbox" value="producer" id="producer-checkbox">
+              <label class="form-check-label" for="producer-checkbox">
+                Jestem producentem pieluszek wielorazowych.
+              </label>
+            </div>
+            <div class="form-check m-2">
+              <input class="form-check-input" type="checkbox" value="shop-owner" id="shop-owner-checkbox">
+              <label class="form-check-label" for="shop-owner-checkbox">
+                Prowadzę sklep z pieluszkami wielorazowymi.
+              </label>
+            </div>
+            <div class="row d-flex justify-content-end m-2">
+              <button id="button" type="submit" class="btn btn-primary my-4">Wyślij</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
   <script id="login-page-template" type="text">
     <div id="log-in-box" class="form mx-auto">
       <div id="email-box" class="form-group">

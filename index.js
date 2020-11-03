@@ -5,21 +5,26 @@ import * as form from '../views/form.js';
 import * as login from '../views/login.js';
 import * as eventBus from '../eventBus.js';
 import * as state from '../state.js';
+import * as newsletterPage from '../views/newsletter-page.js';
 
 $(document).ready(function(){
-	const promise = getCategories ();
-	promise.
-	then(function(data) {
-		const promise2 = getCategoriesData (data);
-		promise2.
-		then(function(categoriesData) {
-			createStartPage (categoriesData);
-			enableHomeClick (categoriesData);
-			login.goToLoginScreen (categoriesData);
-			enableButton (categoriesData);
-			eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
-		});
-	});
+	newsletterPage.createNewsletterTemplate ();
+	newsletterPage.enableSubmitClick ();
+	eventBus.eventBus.subscribe('submit', newsletterPage.disableFormSubmission);
+	eventBus.eventBus.subscribe('submit', newsletterPage.savePersonalData);
+	// const promise = getCategories ();
+	// promise.
+	// then(function(data) {
+	// 	const promise2 = getCategoriesData (data);
+	// 	promise2.
+	// 	then(function(categoriesData) {
+	// 		createStartPage (categoriesData);
+	// 		enableHomeClick (categoriesData);
+	// 		login.goToLoginScreen (categoriesData);
+	// 		enableButton (categoriesData);
+	// 		eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
+	// 	});
+	// });
 })
 
 function fillUserName () {
