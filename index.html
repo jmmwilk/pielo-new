@@ -64,61 +64,71 @@
     <div id="page" class="row d-flex">
     </div>
   </script>
+  <script id="thank-you-template" type="text/x-handlebars-template">
+  </script>
   <script id="newsletter-page-template" type="text/x-handlebars-template">
     <div id="newsletter-page-box" class="row justify-content-center h-100">
       <div class="col-lg-10 d-flex flex-column justify-content-center">
-        <div class="text-center text-warning my-3">
+        <div id="pielo" class="text-center text-warning my-3">
           <h1>Pielo.pl</h1>
         </div>
-        <div class="text-center my-3">
+        <div id="thank-you-text" class="my-2 text-center text-secondary d-none">
+          <h4>Dziękujemy i do zobaczenia. Miłego wielopieluchowania :)</h4>
+        </div>
+        <div id="welcome-text" class="text-center my-3">
           <div class="my-2 text-info">
             <h3>Witaj na stronie pierwszej porównywarki nowoczesnych pieluszek wielorazowych.<h3>
           </div>
           <div id="leave-email-text" class="my-2 text-secondary">
-            <h4>Zostaw swój email, a dowiesz się jako pierwsza, kiedy tylko strona ruszy.</h4>
+            <h4>Zostaw swój email, a kiedy tylko strona ruszy, dowiesz się jako pierwsza.</h4>
+          </div>
+          <div id="thank-you-text" class="my-2 text-secondary d-none">
+            <h4>Dziękujemy za zostawienie maila. Do zobaczenia :)</h4>
           </div>
         </div>
-        <div class="form my-3 needs-validation" novalidate>
-          <div class="form-row d-flex justify-content-center">
-            <div class="form-group mx-2">
-              <input id="email-input" type="email" class="form-control" id="inputEmail" placeholder="Email" value="" required required>
-              <div class="invalid-feedback">
-                Wpisz adres email.
+        <form id="form" class="needs-validation novalidate">
+          <div id="makapaka" class="my-3">
+            <div class="form-row d-flex justify-content-center">
+              <div class="form-group mx-2">
+                <input id="email-input" type="email" class="form-control" id="inputEmail" placeholder="Email" value="" required>
+                <div class="invalid-feedback">
+                  Wpisz poprawny adres email.
+                </div>
+              </div>
+              <div class="form-group mx-2">
+                <input id="name-input" type="text" class="form-control" id="validationCustom01" placeholder="Imię i Nazwisko" value="" required>
+                <div class="invalid-feedback">
+                  <small>Wpisz imię i nazwisko.</small>
+                </div>
               </div>
             </div>
-            <div class="form-group mx-2">
-              <input id="name-input" type="text" class="form-control" id="validationCustom01" placeholder="Imię i Nazwisko" value="" required>
-              <div class="invalid-feedback">
-                Wpisz imię i nazwisko.
+          </div>
+          <div class="text-secondary row justify-content-md-center">
+            <div class="col-auto">
+              <div class="form-check m-2">
+                <input class="form-check-input" type="checkbox" value="nappies-user" id="nappies-user-checkbox">
+                <label class="form-check-label" for="nappies-user-checkbox">
+                  Używam lub chcę używać pieluszek wielorazowych.
+                </label>
+              </div>
+              <div class="form-check m-2">
+                <input  class="form-check-input" type="checkbox" value="producer" id="producer-checkbox">
+                <label class="form-check-label" for="producer-checkbox">
+                  Jestem producentem pieluszek wielorazowych.
+                </label>
+              </div>
+              <div class="form-check m-2">
+                <input class="form-check-input" type="checkbox" value="shop-owner" id="shop-owner-checkbox">
+                <label class="form-check-label" for="shop-owner-checkbox">
+                  Prowadzę sklep z pieluszkami wielorazowymi.
+                </label>
+              </div>
+              <div class="row d-flex justify-content-end m-2">
+                <button id="button" type="submit" class="btn btn-primary my-4">Wyślij</button>
               </div>
             </div>
           </div>
-        </div>
-        <div class="text-secondary row justify-content-md-center">
-          <div class="col-auto">
-            <div class="form-check m-2">
-              <input class="form-check-input" type="checkbox" value="nappies-user" id="nappies-user-checkbox">
-              <label class="form-check-label" for="nappies-user-checkbox">
-                Używam lub chcę używać pieluszek wielorazowych.
-              </label>
-            </div>
-            <div class="form-check m-2">
-              <input  class="form-check-input" type="checkbox" value="producer" id="producer-checkbox">
-              <label class="form-check-label" for="producer-checkbox">
-                Jestem producentem pieluszek wielorazowych.
-              </label>
-            </div>
-            <div class="form-check m-2">
-              <input class="form-check-input" type="checkbox" value="shop-owner" id="shop-owner-checkbox">
-              <label class="form-check-label" for="shop-owner-checkbox">
-                Prowadzę sklep z pieluszkami wielorazowymi.
-              </label>
-            </div>
-            <div class="row d-flex justify-content-end m-2">
-              <button id="button" type="submit" class="btn btn-primary my-4">Wyślij</button>
-            </div>
-          </div>
-        </div>
+        </form>
       </div>
     </div>
   </script>

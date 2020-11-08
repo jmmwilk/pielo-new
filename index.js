@@ -10,8 +10,7 @@ import * as newsletterPage from '../views/newsletter-page.js';
 $(document).ready(function(){
 	newsletterPage.createNewsletterTemplate ();
 	newsletterPage.enableSubmitClick ();
-	eventBus.eventBus.subscribe('submit', newsletterPage.disableFormSubmission);
-	eventBus.eventBus.subscribe('submit', newsletterPage.savePersonalData);
+	
 	// const promise = getCategories ();
 	// promise.
 	// then(function(data) {
