@@ -1,12 +1,16 @@
-import * as eventBus from '../eventBus.js';
 
-export function createNewsletterTemplate () {
+$(document).ready(function(){
+	createNewsletterTemplate ();
+	enableSubmitClick ();
+})
+
+function createNewsletterTemplate () {
 	let template = $('#newsletter-page-template').html();
 	let compiledTemplate = Handlebars.compile(template);
 	$('#application').html(compiledTemplate());
 }
 
-export function enableSubmitClick () {
+function enableSubmitClick () {
     let forms = document.getElementsByClassName('needs-validation');
     let validation = Array.prototype.filter.call(forms, function(form) {
     	let button = document.getElementById('button');

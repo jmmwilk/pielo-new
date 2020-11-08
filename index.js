@@ -8,9 +8,6 @@ import * as state from '../state.js';
 import * as newsletterPage from '../views/newsletter-page.js';
 
 $(document).ready(function(){
-	newsletterPage.createNewsletterTemplate ();
-	newsletterPage.enableSubmitClick ();
-	
 	// const promise = getCategories ();
 	// promise.
 	// then(function(data) {
