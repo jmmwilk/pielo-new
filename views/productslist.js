@@ -231,6 +231,7 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	  	let newItems = {'data': items}
 //		fillDiaperCards ();
 		removeProductsList ();
+		createItemsPageTemplate (newItems);
 		createItemsListTemplate (newItems);
 		enableCardClick ();
 	})

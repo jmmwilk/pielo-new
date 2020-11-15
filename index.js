@@ -8,20 +8,35 @@ import * as state from '../state.js';
 import * as newsletterPage from '../views/newsletter-page.js';
 
 $(document).ready(function(){
-	// const promise = getCategories ();
-	// promise.
-	// then(function(data) {
-	// 	const promise2 = getCategoriesData (data);
-	// 	promise2.
-	// 	then(function(categoriesData) {
-	// 		createStartPage (categoriesData);
-	// 		enableHomeClick (categoriesData);
-	// 		login.goToLoginScreen (categoriesData);
-	// 		enableButton (categoriesData);
-	// 		eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
-	// 	});
+	// let dbRef = firebase.database().ref('sizes/');
+	// var newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'one-size-comfort'
 	// });
+	// let key = newDbRef.getKey();
+	// console.log('key', key)
+
+	createApplicationTemplate ();
+	const promise = getCategories ();
+	promise.
+	then(function(data) {
+		const promise2 = getCategoriesData (data);
+		promise2.
+		then(function(categoriesData) {
+			createStartPage (categoriesData);
+			enableHomeClick (categoriesData);
+			login.goToLoginScreen (categoriesData);
+			enableButton (categoriesData);
+			eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
+		});
+	});
 })
+
+function createApplicationTemplate () {
+	let template = $('#application-template').html();
+	let compiledTemplate = Handlebars.compile(template);
+	$('#application').html(compiledTemplate());
+}
 
 function fillUserName () {
 	let userNameBox = document.getElementById('user-name-box');

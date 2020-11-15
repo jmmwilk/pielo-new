@@ -1,16 +1,16 @@
 
-$(document).ready(function(){
-	createNewsletterTemplate ();
-	enableSubmitClick ();
-})
+// $(document).ready(function(){
+// 	createNewsletterTemplate ();
+// 	enableSubmitClick ();
+// })
 
-function createNewsletterTemplate () {
+export function createNewsletterTemplate () {
 	let template = $('#newsletter-page-template').html();
 	let compiledTemplate = Handlebars.compile(template);
 	$('#application').html(compiledTemplate());
 }
 
-function enableSubmitClick () {
+export function enableSubmitClick () {
     let forms = document.getElementsByClassName('needs-validation');
     let validation = Array.prototype.filter.call(forms, function(form) {
     	let button = document.getElementById('button');
@@ -19,7 +19,6 @@ function enableSubmitClick () {
 	        if (form.checkValidity() === false) {
 	          event.preventDefault();
 	          event.stopPropagation();
-	          console.log('sprobuj jeszcze raz')
 	        }
 	        form.classList.add('was-validated');
 	        event.preventDefault();
@@ -27,7 +26,6 @@ function enableSubmitClick () {
 	        form.innerHTML = '';
 	        document.getElementById('welcome-text').innerHTML = '';
 	        document.getElementById('thank-you-text').classList.remove('d-none')
-	        console.log('hurra')
 
       	}, false);
 	 	}
@@ -44,7 +42,6 @@ function savePersonalData () {
 	var forms = document.getElementsByClassName('needs-validation');
 	Array.from(forms).forEach(function(form){
 		if (form.classList.contains('was-validated') == true) {
-			console.log('grzybek')
 			const emailInput = document.getElementById('email-input');
 			const nameInput = document.getElementById('name-input');
 			const nappiesUserInput = document.getElementById('nappies-user-checkbox');

@@ -50,7 +50,6 @@ export function createForm (data) {
 }
 
 function addImageInputTemplate (image) {
-	console.log('image', image)
 	let template = $('#add-image-template').html();
 	let compiledTemplate = Handlebars.compile(template);
 	$('#image-inputs-box').append(compiledTemplate(image));
