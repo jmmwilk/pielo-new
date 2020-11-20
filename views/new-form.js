@@ -2,26 +2,69 @@ import * as state from '../state.js';
 
 let database = firebase.database();
 let storage = firebase.storage();
+let viewNumber = 0;
+let view;
 
 export function createForm (data) {
 	const promise = getFormCategories ();
 	promise.then(function(formCategories){		
-		console.log('data', data)
 		createTemplate ('form-page-template', 'page')
-		createTemplate ('diaper-category-template', 'form-page-wrapper');
-		createNewInput (data, 'diaper-categories', 'diaper-categories-input');
+		createDiaperCategoriesPage (data)
 		document.getElementById('diaper-category-button').onclick = function () {
-			saveCategory ();
-			let categoryData = findCategoryData (data);
-			clearForm ();
+			let views = getViews ()
+			view = views[viewNumber];
+			saveCategoryData (data)
+			clearFormWrapper ();
 			createFormNavigation ()
-			createStructurePage (categoryData, formCategories)
+			createStructurePage (state.item.categoryData, formCategories)
 			document.getElementById('form-button').onclick = function() {
-
+				saveAnswers ();
+				viewNumber = viewNumber + 1
+				view = views[viewNumber];
+				console.log('view', view)
+				clearForm()
 			}
 
 		}
 	})
+}
+
+function saveAnswers () {
+	if (view == 'structure') {
+		let flaps = document.getElementById('flaps')
+		console.log('flaps', flaps)
+		if (flaps !== null) {
+			if (flaps.checked == true) {
+				state.item.answers.flaps = true;
+			} else {
+				state.item.answers.flaps = false;
+			}
+		}
+		let pockets = document.getElementById('pocket');
+		if (pockets !== null) {
+			if (pockets.checked == true) {
+				state.item.answers.pocket = true;
+				state.item.answers['pocket-types'] = $('#pocket-types-select').val();
+			} else {
+				state.item.answers.pocket = false;
+				state.item.answers['pocket-types'] = false;
+			}
+		}
+		console.log('state.item', state.item)
+	}
+}
+
+function saveCategoryData (data) {
+	state.item.category = $('#diaper-categories-input').val()[0]
+	let categoryData = findCategoryData (data);
+	state.item.categoryData = categoryData;
+}
+
+function createDiaperCategoriesPage (data) {
+	let diaperCategories = getDiaperCategories (data);
+	createTemplate ('diaper-category-template', 'form-page-wrapper');
+	createTemplate ('new-input-template', 'diaper-categories-input', diaperCategories);
+	$('#diaper-categories-input').selectpicker();
 }
 
 function createFormNavigation () {
@@ -50,36 +93,50 @@ function createStructurePage (categoryData, formCategories) {
 	createTemplate ('button-template', 'structure');
 }
 
-function createNewInput (data, category, inputId) {
-	let catData;
+function getDiaperCategories (data) {
+	let diaperCategories;
 	for (let i=0; i<data.length; i++) {
-		if (data[i].id == category) {
-			catData = data[i];
+		if (data[i].id == 'diaper-categories') {
+			diaperCategories = data[i];
+			return diaperCategories
 		}
 	}
-	createTemplate ('new-input-template', inputId, catData);
-	$('#' + inputId).selectpicker();
 }
 
 let navItems = {
 	items: [
 		{
-			'name': 'Budowa'
+			'name': 'Budowa',
+			'id': 'structure',
 		},
 		{
-			'name': 'Wymiary'
+			'name': 'Materiały',
+			'id': 'fabrics',
 		},
 		{
-			'name': 'Materiały'
+			'name': 'Wymiary',
+			'id': 'dimensions',
 		},
 		{
-			'name': 'Inne'
+			'name': 'Inne',
+			'id': 'others',
 		},
 		{
-			'name': 'Opis'
+			'name': 'Opis',
+			'id': 'description',
 		}
 	]
 }
+
+function getViews () {
+	let formViews = [];
+	Array.from(navItems.items).forEach(function(navItem){
+		formViews.push(navItem.id)
+	})
+	return formViews
+}
+
+// let views = ['structure', 'fabrics', 'dimensions', 'others', 'description'];
 
 function findCategoryData (categories) {
 	let chosenCategory;
@@ -109,12 +166,12 @@ export function getFormCategories () {
 	return promise1
 }
 
-function saveCategory () {
-	state.item.category = $('#diaper-categories-input').val()[0]
+function clearFormWrapper () {
+	document.getElementById('form-page-wrapper').innerHTML = '';
 }
 
 function clearForm () {
-	document.getElementById('form-page-wrapper').innerHTML = '';
+	document.getElementById('form-wrapper').innerHTML = '';
 }
 
 function createTemplate (templateId, parentId, data) {

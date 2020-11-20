@@ -4,5 +4,5 @@ export let state = {
 }
 
 export let item = {
-	
+	answers: {},
 }
