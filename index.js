@@ -1,7 +1,7 @@
 import * as menu from '../mocks/menu.js';
 import * as productslist from '../views/productslist.js';
 import * as sidebarmenu from '../views/sidebarmenu.js';
-import * as form from '../views/form.js';
+import * as form from '../views/new-form.js';
 import * as login from '../views/login.js';
 import * as eventBus from '../eventBus.js';
 import * as state from '../state.js';

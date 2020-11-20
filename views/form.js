@@ -6,168 +6,45 @@ let database = firebase.database();
 let storage = firebase.storage();
 
 export function createForm (data) {
-	const promise = getFormCategories ();
-	promise.then(function(formCategories){		
-		console.log('data', data)
-		createTemplate ('form-page-template', 'page')
-		createTemplate ('diaper-category-template', 'form-page-wrapper');
-		createNewInput (data, 'diaper-categories', 'diaper-categories-input');
-		document.getElementById('diaper-category-button').onclick = function () {
-			saveCategory ();
-			let categoryData = findCategoryData (data);
-			clearForm ();
-			createFormNavigation ()
-			createStructurePage (categoryData, formCategories)
-			document.getElementById('form-button').onclick = function() {
-
-			}
-
+	createPage1 (data);
+	let diaper = {};
+	diaper.images =[];
+	$('#input-image').change(function(event) {
+		if (event.target.files.length > 0) {
+			showPreview (event);
+			addProfileImageToStorage (diaper);
 		}
-	})
-	
-
-	
-	
-
-
-// 	createPage1 (data);
-// 	let diaper = {};
-// 	diaper.images =[];
-// 	$('#input-image').change(function(event) {
-// 		if (event.target.files.length > 0) {
-// 			showPreview (event);
-// 			addProfileImageToStorage (diaper);
-// 		}
-// 	});
-// 	let image = {'image-number': 1}
-// 	addImageInputTemplate (image);
-// 	let currentImageInput = 'input-image-' + 1;
-// 	$('#' + currentImageInput).change(function(event) {
-// 		if (event.target.files.length > 0) {
-// //			showPreview (event);
-// 			addImageToStorage (diaper, currentImageInput);
-// 			image['image-number'] = image['image-number'] + 1
-// 			addImageInputTemplate (image);
-			
-// 			currentImageInput = 'input-image-' + image['image-number']
-// 		}
-// 	});
-// 	let firebaseData = data;
-
-// 	let button = document.getElementById('page1-button');
-// 	button.onclick = function () {
-// 		let validation = layersValidation ();
-// 		if (validation == true) {
-// 			createPage2 (firebaseData, diaper);
-// 			let buttonPage2 = document.getElementById('page2-button');
-// 			buttonPage2.onclick = function () {
-// 				saveInputsPage2 (diaper);
-// 				let key = addMockDiaper (diaper);
-// 				let page = document.getElementById('page');
-// 				page.innerHTML = '';
-// 				productPage.createProductScreen (key, 'preview');
-// 			}
-// 		}
-// 	}
-}
-
-function createFormNavigation () {
-	createTemplate ('form-template', 'form-page-wrapper')
-	createTemplate ('nav-item-template', 'nav-items-wrapper', navItems);
-}
-
-function createStructurePage (categoryData, formCategories) {
-	createTemplate ('structure-template', 'form-wrapper');
-	
-	if (categoryData.flaps == 'ask') {
-		createTemplate ('flaps-template', 'structure');
-	};
-	if (categoryData.pocket == 'ask') {
-		createTemplate ('pocket-template', 'structure');
-	}
-	if (categoryData.pocket == 'ask' || categoryData.pocket == true) {
-		let pocketTypes = {'data': formCategories['pocket']} ;
-		createTemplate ('pocket-types-template', 'structure');
-		createTemplate ('new-input-template', 'pocket-types-select', pocketTypes);
-	}
-	if (categoryData.pocket == true) {
-		document.getElementById('pocket-types').classList.remove("collapse");
-	}
-	$('.form-input').selectpicker();
-	createTemplate ('button-template', 'structure');
-}
-
-function createNewInput (data, category, inputId) {
-	let catData;
-	for (let i=0; i<data.length; i++) {
-		if (data[i].id == category) {
-			catData = data[i];
-		}
-	}
-	createTemplate ('new-input-template', inputId, catData);
-	$('#' + inputId).selectpicker();
-}
-
-let navItems = {
-	items: [
-		{
-			'name': 'Budowa'
-		},
-		{
-			'name': 'Wymiary'
-		},
-		{
-			'name': 'Materiały'
-		},
-		{
-			'name': 'Inne'
-		},
-		{
-			'name': 'Opis'
-		}
-	]
-}
-
-function findCategoryData (categories) {
-	let chosenCategory;
-	Array.from(categories).forEach(function(category){
-		if (category.id == 'diaper-categories') {
-			category.data.forEach(function(cat){
-				if (cat.name == state.item.category) {
-					chosenCategory = cat
-					return
-				}
-			})
-		}
-	})
-	return chosenCategory
-}
-
-export function getFormCategories () {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref('form-categories/');
-		let data = {};
-		dbRef.once('value',   function(snapshot) {
-		    data = snapshot.val();
-		    resolve (data)
-	  	});
-	  	
 	});
-	return promise1
-}
+	let image = {'image-number': 1}
+	addImageInputTemplate (image);
+	let currentImageInput = 'input-image-' + 1;
+	$('#' + currentImageInput).change(function(event) {
+		if (event.target.files.length > 0) {
+//			showPreview (event);
+			addImageToStorage (diaper, currentImageInput);
+			image['image-number'] = image['image-number'] + 1
+			addImageInputTemplate (image);
+			
+			currentImageInput = 'input-image-' + image['image-number']
+		}
+	});
+	let firebaseData = data;
 
-function saveCategory () {
-	state.item.category = $('#diaper-categories-input').val()[0]
-}
-
-function clearForm () {
-	document.getElementById('form-page-wrapper').innerHTML = '';
-}
-
-function createTemplate (templateId, parentId, data) {
-	let template = $('#' + templateId).html();
-	let compiledTemplate = Handlebars.compile(template);
-	$('#' + parentId).append(compiledTemplate(data));
+	let button = document.getElementById('page1-button');
+	button.onclick = function () {
+		let validation = layersValidation ();
+		if (validation == true) {
+			createPage2 (firebaseData, diaper);
+			let buttonPage2 = document.getElementById('page2-button');
+			buttonPage2.onclick = function () {
+				saveInputsPage2 (diaper);
+				let key = addMockDiaper (diaper);
+				let page = document.getElementById('page');
+				page.innerHTML = '';
+				productPage.createProductScreen (key, 'preview');
+			}
+		}
+	}
 }
 
 function addImageInputTemplate (image) {
