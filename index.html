@@ -35,7 +35,6 @@
         appId: "1:104016685413:web:9bc39931f4251a2da2198c",
         measurementId: "G-4KKS4BMPSJ"
       };
-      // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
       firebase.analytics();
     </script>
@@ -61,7 +60,7 @@
         </div>
       </div>
     </div>
-    <div id="page" class="row d-flex">
+    <div id="page" class="row d-flex justify-content-md-center h-100">
     </div>
   </script>
   <script id="thank-you-template" type="text/x-handlebars-template">
@@ -401,6 +400,84 @@
       </div>
     </div>
   </script>
+
+
+
+
+
+  <script id="form-page-template" type="text/x-handlebars-template">
+    <div id="form-page-wrapper" class="col-6">
+    </div>
+  </script>
+  <script id="form-template" type="text/x-handlebars-template">
+    <div  class="">
+      <nav id="navbar" class="navbar navbar-expand-lg navbar-white bg-white">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul id="nav-items-wrapper" class="row navbar-nav mr-auto">
+          </ul>
+        </div>
+      </nav>
+      <div id="form-wrapper">
+
+      </div>
+    </div>
+  </script>
+  <script id="nav-item-template" type="text/x-handlebars-template">
+    {{#each items}}
+      <li class="nav-item active col mx-auto">
+        <a id='{{name}}' class="nav-link" href="#">{{name}}<span class="sr-only">(current)</span></a>
+      </li>
+    {{/each}}
+  </script>
+  <script id="structure-template" type="text/x-handlebars-template">
+    <form id="structure" class="">
+    </form>
+  </script>
+  <script id="flaps-template" type="text/x-handlebars-template">
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <div class="form-check">
+          <input class="form-check-input form-input" type="checkbox" id="flaps" value="">
+          <label class="form-check-label" for="flaps">Zakładki</label>
+        </div>
+      </div>
+    </div>
+  </script>
+  <script id="pocket-template" type="text/x-handlebars-template">
+    <div class="form-group row">
+      <div class="col-sm-10">
+        <div class="form-check">
+          <input data-toggle="collapse" data-target='#pocket-types' class="form-check-input structure-input selectpicker form-input" type="checkbox" id="pocket" value="">
+          <label class="form-check-label" for="pocket">Kieszonka</label>
+        </div>
+      </div>
+    </div>
+  </script>
+   <script id="pocket-types-template" type="text/x-handlebars-template">
+    <div id="pocket-types" class="collapse form-group flex-column col-12">
+      <label for="pocket-types-select">Wejście na wkład</label>
+      <select id="pocket-types-select" class="selectpicker col-12 form-input" multiple data-max-options="2">
+      </select>
+    </div>
+  </script>
+  <script id="diaper-category-template" type="text/x-handlebars-template">
+    <div  class="">
+      <div class="form-group flex-column col-12">
+        <label for="diaper-categories-input">Rodzaj pieluszki</label>
+        <select id="diaper-categories-input" class=" selectpicker col-12" multiple data-max-options="1">
+        </select>
+      </div>      
+      <button id="diaper-category-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
+    </div>
+  </script>
+  <script id="button-template" type="text/x-handlebars-template">
+    <button id="form-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
+  </script>
+  <script id="new-input-template" type="text/x-handlebars-template">
+    {{#each data}}
+      <option>{{name}}</option>
+    {{/each}}
+  </script>
   <script id="form-page1-template" type="text/x-handlebars-template">
     <form id="new-form" class="form col-6">
       <div id="form-page-1" class="row align-items-center m-3 bg-light d-flex flex-column">
@@ -581,12 +658,7 @@
       </div>
     </form>
   </script>
-  <script id="new-input-template" type="text/x-handlebars-template">
-    {{#each data}}
-      <option>{{name}}</option>
-    {{/each}}
-  </script>
-    <script id="size-buttons-template" type="text/x-handlebars-template">
+  <script id="size-buttons-template" type="text/x-handlebars-template">
     {{#each diaper.sizes}}
       <button id="{{this.shortcut}}" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">{{this.shortcut}}</button>
     {{/each}}

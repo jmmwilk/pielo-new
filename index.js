@@ -8,15 +8,45 @@ import * as state from '../state.js';
 import * as newsletterPage from '../views/newsletter-page.js';
 
 $(document).ready(function(){
-	// let dbRef = firebase.database().ref('sizes/');
-	// var newDbRef = dbRef.push();
+	// let dbRef = firebase.database().ref('form-categories/flaps-fabrics/');
+	// let newDbRef = dbRef.push();
 	// newDbRef.set({
-	//   'id': 'one-size-comfort'
+	//   'id': 'coolmax'
 	// });
-	// let key = newDbRef.getKey();
-	// console.log('key', key)
+	// newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'thermo'
+	// });
+	// newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'bawelna'
+	// });
+	// newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'bawelna-organiczna'
+	// });
+	// newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'bambus'
+	// });
+	// newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'konopia'
+	// });
+	// newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'len'
+	// });
+	// newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'polar'
+	// });
+	// newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'poliester'
+	// });
 
-	createApplicationTemplate ();
+	createTemplate ('application-template', 'application');
 	const promise = getCategories ();
 	promise.
 	then(function(data) {
@@ -32,11 +62,17 @@ $(document).ready(function(){
 	});
 })
 
-function createApplicationTemplate () {
-	let template = $('#application-template').html();
+export function createTemplate (templateId, parentTemplate) {
+	let template = $('#' + templateId).html();
 	let compiledTemplate = Handlebars.compile(template);
-	$('#application').html(compiledTemplate());
+	$('#' + parentTemplate).html(compiledTemplate());
 }
+
+// function createApplicationTemplate () {
+// 	let template = $('#application-template').html();
+// 	let compiledTemplate = Handlebars.compile(template);
+// 	$('#application').html(compiledTemplate());
+// }
 
 function fillUserName () {
 	let userNameBox = document.getElementById('user-name-box');
