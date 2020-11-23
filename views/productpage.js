@@ -11,7 +11,6 @@ export function createProductScreen (key, view) {
 	promise
 	.then (function (diaper) {
 		createPreviewScreen (diaper, view);
-		console.log('state.state', state.state)
 	})
 }
 

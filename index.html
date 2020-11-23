@@ -60,7 +60,7 @@
         </div>
       </div>
     </div>
-    <div id="page" class="row d-flex justify-content-md-center h-100">
+    <div id="page" class="row d-flex justify-content-md-center">
     </div>
   </script>
   <script id="thank-you-template" type="text/x-handlebars-template">
@@ -404,7 +404,28 @@
 
 
 
-
+  <script id="checkbox-input-template" type="text/x-handlebars-template">
+    <div class="form-group row col-12">
+      <div class="col-sm-10">
+        <div class="form-check">
+          <input class="form-check-input form-input" type="checkbox" id="{{question-id}}" value="">
+          <label class="form-check-label" for={{question-id}}>{{text}}</label>
+        </div>
+      </div>
+    </div>
+  </script>
+  <script id="select-input-template" type="text/x-handlebars-template">
+    <div id="{{question-id}}-box" class="form-group flex-column col-12">
+      <label for="{{question-id}}">Wejście na wkład</label>
+      <select id="{{question-id}}" class="selectpicker col-12 form-input" multiple data-max-options="2">
+      </select>
+    </div>
+  </script>
+  <script id="new-input-template" type="text/x-handlebars-template">
+    {{#each data}}
+      <option>{{name}}</option>
+    {{/each}}
+  </script>
   <script id="form-page-template" type="text/x-handlebars-template">
     <div id="form-page-wrapper" class="col-6 bg-white">
     </div>
@@ -418,7 +439,6 @@
         </div>
       </nav>
       <div id="form-wrapper">
-
       </div>
     </div>
   </script>
@@ -472,11 +492,6 @@
   </script>
   <script id="button-template" type="text/x-handlebars-template">
     <button id="form-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
-  </script>
-  <script id="new-input-template" type="text/x-handlebars-template">
-    {{#each data}}
-      <option>{{name}}</option>
-    {{/each}}
   </script>
   <script id="form-page1-template" type="text/x-handlebars-template">
     <form id="new-form" class="form col-6">

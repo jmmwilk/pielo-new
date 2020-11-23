@@ -6,27 +6,147 @@ let viewNumber = 0;
 let view;
 
 export function createForm (data) {
+	console.log('data', data)
+
+
 	const promise = getFormCategories ();
-	promise.then(function(formCategories){		
+	promise.then(function(){
+		getQuestionsText ();
+	})
+	.then(function(){
+		getAnswersOptions ();
+	})
+	.then(function(){
 		createTemplate ('form-page-template', 'page')
 		createDiaperCategoriesPage (data)
 		document.getElementById('diaper-category-button').onclick = function () {
 			let views = getViews ()
 			view = views[viewNumber];
-			saveCategoryData (data)
+			saveDiaperCategoryData (data);
 			clearFormWrapper ();
-			createFormNavigation ()
-			createStructurePage (state.item.categoryData, formCategories)
-			document.getElementById('form-button').onclick = function() {
-				saveAnswers ();
-				viewNumber = viewNumber + 1
-				view = views[viewNumber];
-				console.log('view', view)
-				clearForm()
-			}
+			createFormNavigation ();
+			createTemplate ('structure-template', 'form-wrapper');
+			createFormQuestions ();
+			$('.form-input').selectpicker();
+			console.log('state.item', state.item)
+//			createStructurePage (formCategories)
+			// document.getElementById('form-button').onclick = function() {
+			// 	saveAnswers ();
+			// 	viewNumber = viewNumber + 1
+			// 	view = views[viewNumber];
+			// 	console.log('view', view)
+			// 	clearForm()
+			// }
 
 		}
 	})
+}
+
+function createFormQuestions () {
+	console.log ('view', view)
+	let diaper = state.item.categoryData
+	console.log('diaper', diaper)
+	let questions = state.formCategories.categories;
+	console.log('questions', questions)
+	questions.forEach(function(question){
+		let questionId = question.id;
+		if (!diaper[questionId]) {
+			return
+		};
+		if (question.view !== view) {
+			return
+		}
+		if (question['question-type'] == 'main' && question['input-type'] == 'checkbox'){
+			if (diaper[questionId].answer == 'ask') {
+				createCheckboxInput (questionId);
+				if (question['dependent-questions']) {
+					createDependentQuestions (question, questions)
+				}
+			}
+			if (diaper[questionId].answer == true) {
+				if (question['dependent-questions']) {
+					createDependentQuestions (question, questions)
+				}
+			}
+		};
+		if (question['question-type'] == 'dependent'
+			&& question['parent-id'] !== view
+			&& state.item.answers['parent-id'] == true) {
+			createSelectInput (questionId)
+		}
+	})
+
+}
+
+function createDependentQuestions (question, questions) {
+	Array.from(question['dependent-questions']).forEach(function(depQuestion){
+		let depQuestionId = depQuestion.id
+		let depQuestionData = findDependentQuestionData (questions, depQuestionId);
+		console.log('state.item.categoryData', state.item.categoryData)				
+		if (state.item.categoryData[depQuestionId].answer == 'ask'
+			&& depQuestionData['input-type'] == 'select') {
+			createSelectInput (depQuestionId)
+		}
+	})
+}
+
+function findDependentQuestionData (questions, depQuestionId) {
+	let dependentQuestion;
+	Array.from(questions).forEach(function(question){
+		if (question.id == depQuestionId) {
+			dependentQuestion = question
+			return
+		}
+	})
+	return dependentQuestion
+}
+
+function createCheckboxInput (questionId) {
+	let data = {};
+	let diaper = state.item.categoryData;
+	let questions = state.formCategories['questions-text']
+	let questionText;
+	Array.from(questions).forEach(function(question){
+		if (question['question-id'] == questionId) {
+			Array.from(question.options).forEach(function(option){
+				if (option.name == diaper[questionId]['answer-options']) {
+					questionText = option.text;
+					data['text'] = questionText
+					data['question-id'] = questionId;
+				}
+			})
+		}
+	})
+	console.log ('questionText', questionText)
+	createTemplate ('checkbox-input-template', 'structure', data);
+}
+
+function createSelectInput (questionId) {
+	let data = {};
+	let diaper = state.item.categoryData;
+	let questions = state.formCategories['questions-text'];
+	let questionText;
+	Array.from(questions).forEach(function(question){
+		if (question['question-id'] == questionId) {
+			Array.from(question.options).forEach(function(option){
+				if (option.name == diaper[questionId]['answer-options']) {
+					questionText = option.text;
+					data['text'] = questionText
+					data['question-id'] = questionId;
+				}
+			})
+		}
+	})
+	let answersData = {};
+	console.log ('data', data)
+	createTemplate ('select-input-template', 'structure', data);
+	let answers = state.formCategories['answers-options'];
+	Array.from(answers).forEach(function(answer) {
+		if (answer['question-id'] == questionId) {
+			answersData.data = answer.options
+		}
+	})
+	createTemplate ('new-input-template', questionId, answersData);
 }
 
 function saveAnswers () {
@@ -54,7 +174,7 @@ function saveAnswers () {
 	}
 }
 
-function saveCategoryData (data) {
+function saveDiaperCategoryData (data) {
 	state.item.category = $('#diaper-categories-input').val()[0]
 	let categoryData = findCategoryData (data);
 	state.item.categoryData = categoryData;
@@ -72,7 +192,8 @@ function createFormNavigation () {
 	createTemplate ('nav-item-template', 'nav-items-wrapper', navItems);
 }
 
-function createStructurePage (categoryData, formCategories) {
+function createStructurePage (formCategories) {
+	let categoryData = state.item.categoryData
 	createTemplate ('structure-template', 'form-wrapper');
 	
 	if (categoryData.flaps == 'ask') {
@@ -156,9 +277,48 @@ function findCategoryData (categories) {
 export function getFormCategories () {
 	const promise1 = new Promise ((resolve, reject) => {
 		let dbRef = firebase.database().ref('form-categories/');
-		let data = {};
+		let data = [];
 		dbRef.once('value',   function(snapshot) {
-		    data = snapshot.val();
+			snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      data.push(childData);
+		    });
+		    state.formCategories.categories = data;
+		    resolve (data)
+	  	});
+	  	
+	});
+	return promise1
+}
+
+function getQuestionsText () {
+	const promise1 = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('form-questions-text/');
+		let data = [];
+		dbRef.once('value',   function(snapshot) {
+			snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      data.push(childData);
+		    });
+		    state.formCategories['questions-text'] = data;
+		    resolve (data)
+	  	});
+	  	
+	});
+	return promise1
+}
+
+function getAnswersOptions () {
+	const promise1 = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('form-answers/');
+		let data = [];
+		dbRef.once('value',   function(snapshot) {
+			snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      data.push(childData);
+		    });
+		    state.formCategories['answers-options'] = data;
+		    console.log ('answersdata', data)
 		    resolve (data)
 	  	});
 	  	

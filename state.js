@@ -6,3 +6,9 @@ export let state = {
 export let item = {
 	answers: {},
 }
+
+export let formCategories = {
+	categories: [],
+	'questions-text': [],
+	'answers-options': [],
+}

@@ -8,43 +8,19 @@ import * as state from '../state.js';
 import * as newsletterPage from '../views/newsletter-page.js';
 
 $(document).ready(function(){
-	// let dbRef = firebase.database().ref('form-categories/flaps-fabrics/');
+	// let dbRef = firebase.database().ref('form-questions-text/');
 	// let newDbRef = dbRef.push();
 	// newDbRef.set({
-	//   'id': 'coolmax'
+	//   'question-id': 'flaps',
+	//   'for-multiple-questions': false,
+	//   'options': [
+	//   		{	
+	//   		'name': 'all',
+	//   		'text': 'Zakładki'
+	//   		},
+	//   	]
 	// });
-	// newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'thermo'
-	// });
-	// newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'bawelna'
-	// });
-	// newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'bawelna-organiczna'
-	// });
-	// newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'bambus'
-	// });
-	// newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'konopia'
-	// });
-	// newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'len'
-	// });
-	// newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'polar'
-	// });
-	// newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'poliester'
-	// });
+	
 
 	createTemplate ('application-template', 'application');
 	const promise = getCategories ();
