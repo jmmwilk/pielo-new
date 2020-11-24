@@ -408,7 +408,7 @@
     <div class="form-group row col-12">
       <div class="col-sm-10">
         <div class="form-check">
-          <input class="form-check-input form-input" type="checkbox" id="{{question-id}}" value="">
+          <input class="form-check-input form-input checkbox" type="checkbox" id="{{question-id}}" value="">
           <label class="form-check-label" for={{question-id}}>{{text}}</label>
         </div>
       </div>
@@ -417,7 +417,7 @@
   <script id="select-input-template" type="text/x-handlebars-template">
     <div id="{{question-id}}-box" class="form-group flex-column col-12">
       <label for="{{question-id}}">Wejście na wkład</label>
-      <select id="{{question-id}}" class="selectpicker col-12 form-input" multiple data-max-options="2">
+      <select id="{{question-id}}" class="col-12 form-input select" selectpicker multiple data-max-options="2">
       </select>
     </div>
   </script>
@@ -440,45 +440,19 @@
       </nav>
       <div id="form-wrapper">
       </div>
+      <button id="form-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
     </div>
   </script>
   <script id="nav-item-template" type="text/x-handlebars-template">
     {{#each items}}
-      <li class="nav-item active col mx-auto">
-        <a id='{{name}}' class="nav-link" href="#">{{name}}<span class="sr-only">(current)</span></a>
+      <li id='{{id}}-nav' class="nav-item col mx-auto">
+        <a class="nav-link" href="#">{{name}}<span class="sr-only">(current)</span></a>
       </li>
     {{/each}}
   </script>
-  <script id="structure-template" type="text/x-handlebars-template">
-    <form id="structure" class="">
+  <script id="form-view-template" type="text/x-handlebars-template">
+    <form id={{view}} class="">
     </form>
-  </script>
-  <script id="flaps-template" type="text/x-handlebars-template">
-    <div class="form-group row col-12">
-      <div class="col-sm-10">
-        <div class="form-check">
-          <input class="form-check-input form-input" type="checkbox" id="flaps" value="">
-          <label class="form-check-label" for="flaps">Zakładki</label>
-        </div>
-      </div>
-    </div>
-  </script>
-  <script id="pocket-template" type="text/x-handlebars-template">
-    <div class="form-group row col-12">
-      <div class="col-sm-10">
-        <div class="form-check">
-          <input data-toggle="collapse" data-target='#pocket-types' class="form-check-input structure-input selectpicker form-input" type="checkbox" id="pocket" value="">
-          <label class="form-check-label" for="pocket">Kieszonka</label>
-        </div>
-      </div>
-    </div>
-  </script>
-   <script id="pocket-types-template" type="text/x-handlebars-template">
-    <div id="pocket-types" class="collapse form-group flex-column col-12">
-      <label for="pocket-types-select">Wejście na wkład</label>
-      <select id="pocket-types-select" class="selectpicker col-12 form-input" multiple data-max-options="2">
-      </select>
-    </div>
   </script>
   <script id="diaper-category-template" type="text/x-handlebars-template">
     <div  class="">
@@ -489,9 +463,6 @@
       </div>      
       <button id="diaper-category-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
     </div>
-  </script>
-  <script id="button-template" type="text/x-handlebars-template">
-    <button id="form-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
   </script>
   <script id="form-page1-template" type="text/x-handlebars-template">
     <form id="new-form" class="form col-6">

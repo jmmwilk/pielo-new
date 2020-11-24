@@ -8,19 +8,46 @@ import * as state from '../state.js';
 import * as newsletterPage from '../views/newsletter-page.js';
 
 $(document).ready(function(){
+	// let dbRef = firebase.database().ref('form-categories/');
+	// let newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'flaps-fabrics',
+	//   'input-type': 'select',
+	//   'name': 'Zakładki- materały',
+	//   'question-type': 'dependent',
+	//   'view': 'fabrics',
+	// });
+
 	// let dbRef = firebase.database().ref('form-questions-text/');
 	// let newDbRef = dbRef.push();
 	// newDbRef.set({
-	//   'question-id': 'flaps',
+	//   'question-id': 'flaps-fabrisc',
 	//   'for-multiple-questions': false,
 	//   'options': [
 	//   		{	
-	//   		'name': 'all',
-	//   		'text': 'Zakładki'
+	//   		'name': 'all-fabrics',
+	//   		'text': 'Zakładki- materiały'
 	//   		},
 	//   	]
 	// });
 	
+	// let dbRef = firebase.database().ref('form-answers/');
+	// let newDbRef = dbRef.push();
+	// newDbRef.set({
+	//   'id': 'fabrics-all',
+	//   'for-multiple-questions': false,
+	//   'options': [
+	//   		{	
+	//   		'name': 'bawełna',
+	//   		},
+	//   		{	
+	//   		'name': 'bambus',
+	//   		},
+	//   		{	
+	//   		'name': 'leonardo',
+	//   		},
+	//   	]
+	// });
 
 	createTemplate ('application-template', 'application');
 	const promise = getCategories ();
