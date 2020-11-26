@@ -53,17 +53,33 @@ $(document).ready(function(){
 	const promise = getCategories ();
 	promise.
 	then(function(data) {
+		getDiaperCategories ();
 		const promise2 = getCategoriesData (data);
 		promise2.
 		then(function(categoriesData) {
 			createStartPage (categoriesData);
 			enableHomeClick (categoriesData);
 			login.goToLoginScreen (categoriesData);
-			enableButton (categoriesData);
+
+			enableButton ();
 			eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 		});
 	});
 })
+
+function getDiaperCategories () {
+	const promise1 = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('diaper-categories/');
+		dbRef.once('value',   function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      state.diaperCategories.push(childData);
+		    });
+		    state.diaperCategories
+		    resolve ()
+	  	});
+	});
+}
 
 export function createTemplate (templateId, parentTemplate) {
 	let template = $('#' + templateId).html();
@@ -87,11 +103,11 @@ export function createStartPage (categoriesData) {
 	productslist.createProductsList ();
 }
 
-function enableButton (categoriesData) {
+function enableButton () {
 	let button = document.getElementById('add-diaper');
 	button.onclick = function() {
 		clearPage ();
-		form.createForm (categoriesData);
+		form.createForm ();
 	}
 }
 
