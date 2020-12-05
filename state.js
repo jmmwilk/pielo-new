@@ -7,16 +7,12 @@ export let item = {
 	answers: {},
 }
 
-// export let formCategories = {
-// 	categories: [],
-// 	'questions-text': [],
-// 	'answers-options': [],
-// }
-
-export let attributesText = [];
+export let questionsText = [];
 
 export let answersOptions = [];
 
 export let attributes = [];
 
 export let diaperCategories = [];
+
+export let sizes = [];

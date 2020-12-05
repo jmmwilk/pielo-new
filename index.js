@@ -8,52 +8,91 @@ import * as state from '../state.js';
 import * as newsletterPage from '../views/newsletter-page.js';
 
 $(document).ready(function(){
-	// let dbRef = firebase.database().ref('form-categories/');
-	// let newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'flaps-fabrics',
-	//   'input-type': 'select',
-	//   'name': 'Zakładki- materały',
-	//   'question-type': 'dependent',
-	//   'view': 'fabrics',
-	// });
+
+	// let dbRef = firebase.database().ref('diaper-categories/-MF0Ea0U4Yi9TXqG1WSw/');
+	// dbRef.once('value',   function(snapshot) {
+	//     snapshot.forEach(function(childSnapshot) {
+	//       var childData = childSnapshot.val();
+	//       console.log('childData', childData)
+	//       let answer = childData['answer'];
+	//       if (!answer) {
+	//       	return
+	//       }
+	//       var childKey = childSnapshot.key
+	//       console.log('childKey', childKey)
+
+	//       let newDbRef = firebase.database().ref('diaper-categories/-MF0Ea0U4Yi9TXqG1WSw/attributes/' + childKey)
+	//       newDbRef.update(childData)
+
+	//       let newDbRef = firebase.database().ref('diaper-categories/-MF0Ea0U4Yi9TXqG1WSw/' + childKey)
+	//       newDbRef.set(null)
+
+	//     });
+ //  	});
 
 	// let dbRef = firebase.database().ref('form-questions-text/');
+	// dbRef.once('value',   function(snapshot) {
+	//     snapshot.forEach(function(childSnapshot) {
+	//       var childData = childSnapshot.val();
+	//       let name = childData.options[0].name;
+	//       console.log('name', name)
+	//       var childKey = childSnapshot.key
+	//       console.log('childKey', childKey)
+	//       let newDbRef = firebase.database().ref('form-questions-text/' + childKey + '/options/0/id')
+	//       console.log('newDbRef', newDbRef)
+	//       dbRef.set(name);
+
+	//     });
+ //  	});
+
+// 	let dbRef = firebase.database().ref('form-categories/');
+// 	let newDbRef = dbRef.push();
+// 	newDbRef.set({
+// 	  'id': 'description',
+// 	  'input-type': 'input-text',
+// //	  'question-type': 'dependent',
+// 	  'form-page-name': 'description',
+// //	  'dependent-questions': [{'id': 'waterproof-layer-fabrics'}],
+// //		'parent-id': ''
+// 	});
+
+
+	// let dbRef = firebase.database().ref('form-questions/');
 	// let newDbRef = dbRef.push();
+	// let key = newDbRef.key
 	// newDbRef.set({
-	//   'question-id': 'flaps-fabrisc',
-	//   'for-multiple-questions': false,
-	//   'options': [
-	//   		{	
-	//   		'name': 'all-fabrics',
-	//   		'text': 'Zakładki- materiały'
-	//   		},
-	//   	]
+	//   'attribute-id': 'description',
 	// });
+	// let groupRef = firebase.database().ref('form-questions/' + key +'/text-groups')
+	// let newGroupRef = groupRef.push();
+	// newGroupRef.set({
+	// 	'id': 'description-main',
+	//  	'text': 'Opis',
+	// })
+
+
 	
-	// let dbRef = firebase.database().ref('form-answers/');
-	// let newDbRef = dbRef.push();
-	// newDbRef.set({
-	//   'id': 'fabrics-all',
-	//   'for-multiple-questions': false,
-	//   'options': [
-	//   		{	
-	//   		'name': 'bawełna',
-	//   		},
-	//   		{	
-	//   		'name': 'bambus',
-	//   		},
-	//   		{	
-	//   		'name': 'leonardo',
-	//   		},
-	//   	]
-	// });
+// 	let dbbRef = firebase.database().ref('form-answers/');
+// 	let newDbbRef = dbbRef.push();
+// 	newDbbRef.set({
+// 	  'id': 'time',
+// //	  'for-multiple-questions': true,
+// 	  'options': [
+// 	  		{	
+// 	  		'name': 'Dzienna',
+// 	  		},
+// 	  		{	
+// 	  		'name': 'Nocna',
+// 	  		},
+// 	  	]
+// 	});
 
 	createTemplate ('application-template', 'application');
 	const promise = getCategories ();
 	promise.
 	then(function(data) {
 		getDiaperCategories ();
+		getSizes ();
 		const promise2 = getCategoriesData (data);
 		promise2.
 		then(function(categoriesData) {
@@ -75,7 +114,19 @@ function getDiaperCategories () {
 		      var childData = childSnapshot.val();
 		      state.diaperCategories.push(childData);
 		    });
-		    state.diaperCategories
+		    resolve ()
+	  	});
+	});
+}
+
+function getSizes () {
+	const promise1 = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('sizes/');
+		dbRef.once('value',   function(snapshot) {
+		    snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      state.sizes.push(childData);
+		    });
 		    resolve ()
 	  	});
 	});

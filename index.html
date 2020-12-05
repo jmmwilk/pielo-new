@@ -403,20 +403,24 @@
 
 
 
-
+  <script id="form-sizes-template" type="text/x-handlebars-template">
+    <div id="sizes-box" class="form-group flex-column col-12">
+      <label for="sizes-input">Rozmiary</label>
+      <select id="sizes-input" class="col-12 form-input select" selectpicker multiple>
+      </select>
+    </div>
+  </script>
   <script id="checkbox-input-template" type="text/x-handlebars-template">
-    <div class="form-group row col-12">
-      <div class="col-sm-10">
-        <div class="form-check">
-          <input class="form-check-input form-input checkbox" type="checkbox" id="{{question-id}}" value="">
-          <label class="form-check-label" for={{question-id}}>{{text}}</label>
-        </div>
+    <div class="form-group col-12">
+      <div class="form-check">
+        <input class="form-check-input form-input checkbox" type="checkbox" id="{{question-id}}" value="">
+        <label class="form-check-label" for={{question-id}}>{{text}}</label>
       </div>
     </div>
   </script>
   <script id="select-input-template" type="text/x-handlebars-template">
     <div id="{{question-id}}-box" class="form-group flex-column col-12">
-      <label for="{{question-id}}">Wejście na wkład</label>
+      <label for="{{question-id}}">{{text}}</label>
       <select id="{{question-id}}" class="col-12 form-input select" selectpicker multiple data-max-options="2">
       </select>
     </div>
@@ -427,7 +431,7 @@
     {{/each}}
   </script>
   <script id="form-view-template" type="text/x-handlebars-template">
-    <div id="form-view-wrapper" class="col-6 bg-white">
+    <div id="form-view-wrapper" class="col-6 bg-white mt-6">
     </div>
   </script>
   <script id="form-template" type="text/x-handlebars-template">
@@ -445,7 +449,7 @@
   </script>
   <script id="nav-item-template" type="text/x-handlebars-template">
     {{#each form-pages}}
-      <li id='{{id}}-nav' class="nav-item col mx-auto">
+      <li id='{{id}}-nav' class="nav-item col">
         <a class="nav-link" href="#">{{name}}<span class="sr-only">(current)</span></a>
       </li>
     {{/each}}
@@ -455,7 +459,7 @@
     </form>
   </script>
   <script id="diaper-category-template" type="text/x-handlebars-template">
-    <div  class="">
+    <div  class="mt-4">
       <div class="form-group flex-column col-12">
         <label for="diaper-categories-input">Rodzaj pieluszki</label>
         <select id="diaper-categories-input" class=" selectpicker col-12" multiple data-max-options="1">
@@ -463,6 +467,66 @@
       </div>      
       <button id="next-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
     </div>
+  </script>
+  <script id="dimensions-page-template" type="text/x-handlebars-template">
+    <div id='dimensions-table' class="column">
+      <div class="row">
+        <div id="dimensions-categories" class="col-5">
+          Rozmiar
+        </div>
+        <div class="col-7">
+          <div class="row">
+            {{#each sizes}}
+            <div id="{{id}}-dimensions" class="col">
+                <div id="{{id}}-title">
+                  {{shortcut}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-5">
+          <div id="dimensions-titles" class="column">
+          </div>
+        </div>
+        <div class="col-7">
+          <div id="inputs-box" class="row">
+          </div>
+        </div>
+      </div>
+    </div>
+  </script>
+  <script id="dimension-title-template" type="text/x-handlebars-template">
+    <div class="row dimension-title mb-2">
+      {{dimension-text}}
+    </div>
+  </script>
+  <script id="size-inputs-column-template" type="text/x-handlebars-template">
+    {{#each sizes}}
+    <div class="col">
+      <div id="{{shortcut}}-inputs-box" class="d-flex flex-column">
+      </div>
+    </div>
+    {{/each}}
+  </script>
+  <script id="size-input-template" type="text/x-handlebars-template">
+    {{#each dimensions}}
+    <div class="input-group mb-2">
+      <input type="text" aria-describedby="{{dimension}}-{{../size.id}}-addon" class="form-control dimension-input {{id}} {{../size.id}}">
+      <div class="input-group-append">
+        <span class="input-group-text" id="{{dimension}}-{{../size.id}}-addon">cm</span>
+      </div>
+    </div>
+    {{/each}}
+  </script>
+  <script id="text-input-template" type="text/x-handlebars-template">
+    <div class="form-group">
+      <label for="{{id}}-input">Opis pieluszki</label>
+      <textarea id="{{id}}-input" type="text" rows="15" class="form-control text-input"></textarea>
+    </div>
+    <div class="form-group">
   </script>
 
 

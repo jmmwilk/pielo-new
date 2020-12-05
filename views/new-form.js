@@ -20,17 +20,25 @@ export function createForm () {
 			saveChosenCategoryData ();
 			clearFormWrapper ();
 			createFormNavigation ();
+			document.getElementById(formPageName + '-nav').classList.add('font-weight-bold');
 			createFormPage ();
 			activateNavItem ();
-			document.getElementById('next-button').onclick = function() {
-				saveAnswers ();
-				formPageNumber = formPageNumber + 1
-				formPageName = formPageNames[formPageNumber];
-				clearForm();
-				createFormPage ();
-			}
+			document.getElementById('next-button').onclick = activateNextButton;
 		}
 	})
+}
+
+function activateNextButton () {
+	saveAnswers ();
+	if (formPageName == 'description') {
+//		goToItemPreview		
+	}
+	let formPageNames = getformPageNames ()
+	formPageNumber = formPageNumber + 1
+	formPageName = formPageNames[formPageNumber];
+	document.getElementById(formPageName + '-nav').classList.add('font-weight-bold');
+	clearForm();
+	createFormPage ();
 }
 
 function activateNavItem () {
@@ -40,49 +48,81 @@ function activateNavItem () {
 function createFormPage () {
 	let formPageNameData = {'formPageName': formPageName}
 	createTemplate ('form-page-template', 'form-wrapper', formPageNameData);
+	if (formPageName == 'sizes') {
+		createSizesQuestion ();
+		return
+	}
+	if (formPageName == 'dimensions') {
+		getDimensions ();
+		createDimensionsPage ();
+		return
+	}
 	createFormQuestions ();
 }
 
 function createFormQuestions () {
-	let diaper = state.item.categoryData
+	let diaper = state.item.categoryData.attributes;
 	let attributes = state.attributes;
-	attributes.forEach(function(attribute){
+
+	const filteredAttributes = attributes.filter(function(attribute) {
 		let attributeId = attribute.id;
-		const filteredAttributes = attributes.filter(function(attribute) {
-			return !(!diaper[attributeId] || attribute['form-page-name'] !== formPageName);
-		})
-		if (attribute['question-type'] !== 'dependent' && attribute['input-type'] == 'checkbox'){
-			if (diaper[attributeId].answer == 'ask') {
-				createCheckboxInput (attributeId);
-				if (attribute['dependent-questions']) {
-					createDependentQuestions (attribute, attributes)
+		return !(!diaper[attributeId] || attribute['form-page-name'] !== formPageName);
+	})
+
+	filteredAttributes.forEach(function(attribute){
+		let attributeId = attribute.id;
+		if (attribute['question-type'] !== 'dependent'){
+			if (attribute['input-type'] == 'checkbox') {
+				if (diaper[attributeId].answer == 'ask') {
+					createCheckboxInput (attributeId);
+					if (attribute['dependent-questions']) {
+						createDependentQuestions (attribute, filteredAttributes)
+					}
 				}
-			}
-			if (diaper[attributeId].answer == true) {
-				if (attribute['dependent-questions']) {
-					createDependentQuestions (attribute, attributes)
+				if (diaper[attributeId].answer == true) {
+					if (attribute['dependent-questions']) {
+						createDependentQuestions (attribute, filteredAttributes)
+					}
 				}
-			}
+			};
+			if (attribute['input-type'] == 'select') {
+				createSelectInput (attributeId);
+			};
+			if (attribute['input-type'] == 'text-input') {
+				createTextInput (attributeId);
+			};
 		};
+		let parentId = attribute['parent-id'];
 		if (attribute['question-type'] == 'dependent'
-			&& attribute['parent-id'] !== formPageName
-			&& state.item.answers['parent-id'] == true) {
-			createSelectInput (attributeId)
+			&& state.item.answers[parentId] == true) {
+			let parentFormPageName = attributes.find(function(att){
+				return att.id == parentId
+			})['form-page-name']
+			if (parentFormPageName !== formPageName) {
+				createSelectInput (attributeId);
+			}
+			
 		}
 	})
 }
 
 function createDependentQuestions (attribute, attributes) {
+	let diaper = state.item.categoryData.attributes
 	Array.from(attribute['dependent-questions']).forEach(function(depAttribute){
 		let depAttributeId = depAttribute.id
+		let isThisFormPageName = isThisFormPage (state.attributes, depAttributeId);
+		if (isThisFormPageName == false) {
+			return
+		}
 		let attributeId = attribute.id;
 		createSelectInput (depAttributeId);
-		let depAttributeData = findDependentAttributeData (attributes, depAttributeId);
-		if (state.item.categoryData[depAttributeId].answer == 'ask'
+		let depAttributeData = findDependentAttributeData (state.attributes, depAttributeId);
+		if (diaper[depAttributeId].answer == 'ask'
 			&& depAttributeData['input-type'] == 'select'
-			&& state.item.categoryData[attributeId].answer !== true) {
+			&& diaper[attributeId].answer !== true) {
 			collapseElement (depAttributeId + '-box', attributeId);
 		}
+		document.getElementById(depAttributeId + '-box').classList.add('mb-3')
 	})
 }
 
@@ -93,6 +133,18 @@ function collapseElement (elementId, parentId) {
 	document.getElementById(parentId).setAttribute("aria-controls", elementId);
 	document.getElementById(elementId).setAttribute("collapse", "collapse");
 	document.getElementById(elementId).classList.add('collapse')
+}
+
+function isThisFormPage (attributes, depAttributeId) {
+	let isThisFormPage;
+	Array.from(attributes).forEach(function(attribute){
+		if (attribute.id == depAttributeId) {
+			if (attribute['form-page-name'] !== formPageName)
+			isThisFormPage = false
+			return
+		}
+	})
+	return isThisFormPage
 }
 
 function findDependentAttributeData (attributes, depAttributeId) {
@@ -107,41 +159,22 @@ function findDependentAttributeData (attributes, depAttributeId) {
 }
 
 function createCheckboxInput (attributeId) {
-	let data = {};
-	let diaper = state.item.categoryData;
-	let attributes = state.attributesText
-	Array.from(attributes).forEach(function(attribute){
-		if (attribute['question-id'] == attributeId) {
-			Array.from(attribute.options).forEach(function(option){
-				if (option.name == diaper[attributeId]['answer-options']) {
-					data['text'] = option.text
-					data['question-id'] = attributeId;					
-				}
-			})
-		}
-	})
-	createTemplate ('checkbox-input-template', formPageName, data);
+	let questionData = getQuestionText (attributeId)
+	createTemplate ('checkbox-input-template', formPageName, questionData);
+}
+
+function createTextInput (attributeId) {
+	createTemplate ('text-input-template', formPageName, {'id': attributeId});
 }
 
 function createSelectInput (attributeId) {
-	let data = {};
-	let diaper = state.item.categoryData;
-	let attributes = state.attributesText;
-	Array.from(attributes).forEach(function(attribute){
-		if (attribute['question-id'] == attributeId) {
-			Array.from(attribute.options).forEach(function(option){
-				if (option.name == diaper[attributeId]['answer-options']) {
-					data['text'] = option.text;
-					data['question-id'] = attributeId;
-				}
-			})
-		}
-	})
+	let questionData = getQuestionText (attributeId)
+	createTemplate ('select-input-template', formPageName, questionData);
 	let answersData = {};
-	createTemplate ('select-input-template', formPageName, data);
 	let answers = state.answersOptions;
+	let diaper = state.item.categoryData.attributes;
 	Array.from(answers).forEach(function(answer) {
-		if (answer.id == diaper[attributeId]['answer-options']) {
+		if (answer.id == diaper[attributeId]['answer-options-id']) {
 			answersData.data = answer.options
 		}
 	})
@@ -149,7 +182,42 @@ function createSelectInput (attributeId) {
 	$('#' + attributeId).selectpicker();
 }
 
+function getQuestionText (attributeId) {
+	let questionData = {};
+	let diaper = state.item.categoryData.attributes;
+	let questions = state.questionsText
+	Array.from(questions).forEach(function(question){
+		if (question['attribute-id'] == attributeId) {
+			const textGroups = Object.values(question['text-groups']);
+			Array.from(textGroups).forEach(function(group){
+				if (group.id == diaper[attributeId]['question-text-group-id']) {
+					questionData['text'] = group.text
+					questionData['question-id'] = attributeId;
+					return
+				}
+			})
+		}
+	})
+	return questionData
+}
+
 function saveAnswers () {
+	if (formPageName == 'sizes') {
+		state.item.sizes = [];
+		let chosenSizes = $('#sizes-input').val();
+		let databaseSizes = state.sizes;
+		chosenSizes.forEach(function(chosenSize){
+			let sizeData = databaseSizes.find(function(databaseSize){
+				return chosenSize == databaseSize.name
+			})
+			state.item.sizes.push(sizeData);
+		})
+		return
+	}
+	if (formPageName == 'dimensions') {
+		saveDimensions ();
+		return
+	}
 	let checkboxes = document.getElementsByClassName('form-input checkbox');
 	Array.from(checkboxes).forEach(function(checkbox){
 		state.item.answers[checkbox.id] = checkbox.checked;
@@ -164,11 +232,70 @@ function saveAnswers () {
 			state.item.answers[select.id] = $('#' + select.id).val();
 		}
 	})
+	let textInputs = $('.text-input');
+	Array.from(textInputs).forEach(function(input){
+		state.item.answers[input.id] = $('#' + input.id).val();
+	})
 }
 
 function saveChosenCategoryData () {
 	state.item.category = $('#diaper-categories-input').val()[0]
 	state.item.categoryData = findCategoryData (state.diaperCategories);
+	const attributes = Object.values(state.item.categoryData.attributes);
+	attributes.forEach(function(attribute){
+		if (attribute.answer == true) {
+			let attributeId = attribute.id;
+			state.item.answers[attributeId] = attribute.answer;
+		}
+	});
+}
+
+function createDimensionsPage () {
+	let sizes = state.item.sizes;
+	createTemplate ('dimensions-page-template', formPageName, {'sizes': sizes});
+	let dimensions = state.item.dimensions;
+	dimensions.forEach(function(dimension){
+		let title = getQuestionText (dimension.id)
+		createTemplate ('dimension-title-template', 'dimensions-titles', {'dimension-text': title.text});
+	})
+	createTemplate ('size-inputs-column-template', 'inputs-box', {'sizes': sizes});
+	sizes.forEach(function(size){
+		createTemplate ('size-input-template', size.shortcut + '-inputs-box', {'dimensions': dimensions, 'size': size});
+	})
+	let inputHeight = document.getElementsByClassName('dimension-input')[0].offsetHeight;
+	Array.from(document.getElementsByClassName('dimension-title')).forEach(function(title){
+		title.style.height = inputHeight + 'px'
+	})
+}
+
+function saveDimensions () {
+	let sizes = state.item.sizes;
+	let dimensions = state.item.dimensions;
+	let inputs = document.getElementsByClassName('dimension-input')
+	sizes.forEach(function(size){
+		size.dimensions = {};
+		Array.from(inputs).forEach(function(input){
+			Array.from(dimensions).forEach(function(dimension){
+				if (input.classList.contains(size.id) && input.classList.contains(dimension.id)) {
+					let dimensionId = dimension.id;
+					size.dimensions[dimensionId] = input.value;
+				}
+			})
+		})
+	})
+}
+
+function getDimensions () {
+	let attributes = state.attributes
+	let diaper = state.item.categoryData.attributes;
+//	let dimensions = attributes
+	const filteredAttributes = attributes.filter(function(attribute) {
+		let attributeId = attribute.id;
+//		return !(!diaper[attributeId] || attribute['form-page-name'] !== formPageName);
+		return (attribute.dimension == true && diaper[attributeId]);
+	})
+	state.item.dimensions = filteredAttributes;
+
 }
 
 function createDiaperCategoriesPage () {
@@ -176,6 +303,13 @@ function createDiaperCategoriesPage () {
 	createTemplate ('diaper-category-template', 'form-view-wrapper');
 	createTemplate ('new-input-template', 'diaper-categories-input', diaperCategories);
 	$('#diaper-categories-input').selectpicker();
+}
+
+function createSizesQuestion () {
+	let sizes = {'data': state.sizes};
+	createTemplate ('form-sizes-template', 'sizes');
+	createTemplate ('new-input-template', 'sizes-input', sizes);
+	$('#sizes-input').selectpicker();
 }
 
 function createFormNavigation () {
@@ -192,6 +326,10 @@ let formPages = [
 	{
 		'name': 'Materiały',
 		'id': 'fabrics',
+	},
+	{
+		'name': 'Rozmiary',
+		'id': 'sizes',
 	},
 	{
 		'name': 'Wymiary',
@@ -236,11 +374,11 @@ export function getAttributes () {
 }
 
 function getAttributesText () {
-	let dbRef = firebase.database().ref('form-questions-text/');
+	let dbRef = firebase.database().ref('form-questions/');
 	dbRef.once('value',   function(snapshot) {
 		snapshot.forEach(function(childSnapshot) {
 	      var childData = childSnapshot.val();
-	      state.attributesText.push(childData);
+	      state.questionsText.push(childData);
 	    });
   	});
 }
