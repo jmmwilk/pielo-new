@@ -4,6 +4,7 @@ let database = firebase.database();
 let storage = firebase.storage();
 let formPageNumber = 0;
 let formPageName;
+let patternNumber = 0;
 
 export function createForm () {
 	getAttributes()
@@ -48,6 +49,10 @@ function activateNavItem () {
 function createFormPage () {
 	let formPageNameData = {'formPageName': formPageName}
 	createTemplate ('form-page-template', 'form-wrapper', formPageNameData);
+	if (formPageName == 'images') {
+		createImagesPage ();
+		return
+	}
 	if (formPageName == 'sizes') {
 		createSizesQuestion ();
 		return
@@ -58,6 +63,82 @@ function createFormPage () {
 		return
 	}
 	createFormQuestions ();
+}
+
+function createImagesPage () {
+	createTemplate ('add-pattern-button-template', formPageName);
+	addPattern ();
+	document.getElementById('add-pattern-button').onclick = function () {
+		addPattern ();
+	}
+}
+
+function addPattern () {
+	patternNumber = patternNumber + 1;
+	let imageNumbers = setImageNumber ();
+	createTemplate ('add-pattern-template', formPageName, imageNumbers);
+	state.item.images['patter-' + patternNumber] = {};
+	loadImage ();
+}
+
+function loadImage () {
+	Array.from($('.image-input')).forEach(function(input){
+		$('#' + input.id).change(function(event) {
+			if (event.target.files.length > 0) {
+				createImagePreview (event, input);
+				let patternNumberValue = input.getAttribute('pattern-number');
+				let imageNumberValue = input.getAttribute('image-number');
+				state.item.images['pattern-' + patternNumberValue] = {};
+				state.item.images['pattern-' + patternNumberValue]['image-' + imageNumberValue] = {};
+				addImageToStorage (input);
+			}
+		});
+	})
+}
+
+function setImageNumber () {
+	let imageNumbers = {
+		'pattern-number': patternNumber, 
+		'image-numbers': [
+			{'image-number': 1, 
+			'profile-image': true}, 
+			{'image-number': 2}, 
+			{'image-number': 3}, 
+			{'image-number': 4}]
+	};
+	return imageNumbers
+}
+
+function createImagePreview (event, input) {
+	let image = document.createElement('img');
+	let box = document.getElementById('file-preview-' + input.id);
+	box.innerHTML = '';
+	image.className = 'small-image mx-auto img-fluid img-thumbnail m-1';
+	image.src = URL.createObjectURL(event.target.files[0]);
+	box.appendChild(image);
+}
+
+function addImageToStorage (input) {
+	const selectedFile = document.getElementById(input.id).files[0];
+	let dbRef = firebase.database().ref('images/');
+	var newDbRef = dbRef.push();
+	newDbRef.set({
+	  'image': 'small'
+	});
+	let key = newDbRef.getKey(); 
+	let imageRef = storage.ref().child(key);
+	imageRef.put(selectedFile)
+	.then(function(snapshot) {
+	  	return imageRef.getDownloadURL();
+	})
+	.then(function(downloadURL) {
+		let patternNumberValue = input.getAttribute('pattern-number');
+		let imageNumberValue = input.getAttribute('image-number');
+		state.item.images['patter-' + patternNumberValue] = {};
+		state.item.images['patter-' + patternNumberValue]['image-' + imageNumberValue] = {};
+		state.item.images['patter-' + patternNumberValue]['image-' + imageNumberValue].url = downloadURL;
+		return downloadURL
+	})
 }
 
 function createFormQuestions () {
@@ -218,6 +299,10 @@ function saveAnswers () {
 		saveDimensions ();
 		return
 	}
+	if (formPageName == 'images') {
+		savePatternNames ();
+		return
+	}
 	let checkboxes = document.getElementsByClassName('form-input checkbox');
 	Array.from(checkboxes).forEach(function(checkbox){
 		state.item.answers[checkbox.id] = checkbox.checked;
@@ -235,6 +320,18 @@ function saveAnswers () {
 	let textInputs = $('.text-input');
 	Array.from(textInputs).forEach(function(input){
 		state.item.answers[input.id] = $('#' + input.id).val();
+	})
+}
+
+function savePatternNames () {
+	let patterNamesInputs = $('.pattern-name');
+	state.item.answers.patterns = {};
+	Array.from(patterNamesInputs).forEach(function(input){
+		let patternNumberValue = input.getAttribute('pattern-number');
+		state.item.answers.patterns[patternNumberValue] = {};
+		let inputId = input.id
+		let name = $('#' + inputId).val();
+		state.item.answers.patterns[patternNumberValue].name = $('#' + input.id).val();
 	})
 }
 
@@ -319,6 +416,10 @@ function createFormNavigation () {
 }
 
 let formPages = [
+	{
+		'name': 'Zdjęcia',
+		'id': 'images',
+	},
 	{
 		'name': 'Budowa',
 		'id': 'structure',

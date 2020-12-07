@@ -435,7 +435,7 @@
     </div>
   </script>
   <script id="form-template" type="text/x-handlebars-template">
-    <div  class="">
+    <div  class="d-flex flex-column">
       <nav id="navbar" class="navbar navbar-expand-lg navbar-white bg-white">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul id="nav-items-wrapper" class="row navbar-nav mr-auto">
@@ -444,7 +444,9 @@
       </nav>
       <div id="form-wrapper">
       </div>
-      <button id="next-button" type="button" class="btn btn-primary m-3 align-self-end">Dalej</button>
+      <div class="m-3 align-self-end">
+        <button id="next-button" type="button" class="btn btn-primary">Dalej</button>
+      </div>
     </div>
   </script>
   <script id="nav-item-template" type="text/x-handlebars-template">
@@ -455,7 +457,7 @@
     {{/each}}
   </script>
   <script id="form-page-template" type="text/x-handlebars-template">
-    <form id={{formPageName}} class="">
+    <form id={{formPageName}} class="d-flex flex-column">
     </form>
   </script>
   <script id="diaper-category-template" type="text/x-handlebars-template">
@@ -528,6 +530,32 @@
     </div>
     <div class="form-group">
   </script>
+  <script id="add-pattern-button-template" type="text/x-handlebars-template">
+    <div class="order-3">
+      <button id="add-pattern-button" type="button" class="btn btn-warning">
+        Dodaj Kolor/ Wzór
+      </button>
+    </div>
+  </script>
+  <script id="add-pattern-template" type="text/x-handlebars-template">
+    <div  class="mt-4">
+      <div class="form-group">
+        <a>Wzór nr {{pattern-number}}</a>
+        <input type="text" class="form-control mb-2 pattern-name" id="pattern-{{pattern-number}}-name"pattern-number={{pattern-number}} placeholder="Nazwa Koloru/ Wzoru">
+      </div>
+      {{#each image-numbers}}
+        <div class="form-group m-3 p-2">
+          {{#if profile-image}}
+            <label for="pattern-{{../pattern-number}}-image-{{image-number}}">Zdjęcie profilowe wzoru:</label>
+          {{/if}}
+          <input type="file" class="form-control-file image-input" id="pattern-{{../pattern-number}}-image-{{image-number}}" pattern-number="{{../pattern-number}}" image-number="{{image-number}}">
+          <div id="file-preview-pattern-{{../pattern-number}}-image-{{image-number}}">
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  </script>
+
 
 
   <script id="size-buttons-template" type="text/x-handlebars-template">

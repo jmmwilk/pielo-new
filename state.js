@@ -5,6 +5,7 @@ export let state = {
 
 export let item = {
 	answers: {},
+	images: {},
 }
 
 export let questionsText = [];
