@@ -7,30 +7,30 @@ import * as state from '../state.js';
 let database = firebase.database();
 
 export function createProductScreen (key, view) {
-	const promise = loadItemData (key);
+	const promise = getAttributesTitles ();
 	promise
-	.then (function (diaper) {
+	.then(function(){
+		let newPromise = loadItemData (key)
+		return newPromise
+	})
+	.then (function (diaperData) {
+		let diaper = {'diaper': diaperData}
 		createPreviewScreen (diaper, view);
 	})
 }
 
-// export function createProductScreen (card) {
-// 	console.log('card', card)
-// 	let indexNumber = card.dataset.indexnumber;
-// 	let diapers = diaperslist.items.diapers;
-// 	for (let i=0; i<diapers.length; i++) {
-// 		if (indexNumber == diapers[i].indexnum) {
-// 			fillProductMainInfo ();
-// 			createProductPageTempate (i, diapers);
-// 			createReviews (indexNumber);
-// 		}
-// 	};
-// }
-
-function createProductPageTempate (i, diapers) {
-	let productPageTemplate = $('#product-page-template').html();
-	let compiledProductPageTemplate = Handlebars.compile(productPageTemplate);
-	$('#page').append(compiledProductPageTemplate(diaperslist.items.diapers[i]));
+function getAttributesTitles () {
+	const promise = new Promise ((resolve, reject) => {
+		let dbRef = firebase.database().ref('attributes-titles/');
+		dbRef.once('value',   function(snapshot) {
+			snapshot.forEach(function(childSnapshot) {
+		      var childData = childSnapshot.val();
+		      state.attributesTitles.push(childData);
+		    });
+		    resolve ()
+	  	});
+	});
+	return promise
 }
 
 export function removeProductScreen () {
@@ -41,7 +41,7 @@ export function removeProductScreen () {
 
 function createReviews (indexNumber) {
 	let selectedReviews = selectReviews (indexNumber);
-	createReviewsTemplate (selectedReviews);
+	createTemplate ('review-template', 'reviews-container', selectedReviews);
 }
 
 function selectReviews (indexNumber) {
@@ -55,14 +55,8 @@ function selectReviews (indexNumber) {
 	return selectedReviews
 }
 
-function createReviewsTemplate (selectedReviews) {
-	let reviewTemplate = $('#review-template').html();
-	let compiledReviewTemplate = Handlebars.compile(reviewTemplate);
-	$('#reviews-container').html(compiledReviewTemplate(selectedReviews))
-}
-
 function createSizeButtons (diaper) {
-	createSizeButtonsTemplate (diaper);
+	createTemplate ('size-buttons-template', 'size-buttons-container', diaper);
 	let buttons = document.getElementsByClassName('size-button');
 	Array.from(buttons).forEach(function(button){
 		button.onclick = function (event) {
@@ -74,56 +68,102 @@ function createSizeButtons (diaper) {
 					sizeData = {'size': sizes[i]};
 				}
 			}
-			 createSizeRangeTemplate (sizeData);
+			createTemplate ('size-range-template', 'size-description', sizeData);
 		}
 	})
 }
 
-function createSizeRangeTemplate (sizeData) {
-	let sizeRangeTemplate = $('#size-range-template').html();
-	let compiledSizeRangeTemplate = Handlebars.compile(sizeRangeTemplate);
-	$('#size-description').html(compiledSizeRangeTemplate(sizeData));
-}
-
-function createSizeButtonsTemplate (diaper) {
-	let sizeButtonsTemplate = $('#size-buttons-template').html();
-	let compiledSizeButtonsTemplate = Handlebars.compile(sizeButtonsTemplate);
-	$('#size-buttons-container').append(compiledSizeButtonsTemplate(diaper));
-}
-
-function createParametersTemplate (diaper) {
-	let parametersTemplate = $('#parameters-template').html();
-	let compiledParametersTemplate = Handlebars.compile(parametersTemplate);
-	$('#parameters').html(compiledParametersTemplate(diaper));
-}
-
-function fillMockDiaperPreview (diaper) {
+function fillDiaperPreview (diaper) {
 	createSizeButtons (diaper);
-	createParametersTemplate (diaper);
+	createTemplate ('parameters-template', 'parameters', diaper);
+	let parameters = getParameters (diaper)
+	createTemplate ('attribute-template', 'attributes-left', {'parameters': parameters});
+}
+
+function getParameters (diaper) {
+	console.log('diaper', diaper)
+	let parameters = [];
+	let diaperAttributes = Object.keys(diaper.diaper.attributes);
+	let categoryAttributes = diaper.diaper['category-data'].attributes;
+	Array.from(state.attributesOrder.structure).forEach(function(attribute){
+		let diaperAttribute = diaperAttributes.find(function(diaperAtt){
+			return attribute.id == diaperAtt
+		});
+		if (diaperAttribute !== undefined) {
+			parameters.push(attribute)
+		} 
+	});
+	const filteredParameters = parameters.filter(function(parameter) {
+		let parameterId = parameter.id;
+		return (diaper.diaper['category-data'].attributes[parameterId].answer !== true)
+	})
+	let attributesToPrint = [];
+	filteredParameters.forEach(function(parameter){
+		let parameterId = parameter.id;
+		let attributeToPrint = {};
+
+		attributeToPrint.title = parameterId;
+
+		let attributeValue = diaper.diaper.attributes[parameterId];
+		if (attributeValue == true) {
+			attributeToPrint.value = 'tak';
+		}
+		if (attributeValue == false) {
+			attributeToPrint.value = 'nie';
+		}
+		if (attributeValue !== false && attributeValue !== true) {
+			attributeToPrint.value = attributeValue;
+		}
+		// let titleGroups = Array.from(state.attributesTitles).find(function(attributeTitle){
+		// 	return attributeTitle['attribute-id'] == parameterId
+		// })
+		// console.log('titleGroups', titleGroups)
+//		Object
+		attributeToPrint.title = getParameterTitle (parameterId);
+		console.log('attributeToPrint.title', attributeToPrint.title)
+		attributesToPrint.push(attributeToPrint);
+	})
+	console.log('attributesToPrint', attributesToPrint)
+	return attributesToPrint
+}
+
+function getParameterTitle (parameterId) {
+	let diaper = state.newItem.categoryData.attributes;
+	let titles = state.attributesTitles;
+	let titleText;
+	console.log('titles', titles)
+	Array.from(titles).forEach(function(title){
+		if (title['attribute-id'] == parameterId) {
+			const textGroups = Object.values(title['text-groups']);
+			Array.from(textGroups).forEach(function(group){
+				if (group.id == diaper[parameterId]['title-group-id']) {
+					titleText = group.text;
+//					questionData['question-id'] = attributeId;
+					return
+				}
+			})
+		}
+	})
+	return titleText
 }
 
 export function createPreviewScreen (diaper, view) {
-	console.log ('diaper', diaper)
 	fillProductMainInfo ();
 	fillSizesInfo ();
-	createPreviewTemplate (diaper);
+	createTemplate ('item-preview', 'page', diaper)
 	if (view == 'productScreen') {
-		createStarsBoxTemplate ();
-		createReviewsBoxTemplate ();
-		createAddReviewTemplate (diaper);
-		createDetailReviewsSummaryTemplate ();
-		createChildFormTemplate ();
+		createTemplate ('stars-box-template', 'stars-box-wrapper');
+		createTemplate ('reviews-box-template', 'product-page');
+		createTemplate ('add-review-template', 'add-review-form-wrapper', diaper);
+		createTemplate ('detail-reviews-summary-template', 'detail-summary-wrapper');
+		createTemplate ('add-review-child-template', 'ar-child-wrapper');
 //		stopProp ();
 	}
-	fillMockDiaperPreview (diaper);
+	fillDiaperPreview (diaper);
 	setClassesToParameters ();
 }
 
-function createPreviewTemplate (diaper) {
-	let previewTemplate = $('#item-preview').html();
-	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
-	$('#page').html(compiledPreviewTemplate(diaper));
-}
+
 
 // function createPreviewTemplate (key) {
 // 	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
@@ -138,9 +178,13 @@ function loadItemData (key) {
 
 	const promise = new Promise ((resolve, reject) => {
 		let diaper;
-		let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
+		let dbRef = firebase.database().ref('mock-diapers/' + key + '/');
 		dbRef.on('value', function(snap){
 			diaper = snap.val();
+			state.downloadedItem.attributes = diaper.attributes;
+			state.downloadedItem.categoryData = diaper['category-data'];
+			state.downloadedItem.sizes = diaper.sizes;
+			console.log('state.downloadedItem', state.downloadedItem)
 			resolve (diaper)
 		})
 	});
@@ -159,7 +203,7 @@ function loadItemData (key) {
 function fillProductMainInfo () {
 	let itemPreview = $('#item-preview').html();
 	Handlebars.registerHelper('printnewinfo', function(){
-		return this.diaperCategory.name
+		return this['category-data'].name
 	})
 }
 
@@ -207,42 +251,17 @@ function getCategoryData (category) {
 	return promise1
 }
 
-function createReviewsBoxTemplate () {
-	let reviewsBoxTemplate = $('#reviews-box-template').html();
-	let compiledReviewsBoxTemplate = Handlebars.compile(reviewsBoxTemplate);
-	$('#product-page').append(compiledReviewsBoxTemplate());
-}
-
-function createStarsBoxTemplate () {
-	let starsBoxTemplate = $('#stars-box-template').html();
-	let compiledStarsBoxTemplate = Handlebars.compile(starsBoxTemplate);
-	$('#stars-box-wrapper').html(compiledStarsBoxTemplate());
-}
-
-function createDetailReviewsSummaryTemplate () {
-	let template = $('#detail-reviews-summary-template').html();
-	let compiletedTemplate = Handlebars.compile(template);
-	$('#detail-summary-wrapper').append(compiletedTemplate());
-}
-
-function createAddReviewTemplate (diaper) {
-	let template = $('#add-review-template').html();
-	let compiledTemplate = Handlebars.compile(template);
-	$('#add-review-form-wrapper').html(compiledTemplate(diaper));
-}
-
-function createChildFormTemplate() {
-	let template = $('#add-review-child-template').html();
-	let compiledTemplate = Handlebars.compile(template);
-	$('#ar-child-wrapper').html(compiledTemplate());
-}
-
 function stopProp () {
 	$('#ar-child-title').click(function( event ) {
 	  	event.stopPropagation();
 	});
 }
 
+function createTemplate (templateId, parentId, data) {
+	let template = $('#' + templateId).html();
+	let compiledTemplate = Handlebars.compile(template);
+	$('#' + parentId).append(compiledTemplate(data));
+}
 
 
 // aria-expanded="false" aria-controls="ar-child-wrapper" data-toggle="collapse" href="#ar-child-wrapper"

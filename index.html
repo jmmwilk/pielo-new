@@ -572,6 +572,7 @@
   </script>
   <script id="item-preview" type="text/x-handlebars-template">
     {{#with diaper}}
+    {{['category-data'].name}}
     <div id="main" class="col-md-10 order-1 mx-auto">
       <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">
         <div class="main-info-box row my-2">
@@ -620,7 +621,7 @@
               </div>
               <div class="row justify-content-center">
                 <div class="col-11">
-                  <p>{{description}}</p>
+                  <p>{{attributes.description-input}}</p>
                 </div>
               </div>
             </div>
@@ -830,7 +831,32 @@
       </div>
     </div>
   </script>
+  <script id="attribute-template" type="text/x-handlebars-template">
+    {{#each parameters}}
+    <div id="sizes-pars" class="row parameters-row">
+      <div class="attribute-title col-6 align-self-end">
+        <a>{{title}}</a>
+      </div>
+      <div class="attribute-value col-6 align-self-end">
+        <div>
+          <a>{{value}}</a>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </script>
   <script id="parameters-template" type="text/x-handlebars-template">
+    <div class="text-center">
+      <h5>Parametry</h5>
+    </div>
+    <div class="row justify-content-around">
+      <div class="col-5" id="attributes-left">
+      </div>
+      <div class="col-5 attributes-right">
+      </div>
+    </div>
+  </script>
+  <!-- <script id="parameters-template" type="text/x-handlebars-template">
     <div class="text-center">
       <h5>Parametry</h5>
     </div>
@@ -930,7 +956,7 @@
       </div>
       {{/with}}
     </div>
-  </script>
+  </script> -->
 <!--   <script id="item-preview" type="text/x-handlebars-template">
     <div class="main-info-box row my-2">
       <div class="image-box col-md-6">

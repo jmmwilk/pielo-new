@@ -1,4 +1,5 @@
 import * as state from '../state.js';
+import * as productPage from '../views/productpage.js';
 
 let database = firebase.database();
 let storage = firebase.storage();
@@ -31,15 +32,34 @@ export function createForm () {
 
 function activateNextButton () {
 	saveAnswers ();
-	if (formPageName == 'description') {
-//		goToItemPreview		
-	}
 	let formPageNames = getformPageNames ()
 	formPageNumber = formPageNumber + 1
 	formPageName = formPageNames[formPageNumber];
+	if (formPageName == undefined) {
+		let key = addMockDiaper ();
+		console.log('key', key)
+		let page = document.getElementById('page');
+		page.innerHTML = '';
+		productPage.createProductScreen (key, 'preview');
+		return
+	}
 	document.getElementById(formPageName + '-nav').classList.add('font-weight-bold');
 	clearForm();
 	createFormPage ();
+}
+
+function addMockDiaper () {
+	let dbRef = firebase.database().ref('mock-diapers/');
+	var newDbRef = dbRef.push();
+	let diaper = state.newItem;
+	newDbRef.set({
+	  'attributes': diaper.answers,
+	  'category-data': diaper.categoryData,
+	  'images': diaper.images,
+	  'sizes': diaper.sizes
+	});
+	let key = newDbRef.getKey();
+	return key
 }
 
 function activateNavItem () {
@@ -77,7 +97,7 @@ function addPattern () {
 	patternNumber = patternNumber + 1;
 	let imageNumbers = setImageNumber ();
 	createTemplate ('add-pattern-template', formPageName, imageNumbers);
-	state.item.images['patter-' + patternNumber] = {};
+	state.newItem.images['pattern-' + patternNumber] = {};
 	loadImage ();
 }
 
@@ -88,8 +108,8 @@ function loadImage () {
 				createImagePreview (event, input);
 				let patternNumberValue = input.getAttribute('pattern-number');
 				let imageNumberValue = input.getAttribute('image-number');
-				state.item.images['pattern-' + patternNumberValue] = {};
-				state.item.images['pattern-' + patternNumberValue]['image-' + imageNumberValue] = {};
+				state.newItem.images['pattern-' + patternNumberValue] = {};
+				state.newItem.images['pattern-' + patternNumberValue]['image-' + imageNumberValue] = {};
 				addImageToStorage (input);
 			}
 		});
@@ -134,15 +154,15 @@ function addImageToStorage (input) {
 	.then(function(downloadURL) {
 		let patternNumberValue = input.getAttribute('pattern-number');
 		let imageNumberValue = input.getAttribute('image-number');
-		state.item.images['patter-' + patternNumberValue] = {};
-		state.item.images['patter-' + patternNumberValue]['image-' + imageNumberValue] = {};
-		state.item.images['patter-' + patternNumberValue]['image-' + imageNumberValue].url = downloadURL;
+		state.newItem.images['pattern-' + patternNumberValue] = {};
+		state.newItem.images['pattern-' + patternNumberValue]['image-' + imageNumberValue] = {};
+		state.newItem.images['pattern-' + patternNumberValue]['image-' + imageNumberValue].url = downloadURL;
 		return downloadURL
 	})
 }
 
 function createFormQuestions () {
-	let diaper = state.item.categoryData.attributes;
+	let diaper = state.newItem.categoryData.attributes;
 	let attributes = state.attributes;
 
 	const filteredAttributes = attributes.filter(function(attribute) {
@@ -175,7 +195,7 @@ function createFormQuestions () {
 		};
 		let parentId = attribute['parent-id'];
 		if (attribute['question-type'] == 'dependent'
-			&& state.item.answers[parentId] == true) {
+			&& state.newItem.answers[parentId] == true) {
 			let parentFormPageName = attributes.find(function(att){
 				return att.id == parentId
 			})['form-page-name']
@@ -188,7 +208,7 @@ function createFormQuestions () {
 }
 
 function createDependentQuestions (attribute, attributes) {
-	let diaper = state.item.categoryData.attributes
+	let diaper = state.newItem.categoryData.attributes
 	Array.from(attribute['dependent-questions']).forEach(function(depAttribute){
 		let depAttributeId = depAttribute.id
 		let isThisFormPageName = isThisFormPage (state.attributes, depAttributeId);
@@ -253,7 +273,7 @@ function createSelectInput (attributeId) {
 	createTemplate ('select-input-template', formPageName, questionData);
 	let answersData = {};
 	let answers = state.answersOptions;
-	let diaper = state.item.categoryData.attributes;
+	let diaper = state.newItem.categoryData.attributes;
 	Array.from(answers).forEach(function(answer) {
 		if (answer.id == diaper[attributeId]['answer-options-id']) {
 			answersData.data = answer.options
@@ -265,7 +285,7 @@ function createSelectInput (attributeId) {
 
 function getQuestionText (attributeId) {
 	let questionData = {};
-	let diaper = state.item.categoryData.attributes;
+	let diaper = state.newItem.categoryData.attributes;
 	let questions = state.questionsText
 	Array.from(questions).forEach(function(question){
 		if (question['attribute-id'] == attributeId) {
@@ -284,14 +304,14 @@ function getQuestionText (attributeId) {
 
 function saveAnswers () {
 	if (formPageName == 'sizes') {
-		state.item.sizes = [];
+		state.newItem.sizes = [];
 		let chosenSizes = $('#sizes-input').val();
 		let databaseSizes = state.sizes;
 		chosenSizes.forEach(function(chosenSize){
 			let sizeData = databaseSizes.find(function(databaseSize){
 				return chosenSize == databaseSize.name
 			})
-			state.item.sizes.push(sizeData);
+			state.newItem.sizes.push(sizeData);
 		})
 		return
 	}
@@ -305,7 +325,7 @@ function saveAnswers () {
 	}
 	let checkboxes = document.getElementsByClassName('form-input checkbox');
 	Array.from(checkboxes).forEach(function(checkbox){
-		state.item.answers[checkbox.id] = checkbox.checked;
+		state.newItem.answers[checkbox.id] = checkbox.checked;
 	})
 
 	let selects = $('.form-input .select');
@@ -313,44 +333,44 @@ function saveAnswers () {
 		let parentId = Array.from(state.attributes).find(function(formCategory){
 			return formCategory.id == select.id
 		})['parent-id'];
-		if (state.item.answers[parentId] == true) {
-			state.item.answers[select.id] = $('#' + select.id).val();
+		if (state.newItem.answers[parentId] == true) {
+			state.newItem.answers[select.id] = $('#' + select.id).val();
 		}
 	})
 	let textInputs = $('.text-input');
 	Array.from(textInputs).forEach(function(input){
-		state.item.answers[input.id] = $('#' + input.id).val();
+		state.newItem.answers[input.id] = $('#' + input.id).val();
 	})
 }
 
 function savePatternNames () {
 	let patterNamesInputs = $('.pattern-name');
-	state.item.answers.patterns = {};
+	state.newItem.answers.patterns = {};
 	Array.from(patterNamesInputs).forEach(function(input){
 		let patternNumberValue = input.getAttribute('pattern-number');
-		state.item.answers.patterns[patternNumberValue] = {};
+		state.newItem.answers.patterns[patternNumberValue] = {};
 		let inputId = input.id
 		let name = $('#' + inputId).val();
-		state.item.answers.patterns[patternNumberValue].name = $('#' + input.id).val();
+		state.newItem.answers.patterns[patternNumberValue].name = $('#' + input.id).val();
 	})
 }
 
 function saveChosenCategoryData () {
-	state.item.category = $('#diaper-categories-input').val()[0]
-	state.item.categoryData = findCategoryData (state.diaperCategories);
-	const attributes = Object.values(state.item.categoryData.attributes);
+	let chosenCategory = $('#diaper-categories-input').val()[0]
+	state.newItem.categoryData = findCategoryData (chosenCategory, state.diaperCategories);
+	const attributes = Object.values(state.newItem.categoryData.attributes);
 	attributes.forEach(function(attribute){
 		if (attribute.answer == true) {
 			let attributeId = attribute.id;
-			state.item.answers[attributeId] = attribute.answer;
+			state.newItem.answers[attributeId] = attribute.answer;
 		}
 	});
 }
 
 function createDimensionsPage () {
-	let sizes = state.item.sizes;
+	let sizes = state.newItem.sizes;
 	createTemplate ('dimensions-page-template', formPageName, {'sizes': sizes});
-	let dimensions = state.item.dimensions;
+	let dimensions = state.dimensions;
 	dimensions.forEach(function(dimension){
 		let title = getQuestionText (dimension.id)
 		createTemplate ('dimension-title-template', 'dimensions-titles', {'dimension-text': title.text});
@@ -366,8 +386,8 @@ function createDimensionsPage () {
 }
 
 function saveDimensions () {
-	let sizes = state.item.sizes;
-	let dimensions = state.item.dimensions;
+	let sizes = state.newItem.sizes;
+	let dimensions = state.dimensions;
 	let inputs = document.getElementsByClassName('dimension-input')
 	sizes.forEach(function(size){
 		size.dimensions = {};
@@ -384,15 +404,14 @@ function saveDimensions () {
 
 function getDimensions () {
 	let attributes = state.attributes
-	let diaper = state.item.categoryData.attributes;
-//	let dimensions = attributes
+	let diaper = state.newItem.categoryData.attributes;
 	const filteredAttributes = attributes.filter(function(attribute) {
 		let attributeId = attribute.id;
 //		return !(!diaper[attributeId] || attribute['form-page-name'] !== formPageName);
 		return (attribute.dimension == true && diaper[attributeId]);
+	}).forEach(function(attribute){
+		state.dimensions.push(attribute);
 	})
-	state.item.dimensions = filteredAttributes;
-
 }
 
 function createDiaperCategoriesPage () {
@@ -453,9 +472,9 @@ function getformPageNames () {
 	})
 }
 
-function findCategoryData (categories) {
+function findCategoryData (chosenCategory, categories) {
 	return Array.from(categories).find(function(category){
-		return category.name == state.item.category
+		return category.name == chosenCategory
 	})
 }
 

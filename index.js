@@ -70,6 +70,18 @@ $(document).ready(function(){
 	//  	'text': 'Opis',
 	// })
 
+	// let dbRef = firebase.database().ref('attributes-titles/');
+	// let newDbRef = dbRef.push();
+	// let key = newDbRef.key
+	// newDbRef.set({
+	//   'attribute-id': 'front-elastic-types',
+	// });
+	// let groupRef = firebase.database().ref('attributes-titles/' + key +'/text-groups')
+	// let newGroupRef = groupRef.push();
+	// newGroupRef.set({
+	// 	'id': 'front-elastic-types-main',
+	//  	'text': 'Rodzaj gumki z przodu',
+	// })
 
 	
 // 	let dbbRef = firebase.database().ref('form-answers/');
