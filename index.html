@@ -548,7 +548,7 @@
           {{#if profile-image}}
             <label for="pattern-{{../pattern-number}}-image-{{image-number}}">Zdjęcie profilowe wzoru:</label>
           {{/if}}
-          <input type="file" class="form-control-file image-input" id="pattern-{{../pattern-number}}-image-{{image-number}}" pattern-number="{{../pattern-number}}" image-number="{{image-number}}">
+          <input type="file" class="form-control-file image-input pattern-{{../pattern-number}}" id="pattern-{{../pattern-number}}-image-{{image-number}}" pattern-number="{{../pattern-number}}" image-number="{{image-number}}">
           <div id="file-preview-pattern-{{../pattern-number}}-image-{{image-number}}">
           </div>
         </div>
@@ -570,16 +570,31 @@
       <a>{{this.name}}  {{this.min}}-{{this.max}} kg</a>
     {{/with}}
   </script>
+  <script id="left-image-template" type="text/x-handlebars-template">
+    {{#with image}}
+    <img {{#if profile}} id="{{id}}" {{/if}}  class="small-image left-image mx-auto img-fluid img-thumbnail m-1" src={{url}} pattern-nr="{{pattern-nr}}" image-nr="{{image-nr}}" />
+    {{/with}}
+  </script>
+  <script id="pattern-profile-image-template" type="text/x-handlebars-template">
+    {{#with image}}
+    <img {{#if profile}} id="{{id}}" {{/if}} class="small-image pattern-profile-image mx-auto img-fluid img-thumbnail m-1" src={{url}} pattern-nr="{{pattern-nr}}" image-nr="{{image-nr}}" />
+    {{/with}}
+  </script>
+  <script id="profile-image-template" type="text/x-handlebars-template">
+    {{#with image}}
+    <img class="product-image mx-auto img-fluid img-thumbnail" src={{url}}/>
+    {{/with}}
+  </script>
   <script id="item-preview" type="text/x-handlebars-template">
     {{#with diaper}}
-    {{['category-data'].name}}
     <div id="main" class="col-md-10 order-1 mx-auto">
       <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">
         <div class="main-info-box row my-2">
-          <div class="image-box col-md-6">
-            <img class="product-image mx-auto img-fluid img-thumbnail" src={{url}}/>
+          <div id="images-left-box" class="col-2">
           </div>
-          <div class="title-box col-md-6">
+          <div id="profile-image-box" class="col-md-6">
+          </div>
+          <div class="title-box col-4">
             <h5 class="text-primary"> {{printnewinfo this}} </h5>
             <div>
               <p>
@@ -595,13 +610,7 @@
             </div>
             <div class="text-muted my-2">
               <p class="mb-0">Kolory / Wzory</p>
-              <div class="flex-row justify-content-start">
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src={{url}}/>
+              <div id="patterns-images-box" class="flex-row justify-content-start">
               </div>
             </div>
           </div>

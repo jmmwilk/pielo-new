@@ -37,7 +37,6 @@ function activateNextButton () {
 	formPageName = formPageNames[formPageNumber];
 	if (formPageName == undefined) {
 		let key = addMockDiaper ();
-		console.log('key', key)
 		let page = document.getElementById('page');
 		page.innerHTML = '';
 		productPage.createProductScreen (key, 'preview');
@@ -52,11 +51,12 @@ function addMockDiaper () {
 	let dbRef = firebase.database().ref('mock-diapers/');
 	var newDbRef = dbRef.push();
 	let diaper = state.newItem;
+	console.log('diaper', diaper)
 	newDbRef.set({
 	  'attributes': diaper.answers,
 	  'category-data': diaper.categoryData,
 	  'images': diaper.images,
-	  'sizes': diaper.sizes
+	  'sizes': diaper.sizes,
 	});
 	let key = newDbRef.getKey();
 	return key
@@ -95,21 +95,21 @@ function createImagesPage () {
 
 function addPattern () {
 	patternNumber = patternNumber + 1;
+//	state.newItem.images['pattern-' + patternNumber] = {};
+	console.log('patternNumber', patternNumber)
 	let imageNumbers = setImageNumber ();
 	createTemplate ('add-pattern-template', formPageName, imageNumbers);
-	state.newItem.images['pattern-' + patternNumber] = {};
 	loadImage ();
 }
 
 function loadImage () {
-	Array.from($('.image-input')).forEach(function(input){
+	Array.from($('.pattern-' + patternNumber)).forEach(function(input){
+		let patternNumberValue = input.getAttribute('pattern-number');
+		let imageNumberValue = input.getAttribute('image-number');
+//		state.newItem.images['pattern-' + patternNumberValue]['image-' + imageNumberValue] = {};
 		$('#' + input.id).change(function(event) {
 			if (event.target.files.length > 0) {
 				createImagePreview (event, input);
-				let patternNumberValue = input.getAttribute('pattern-number');
-				let imageNumberValue = input.getAttribute('image-number');
-				state.newItem.images['pattern-' + patternNumberValue] = {};
-				state.newItem.images['pattern-' + patternNumberValue]['image-' + imageNumberValue] = {};
 				addImageToStorage (input);
 			}
 		});
@@ -154,9 +154,12 @@ function addImageToStorage (input) {
 	.then(function(downloadURL) {
 		let patternNumberValue = input.getAttribute('pattern-number');
 		let imageNumberValue = input.getAttribute('image-number');
-		state.newItem.images['pattern-' + patternNumberValue] = {};
-		state.newItem.images['pattern-' + patternNumberValue]['image-' + imageNumberValue] = {};
-		state.newItem.images['pattern-' + patternNumberValue]['image-' + imageNumberValue].url = downloadURL;
+		let image = {}
+		image['pattern-nr'] = patternNumberValue;
+		image['image-nr'] = imageNumberValue;
+		image.url = downloadURL
+		state.newItem.images.push(image)
+		console.log('state.newItem.images', state.newItem.images)
 		return downloadURL
 	})
 }

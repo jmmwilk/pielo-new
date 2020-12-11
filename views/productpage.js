@@ -81,7 +81,6 @@ function fillDiaperPreview (diaper) {
 }
 
 function getParameters (diaper) {
-	console.log('diaper', diaper)
 	let parameters = [];
 	let diaperAttributes = Object.keys(diaper.diaper.attributes);
 	let categoryAttributes = diaper.diaper['category-data'].attributes;
@@ -120,10 +119,8 @@ function getParameters (diaper) {
 		// console.log('titleGroups', titleGroups)
 //		Object
 		attributeToPrint.title = getParameterTitle (parameterId);
-		console.log('attributeToPrint.title', attributeToPrint.title)
 		attributesToPrint.push(attributeToPrint);
 	})
-	console.log('attributesToPrint', attributesToPrint)
 	return attributesToPrint
 }
 
@@ -131,7 +128,6 @@ function getParameterTitle (parameterId) {
 	let diaper = state.newItem.categoryData.attributes;
 	let titles = state.attributesTitles;
 	let titleText;
-	console.log('titles', titles)
 	Array.from(titles).forEach(function(title){
 		if (title['attribute-id'] == parameterId) {
 			const textGroups = Object.values(title['text-groups']);
@@ -148,6 +144,12 @@ function getParameterTitle (parameterId) {
 }
 
 export function createPreviewScreen (diaper, view) {
+	console.log('diaper', diaper)
+	let images = diaper.diaper.images;
+	let profileImage = images.find(function(image){
+		return image['pattern-nr'] == 1 && image['image-nr'] == 1
+	})
+	diaper.diaper.profileImage = profileImage;
 	fillProductMainInfo ();
 	fillSizesInfo ();
 	createTemplate ('item-preview', 'page', diaper)
@@ -160,10 +162,94 @@ export function createPreviewScreen (diaper, view) {
 //		stopProp ();
 	}
 	fillDiaperPreview (diaper);
+	createProfileImage (diaper, 1, 1);
+	createPatternsProfileImages (diaper)
+	createImagesOnLeftSide (diaper, 1)
 	setClassesToParameters ();
+	enableMainImageChange (diaper);
+	enablePatternChange (diaper);
 }
 
+function removeBorderFromImages (images) {
+	Array.from(images).forEach(function(img){
+		img.classList.remove('border-primary');
+	});
+}
 
+function makeBorderOnImage (image) {
+	image.classList.add('border-primary');
+}
+
+function enableMainImageChange (diaper) {
+	let images = $('.left-image');
+	Array.from(images).forEach(function(image){
+		image.onclick = function (event) {
+			removeBorderFromImages (images);
+			makeBorderOnImage (event.target);
+			let patternNr = event.target.getAttribute('pattern-nr');
+			let imageNr = event.target.getAttribute('image-nr');
+			document.getElementById('profile-image-box').innerHTML = '';
+			createProfileImage (diaper, patternNr, imageNr);
+		}
+	})
+}
+
+function enablePatternChange (diaper) {
+	let images = $('.pattern-profile-image');
+	Array.from(images).forEach(function(image){
+		image.onclick = function (event) {
+			removeBorderFromImages (images);
+			makeBorderOnImage (event.target);
+			let patternNr = event.target.getAttribute('pattern-nr');
+			let imageNr = event.target.getAttribute('image-nr');
+			document.getElementById('profile-image-box').innerHTML = '';
+			createProfileImage (diaper, patternNr, imageNr);
+			document.getElementById('images-left-box').innerHTML = '';
+			createImagesOnLeftSide (diaper, patternNr);
+			enableMainImageChange (diaper);
+			let profileImage = document.getElementById('left-profile-image');
+			makeBorderOnImage (profileImage);
+		}
+	})
+}
+
+function createImagesOnLeftSide (diaper, patternNr) {
+	let patterns = diaper.diaper.images;
+	const patternImages = patterns.filter(function(pattern){
+		return (pattern['pattern-nr'] == patternNr)
+	}).forEach(function(patternImage){
+		if (patternImage['image-nr'] == 1) {
+			patternImage.profile = true;
+			patternImage.id = 'left-profile-image'
+		}
+		createTemplate ('left-image-template', 'images-left-box', {'image': patternImage})
+	})
+	let profileImage = document.getElementById('left-profile-image');
+	makeBorderOnImage (profileImage);
+}
+
+function createProfileImage (diaper, patternNr, imageNr) {
+	const patterns = diaper.diaper.images;
+	let image = patterns.find(function(pattern){
+		return pattern['image-nr'] == imageNr && pattern['pattern-nr'] == patternNr
+	})
+	createTemplate ('profile-image-template', 'profile-image-box', {'image': image})
+}
+
+function createPatternsProfileImages (diaper) {
+	let patterns = diaper.diaper.images;
+	const profileImages = patterns.filter(function(pattern){
+		return (pattern['image-nr'] == 1)
+	}).forEach(function(profileImage){
+		if (profileImage['pattern-nr'] == 1) {
+			profileImage.profile = true;
+			profileImage.id = 'first-profile-image'
+		}
+		createTemplate ('pattern-profile-image-template', 'patterns-images-box', {'image': profileImage})
+	})
+	let firstImage = document.getElementById('first-profile-image');
+	makeBorderOnImage (firstImage);
+}
 
 // function createPreviewTemplate (key) {
 // 	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
@@ -181,9 +267,11 @@ function loadItemData (key) {
 		let dbRef = firebase.database().ref('mock-diapers/' + key + '/');
 		dbRef.on('value', function(snap){
 			diaper = snap.val();
+			console.log('diaper', diaper)
 			state.downloadedItem.attributes = diaper.attributes;
 			state.downloadedItem.categoryData = diaper['category-data'];
 			state.downloadedItem.sizes = diaper.sizes;
+			state.downloadedItem.images = diaper.images;
 			console.log('state.downloadedItem', state.downloadedItem)
 			resolve (diaper)
 		})

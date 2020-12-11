@@ -5,7 +5,7 @@ export let state = {
 
 export let newItem = {
 	answers: {},
-	images: {},
+	images: [],
 }
 
 export let attributesTitles = [];
