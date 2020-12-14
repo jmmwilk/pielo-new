@@ -523,6 +523,29 @@
     </div>
     {{/each}}
   </script>
+  <script id="weight-input-template" type="text/x-handlebars-template">
+    {{#each sizes}}
+    <div class="row">
+      <div class="col-2">
+        <a>{{shortcut}}:</a>
+      </div>
+      <div class="input-group mb-2 col-5">
+        <label for="{{id}}-from-weight-input" class="px-2">od</label>
+        <input id="{{id}}-from-weight-input" type="text" aria-describedby="{{id}}-from-addon" class="form-control weight-input-from" size="{{id}}" >
+        <div class="input-group-append">
+          <span class="input-group-text" id="{{id}}-from-addon">kg</span>
+        </div>
+      </div>
+      <div class="input-group mb-2 col-5">
+        <label for="{{id}}-till-weight-input" class="px-2">do</label>
+        <input id="{{id}}-till-weight-input" type="text" aria-describedby="{{id}}-till-addon" class="form-control weight-input-till" size="{{id}}" >
+        <div class="input-group-append">
+          <span class="input-group-text" id="{{id}}-till-addon">kg</span>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </script>
   <script id="text-input-template" type="text/x-handlebars-template">
     <div class="form-group">
       <label for="{{id}}-input">Opis pieluszki</label>
@@ -560,14 +583,19 @@
 
   <script id="size-buttons-template" type="text/x-handlebars-template">
     {{#each diaper.sizes}}
-      <button id="{{this.shortcut}}" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1">{{this.shortcut}}</button>
+      <button id="{{this.shortcut}}-main-button" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1" size="{{id}}" >{{this.shortcut}}</button>
     {{/each}}
     <div id="size-description" class="ml-2">
     </div>
   </script>
   <script id="size-range-template" type="text/x-handlebars-template">
     {{#with size}}
-      <a>{{this.name}}  {{this.min}}-{{this.max}} kg</a>
+    <div>
+      <a>{{name}}:</a>
+    </div>
+    <div>
+    </div>
+      <a>{{min}} - {{max}} kg</a>
     {{/with}}
   </script>
   <script id="left-image-template" type="text/x-handlebars-template">
@@ -587,14 +615,14 @@
   </script>
   <script id="item-preview" type="text/x-handlebars-template">
     {{#with diaper}}
-    <div id="main" class="col-md-10 order-1 mx-auto">
+    <div id="main" class="col-md-12 order-1 mx-auto">
       <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">
         <div class="main-info-box row my-2">
-          <div id="images-left-box" class="col-2">
+          <div id="images-left-box" class="col-auto pr-0">
           </div>
           <div id="profile-image-box" class="col-md-6">
           </div>
-          <div class="title-box col-4">
+          <div class="title-box col">
             <h5 class="text-primary"> {{printnewinfo this}} </h5>
             <div>
               <p>
@@ -615,22 +643,24 @@
             </div>
           </div>
         </div>
-        <div class="info-box card my-2 bg-light">
-          <div id="info-title" class="card-body text-center">
-            <h5>
-              <a class="card-title stretched-link text-primary" aria-expanded="false" aria-controls="parameters-wrapper" data-toggle="collapse" href="#parameters-wrapper">Informacje od producenta</a>
-            </h5>
-          </div>
-          <div class="collapse text-secondary" id="parameters-wrapper">
-            <div id="parameters" class="mb-3">
+        <div class="info-box my-2 bg-light">
+          <div class="card card-body">
+            <div id="info-title" class="text-center mb-4" type="button" aria-expanded="false" aria-controls="parameters-wrapper" data-toggle="collapse" href="#parameters-wrapper">
+              <h5>
+                <a class="card-title stretched-link text-primary">Informacje od producenta</a>
+              </h5>
             </div>
-            <div id="description">
-              <div class="text-center">
-                <h5>Opis</h5>
+            <div class="collapse text-secondary" id="parameters-wrapper">
+              <div id="parameters" class="mb-3">
               </div>
-              <div class="row justify-content-center">
-                <div class="col-11">
-                  <p>{{attributes.description-input}}</p>
+              <div id="description">
+                <div class="text-center">
+                  <h5>Opis</h5>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-11">
+                    <p>{{attributes.description-input}}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -842,28 +872,65 @@
   </script>
   <script id="attribute-template" type="text/x-handlebars-template">
     {{#each parameters}}
-    <div id="sizes-pars" class="row parameters-row">
-      <div class="attribute-title col-6 align-self-end">
+    <div class="row parameters-row">
+      <div class="attribute-title col-6 align-self-end font-weight-bold">
         <a>{{title}}</a>
       </div>
       <div class="attribute-value col-6 align-self-end">
         <div>
+          {{#if tick}}
+          <img class="tick-image" src="{{src}}" />
+          {{else}}
           <a>{{value}}</a>
+          {{/if}}
         </div>
       </div>
     </div>
     {{/each}}
   </script>
-  <script id="parameters-template" type="text/x-handlebars-template">
-    <div class="text-center">
-      <h5>Parametry</h5>
+  <script id="parameters-group-wrapper-template" type="text/x-handlebars-template">
+    {{#with parameters-group}}
+    <div id="{{id}}-parameters-group" class="parameters-group-wrapper mb-5">
+      <div class="text-primary">
+        <a>{{name}}</a>
+      </div>
     </div>
+    {{/with}}
+  </script>
+  <script id="parameters-wrapper-template" type="text/x-handlebars-template">
     <div class="row justify-content-around">
       <div class="col-5" id="attributes-left">
       </div>
-      <div class="col-5 attributes-right">
+      <div class="col-5" id="attributes-right">
       </div>
     </div>
+  </script>
+  <script id="dimensions-template" type="text/x-handlebars-template">
+    <div>
+      <img class="dimensions-image" src="images/otulacz.png" />
+    </div>
+    <div class="my-2">
+      <a class="my-1" >Wymiary dla rozmiaru: </a>
+      {{#each diaper.sizes}}
+        <button id="{{this.shortcut}}-dimensions-button" type="button" class="dimensions-button btn btn-outline-secondary btn-sm mx-1" size="{{id}}" >{{this.shortcut}}</button>
+      {{/each}}
+    </div>
+    <div id="dimensions-wrapper">
+    </div>
+  </script>
+  <script id="dimensions-values-template" type="text/x-handlebars-template">
+    {{#each dimensions}}
+      <div id="dimensions-pars" class="row parameters-row">
+        <div class="attribute-title col-6 align-self-end font-weight-bold">
+          <a>{{title}}</a>
+        </div>
+        <div class="attribute-value col-6 align-self-end">
+          <div>
+            <a>{{value}} cm</a>
+          </div>
+        </div>
+      </div>
+    {{/each}}
   </script>
   <!-- <script id="parameters-template" type="text/x-handlebars-template">
     <div class="text-center">

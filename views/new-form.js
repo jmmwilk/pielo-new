@@ -51,7 +51,6 @@ function addMockDiaper () {
 	let dbRef = firebase.database().ref('mock-diapers/');
 	var newDbRef = dbRef.push();
 	let diaper = state.newItem;
-	console.log('diaper', diaper)
 	newDbRef.set({
 	  'attributes': diaper.answers,
 	  'category-data': diaper.categoryData,
@@ -95,8 +94,6 @@ function createImagesPage () {
 
 function addPattern () {
 	patternNumber = patternNumber + 1;
-//	state.newItem.images['pattern-' + patternNumber] = {};
-	console.log('patternNumber', patternNumber)
 	let imageNumbers = setImageNumber ();
 	createTemplate ('add-pattern-template', formPageName, imageNumbers);
 	loadImage ();
@@ -159,7 +156,6 @@ function addImageToStorage (input) {
 		image['image-nr'] = imageNumberValue;
 		image.url = downloadURL
 		state.newItem.images.push(image)
-		console.log('state.newItem.images', state.newItem.images)
 		return downloadURL
 	})
 }
@@ -320,6 +316,7 @@ function saveAnswers () {
 	}
 	if (formPageName == 'dimensions') {
 		saveDimensions ();
+		saveWeights ();
 		return
 	}
 	if (formPageName == 'images') {
@@ -386,19 +383,39 @@ function createDimensionsPage () {
 	Array.from(document.getElementsByClassName('dimension-title')).forEach(function(title){
 		title.style.height = inputHeight + 'px'
 	})
+	createTemplate ('weight-input-template', formPageName, {'sizes': sizes});
+}
+
+function saveWeights () {
+	let sizes = state.newItem.sizes;
+	Array.from($('.weight-input-from')).forEach(function(input){
+		let size = sizes.find(function(size){
+			return size.id == input.getAttribute('size')
+		});
+		size['min'] = input.value;
+	});
+	Array.from($('.weight-input-till')).forEach(function(input){
+		let size = sizes.find(function(size){
+			return size.id == input.getAttribute('size')
+		});
+		size['max'] = input.value;
+	});
 }
 
 function saveDimensions () {
 	let sizes = state.newItem.sizes;
 	let dimensions = state.dimensions;
-	let inputs = document.getElementsByClassName('dimension-input')
+	let inputs = document.getElementsByClassName('dimension-input');
 	sizes.forEach(function(size){
-		size.dimensions = {};
+		size.dimensions = [];
 		Array.from(inputs).forEach(function(input){
 			Array.from(dimensions).forEach(function(dimension){
 				if (input.classList.contains(size.id) && input.classList.contains(dimension.id)) {
 					let dimensionId = dimension.id;
-					size.dimensions[dimensionId] = input.value;
+					let dimensionData = {};
+					dimensionData.id = dimension.id;
+					dimensionData.value = input.value;
+					size.dimensions.push(dimensionData);
 				}
 			})
 		})

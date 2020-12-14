@@ -117,6 +117,16 @@ input:error {
   border-color: red
 }
 
+.tick-image {
+	height: 20px;
+ 	width: 20px;
+}
+
+.dimensions-image {
+	height: 250px;
+ 	width: 250px;
+}
+
 /*
 input:is-invalid {
   ~ .invalid-feedback {

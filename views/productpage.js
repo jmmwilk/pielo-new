@@ -61,30 +61,95 @@ function createSizeButtons (diaper) {
 	Array.from(buttons).forEach(function(button){
 		button.onclick = function (event) {
 			let sizeData = {};
-			let buttonId = event.target.id;
+			let sizeName = event.target.getAttribute('size');
 			let sizes = diaper.diaper.sizes;
 			for (let i=0; i<sizes.length; i++) {
-				if (buttonId == sizes[i].shortcut) {
+				if (sizeName == sizes[i].id) {
 					sizeData = {'size': sizes[i]};
 				}
-			}
+			};
+			document.getElementById('size-description').innerHTML = '';
 			createTemplate ('size-range-template', 'size-description', sizeData);
+		};
+	});
+}
+
+function createDimensions (diaper) {
+	createTemplate('dimensions-template', 'attributes-right', diaper);
+	let buttons = document.getElementsByClassName('dimensions-button');
+	Array.from(buttons).forEach(function(button){
+		console.log('button', button)
+		let sizeName = button.getAttribute('size');
+		let size = diaper.diaper.sizes.find(function(size){
+			return sizeName == size.id
+		});
+		let dimensionsData = [];
+		Array.from(size.dimensions).forEach(function(sizeDimension){
+			let dimensionData = getDimensionTitle (sizeDimension.id, diaper);
+			dimensionData.value = sizeDimension.value;
+			dimensionsData.push(dimensionData);
+			console.log('dimensionData', dimensionData)
+		});
+		console.log('dimensionsData', dimensionsData)
+		createTemplate ('dimensions-values-template', 'dimensions-wrapper', {'dimensions': dimensionsData});
+
+		// button.onclick = function (event) {
+		// 	event.stopPropagation ();
+		// 	console.log('zenek')
+		// 	let sizeName = event.target.getAttribute('size');
+		// 	let size = diaper.diaper.sizes.find(function(size){
+		// 		return sizeName == size.id
+		// 	});
+		// 	Array.from(size.dimensions).forEach(function(sizeDimension){
+		// 		dimensionData = getDimensionTitle (sizeDimension.id, diaper);
+		// 		console.log('dimensionData', dimensionData)
+		// 	});
+		// 	createTemplate ('dimensions-values-template', 'dimensions-wrapper', dimensionsData);
+		// };
+	});
+}
+
+function getDimensionTitle (dimensionId, diaper) {
+	let dimensionData = {};
+//	let diaper = state.newItem.categoryData.attributes;
+	Array.from(state.attributesTitles).forEach(function(attributeTitle){
+		if (attributeTitle['attribute-id'] == dimensionId) {
+			const textGroups = Object.values(attributeTitle['text-groups']);
+			Array.from(textGroups).forEach(function(group){
+				if (group.id == diaper.diaper['category-data'].attributes[dimensionId]['title-group-id']) {
+					dimensionData['title'] = group.text
+					dimensionData['id'] = dimensionId;
+					return
+				}
+			})
 		}
 	})
+	return dimensionData
 }
 
 function fillDiaperPreview (diaper) {
 	createSizeButtons (diaper);
-	createTemplate ('parameters-template', 'parameters', diaper);
-	let parameters = getParameters (diaper)
-	createTemplate ('attribute-template', 'attributes-left', {'parameters': parameters});
+	createTemplate ('parameters-wrapper-template', 'parameters', diaper);
+	let parametersGroups = state.attributesOrder;
+	parametersGroups.forEach(function(parametersGroup){
+		console.log('parametersGroup', parametersGroup)
+		createTemplate ('parameters-group-wrapper-template', 'attributes-left', {'parameters-group': parametersGroup});
+		let parameters = getParameters (diaper, parametersGroup);
+		let parametersBox = parametersGroup.id + '-parameters-group';
+		createTemplate ('attribute-template', parametersBox, {'parameters': parameters});
+	})
+	
+	createDimensions (diaper)
+	let sizes = diaper.diaper.sizes
 }
 
-function getParameters (diaper) {
+
+
+function getParameters (diaper, parametersGroup) {
 	let parameters = [];
 	let diaperAttributes = Object.keys(diaper.diaper.attributes);
 	let categoryAttributes = diaper.diaper['category-data'].attributes;
-	Array.from(state.attributesOrder.structure).forEach(function(attribute){
+	Array.from(parametersGroup.attributes).forEach(function(attribute){
 		let diaperAttribute = diaperAttributes.find(function(diaperAtt){
 			return attribute.id == diaperAtt
 		});
@@ -105,10 +170,12 @@ function getParameters (diaper) {
 
 		let attributeValue = diaper.diaper.attributes[parameterId];
 		if (attributeValue == true) {
-			attributeToPrint.value = 'tak';
+			attributeToPrint.tick = true;
+			attributeToPrint.src = "/images/yes.png";
 		}
 		if (attributeValue == false) {
-			attributeToPrint.value = 'nie';
+			attributeToPrint.tick = true;
+			attributeToPrint.src = "/images/no.png";
 		}
 		if (attributeValue !== false && attributeValue !== true) {
 			attributeToPrint.value = attributeValue;
@@ -159,7 +226,6 @@ export function createPreviewScreen (diaper, view) {
 		createTemplate ('add-review-template', 'add-review-form-wrapper', diaper);
 		createTemplate ('detail-reviews-summary-template', 'detail-summary-wrapper');
 		createTemplate ('add-review-child-template', 'ar-child-wrapper');
-//		stopProp ();
 	}
 	fillDiaperPreview (diaper);
 	createProfileImage (diaper, 1, 1);
