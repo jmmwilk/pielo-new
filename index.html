@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
   </head>
   <body>
-    <div id="application" class="container-fluid bg-light">
+    <div id="application" class="container-fluid bg-light h-100">
     </div>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
@@ -513,6 +513,28 @@
     </div>
     {{/each}}
   </script>
+  <script id="layers-template" type="text/x-handlebars-template">
+    {{#each layers}}
+    <div id="{{id}}" class="mb-4 layer">
+      <div class="text-info mb-3">
+        <a>{{title}}</a>
+      </div>
+    </div>
+    {{/each}}
+  </script>
+  <script id="fabrics-inputs-template" type="text/x-handlebars-template">
+    {{#each fabrics}}
+    <div class="input-group mb-3 row">
+      <div class="col-3">
+        <label for="{{name}}-input class="">{{name}}</label>
+      </div>
+      <input id="{{name}}-input" name="{{name}}" type="text" aria-describedby="{{name}}-addon" class="{{layer-id}} form-control col-3" layer-id="{{layer-id}}">
+      <div class="input-group-append">
+        <span class="input-group-text" id="{{name}}-addon">%</span>
+      </div>
+    </div>
+    {{/each}}
+  </script>
   <script id="size-input-template" type="text/x-handlebars-template">
     {{#each dimensions}}
     <div class="input-group mb-2">
@@ -582,31 +604,46 @@
 
 
   <script id="size-buttons-template" type="text/x-handlebars-template">
-    {{#each diaper.sizes}}
-      <button id="{{this.shortcut}}-main-button" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1" size="{{id}}" >{{this.shortcut}}</button>
-    {{/each}}
-    <div id="size-description" class="ml-2">
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      {{#each diaper.sizes}}
+        <label class="btn btn-secondary size-button" size="{{id}}">
+          <input type="radio" name="options" id="{{this.shortcut}}-main-button" autocomplete="off"> {{this.shortcut}}
+        </label>
+      {{/each}}
+    </div>
+    <div id="size-description" class="ml-2 col">
     </div>
   </script>
+  <!-- 
+        <button id="{{this.shortcut}}-main-button" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1" size="{{id}}" >{{this.shortcut}}</button> -->
   <script id="size-range-template" type="text/x-handlebars-template">
     {{#with size}}
-    <div>
-      <a>{{name}}:</a>
+    <div class="">
+      <h6>{{name}}:</h6>
     </div>
-    <div>
+    <div class="">
+      <h6>{{min}} - {{max}} kg</h6>
     </div>
-      <a>{{min}} - {{max}} kg</a>
     {{/with}}
   </script>
   <script id="left-image-template" type="text/x-handlebars-template">
     {{#with image}}
-    <img {{#if profile}} id="{{id}}" {{/if}}  class="small-image left-image mx-auto img-fluid img-thumbnail m-1" src={{url}} pattern-nr="{{pattern-nr}}" image-nr="{{image-nr}}" />
+      <div class="embed-responsive embed-responsive-1by1" type="button">
+        <img {{#if profile}} id="{{id}}" {{/if}}  class="small-image left-image mx-auto img-fluid img-thumbnail embed-responsive-item pielucha-image" src={{url}} pattern-nr="{{pattern-nr}}" image-nr="{{image-nr}}" />
+      </div>
     {{/with}}
   </script>
   <script id="pattern-profile-image-template" type="text/x-handlebars-template">
     {{#with image}}
-    <img {{#if profile}} id="{{id}}" {{/if}} class="small-image pattern-profile-image mx-auto img-fluid img-thumbnail m-1" src={{url}} pattern-nr="{{pattern-nr}}" image-nr="{{image-nr}}" />
+    <div class="col-4 p-0" type="button">
+      <div class="embed-responsive embed-responsive-1by1">
+      <img {{#if profile}} id="{{id}}" {{/if}} class="small-image pattern-profile-image mx-auto img-fluid img-thumbnail embed-responsive-item pielucha-image" src={{url}} pattern-nr="{{pattern-nr}}" image-nr="{{image-nr}}" />
+      </div>
+    </div>
     {{/with}}
+  </script>
+  <script id="devider-template" type="text/x-handlebars-template">
+    <div class="w-100"></div>
   </script>
   <script id="profile-image-template" type="text/x-handlebars-template">
     {{#with image}}
@@ -617,48 +654,58 @@
     {{#with diaper}}
     <div id="main" class="col-md-12 order-1 mx-auto">
       <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">
-        <div class="main-info-box row my-2">
-          <div id="images-left-box" class="col-auto pr-0">
+        <div class="main-info-box row my-2 p-3 mx-1 bg-white">
+          <div class="col-2 pr-0 pl-1">
+            <div class="row justify-content-center">
+              <div id="images-left-box" class="col-10 d-flex flex-column">
+              </div>
+            </div>
           </div>
           <div id="profile-image-box" class="col-md-6">
           </div>
           <div class="title-box col">
-            <h5 class="text-primary"> {{printnewinfo this}} </h5>
-            <div>
-              <p>
-                od <a href="#application" class="text-warning">{{brand.name}}</a>
-              </p>
+            <h4 class="text-primary mb-3"> {{printnewinfo this}} </h4>
+            <div class="d-flex flex-row mb-3">
+              <h5 class="text-secondary mr-2">od</h5>
+              <h5 href="#application" class="text-warning" type="button">Puppi</h5>
             </div>
-            <div id="stars-box-wrapper">
+            <div id="stars-box-wrapper" class="mb-3">
             </div>
-            <div class="text-muted">
-              <p class="mb-0">Rozmiary</p>
+            <div class="text-secondary mb-3">
+              <h5 class="mb-0">Rozmiary</h5>
               <div id="size-buttons-container" class="d-flex flex-row mt-1">
               </div>
             </div>
-            <div class="text-muted my-2">
-              <p class="mb-0">Kolory / Wzory</p>
-              <div id="patterns-images-box" class="flex-row justify-content-start">
+            <div class="text-secondary">
+              <div class="row">
+                <div class="col-auto">
+                  <h5 class="mb-0">Wzór:</h5>
+                </div>
+                <div id="pattern-name" class="col-auto text-primary">
+                  <h5>{{patterns.1.name}}</h5>
+                </div>
+              </div>
+              <div id="patterns-images-box" class="d-flex flex-row flex-wrap row">
               </div>
             </div>
           </div>
         </div>
-        <div class="info-box my-2 bg-light">
+        <div class="info-box my-2">
           <div class="card card-body">
-            <div id="info-title" class="text-center mb-4" type="button" aria-expanded="false" aria-controls="parameters-wrapper" data-toggle="collapse" href="#parameters-wrapper">
+            <div id="info-title" class="text-center" type="button" aria-expanded="false" aria-controls="parameters-wrapper" data-toggle="collapse" href="#parameters-wrapper">
               <h5>
-                <a class="card-title stretched-link text-primary">Informacje od producenta</a>
+                <a class="card-title text-primary">Informacje od producenta</a>
               </h5>
             </div>
-            <div class="collapse text-secondary" id="parameters-wrapper">
+            <div class="collapse text-secondary mx-3" id="parameters-wrapper">
               <div id="parameters" class="mb-3">
               </div>
-              <div id="description">
-                <div class="text-center">
-                  <h5>Opis</h5>
-                </div>
-                <div class="row justify-content-center">
-                  <div class="col-11">
+              <div id="description" class="">
+                <div class="row">
+                  <div class="col-12">
+                    <div class="parameters-group-title text-primary">
+                      <h6>Opis</h6>
+                    </div>
                     <p>{{attributes.description-input}}</p>
                   </div>
                 </div>
@@ -669,6 +716,9 @@
       </div>
     </div>
     {{/with}}
+  </script>
+  <script id="pattern-name-template" type="text/x-handlebars-template">
+    <h5>{{name}}</h5>
   </script>
   <script id="stars-box-template" type="text/x-handlebars-template">
     <div class="stars-box d-flex flex-row text-muted">
@@ -873,7 +923,7 @@
   <script id="attribute-template" type="text/x-handlebars-template">
     {{#each parameters}}
     <div class="row parameters-row">
-      <div class="attribute-title col-6 align-self-end font-weight-bold">
+      <div class="attribute-title col-6 align-self-end">
         <a>{{title}}</a>
       </div>
       <div class="attribute-value col-6 align-self-end">
@@ -890,18 +940,18 @@
   </script>
   <script id="parameters-group-wrapper-template" type="text/x-handlebars-template">
     {{#with parameters-group}}
-    <div id="{{id}}-parameters-group" class="parameters-group-wrapper mb-5">
-      <div class="text-primary">
-        <a>{{name}}</a>
+    <div id="{{id}}-parameters-group" class="parameters-group-wrapper mb-4">
+      <div class="parameters-group-title text-primary mb-2">
+        <h6>{{name}}</h6>
       </div>
     </div>
     {{/with}}
   </script>
   <script id="parameters-wrapper-template" type="text/x-handlebars-template">
-    <div class="row justify-content-around">
-      <div class="col-5" id="attributes-left">
+    <div class="row justify-content-between mt-3">
+      <div class="col-6" id="attributes-left">
       </div>
-      <div class="col-5" id="attributes-right">
+      <div class="col-6" id="attributes-right">
       </div>
     </div>
   </script>
@@ -909,8 +959,10 @@
     <div>
       <img class="dimensions-image" src="images/otulacz.png" />
     </div>
-    <div class="my-2">
-      <a class="my-1" >Wymiary dla rozmiaru: </a>
+    <div class="my-2 row">
+      <div class="my-2 parameters-group-title text-primary col-auto">
+        <a>Wymiary dla rozmiaru: </a>
+      </div>
       {{#each diaper.sizes}}
         <button id="{{this.shortcut}}-dimensions-button" type="button" class="dimensions-button btn btn-outline-secondary btn-sm mx-1" size="{{id}}" >{{this.shortcut}}</button>
       {{/each}}
@@ -921,10 +973,15 @@
   <script id="dimensions-values-template" type="text/x-handlebars-template">
     {{#each dimensions}}
       <div id="dimensions-pars" class="row parameters-row">
-        <div class="attribute-title col-6 align-self-end font-weight-bold">
-          <a>{{title}}</a>
+        <div class="col-7 align-self-end d-flex">
+          <div class="text-danger font-weight-bold mr-2">
+            <a>{{letter}}</a>
+          </div>
+          <div class="attribute-title">
+            <a>{{title}}</a>
+          </div>
         </div>
-        <div class="attribute-value col-6 align-self-end">
+        <div class="attribute-value col-5 align-self-end">
           <div>
             <a>{{value}} cm</a>
           </div>

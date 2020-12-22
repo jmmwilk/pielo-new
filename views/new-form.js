@@ -56,6 +56,8 @@ function addMockDiaper () {
 	  'category-data': diaper.categoryData,
 	  'images': diaper.images,
 	  'sizes': diaper.sizes,
+	  'patterns': diaper.patterns,
+	  'fabrics': diaper.fabrics,
 	});
 	let key = newDbRef.getKey();
 	return key
@@ -79,6 +81,10 @@ function createFormPage () {
 	if (formPageName == 'dimensions') {
 		getDimensions ();
 		createDimensionsPage ();
+		return
+	}
+	if (formPageName == 'percentage-composition') {
+		createPercentageCompositionPage ();
 		return
 	}
 	createFormQuestions ();
@@ -263,8 +269,12 @@ function createCheckboxInput (attributeId) {
 	createTemplate ('checkbox-input-template', formPageName, questionData);
 }
 
-function createTextInput (attributeId) {
-	createTemplate ('text-input-template', formPageName, {'id': attributeId});
+function createTextInput (attributeId, rowsNr) {
+	let inputData = {
+		'id': attributeId,
+		'rows-nr': rowsNr,
+	}
+	createTemplate ('text-input-template', formPageName, {'inputData': inputData});
 }
 
 function createSelectInput (attributeId) {
@@ -274,6 +284,8 @@ function createSelectInput (attributeId) {
 	let answers = state.answersOptions;
 	let diaper = state.newItem.categoryData.attributes;
 	Array.from(answers).forEach(function(answer) {
+		if (attributeId == 'certificates') {
+		}
 		if (answer.id == diaper[attributeId]['answer-options-id']) {
 			answersData.data = answer.options
 		}
@@ -302,16 +314,13 @@ function getQuestionText (attributeId) {
 }
 
 function saveAnswers () {
+	if (formPageName == 'percentage-composition') {
+		savePercentageComposition ();
+		removeLayersFromAnswers ();
+		return
+	}
 	if (formPageName == 'sizes') {
-		state.newItem.sizes = [];
-		let chosenSizes = $('#sizes-input').val();
-		let databaseSizes = state.sizes;
-		chosenSizes.forEach(function(chosenSize){
-			let sizeData = databaseSizes.find(function(databaseSize){
-				return chosenSize == databaseSize.name
-			})
-			state.newItem.sizes.push(sizeData);
-		})
+		saveSizes ();
 		return
 	}
 	if (formPageName == 'dimensions') {
@@ -333,7 +342,7 @@ function saveAnswers () {
 		let parentId = Array.from(state.attributes).find(function(formCategory){
 			return formCategory.id == select.id
 		})['parent-id'];
-		if (state.newItem.answers[parentId] == true) {
+		if (state.newItem.answers[parentId] == true || state.newItem.answers[parentId] == undefined) {
 			state.newItem.answers[select.id] = $('#' + select.id).val();
 		}
 	})
@@ -343,15 +352,45 @@ function saveAnswers () {
 	})
 }
 
+function savePercentageComposition () {
+	let layers = $('.layer')
+	Array.from(layers).forEach(function(layer){
+		let layerData = {};
+		let layerId = layer.id;
+		layerData['layer-id'] = layerId;
+		layerData.fabrics = [];
+		let inputs = $('.' + layerId);
+		Array.from(inputs).forEach(function(input){
+			let fabric = {};
+			fabric.name = input.getAttribute('name');
+			fabric.percentage = input.value;
+			layerData.fabrics.push(fabric);
+		})
+		state.newItem.fabrics.push(layerData);
+	})
+}
+
+function saveSizes () {
+	state.newItem.sizes = [];
+	let chosenSizes = $('#sizes-input').val();
+	let databaseSizes = state.sizes;
+	chosenSizes.forEach(function(chosenSize){
+		let sizeData = databaseSizes.find(function(databaseSize){
+			return chosenSize == databaseSize.name
+		})
+		state.newItem.sizes.push(sizeData);
+	})
+}
+
 function savePatternNames () {
 	let patterNamesInputs = $('.pattern-name');
-	state.newItem.answers.patterns = {};
+	state.newItem.patterns = {};
 	Array.from(patterNamesInputs).forEach(function(input){
 		let patternNumberValue = input.getAttribute('pattern-number');
-		state.newItem.answers.patterns[patternNumberValue] = {};
+		state.newItem.patterns[patternNumberValue] = {};
 		let inputId = input.id
 		let name = $('#' + inputId).val();
-		state.newItem.answers.patterns[patternNumberValue].name = $('#' + input.id).val();
+		state.newItem.patterns[patternNumberValue].name = $('#' + input.id).val();
 	})
 }
 
@@ -365,6 +404,72 @@ function saveChosenCategoryData () {
 			state.newItem.answers[attributeId] = attribute.answer;
 		}
 	});
+}
+
+function removeLayersFromAnswers () {
+	let layers = [];
+	let attributes = state.newItem.answers;
+	let attributeIds = Object.keys(attributes)
+	Array.from(attributeIds).forEach(function(attributeId){
+		let lastCharacters = attributeId.substr(attributeId.length - 8);
+		if (lastCharacters == '-fabrics') {
+			delete state.newItem.answers[attributeId]
+		}
+	});
+}
+
+function getLayers () {
+	let layers = [];
+	let attributes = state.newItem.answers;
+	let attributeIds = Object.keys(attributes)
+	Array.from(attributeIds).forEach(function(attributeId){
+		let lastCharacters = attributeId.substr(attributeId.length - 8);
+		if (lastCharacters == '-fabrics') {
+			let layer = {};
+			layer.title = getQuestionText (attributeId).text;
+			layer.id = attributeId;
+			layer.fabrics = attributes[attributeId];
+			layers.push(layer);
+		}
+	});
+	return layers
+}
+
+function createPercentageCompositionPage () {
+	let layers = getLayers ();
+	let selectedLayers = [];
+	layers.forEach(function(layer){
+		let fabricNames = layer.fabrics;
+		if (fabricNames.length > 1) {
+			selectedLayers.push(layer)
+		};
+		if (fabricNames.length == 1) {
+			saveOneFabricLayer (layer);
+		};
+	})
+	createTemplate ('layers-template', formPageName, {'layers': selectedLayers});
+	selectedLayers.forEach(function(layer){
+		let fabrics = [];
+		layer.fabrics.forEach(function(fabricName){
+			let fabric = {};
+			fabric.name = fabricName;
+			fabric['layer-id'] = layer.id;
+			fabrics.push(fabric)
+		})
+		createTemplate ('fabrics-inputs-template', layer.id, {'fabrics': fabrics});
+	})
+}
+
+function saveOneFabricLayer (layer) {
+	let layerData = {};
+	let layerId = layer.id;
+	layerData['layer-id'] = layerId;
+	layerData.fabrics = [];
+	let fabric = {};
+	fabric.name = layer.fabrics[0];
+	fabric.percentage = 100;
+	layerData.fabrics.push(fabric);
+	state.newItem.fabrics.push(layerData);
 }
 
 function createDimensionsPage () {
@@ -466,6 +571,10 @@ let formPages = [
 	{
 		'name': 'Materiały',
 		'id': 'fabrics',
+	},
+	{
+		'name': 'Skład procentowy',
+		'id': 'percentage-composition',
 	},
 	{
 		'name': 'Rozmiary',

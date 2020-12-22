@@ -15,6 +15,7 @@ export function createProductScreen (key, view) {
 	})
 	.then (function (diaperData) {
 		let diaper = {'diaper': diaperData}
+		console.log('diaper', diaper)
 		createPreviewScreen (diaper, view);
 	})
 }
@@ -57,56 +58,97 @@ function selectReviews (indexNumber) {
 
 function createSizeButtons (diaper) {
 	createTemplate ('size-buttons-template', 'size-buttons-container', diaper);
-	let buttons = document.getElementsByClassName('size-button');
+	let buttons = $('.size-button');
 	Array.from(buttons).forEach(function(button){
 		button.onclick = function (event) {
+			Array.from(buttons).forEach(function(btn){
+				console.log('btn', btn)
+				btn.button('toggle')
+			});
+			event.target.button('toggle')
 			let sizeData = {};
 			let sizeName = event.target.getAttribute('size');
+			console.log('event.target', event.target)
+			console.log ('sizeName', sizeName)
 			let sizes = diaper.diaper.sizes;
 			for (let i=0; i<sizes.length; i++) {
 				if (sizeName == sizes[i].id) {
 					sizeData = {'size': sizes[i]};
 				}
 			};
+			console.log('sizeData', sizeData)
 			document.getElementById('size-description').innerHTML = '';
 			createTemplate ('size-range-template', 'size-description', sizeData);
 		};
 	});
 }
 
+function createFabrics (diaper) {
+	let layers = diaper.diaper.fabrics;
+	console.log ('layers', layers)
+	let parameters = [];
+	layers.forEach(function(layer){
+		let parameter = {};
+		parameter.title = getParameterTitle(layer['layer-id']);
+		parameter.value = [];
+		if (layer.fabrics == undefined) {
+			return
+		}
+		layer.fabrics.forEach(function(fabric){
+			let fabricValue = fabric.name + ' ' + fabric.percentage + '%';
+			parameter.value.push(fabricValue);
+		})
+		parameters.push(parameter);
+	});
+	createTemplate ('attribute-template', 'fabrics-parameters-group', {'parameters': parameters})
+}
+
 function createDimensions (diaper) {
 	createTemplate('dimensions-template', 'attributes-right', diaper);
 	let buttons = document.getElementsByClassName('dimensions-button');
+	createFirstButtonDimensions (diaper, buttons);
+	
 	Array.from(buttons).forEach(function(button){
-		console.log('button', button)
-		let sizeName = button.getAttribute('size');
-		let size = diaper.diaper.sizes.find(function(size){
-			return sizeName == size.id
-		});
-		let dimensionsData = [];
-		Array.from(size.dimensions).forEach(function(sizeDimension){
-			let dimensionData = getDimensionTitle (sizeDimension.id, diaper);
-			dimensionData.value = sizeDimension.value;
-			dimensionsData.push(dimensionData);
-			console.log('dimensionData', dimensionData)
-		});
-		console.log('dimensionsData', dimensionsData)
-		createTemplate ('dimensions-values-template', 'dimensions-wrapper', {'dimensions': dimensionsData});
-
-		// button.onclick = function (event) {
-		// 	event.stopPropagation ();
-		// 	console.log('zenek')
-		// 	let sizeName = event.target.getAttribute('size');
-		// 	let size = diaper.diaper.sizes.find(function(size){
-		// 		return sizeName == size.id
-		// 	});
-		// 	Array.from(size.dimensions).forEach(function(sizeDimension){
-		// 		dimensionData = getDimensionTitle (sizeDimension.id, diaper);
-		// 		console.log('dimensionData', dimensionData)
-		// 	});
-		// 	createTemplate ('dimensions-values-template', 'dimensions-wrapper', dimensionsData);
-		// };
+		button.onclick = function (event) {
+			Array.from(buttons).forEach(function(btn){
+				btn.classList.add('btn-outline-secondary');
+				btn.classList.remove('btn-secondary');
+			});
+			button.classList.add('btn-secondary');
+			let sizeName = event.target.getAttribute('size');
+			let size = diaper.diaper.sizes.find(function(size){
+				return sizeName == size.id
+			});
+			let dimensionsData = [];
+			Array.from(size.dimensions).forEach(function(sizeDimension){
+				let dimensionData = getDimensionTitle (sizeDimension.id, diaper);
+				dimensionData.value = sizeDimension.value;
+				dimensionsData.push(dimensionData);
+			});
+			document.getElementById('dimensions-wrapper').innerHTML = '';
+			createTemplate ('dimensions-values-template', 'dimensions-wrapper', {'dimensions': dimensionsData});
+			addMarginToParameters ();
+		};
 	});
+}
+
+function createFirstButtonDimensions (diaper, buttons) {
+	let firstButton = buttons[0];
+	firstButton.classList.remove('btn-outline-secondary');
+	firstButton.classList.add('btn-secondary');
+	let sizeName = firstButton.getAttribute('size');
+	let size = diaper.diaper.sizes.find(function(size){
+		return sizeName == size.id
+	});
+	let dimensionsData = [];
+	Array.from(size.dimensions).forEach(function(sizeDimension){
+		let dimensionData = getDimensionTitle (sizeDimension.id, diaper);
+		dimensionData.value = sizeDimension.value;
+		dimensionsData.push(dimensionData);
+	});
+	document.getElementById('dimensions-wrapper').innerHTML = '';
+	createTemplate ('dimensions-values-template', 'dimensions-wrapper', {'dimensions': dimensionsData});
+
 }
 
 function getDimensionTitle (dimensionId, diaper) {
@@ -117,7 +159,8 @@ function getDimensionTitle (dimensionId, diaper) {
 			const textGroups = Object.values(attributeTitle['text-groups']);
 			Array.from(textGroups).forEach(function(group){
 				if (group.id == diaper.diaper['category-data'].attributes[dimensionId]['title-group-id']) {
-					dimensionData['title'] = group.text
+					dimensionData['title'] = group.text;
+					dimensionData['letter'] = group.letter;
 					dimensionData['id'] = dimensionId;
 					return
 				}
@@ -132,25 +175,26 @@ function fillDiaperPreview (diaper) {
 	createTemplate ('parameters-wrapper-template', 'parameters', diaper);
 	let parametersGroups = state.attributesOrder;
 	parametersGroups.forEach(function(parametersGroup){
-		console.log('parametersGroup', parametersGroup)
 		createTemplate ('parameters-group-wrapper-template', 'attributes-left', {'parameters-group': parametersGroup});
 		let parameters = getParameters (diaper, parametersGroup);
 		let parametersBox = parametersGroup.id + '-parameters-group';
 		createTemplate ('attribute-template', parametersBox, {'parameters': parameters});
 	})
 	
-	createDimensions (diaper)
+	createDimensions (diaper);
+	createFabrics (diaper);
 	let sizes = diaper.diaper.sizes
 }
-
-
 
 function getParameters (diaper, parametersGroup) {
 	let parameters = [];
 	let diaperAttributes = Object.keys(diaper.diaper.attributes);
 	let categoryAttributes = diaper.diaper['category-data'].attributes;
 	Array.from(parametersGroup.attributes).forEach(function(attribute){
+
 		let diaperAttribute = diaperAttributes.find(function(diaperAtt){
+			// console.log ('attribute.id', attribute.id)
+			// console.log ('diaperAtt', diaperAtt)
 			return attribute.id == diaperAtt
 		});
 		if (diaperAttribute !== undefined) {
@@ -161,12 +205,11 @@ function getParameters (diaper, parametersGroup) {
 		let parameterId = parameter.id;
 		return (diaper.diaper['category-data'].attributes[parameterId].answer !== true)
 	})
+
 	let attributesToPrint = [];
 	filteredParameters.forEach(function(parameter){
 		let parameterId = parameter.id;
 		let attributeToPrint = {};
-
-		attributeToPrint.title = parameterId;
 
 		let attributeValue = diaper.diaper.attributes[parameterId];
 		if (attributeValue == true) {
@@ -211,7 +254,6 @@ function getParameterTitle (parameterId) {
 }
 
 export function createPreviewScreen (diaper, view) {
-	console.log('diaper', diaper)
 	let images = diaper.diaper.images;
 	let profileImage = images.find(function(image){
 		return image['pattern-nr'] == 1 && image['image-nr'] == 1
@@ -229,21 +271,26 @@ export function createPreviewScreen (diaper, view) {
 	}
 	fillDiaperPreview (diaper);
 	createProfileImage (diaper, 1, 1);
-	createPatternsProfileImages (diaper)
 	createImagesOnLeftSide (diaper, 1)
+	createPatternsProfileImages (diaper)
 	setClassesToParameters ();
 	enableMainImageChange (diaper);
 	enablePatternChange (diaper);
+	addMarginToParameters ();
 }
 
 function removeBorderFromImages (images) {
 	Array.from(images).forEach(function(img){
-		img.classList.remove('border-primary');
+		let parent =  img.parentElement;
+		parent.classList.remove('border-primary');
+		parent.classList.remove('border');
 	});
 }
 
 function makeBorderOnImage (image) {
-	image.classList.add('border-primary');
+	let parent =  image.parentElement;
+	parent.classList.add('border');
+	parent.classList.add('border-primary');
 }
 
 function enableMainImageChange (diaper) {
@@ -275,6 +322,8 @@ function enablePatternChange (diaper) {
 			enableMainImageChange (diaper);
 			let profileImage = document.getElementById('left-profile-image');
 			makeBorderOnImage (profileImage);
+			document.getElementById('pattern-name').innerHTML = '';
+			createTemplate ('pattern-name-template', 'pattern-name', {'name': diaper.diaper.patterns[patternNr].name})
 		}
 	})
 }
@@ -304,15 +353,27 @@ function createProfileImage (diaper, patternNr, imageNr) {
 
 function createPatternsProfileImages (diaper) {
 	let patterns = diaper.diaper.images;
+	let height = document.getElementsByClassName('left-image')[0].parentElement.offsetHeight;
 	const profileImages = patterns.filter(function(pattern){
 		return (pattern['image-nr'] == 1)
-	}).forEach(function(profileImage){
-		if (profileImage['pattern-nr'] == 1) {
-			profileImage.profile = true;
-			profileImage.id = 'first-profile-image'
-		}
-		createTemplate ('pattern-profile-image-template', 'patterns-images-box', {'image': profileImage})
 	})
+	for (let i=0; i<profileImages.length; i++) {
+		if (i%3 == 0 && i !== 0) {
+			createTemplate ('devider-template', 'patterns-images-box');
+		}
+		if (profileImages[i]['pattern-nr'] == 1) {
+			profileImages[i].profile = true;
+			profileImages[i].id = 'first-profile-image'
+		}
+		createTemplate ('pattern-profile-image-template', 'patterns-images-box', {'image': profileImages[i]});
+	}
+
+	// let printedImages = $('.pattern-profile-image');
+	// Array.from(printedImages).forEach(function(image){
+	// 	console.log('image.parentElement', image.parentElement)
+	// 	image.parentElement.style.height = height + 'px';
+	// 	image.parentElement.style.width = height + 'px';
+	// })
 	let firstImage = document.getElementById('first-profile-image');
 	makeBorderOnImage (firstImage);
 }
@@ -333,25 +394,14 @@ function loadItemData (key) {
 		let dbRef = firebase.database().ref('mock-diapers/' + key + '/');
 		dbRef.on('value', function(snap){
 			diaper = snap.val();
-			console.log('diaper', diaper)
 			state.downloadedItem.attributes = diaper.attributes;
 			state.downloadedItem.categoryData = diaper['category-data'];
 			state.downloadedItem.sizes = diaper.sizes;
 			state.downloadedItem.images = diaper.images;
-			console.log('state.downloadedItem', state.downloadedItem)
 			resolve (diaper)
 		})
 	});
 	return promise
-
-	// let diaper;
-	// let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
-	// dbRef.on('value', function(snap){
-	// 	diaper = snap.val();
-	// 	console.log ('diaper', diaper)
-	// })
-	// console.log ('diaper', diaper)
-	// return diaper
 }
 
 function fillProductMainInfo () {

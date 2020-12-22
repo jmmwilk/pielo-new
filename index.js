@@ -30,28 +30,13 @@ $(document).ready(function(){
 	//     });
  //  	});
 
-	// let dbRef = firebase.database().ref('form-questions-text/');
-	// dbRef.once('value',   function(snapshot) {
-	//     snapshot.forEach(function(childSnapshot) {
-	//       var childData = childSnapshot.val();
-	//       let name = childData.options[0].name;
-	//       console.log('name', name)
-	//       var childKey = childSnapshot.key
-	//       console.log('childKey', childKey)
-	//       let newDbRef = firebase.database().ref('form-questions-text/' + childKey + '/options/0/id')
-	//       console.log('newDbRef', newDbRef)
-	//       dbRef.set(name);
-
-	//     });
- //  	});
-
 // 	let dbRef = firebase.database().ref('form-categories/');
 // 	let newDbRef = dbRef.push();
 // 	newDbRef.set({
-// 	  'id': 'description',
-// 	  'input-type': 'input-text',
+// 	  'id': 'production-country-poland',
+// 	  'input-type': 'checkbox',
 // //	  'question-type': 'dependent',
-// 	  'form-page-name': 'description',
+// 	  'form-page-name': 'others',
 // //	  'dependent-questions': [{'id': 'waterproof-layer-fabrics'}],
 // //		'parent-id': ''
 // 	});
@@ -61,40 +46,43 @@ $(document).ready(function(){
 	// let newDbRef = dbRef.push();
 	// let key = newDbRef.key
 	// newDbRef.set({
-	//   'attribute-id': 'description',
+	//   'attribute-id': 'applications',
 	// });
 	// let groupRef = firebase.database().ref('form-questions/' + key +'/text-groups')
 	// let newGroupRef = groupRef.push();
 	// newGroupRef.set({
-	// 	'id': 'description-main',
-	//  	'text': 'Opis',
+	// 	'id': 'applications-main',
+	//  	'text': 'Aplikacje',
 	// })
 
 	// let dbRef = firebase.database().ref('attributes-titles/');
 	// let newDbRef = dbRef.push();
 	// let key = newDbRef.key
 	// newDbRef.set({
-	//   'attribute-id': 'lanolised',
+	//   'attribute-id': 'applications',
 	// });
 	// let groupRef = firebase.database().ref('attributes-titles/' + key +'/text-groups')
 	// let newGroupRef = groupRef.push();
 	// newGroupRef.set({
-	// 	'id': 'lanolised-main',
-	//  	'text': 'Pieluszka zalanolinowana przez producenta',
+	// 	'id': 'applications-main',
+	//  	'text': 'Aplikacje',
 	// })
 
 	
 // 	let dbbRef = firebase.database().ref('form-answers/');
 // 	let newDbbRef = dbbRef.push();
 // 	newDbbRef.set({
-// 	  'id': 'time',
+// 	  'id': 'applications',
 // //	  'for-multiple-questions': true,
 // 	  'options': [
 // 	  		{	
-// 	  		'name': 'Dzienna',
+// 	  		'name': 'Aplikacja wełniana',
 // 	  		},
 // 	  		{	
-// 	  		'name': 'Nocna',
+// 	  		'name': 'Aplikacja z chusty',
+// 	  		},
+// 	  		{	
+// 	  		'name': 'Haft',
 // 	  		},
 // 	  	]
 // 	});

@@ -6,6 +6,7 @@ export let state = {
 export let newItem = {
 	answers: {},
 	images: [],
+	fabrics: [],
 }
 
 export let attributesTitles = [];
@@ -53,6 +54,7 @@ export let attributesOrder = [
 			{'id': 'back-elastic-types'},
 			{'id': 'front-elastic'},
 			{'id': 'front-elastic-types'},
+			{'id': 'applications'},
 		]
 	},
 	// fabrics: dodałam do database tylko te dotyczące otulacza wełnianego
@@ -75,10 +77,10 @@ export let attributesOrder = [
 		'id': 'others',
 		'name': 'Inne',
 		'attributes': [
+			{'id': 'lanolised'},
 			{'id': 'time'},
-			{'id': 'gots-certificate'},
-			{'id': 'cpsia-certificate'},
-
+			{'id': 'certificates'},
+			{'id': 'production-country-poland'},
 		]
 	},
 ]
