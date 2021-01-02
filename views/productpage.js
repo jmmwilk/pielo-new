@@ -1,8 +1,9 @@
 import * as diaperslist from '../mocks/diapers.js';
 import * as productslist from '../views/productslist.js';
 import * as reviewslist from '../mocks/reviews.js';
-import * as form from '../views/form.js';
+import * as form from '../views/new-form.js';
 import * as state from '../state.js';
+import * as index from '/index.js';
 
 let database = firebase.database();
 
@@ -15,8 +16,7 @@ export function createProductScreen (key, view) {
 	})
 	.then (function (diaperData) {
 		let diaper = {'diaper': diaperData}
-		console.log('diaper', diaper)
-		createPreviewScreen (diaper, view);
+		createPreviewScreen (diaper, key, view);
 	})
 }
 
@@ -57,26 +57,24 @@ function selectReviews (indexNumber) {
 }
 
 function createSizeButtons (diaper) {
-	createTemplate ('size-buttons-template', 'size-buttons-container', diaper);
-	let buttons = $('.size-button');
+	createTemplate ('size-buttons-template', 'size-buttons-container', {'diaper': diaper.diaper, 'container': 'main'});
+	let buttons = $('.main-size-button');
 	Array.from(buttons).forEach(function(button){
 		button.onclick = function (event) {
 			Array.from(buttons).forEach(function(btn){
-				console.log('btn', btn)
-				btn.button('toggle')
+				let label = btn.parentElement;
+				$(label).button('toggle')
 			});
-			event.target.button('toggle')
+			let label = button.parentElement;
+			$(label).button('toggle')
 			let sizeData = {};
 			let sizeName = event.target.getAttribute('size');
-			console.log('event.target', event.target)
-			console.log ('sizeName', sizeName)
 			let sizes = diaper.diaper.sizes;
 			for (let i=0; i<sizes.length; i++) {
 				if (sizeName == sizes[i].id) {
 					sizeData = {'size': sizes[i]};
 				}
 			};
-			console.log('sizeData', sizeData)
 			document.getElementById('size-description').innerHTML = '';
 			createTemplate ('size-range-template', 'size-description', sizeData);
 		};
@@ -84,37 +82,42 @@ function createSizeButtons (diaper) {
 }
 
 function createFabrics (diaper) {
-	let layers = diaper.diaper.fabrics;
-	console.log ('layers', layers)
+	let layers = diaper.diaper.layers;
+	if (layers == undefined) {
+		return
+	}
 	let parameters = [];
 	layers.forEach(function(layer){
 		let parameter = {};
-		parameter.title = getParameterTitle(layer['layer-id']);
+		parameter.title = getParameterTitle(diaper, layer['id']);
 		parameter.value = [];
 		if (layer.fabrics == undefined) {
 			return
 		}
+		parameter.values = [];
 		layer.fabrics.forEach(function(fabric){
 			let fabricValue = fabric.name + ' ' + fabric.percentage + '%';
-			parameter.value.push(fabricValue);
+			parameter.values.push({'value': fabricValue});
 		})
 		parameters.push(parameter);
 	});
-	createTemplate ('attribute-template', 'fabrics-parameters-group', {'parameters': parameters})
+	createTemplate ('attribute-template', 'fabrics-parameters-group', {'parameters': parameters});
 }
 
 function createDimensions (diaper) {
-	createTemplate('dimensions-template', 'attributes-right', diaper);
-	let buttons = document.getElementsByClassName('dimensions-button');
+	createTemplate ('dimensions-template', 'attributes-right', diaper);
+	createTemplate ('size-buttons-template', 'size-buttons-dimensions', {'diaper': diaper.diaper, 'container': 'dimensions'});
+
+	let buttons = $('.dimensions-size-button');
 	createFirstButtonDimensions (diaper, buttons);
-	
 	Array.from(buttons).forEach(function(button){
 		button.onclick = function (event) {
 			Array.from(buttons).forEach(function(btn){
-				btn.classList.add('btn-outline-secondary');
-				btn.classList.remove('btn-secondary');
+				let label = btn.parentElement;
+				$(label).button('toggle')
 			});
-			button.classList.add('btn-secondary');
+			let label = button.parentElement;
+			$(label).button('toggle')
 			let sizeName = event.target.getAttribute('size');
 			let size = diaper.diaper.sizes.find(function(size){
 				return sizeName == size.id
@@ -153,7 +156,6 @@ function createFirstButtonDimensions (diaper, buttons) {
 
 function getDimensionTitle (dimensionId, diaper) {
 	let dimensionData = {};
-//	let diaper = state.newItem.categoryData.attributes;
 	Array.from(state.attributesTitles).forEach(function(attributeTitle){
 		if (attributeTitle['attribute-id'] == dimensionId) {
 			const textGroups = Object.values(attributeTitle['text-groups']);
@@ -178,6 +180,7 @@ function fillDiaperPreview (diaper) {
 		createTemplate ('parameters-group-wrapper-template', 'attributes-left', {'parameters-group': parametersGroup});
 		let parameters = getParameters (diaper, parametersGroup);
 		let parametersBox = parametersGroup.id + '-parameters-group';
+
 		createTemplate ('attribute-template', parametersBox, {'parameters': parameters});
 	})
 	
@@ -193,8 +196,6 @@ function getParameters (diaper, parametersGroup) {
 	Array.from(parametersGroup.attributes).forEach(function(attribute){
 
 		let diaperAttribute = diaperAttributes.find(function(diaperAtt){
-			// console.log ('attribute.id', attribute.id)
-			// console.log ('diaperAtt', diaperAtt)
 			return attribute.id == diaperAtt
 		});
 		if (diaperAttribute !== undefined) {
@@ -221,39 +222,45 @@ function getParameters (diaper, parametersGroup) {
 			attributeToPrint.src = "/images/no.png";
 		}
 		if (attributeValue !== false && attributeValue !== true) {
-			attributeToPrint.value = attributeValue;
-		}
-		// let titleGroups = Array.from(state.attributesTitles).find(function(attributeTitle){
-		// 	return attributeTitle['attribute-id'] == parameterId
-		// })
-		// console.log('titleGroups', titleGroups)
-//		Object
-		attributeToPrint.title = getParameterTitle (parameterId);
+			if (Array.isArray(attributeValue) == true && attributeValue.length > 1) {
+				attributeToPrint.values = [];
+				Array.from(attributeValue).forEach(function(attValue){
+					attributeToPrint.values.push({'value': attValue})
+				});
+			} else {
+				attributeToPrint.value = attributeValue;
+			};
+		};
+		attributeToPrint.title = getParameterTitle (diaper, parameterId);
 		attributesToPrint.push(attributeToPrint);
 	})
 	return attributesToPrint
 }
 
-function getParameterTitle (parameterId) {
-	let diaper = state.newItem.categoryData.attributes;
+
+
+function getParameterTitle (diaper, parameterId) {
+	let diaperAttributes = diaper.diaper['category-data'].attributes;
 	let titles = state.attributesTitles;
 	let titleText;
 	Array.from(titles).forEach(function(title){
 		if (title['attribute-id'] == parameterId) {
 			const textGroups = Object.values(title['text-groups']);
 			Array.from(textGroups).forEach(function(group){
-				if (group.id == diaper[parameterId]['title-group-id']) {
+				if (group.id == diaperAttributes[parameterId]['title-group-id']) {
 					titleText = group.text;
-//					questionData['question-id'] = attributeId;
 					return
-				}
-			})
-		}
-	})
+				};
+			});
+		};
+	});
 	return titleText
 }
 
-export function createPreviewScreen (diaper, view) {
+export function createPreviewScreen (diaper, key, view) {
+	console.log('diaper', diaper)
+	let formDiaper = diaper;
+	console.log ('formDiaper', formDiaper)
 	let images = diaper.diaper.images;
 	let profileImage = images.find(function(image){
 		return image['pattern-nr'] == 1 && image['image-nr'] == 1
@@ -268,7 +275,13 @@ export function createPreviewScreen (diaper, view) {
 		createTemplate ('add-review-template', 'add-review-form-wrapper', diaper);
 		createTemplate ('detail-reviews-summary-template', 'detail-summary-wrapper');
 		createTemplate ('add-review-child-template', 'ar-child-wrapper');
-	}
+		createTemplate ('edit-item-button-template', 'edit-diaper-wrapper');
+		$('#edit-item-button').click( function(){
+			index.clearPage ();
+			console.log('formDiaper', formDiaper)
+			form.goToForm ('editItem', formDiaper, key)
+		});
+	};
 	fillDiaperPreview (diaper);
 	createProfileImage (diaper, 1, 1);
 	createImagesOnLeftSide (diaper, 1)
@@ -276,7 +289,7 @@ export function createPreviewScreen (diaper, view) {
 	setClassesToParameters ();
 	enableMainImageChange (diaper);
 	enablePatternChange (diaper);
-	addMarginToParameters ();
+	createTemplate ('pattern-name-template', 'pattern-name', {'name': diaper.diaper.patterns[0].name});
 }
 
 function removeBorderFromImages (images) {
@@ -323,7 +336,10 @@ function enablePatternChange (diaper) {
 			let profileImage = document.getElementById('left-profile-image');
 			makeBorderOnImage (profileImage);
 			document.getElementById('pattern-name').innerHTML = '';
-			createTemplate ('pattern-name-template', 'pattern-name', {'name': diaper.diaper.patterns[patternNr].name})
+			let pattern = diaper.diaper.patterns.find(function(ptrn){
+				return ptrn['pattern-nr'] == patternNr
+			});
+			createTemplate ('pattern-name-template', 'pattern-name', {'name': pattern.name});
 		}
 	})
 }
@@ -367,13 +383,6 @@ function createPatternsProfileImages (diaper) {
 		}
 		createTemplate ('pattern-profile-image-template', 'patterns-images-box', {'image': profileImages[i]});
 	}
-
-	// let printedImages = $('.pattern-profile-image');
-	// Array.from(printedImages).forEach(function(image){
-	// 	console.log('image.parentElement', image.parentElement)
-	// 	image.parentElement.style.height = height + 'px';
-	// 	image.parentElement.style.width = height + 'px';
-	// })
 	let firstImage = document.getElementById('first-profile-image');
 	makeBorderOnImage (firstImage);
 }
@@ -388,7 +397,6 @@ function createPatternsProfileImages (diaper) {
 // }
 
 function loadItemData (key) {
-
 	const promise = new Promise ((resolve, reject) => {
 		let diaper;
 		let dbRef = firebase.database().ref('mock-diapers/' + key + '/');
@@ -407,7 +415,7 @@ function loadItemData (key) {
 function fillProductMainInfo () {
 	let itemPreview = $('#item-preview').html();
 	Handlebars.registerHelper('printnewinfo', function(){
-		return this['category-data'].name
+		return this['item-name']
 	})
 }
 
@@ -466,8 +474,3 @@ function createTemplate (templateId, parentId, data) {
 	let compiledTemplate = Handlebars.compile(template);
 	$('#' + parentId).append(compiledTemplate(data));
 }
-
-
-// aria-expanded="false" aria-controls="ar-child-wrapper" data-toggle="collapse" href="#ar-child-wrapper"
-//streched-link
-//button

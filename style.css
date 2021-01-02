@@ -139,6 +139,10 @@ input:error {
 	font-weight: 600;
 }
 
+.white-space-preline {
+	white-space: pre-line;
+}
+
 /*
 input:is-invalid {
   ~ .invalid-feedback {

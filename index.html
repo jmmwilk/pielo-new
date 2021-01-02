@@ -44,7 +44,7 @@
       <div id="home">
         <img id="home-icon" src="/images/home.png"/>
       </div>
-      <button id="add-diaper">
+      <button id="add-diaper" class="btn-primary btn">
         Dodaj pieluchę
       </button>
       <div id="user-box" class="row">
@@ -167,107 +167,6 @@
       <button id="sign-up" type="button" class="btn btn-primary">Zarejestruj</button>
     </div>
   </script>
-<!--   <script id="product-page-template" type="text/x-handlebars-template">
-    <div id="main" class="col-md-10 order-1 mx-auto">
-      <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">
-        <div class="main-info-box row my-2">
-          <div class="image-box col-md-6">
-            <img class="product-image mx-auto img-fluid img-thumbnail" src="/images/{{photo}}.jpg"/>
-          </div>
-          <div class="title-box col-md-6">
-            <h5 class="text-primary"> {{printinfo this}} </h5>
-            <div>
-              <p>
-                od <a href="#application" class="text-warning">{{brand}}</a>
-              </p>
-            </div>
-            <div class="stars-box d-flex flex-row text-muted">
-              <p class="mr-1">5,0</p>
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <img src="/images/star.png"/ class="star">
-              <p class="ml-1">2 recenzje</p>
-            </div>
-            <div class="text-muted">
-              <p class="mb-0">Rozmiary</p>
-              <div id="size-buttons-container" class="d-flex flex-row mt-1">
-                <div id="size-description" class="ml-2">
-                </div>
-              </div>
-            </div>
-            <div class="text-muted my-2">
-              <p class="mb-0">Kolory / Wzory</p>
-              <div class="flex-row justify-content-start">
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
-                <img class="small-image mx-auto img-fluid img-thumbnail m-1" src="/images/{{photo}}.jpg"/>
-              </div>
-            </div>
-            <button type="button" class="btn btn-primary">Napisz opinię</button>
-          </div>
-        </div>
-        <div class="info-box card my-2 text-secondary">
-          <div id="info-title" class="card-body">
-            <h5>
-              <a class="card-title stretched-link" aria-expanded="false" aria-controls="collapseExample" data-toggle="collapse" href="#collapseExample">Informacje od producenta</a>
-            </h5>
-          </div>
-          <div class="collapse" id="collapseExample">
-            <div id="parameters-box row">
-              <div class="col-6">
-                <div id="main-fabric-pars" class="row">
-                  <div class="col-6">
-                    Materiał dominujący:
-                  </div>
-                  <div class="col-6">
-                    Bawełna
-                  </div>
-                </div>
-                <div id="pars-composition" class="row">
-                  <div class="col-6">
-                    Skład surowcowy:
-                  </div>
-                  <div class="col-6">
-                    Bawełna: 90%, bambus: 30%
-                  </div>
-                </div>
-              </div>
-              <div class="col-6">
-                <div id="pars-fabric" class="row">
-                  <div class="col-6">
-                    Materiał dominujący:
-                  </div>
-                  <div class="col-6">
-                    Bawełna
-                  </div>
-                </div>
-                <div id="pars-composition" class="row">
-                  <div class="col-6">
-                    Skład surowcowy:
-                  </div>
-                  <div class="col-6">
-                    Bawełna: 90%, bambus: 30%
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="reviews-box card my-2 text-secondary">
-          <div id="reviews-title" class="card-body">
-            <h5 class="card-title">Opinie</h5>
-          </div>
-          <div id="reviews-container">
-          </div>
-        </div>
-      </div>
-    </div>
-  </script> -->
   <script id="review-template" type="text/x-handlebars-template">
     <div id="box" class="">
       {{#each reviews}}
@@ -318,31 +217,11 @@
       </ul>
     </li>
   </script>
-<!--   <script id="pielucha-template" type="text/x-handlebars-template">
-    <div id="main" class="col-md-10 order-1 mx-auto">
-      <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
-        {{#each diapers}}
-        <li class="card text-center col pielucha-template" data-indexnumber="{{indexnum}}">
-          <div class="card-body">
-            <div class="embed-responsive embed-responsive-1by1">
-              <img src="/images/{{photo}}.jpg" class="img embed-responsive-item rounded pielucha-image"/>
-            </div>
-            <div class="flex-row d-flex justify-content-between">
-              <a href="#application" class="card-link">{{brand}}</a>
-              <p>{{size}}</p>
-            </div>
-            <h5> {{printdiaper name}} </h5>
-          </div>
-        </li>
-        {{/each}}
-      </div>
-    </div>
-  </script> -->
-    <script id="favourites-page" type="text/x-handlebars-template">
+  <script id="favourites-page" type="text/x-handlebars-template">
     <div id="main" class="col-md-10 order-1 mx-auto">
       <div class="col">
         <div id="favourites-title">
-          <a>Moje Ulubione</a>
+          Moje Ulubione
         </div>
         <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
         </div>
@@ -369,16 +248,16 @@
             </div>
           </div>
           <div class="embed-responsive embed-responsive-1by1">
-            <img src={{"url"}} class="img embed-responsive-item rounded pielucha-image"/>
+            <img src={{printimage}} class="img embed-responsive-item rounded pielucha-image"/>
           </div>
           <div class="row justify-content-between">
             <div class="col-auto">
-              <a href="#application" class="card-link text-warning">{{brand.name}}</a>
+              <a href="#application" class="card-link text-warning">{{producer-name}}</a>
             </div>
             <div class="col-auto">
               <div class="row m-0 text-muted">
                 {{#each sizes}}
-                <a>{{printsizes}}</a>
+                {{printsizes}}
                 {{/each}}
               </div>
             </div>
@@ -392,7 +271,6 @@
     <img class="small-image mx-auto img-fluid img-thumbnail m-1"/>
   </script>
   <script id="add-image-template" type="text/x-handlebars-template">
-    <a>blabla</a>
     <div class="form-group col-10 bg-white m-3 p-2">
       <label for="input-image-{{image-number}}">Zdjęcie</label>
       <input type="file" class="form-control-file multiple" id="input-image-{{image-number}}">
@@ -421,7 +299,7 @@
   <script id="select-input-template" type="text/x-handlebars-template">
     <div id="{{question-id}}-box" class="form-group flex-column col-12">
       <label for="{{question-id}}">{{text}}</label>
-      <select id="{{question-id}}" class="col-12 form-input select" selectpicker multiple data-max-options="2">
+      <select id="{{question-id}}" class="col-12 form-input select {{fabrics}}" selectpicker multiple>
       </select>
     </div>
   </script>
@@ -436,29 +314,27 @@
   </script>
   <script id="form-template" type="text/x-handlebars-template">
     <div  class="d-flex flex-column">
-      <nav id="navbar" class="navbar navbar-expand-lg navbar-white bg-white">
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul id="nav-items-wrapper" class="row navbar-nav mr-auto">
-          </ul>
-        </div>
-      </nav>
+      <div class="progress my-3">
+        <div id="progress-bar" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
       <div id="form-wrapper">
       </div>
-      <div class="m-3 align-self-end">
+      <div class="mb-3 d-flex flex-row justify-content-between">
+        <button id="back-button" type="button" class="btn btn-primary">Cofnij</button>
         <button id="next-button" type="button" class="btn btn-primary">Dalej</button>
       </div>
     </div>
   </script>
-  <script id="nav-item-template" type="text/x-handlebars-template">
-    {{#each form-pages}}
-      <li id='{{id}}-nav' class="nav-item col">
-        <a class="nav-link" href="#">{{name}}<span class="sr-only">(current)</span></a>
-      </li>
-    {{/each}}
-  </script>
   <script id="form-page-template" type="text/x-handlebars-template">
-    <form id={{formPageName}} class="d-flex flex-column">
-    </form>
+    {{#with formPage}}
+      <form id="{{id}}" class="d-flex flex-column mb-3">
+      </form>
+    {{/with}}
+  </script>
+  <script id="form-page-title-template" type="text/x-handlebars-template">
+      <div class="align-self-center text-primary font-weight-bold mb-3">
+        {{title}}
+      </div>
   </script>
   <script id="diaper-category-template" type="text/x-handlebars-template">
     <div  class="mt-4">
@@ -471,16 +347,16 @@
     </div>
   </script>
   <script id="dimensions-page-template" type="text/x-handlebars-template">
-    <div id='dimensions-table' class="column">
-      <div class="row">
-        <div id="dimensions-categories" class="col-5">
+    <div id='dimensions-table' class="mb-3">
+      <div class="row my-2">
+        <div id="dimensions-categories" class="col-5 font-weight-bold">
           Rozmiar
         </div>
         <div class="col-7">
           <div class="row">
             {{#each sizes}}
             <div id="{{id}}-dimensions" class="col">
-                <div id="{{id}}-title">
+                <div id="{{id}}-title" class="font-weight-bold text-center">
                   {{shortcut}}
                 </div>
               </div>
@@ -490,7 +366,7 @@
       </div>
       <div class="row">
         <div class="col-5">
-          <div id="dimensions-titles" class="column">
+          <div id="dimensions-titles" class="">
           </div>
         </div>
         <div class="col-7">
@@ -501,14 +377,14 @@
     </div>
   </script>
   <script id="dimension-title-template" type="text/x-handlebars-template">
-    <div class="row dimension-title mb-2">
+    <div class="dimension-title mb-2">
       {{dimension-text}}
     </div>
   </script>
   <script id="size-inputs-column-template" type="text/x-handlebars-template">
     {{#each sizes}}
     <div class="col">
-      <div id="{{shortcut}}-inputs-box" class="d-flex flex-column">
+      <div id="{{id}}-inputs-box" class="d-flex flex-column">
       </div>
     </div>
     {{/each}}
@@ -517,7 +393,7 @@
     {{#each layers}}
     <div id="{{id}}" class="mb-4 layer">
       <div class="text-info mb-3">
-        <a>{{title}}</a>
+        {{title}}
       </div>
     </div>
     {{/each}}
@@ -538,7 +414,7 @@
   <script id="size-input-template" type="text/x-handlebars-template">
     {{#each dimensions}}
     <div class="input-group mb-2">
-      <input type="text" aria-describedby="{{dimension}}-{{../size.id}}-addon" class="form-control dimension-input {{id}} {{../size.id}}">
+      <input type="text" aria-describedby="{{dimension}}-{{../size.id}}-addon" class="form-control dimension-input {{id}} {{../size.id}}" size="{{../size.id}}" dimension-id="{{id}}" >
       <div class="input-group-append">
         <span class="input-group-text" id="{{dimension}}-{{../size.id}}-addon">cm</span>
       </div>
@@ -546,34 +422,40 @@
     {{/each}}
   </script>
   <script id="weight-input-template" type="text/x-handlebars-template">
-    {{#each sizes}}
-    <div class="row">
-      <div class="col-2">
-        <a>{{shortcut}}:</a>
+    <div id="weight-inputs">
+      <div id="weight-inputs-title" class="d-flex flex-column">
       </div>
-      <div class="input-group mb-2 col-5">
-        <label for="{{id}}-from-weight-input" class="px-2">od</label>
-        <input id="{{id}}-from-weight-input" type="text" aria-describedby="{{id}}-from-addon" class="form-control weight-input-from" size="{{id}}" >
-        <div class="input-group-append">
-          <span class="input-group-text" id="{{id}}-from-addon">kg</span>
+      {{#each sizes}}
+      <div class="row">
+        <div class="col-2">
+          {{shortcut}}:
+        </div>
+        <div class="input-group mb-2 col-5">
+          <label for="{{id}}-from-weight-input" class="px-2">od</label>
+          <input id="{{id}}-from-weight-input" type="text" aria-describedby="{{id}}-from-addon" class="form-control weight-input-from weight-input" size="{{id}}" >
+          <div class="input-group-append">
+            <span class="input-group-text" id="{{id}}-from-addon">kg</span>
+          </div>
+        </div>
+        <div class="input-group mb-2 col-5">
+          <label for="{{id}}-till-weight-input" class="px-2">do</label>
+          <input id="{{id}}-till-weight-input" type="text" aria-describedby="{{id}}-till-addon" class="form-control weight-input-till weight-input" size="{{id}}" >
+          <div class="input-group-append">
+            <span class="input-group-text" id="{{id}}-till-addon">kg</span>
+          </div>
         </div>
       </div>
-      <div class="input-group mb-2 col-5">
-        <label for="{{id}}-till-weight-input" class="px-2">do</label>
-        <input id="{{id}}-till-weight-input" type="text" aria-describedby="{{id}}-till-addon" class="form-control weight-input-till" size="{{id}}" >
-        <div class="input-group-append">
-          <span class="input-group-text" id="{{id}}-till-addon">kg</span>
-        </div>
-      </div>
+      {{/each}}
     </div>
-    {{/each}}
   </script>
   <script id="text-input-template" type="text/x-handlebars-template">
+    {{#with input-data}}
     <div class="form-group">
-      <label for="{{id}}-input">Opis pieluszki</label>
-      <textarea id="{{id}}-input" type="text" rows="15" class="form-control text-input"></textarea>
+      <label for="{{id}}-input">{{title}}</label>
+      <textarea id="{{id}}-input" type="text" rows="{{rows-nr}}" class="form-control {{input-name}} text-input"></textarea>
     </div>
     <div class="form-group">
+    {{/with}}
   </script>
   <script id="add-pattern-button-template" type="text/x-handlebars-template">
     <div class="order-3">
@@ -585,7 +467,7 @@
   <script id="add-pattern-template" type="text/x-handlebars-template">
     <div  class="mt-4">
       <div class="form-group">
-        <a>Wzór nr {{pattern-number}}</a>
+        Wzór nr {{pattern-number}}
         <input type="text" class="form-control mb-2 pattern-name" id="pattern-{{pattern-number}}-name"pattern-number={{pattern-number}} placeholder="Nazwa Koloru/ Wzoru">
       </div>
       {{#each image-numbers}}
@@ -594,31 +476,24 @@
             <label for="pattern-{{../pattern-number}}-image-{{image-number}}">Zdjęcie profilowe wzoru:</label>
           {{/if}}
           <input type="file" class="form-control-file image-input pattern-{{../pattern-number}}" id="pattern-{{../pattern-number}}-image-{{image-number}}" pattern-number="{{../pattern-number}}" image-number="{{image-number}}">
-          <div id="file-preview-pattern-{{../pattern-number}}-image-{{image-number}}">
+          <div id="file-preview-pattern-{{../pattern-number}}-image-{{image-number}}" class="preview-image-box" pattern-nr="{{../pattern-number}}" image-nr="{{image-number}}">
           </div>
         </div>
       {{/each}}
     </div>
   </script>
-
-
-
   <script id="size-buttons-template" type="text/x-handlebars-template">
     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-      {{#each diaper.sizes}}
-        <label class="btn btn-secondary size-button" size="{{id}}">
-          <input type="radio" name="options" id="{{this.shortcut}}-main-button" autocomplete="off"> {{this.shortcut}}
-        </label>
-      {{/each}}
-    </div>
-    <div id="size-description" class="ml-2 col">
+    {{#each diaper.sizes}}
+      <label class="btn btn-outline-secondary">
+        <input type="radio" name="options" id="{{this.shortcut}}-{{../container}}-button" class="{{../container}}-size-button" size="{{id}}" autocomplete="off"> {{this.shortcut}}
+      </label>
+    {{/each}}
     </div>
   </script>
-  <!-- 
-        <button id="{{this.shortcut}}-main-button" type="button" class="size-button btn btn-outline-secondary btn-sm mx-1" size="{{id}}" >{{this.shortcut}}</button> -->
   <script id="size-range-template" type="text/x-handlebars-template">
     {{#with size}}
-    <div class="">
+    <div class="mr-2">
       <h6>{{name}}:</h6>
     </div>
     <div class="">
@@ -650,6 +525,11 @@
     <img class="product-image mx-auto img-fluid img-thumbnail" src={{url}}/>
     {{/with}}
   </script>
+  <script id="edit-item-button-template" type="text/x-handlebars-template">
+    <button id="edit-item-button" type="button" class="btn btn-danger mb-3">
+      Edytuj pieluchę
+    </button>
+  </script>
   <script id="item-preview" type="text/x-handlebars-template">
     {{#with diaper}}
     <div id="main" class="col-md-12 order-1 mx-auto">
@@ -664,16 +544,22 @@
           <div id="profile-image-box" class="col-md-6">
           </div>
           <div class="title-box col">
+            <div id="edit-diaper-wrapper">
+            </div>
             <h4 class="text-primary mb-3"> {{printnewinfo this}} </h4>
             <div class="d-flex flex-row mb-3">
               <h5 class="text-secondary mr-2">od</h5>
-              <h5 href="#application" class="text-warning" type="button">Puppi</h5>
+              <h5 href="#application" class="text-warning" type="button">{{producer-name}}</h5>
             </div>
             <div id="stars-box-wrapper" class="mb-3">
             </div>
             <div class="text-secondary mb-3">
               <h5 class="mb-0">Rozmiary</h5>
-              <div id="size-buttons-container" class="d-flex flex-row mt-1">
+              <div class="d-flex flex-column mt-1">
+                <div id="size-buttons-container">
+                </div>
+                <div id="size-description" class="d-flex flex-row mt-2">
+                </div>
               </div>
             </div>
             <div class="text-secondary">
@@ -682,7 +568,6 @@
                   <h5 class="mb-0">Wzór:</h5>
                 </div>
                 <div id="pattern-name" class="col-auto text-primary">
-                  <h5>{{patterns.1.name}}</h5>
                 </div>
               </div>
               <div id="patterns-images-box" class="d-flex flex-row flex-wrap row">
@@ -693,8 +578,8 @@
         <div class="info-box my-2">
           <div class="card card-body">
             <div id="info-title" class="text-center" type="button" aria-expanded="false" aria-controls="parameters-wrapper" data-toggle="collapse" href="#parameters-wrapper">
-              <h5>
-                <a class="card-title text-primary">Informacje od producenta</a>
+              <h5 class="card-title text-primary">
+                Informacje od producenta
               </h5>
             </div>
             <div class="collapse text-secondary mx-3" id="parameters-wrapper">
@@ -706,7 +591,9 @@
                     <div class="parameters-group-title text-primary">
                       <h6>Opis</h6>
                     </div>
-                    <p>{{attributes.description-input}}</p>
+                    <div class="white-space-preline">
+                      <p>{{description}}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -780,7 +667,7 @@
       </div>
       <div id="ar-sizes-wrapper" class="form-group row">
         <div class="col-form-label col-auto">
-          <a class="">Używany rozmiar pieluszki</a>
+          Używany rozmiar pieluszki
         </div>
         <div class="col-auto d-flex align-content-center">
           {{#each sizes}}
@@ -792,8 +679,8 @@
         </div>
       </div>
       <div id="ar-child-title" class="my-2">
-        <h6>
-          <a class="text-primary">Dodaj opis budowy dziecka</a>
+        <h6 class="text-primary">
+          Dodaj opis budowy dziecka
         </h6>
       </div>
       <div id="ar-child-wrapper" class="my-2">
@@ -811,7 +698,9 @@
         </div>
       </div>
       <div id="ar-stars-wrapper" class="my-3">
-        <a class="my-1">Twoja ocena</a>
+        <div class="my-1">
+          Twoja ocena
+        </div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
           <label class="form-check-label" for="inlineRadio1">1</label>
@@ -845,30 +734,33 @@
   <script id="add-review-child-template" type="text/x-handlebars-template">
     <div id="ar-child-basic-data-wrapper" class="form-group row">
       <div class="col-form-label col-auto">
-        <a class="">Wiek dziecka</a>
+        Wiek dziecka
       </div>
       <input class="form-control col-1" type="number" id="age-from-input">
       <div class="col-form-label mx-2">
-        <a class="">do</a>
+        do
       </div>
       <input class="form-control col-1" type="number" id="age-to-input">
       <div class="col-form-label ml-2 mr-5">
-        <a class="">miesięcy</a>
+        miesięcy
       </div>
       <div class="col-form-label col-auto">
-        <a class="">Waga dziecka</a>
+        Waga dziecka
       </div>
       <input class="form-control col-1" type="number" id="weight-from-input">
       <div class="col-form-label mx-2">
-        <a class="">do</a>
+        do
       </div>
       <input class="form-control col-1" type="number" id="weight-to-input">
       <div class="col-form-label ml-2">
-        <a class="">kg</a>
+        kg
       </div>
     </div>
     <div id="ar-child-desciption-wrapper" class="my-2">
       <div class="py-1">
+        <div>
+          Dziecko:
+        </div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="pulchne" value="option1">
           <label class="form-check-label" for="pulchne">pulchne</label>
@@ -883,7 +775,9 @@
         </div>
       </div>
       <div class="py-1">
-        <a>Udka</a>
+        <div>
+          Uda:
+        </div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="pulchne-udka" value="option1">
           <label class="form-check-label" for="pulchne-udka">pulchne udka</label>
@@ -904,7 +798,7 @@
       <div class="col-2 d-flex">
         <img src="/images/star.png"/ class="star">
         <div>
-          <a>5</a>
+          5
         </div>
       </div>
       <div class="col-8">
@@ -915,7 +809,7 @@
       </div>
       <div class="col-2">
         <div>
-          <a>37</a>
+          37
         </div>
       </div>
     </div>
@@ -923,15 +817,23 @@
   <script id="attribute-template" type="text/x-handlebars-template">
     {{#each parameters}}
     <div class="row parameters-row">
-      <div class="attribute-title col-6 align-self-end">
-        <a>{{title}}</a>
+      <div class="attribute-title col-6">
+        {{title}}
       </div>
       <div class="attribute-value col-6 align-self-end">
         <div>
           {{#if tick}}
           <img class="tick-image" src="{{src}}" />
           {{else}}
-          <a>{{value}}</a>
+            {{#if values}}
+              {{#each values}}
+                <div>
+                  {{value}}
+                </div>
+              {{/each}}
+            {{else}}
+              {{value}}
+            {{/if}}
           {{/if}}
         </div>
       </div>
@@ -961,11 +863,10 @@
     </div>
     <div class="my-2 row">
       <div class="my-2 parameters-group-title text-primary col-auto">
-        <a>Wymiary dla rozmiaru: </a>
+        Wymiary dla rozmiaru: 
       </div>
-      {{#each diaper.sizes}}
-        <button id="{{this.shortcut}}-dimensions-button" type="button" class="dimensions-button btn btn-outline-secondary btn-sm mx-1" size="{{id}}" >{{this.shortcut}}</button>
-      {{/each}}
+      <div id="size-buttons-dimensions">
+      </div>
     </div>
     <div id="dimensions-wrapper">
     </div>
@@ -975,133 +876,20 @@
       <div id="dimensions-pars" class="row parameters-row">
         <div class="col-7 align-self-end d-flex">
           <div class="text-danger font-weight-bold mr-2">
-            <a>{{letter}}</a>
+            {{letter}}
           </div>
           <div class="attribute-title">
-            <a>{{title}}</a>
+            {{title}}
           </div>
         </div>
         <div class="attribute-value col-5 align-self-end">
           <div>
-            <a>{{value}} cm</a>
+            {{value}} cm
           </div>
         </div>
       </div>
     {{/each}}
   </script>
-  <!-- <script id="parameters-template" type="text/x-handlebars-template">
-    <div class="text-center">
-      <h5>Parametry</h5>
-    </div>
-    <div class="row justify-content-around">
-      {{#with diaper}}
-      <div class="col-5">
-        {{#if outside}}
-        <div class="parameters-row">
-          <a class="font-italic">Warstwa izolująca (zewnętrzna)</a>
-          <div id="outside-main-fabric-pars" class="row parameters-row">
-            <div class="parameter-column-left">
-              Materiał dominujący:
-            </div>
-            <div class="parameter-column-right">
-              {{outsideMainFabric}}
-            </div>
-          </div>
-          <div id="outside-pars-composition" class="row parameters-row">
-            <div class="parameter-column-left">
-              Skład surowcowy:
-            </div>
-            <div class="parameter-column-right">
-              {{#each outsideFabPers}}
-              <div>
-                <a>{{name}} {{percentage}}%</a>
-              </div>
-              {{/each}}
-            </div>
-          </div>
-        </div>
-        {{/if}}
-        {{#if inner}}
-        <div class="parameters-row">
-          <a class="font-italic">Warstwa chłonna (wewnętrzna)</a>
-          <div id="inner-main-fabric-pars" class="row">
-            <div class="parameter-column-left">
-              Materiał dominujący:
-            </div>
-            <div class="parameter-column-right">
-              {{innerMainFabric}}
-            </div>
-          </div>
-          <div id="inner-pars-composition" class="row">
-            <div class="parameter-column-left">
-              Skład surowcowy:
-            </div>
-            <div class="parameter-column-right">
-              {{#each innerFabPers}}
-              <div>
-                <a>{{name}} {{percentage}}%</a>
-              </div>
-              {{/each}}
-            </div>
-          </div>
-        </div>
-        {{/if}}
-        <div id="sizes-pars" class="row parameters-row">
-          <div class="parameter-column-left">
-            Rozmiary:
-          </div>
-          <div class="parameter-column-right">
-            <div>
-              {{#each sizes}}
-                <div>
-                  {{printsizesinfo}}
-                </div>
-              {{/each}}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-5">
-        <div id="closures-pars" class="row parameters-row">
-          <div class="parameter-column-left">
-            Zapięcia:
-          </div>
-          <div class="parameter-column-right">
-            {{closures}}
-          </div>
-        </div>
-        <div id="country" class="row parameters-row">
-          <div class="parameter-column-left">
-            Kraj produkcji:
-          </div>
-          <div class="parameter-column-right">
-            {{country}}
-          </div>
-        </div>
-        <div id="attests" class="row parameters-row">
-          <div class="parameter-column-left">
-            Atesty, certyfikaty:
-          </div>
-          <div class="parameter-column-right">
-            {{attests}}
-          </div>
-        </div>
-      </div>
-      {{/with}}
-    </div>
-  </script> -->
-<!--   <script id="item-preview" type="text/x-handlebars-template">
-    <div class="main-info-box row my-2">
-      <div class="image-box col-md-6">
-        <img class="image mx-auto img-fluid img-thumbnail" src="{{diaper.url}}"/>
-      </div>
-      <div class="title-box col-md-6">
-        <h5> {{diaper.diaperCategory.[0]}} {{diaper.outsideFabrics.[0]}} </h5>
-        <p>od {{diaper.brand}}</p>
-        <p>{{diaper.sizes.[0]}}</p>
-      </div>
-    </div>
-  </script> -->
 </html>
 
 

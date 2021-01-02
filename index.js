@@ -8,7 +8,6 @@ import * as state from '../state.js';
 import * as newsletterPage from '../views/newsletter-page.js';
 
 $(document).ready(function(){
-
 	// let dbRef = firebase.database().ref('diaper-categories/-MF0Ea0U4Yi9TXqG1WSw/');
 	// dbRef.once('value',   function(snapshot) {
 	//     snapshot.forEach(function(childSnapshot) {
@@ -158,7 +157,7 @@ function enableButton () {
 	let button = document.getElementById('add-diaper');
 	button.onclick = function() {
 		clearPage ();
-		form.createForm ();
+		form.goToForm ('newItem');
 	}
 }
 
@@ -170,7 +169,7 @@ function enableHomeClick (categoriesData) {
 	}
 }
 
-function clearPage () {
+export function clearPage () {
 	let page = document.getElementById('page');
 	page.innerHTML = '';
 }

@@ -5,51 +5,300 @@ let database = firebase.database();
 let storage = firebase.storage();
 let formPageNumber = 0;
 let formPageName;
-let patternNumber = 0;
 
-export function createForm () {
-	getAttributes()
+export function goToForm (itemType, diaper, key) {
+	console.log('diaper', diaper)
+	getAttributes ()
 	.then(function(){
 		getAttributesText ();
 		getAnswersOptions ();
 	})
 	.then(function(){
+		state.newItem.answers = {};
+		state.newItem.images = [];
+		state.newItem.layers = [];
 		createTemplate ('form-view-template', 'page')
-		createDiaperCategoriesPage ()
-		document.getElementById('next-button').onclick = function () {
-			let formPageNames = getformPageNames ()
-			formPageName = formPageNames[formPageNumber];
-			saveChosenCategoryData ();
-			clearFormWrapper ();
-			createFormNavigation ();
-			document.getElementById(formPageName + '-nav').classList.add('font-weight-bold');
-			createFormPage ();
-			activateNavItem ();
-			document.getElementById('next-button').onclick = activateNextButton;
-		}
-	})
+		if (itemType == 'newItem') {
+			createDiaperCategoriesPage ();
+			document.getElementById('next-button').onclick = function () {
+				let chosenCategory = $('#diaper-categories-input').val()[0]
+				saveChosenCategoryData (chosenCategory)
+				createForm (itemType);
+			};
+		} else {
+			saveChosenCategoryData (diaper.diaper['category-data'].name)
+			getNewItemData (diaper);
+			createForm (itemType, key);
+		};
+	});
 }
 
-function activateNextButton () {
+function getNewItemData (diaper) {
+	state.newItem.answers = diaper.diaper.attributes;
+	state.newItem.categoryData = diaper.diaper['category-data'];
+	state.newItem.images = diaper.diaper.images;
+	state.newItem.sizes = diaper.diaper.sizes;
+	state.newItem.patterns = diaper.diaper.patterns;
+	state.newItem.layers = diaper.diaper.layers;
+	state.newItem.description = diaper.diaper.description;
+	state.newItem.itemName = diaper.diaper['item-name'];
+	state.newItem.producerName = diaper.diaper['producer-name'];
+
+	let layers = diaper.diaper.layers;
+	layers.forEach(function(layer){
+		let layerId = layer.id
+		state.newItem.answers[layerId] = layer['fabrics-names'];
+	});
+}
+
+function createForm (itemType, key) {
+	console.log (state.newItem, state.newItem)
+	let formPageNames = getformPageNames ()
+	formPageName = formPageNames[formPageNumber];
+	clearFormWrapper ();
+	createTemplate ('form-template', 'form-view-wrapper');
+	createFormPage ();
+	setProgress ();
+	fillInputsWithSavedAnswers ();
+	document.getElementById('next-button').onclick = function() { activateNextButton (itemType, key) };
+	document.getElementById('back-button').onclick = activateBackButton;
+}
+
+function setProgress () {
+	let progressNumber = (formPageNumber + 1) *10;
+	let bar = document.getElementById('progress-bar');
+	bar.setAttribute("aria-valuenow", progressNumber);
+	bar.style.width = progressNumber + '%';
+}
+
+function activateNextButton (itemType, key) {
 	saveAnswers ();
 	let formPageNames = getformPageNames ()
 	formPageNumber = formPageNumber + 1
 	formPageName = formPageNames[formPageNumber];
 	if (formPageName == undefined) {
-		let key = addMockDiaper ();
+		let dbKey = addMockDiaper (itemType, key);
 		let page = document.getElementById('page');
 		page.innerHTML = '';
-		productPage.createProductScreen (key, 'preview');
+		productPage.createProductScreen (dbKey, 'preview');
+		deleteStateNewItem ();
+		formPageNumber = 0;
+		state.questionsText.length = 0;
+		state.answersOptions.length = 0;
+		state.attributes.length = 0;
 		return
 	}
-	document.getElementById(formPageName + '-nav').classList.add('font-weight-bold');
-	clearForm();
+	clearForm ();
 	createFormPage ();
+	fillInputsWithSavedAnswers ();
+	setProgress ();
 }
 
-function addMockDiaper () {
+function activateBackButton () {
+	saveAnswers ();
+	let formPageNames = getformPageNames ()
+	formPageNumber = formPageNumber - 1;
+	formPageName = formPageNames[formPageNumber];
+	clearForm();
+	createFormPage ();
+	setProgress ();
+	fillInputsWithSavedAnswers ();
+}
+
+function fillInputsWithSavedAnswers () {
+	if (formPageName == 'main-info') {
+		$('#' + 'item-name-input').val(state.newItem.itemName);
+		$('#' + 'producer-name-input').val(state.newItem.producerName);
+		return
+	}
+	if (formPageName == 'fabrics') {
+		fillFabrics ();
+		return
+	}
+	if (formPageName == 'percentage-composition') {
+		fillPercentageComposition ();
+		return
+	}
+	if (formPageName == 'sizes') {
+		fillSizes ();
+		return
+	}
+	if (formPageName == 'dimensions') {
+		fillDimensions ();
+		fillWeights ();
+		return
+	}
+	if (formPageName == 'images') {
+		fillImagesPreviews ();
+		fillPatternNames ()
+		return
+	}
+	if (formPageName == 'description') {
+		$('#' + 'description-input').val(state.newItem.description);
+		return
+	}
+	let selects = $('.form-input .select');
+	let checkboxes = document.getElementsByClassName('form-input checkbox');
+	Array.from(checkboxes).forEach(function(checkbox){
+		checkbox.checked = state.newItem.answers[checkbox.id];
+		if (checkbox.checked == true) {
+			checkbox.setAttribute("aria-expanded", true);
+			let dependentQuestion = Array.from(state.attributes).find(function(attribute){
+				return attribute['parent-id'] == checkbox.id
+			});
+			if (dependentQuestion == undefined) {
+				return
+			};
+			let categoryAttributes = state.newItem.categoryData.attributes
+			let isThisFormPageName = isThisFormPage (state.attributes, dependentQuestion.id);
+			if (isThisFormPageName == false) {
+				return
+			}
+			let boxId = dependentQuestion.id + '-box';
+			document.getElementById(boxId).classList.add('show');
+		};
+	});
+	Array.from(selects).forEach(function(select){
+		let attributeValue = state.newItem.answers[select.id]
+		$('#' + select.id).selectpicker('val', attributeValue);
+	});
+}
+
+function fillFabrics () {
+	let selects = $('.form-input .select');
+	Array.from(selects).forEach(function(select){
+		let layer = state.newItem.layers.find(function(layer){
+			return layer.id == select.id
+		});
+		if (!layer) {
+			return
+		};
+		let fabrics = layer['fabrics-names'];
+		$('#' + select.id).selectpicker('val', fabrics);
+	});
+}
+
+function fillDimensions () {
+	let sizes = state.newItem.sizes;
+	let inputs = document.getElementsByClassName('dimension-input');
+	Array.from(inputs).forEach(function(input){
+		let dimensionId = $(input).attr('dimension-id');
+		let sizeDimensions = sizes.find(function(size){
+			return size.id == $(input).attr('size')
+		}).dimensions;
+		if (!sizeDimensions) {
+			return
+		}
+		let value = sizeDimensions.find(function(sizeDimension){
+			return dimensionId == sizeDimension.id
+		}).value;
+		$(input).val(value);
+	});
+}
+
+function fillWeights () {
+	let inputsFrom = $('.weight-input-from');
+	Array.from(inputsFrom).forEach(function(input){
+		let chosenSize = state.newItem.sizes.find(function(size){
+			return size.id == $(input).attr('size')
+		})
+		let value = chosenSize.min
+		$(input).val(value);
+	})
+	let inputsTill = $('.weight-input-till');
+	Array.from(inputsTill).forEach(function(input){
+		let value = state.newItem.sizes.find(function(size){
+			return size.id == $(input).attr('size')
+		}).max;
+		$(input).val(value);
+	});
+}
+
+function fillPercentageComposition () {
+	if (!state.newItem.layers) {
+		return
+	}
+	let inputs = $('.form-control');
+	Array.from(inputs).forEach(function(input){
+		let layerId = $(input).attr('layer-id');
+		let fabricName = $(input).attr('name');
+		let layer = state.newItem.layers.find(function(lr){
+			return lr['id'] == layerId
+		});
+		if (!layer.fabrics) {
+			return
+		};
+		let fabric = layer.fabrics.find(function(fabric){
+			return fabric.name == fabricName
+		});
+		if (!fabric) {
+			return
+		};
+		let value = fabric.percentage;
+		if (value == 100) {
+			delete fabric.percentage
+		} else {
+			$(input).val(value);
+		};
+	})
+}
+
+function fillSizes () {
+	if (!state.newItem.sizes) {
+		return
+	}
+	let value = state.newItem.sizes.map(function(size){
+		return size.name
+	})
+	$('#sizes-input').selectpicker('val', value);
+}
+
+function fillImagesPreviews () {
+	let patternsNumber = 0;
+	state.newItem.images.forEach(function(image){
+		if (image['pattern-nr'] > patternsNumber) {
+			patternsNumber = parseInt(image['pattern-nr'], 10);
+		}
+	})
+	for (let i=2; i<patternsNumber + 1; i++) {
+		addPattern (i)
+	}
+	let imageBoxes = $('.preview-image-box');
+	state.newItem.images.forEach(function(image){
+		let img = document.createElement('img');
+		let box = Array.from(imageBoxes).find(function(imageBox){
+			return $(imageBox).attr('pattern-nr') == parseInt(image['pattern-nr'], 10) 
+			&& $(imageBox).attr('image-nr') == parseInt(image['image-nr'], 10)
+		});
+		img.className = 'small-image mx-auto img-fluid img-thumbnail m-1';
+		img.src = image.url;
+		box.appendChild(img);
+	})
+	
+}
+
+function fillPatternNames () {
+	if (!state.newItem.patterns) {
+		return
+	}
+	let patterns = Array.from(state.newItem.patterns);
+	let inputs = $('.pattern-name');
+	for (let i=0; i<patterns.length; i++) {
+		let patternNameInput = Array.from(inputs).find(function(input){
+			return i + 1 == $(input).attr('pattern-number');
+		});
+		$(patternNameInput).val(patterns[i].name);
+	}
+}
+
+function addMockDiaper (itemType, key) {
 	let dbRef = firebase.database().ref('mock-diapers/');
-	var newDbRef = dbRef.push();
+	let newDbRef;
+	if (itemType == 'newItem') {
+		newDbRef = dbRef.push();
+	} else {
+		newDbRef = firebase.database().ref('mock-diapers/' + key)
+	}
 	let diaper = state.newItem;
 	newDbRef.set({
 	  'attributes': diaper.answers,
@@ -57,19 +306,42 @@ function addMockDiaper () {
 	  'images': diaper.images,
 	  'sizes': diaper.sizes,
 	  'patterns': diaper.patterns,
-	  'fabrics': diaper.fabrics,
+	  'layers': diaper.layers,
+	  'description': diaper.description,
+	  'item-name': diaper.itemName,
+	  'producer-name': diaper.producerName,
 	});
-	let key = newDbRef.getKey();
-	return key
+	let newItemKey = newDbRef.getKey();
+	if (itemType == 'newItem') {
+		return newItemKey
+	} else {
+		return key
+	};
 }
 
-function activateNavItem () {
-	document.getElementById(formPageName + '-nav').classList.add('active');
+function deleteStateNewItem () {
+	delete state.newItem.answers;
+	delete state.newItem.categoryData;
+	delete state.newItem.images;
+	delete state.newItem.sizes;
+	delete state.newItem.patterns;
+	delete state.newItem.layers;
+	delete state.newItem.description;
+	delete state.newItem.itemName;
+	delete state.newItem.producerName;
 }
 
 function createFormPage () {
-	let formPageNameData = {'formPageName': formPageName}
-	createTemplate ('form-page-template', 'form-wrapper', formPageNameData);
+	let formPage = formPages.find(function(fPage){
+		return fPage.id == formPageName
+	});
+	createTemplate ('form-page-template', 'form-wrapper', {'formPage': formPage});
+	createTemplate ('form-page-title-template', formPageName, {'title': formPage.name})
+	changeNextButton ();
+	if (formPageName == 'main-info') {
+		createMainInfoPage ();
+		return
+	}
 	if (formPageName == 'images') {
 		createImagesPage ();
 		return
@@ -90,26 +362,46 @@ function createFormPage () {
 	createFormQuestions ();
 }
 
+function changeNextButton () {
+	if (formPageName == 'description') {
+		$('#next-button').text('Zobacz podgląd');
+		$('#next-button').addClass('btn-warning');
+		$('#next-button').removeClass('btn-primary');
+		
+	};
+	if (formPageNumber == formPages.length - 2) {
+		$('#next-button').text('Dalej');
+		$('#next-button').addClass('btn-primary');
+		$('#next-button').removeClass('btn-warning');
+	};
+}
+
+function createMainInfoPage () {
+	createTextInput ('item-name', 1, 'Nazwa Pieluszki', 'main-info-input');
+	createTextInput ('producer-name', 1, 'Nazwa Producenta');
+}
+
 function createImagesPage () {
 	createTemplate ('add-pattern-button-template', formPageName);
-	addPattern ();
+	let patternNumber = 1;
+	addPattern (patternNumber);
+	patternNumber = patternNumber + 1;
 	document.getElementById('add-pattern-button').onclick = function () {
-		addPattern ();
+		addPattern (patternNumber);
+		patternNumber = patternNumber + 1;
 	}
 }
 
-function addPattern () {
-	patternNumber = patternNumber + 1;
-	let imageNumbers = setImageNumber ();
+function addPattern (patternNumber) {
+	let imageNumbers = setImageNumber (patternNumber);
 	createTemplate ('add-pattern-template', formPageName, imageNumbers);
-	loadImage ();
+	loadImage (patternNumber);
 }
 
-function loadImage () {
+function loadImage (patternNumber) {
 	Array.from($('.pattern-' + patternNumber)).forEach(function(input){
 		let patternNumberValue = input.getAttribute('pattern-number');
 		let imageNumberValue = input.getAttribute('image-number');
-//		state.newItem.images['pattern-' + patternNumberValue]['image-' + imageNumberValue] = {};
 		$('#' + input.id).change(function(event) {
 			if (event.target.files.length > 0) {
 				createImagePreview (event, input);
@@ -119,7 +411,7 @@ function loadImage () {
 	})
 }
 
-function setImageNumber () {
+function setImageNumber (patternNumber) {
 	let imageNumbers = {
 		'pattern-number': patternNumber, 
 		'image-numbers': [
@@ -142,6 +434,9 @@ function createImagePreview (event, input) {
 }
 
 function addImageToStorage (input) {
+	let patternNumberValue = input.getAttribute('pattern-number');
+	let imageNumberValue = input.getAttribute('image-number');
+	deletePreviousImage (patternNumberValue, imageNumberValue);
 	const selectedFile = document.getElementById(input.id).files[0];
 	let dbRef = firebase.database().ref('images/');
 	var newDbRef = dbRef.push();
@@ -155,26 +450,33 @@ function addImageToStorage (input) {
 	  	return imageRef.getDownloadURL();
 	})
 	.then(function(downloadURL) {
-		let patternNumberValue = input.getAttribute('pattern-number');
-		let imageNumberValue = input.getAttribute('image-number');
 		let image = {}
 		image['pattern-nr'] = patternNumberValue;
 		image['image-nr'] = imageNumberValue;
-		image.url = downloadURL
-		state.newItem.images.push(image)
+		image.url = downloadURL;
+		state.newItem.images.push(image);
 		return downloadURL
 	})
+}
+
+function deletePreviousImage (patternNumberValue, imageNumberValue) {
+	let images = state.newItem.images;
+	for (let i=0; i<images.length; i++) {
+		if (images[i]['pattern-nr'] == patternNumberValue && images[i]['image-nr'] == imageNumberValue) {
+			images.splice(i, 1);
+		}
+	}
 }
 
 function createFormQuestions () {
 	let diaper = state.newItem.categoryData.attributes;
 	let attributes = state.attributes;
+	console.log ('attributes', attributes)
 
 	const filteredAttributes = attributes.filter(function(attribute) {
 		let attributeId = attribute.id;
 		return !(!diaper[attributeId] || attribute['form-page-name'] !== formPageName);
 	})
-
 	filteredAttributes.forEach(function(attribute){
 		let attributeId = attribute.id;
 		if (attribute['question-type'] !== 'dependent'){
@@ -195,7 +497,7 @@ function createFormQuestions () {
 				createSelectInput (attributeId);
 			};
 			if (attribute['input-type'] == 'text-input') {
-				createTextInput (attributeId);
+				createTextInput (attributeId, 15, 'Opis pieluszki', );
 			};
 		};
 		let parentId = attribute['parent-id'];
@@ -207,7 +509,6 @@ function createFormQuestions () {
 			if (parentFormPageName !== formPageName) {
 				createSelectInput (attributeId);
 			}
-			
 		}
 	})
 }
@@ -269,16 +570,26 @@ function createCheckboxInput (attributeId) {
 	createTemplate ('checkbox-input-template', formPageName, questionData);
 }
 
-function createTextInput (attributeId, rowsNr) {
+function createTextInput (attributeId, rowsNr, title) {
 	let inputData = {
 		'id': attributeId,
 		'rows-nr': rowsNr,
+		'title': title
 	}
-	createTemplate ('text-input-template', formPageName, {'inputData': inputData});
+	createTemplate ('text-input-template', formPageName, {'input-data': inputData});
+}
+
+function isFabricAttr (attributeId) {
+	if (attributeId.substr(attributeId.length - 8) == '-fabrics') {
+		return 'fabrics'
+	} else {
+		return false
+	}
 }
 
 function createSelectInput (attributeId) {
-	let questionData = getQuestionText (attributeId)
+	let questionData = getQuestionText (attributeId);
+	questionData.fabrics = isFabricAttr (attributeId);
 	createTemplate ('select-input-template', formPageName, questionData);
 	let answersData = {};
 	let answers = state.answersOptions;
@@ -314,28 +625,44 @@ function getQuestionText (attributeId) {
 }
 
 function saveAnswers () {
-	if (formPageName == 'percentage-composition') {
-		savePercentageComposition ();
-		removeLayersFromAnswers ();
+	if (formPageName == 'main-info') {
+		state.newItem.itemName = $('#' + 'item-name-input').val();
+		state.newItem.producerName = $('#' + 'producer-name-input').val();
 		return
-	}
+	};
+	if (formPageName == 'percentage-composition') {
+		console.log('state.newItem', state.newItem)
+		savePercentageComposition ();
+		console.log('state.newItem', state.newItem)
+		return
+	};
 	if (formPageName == 'sizes') {
 		saveSizes ();
 		return
-	}
+	};
 	if (formPageName == 'dimensions') {
 		saveDimensions ();
 		saveWeights ();
 		return
-	}
+	};
 	if (formPageName == 'images') {
 		savePatternNames ();
 		return
-	}
+	};
+	if (formPageName == 'description') {
+		state.newItem.description = $('#' + 'description-input').val();
+		return
+	};
+	if (formPageName == 'fabrics') {
+		console.log('state.newItem', state.newItem)
+		saveFabrics ();
+		console.log('state.newItem', state.newItem)
+		return
+	};
 	let checkboxes = document.getElementsByClassName('form-input checkbox');
 	Array.from(checkboxes).forEach(function(checkbox){
 		state.newItem.answers[checkbox.id] = checkbox.checked;
-	})
+	});
 
 	let selects = $('.form-input .select');
 	Array.from(selects).forEach(function(select){
@@ -344,102 +671,146 @@ function saveAnswers () {
 		})['parent-id'];
 		if (state.newItem.answers[parentId] == true || state.newItem.answers[parentId] == undefined) {
 			state.newItem.answers[select.id] = $('#' + select.id).val();
+		};
+	});
+	console.log('state.newItem', state.newItem)
+}
+
+function saveFabrics () {
+	let selects = $('.form-input .select');
+	let formLayers = [];
+	Array.from(selects).forEach(function(select){
+		let formLayer = {};
+		formLayer.id = select.id;
+		formLayer['fabrics-names'] = $('#' + select.id).val();
+		formLayers.push(formLayer);
+	});
+	formLayers.forEach(function(formLayer){
+		let savedLayer = state.newItem.layers.find(function(lr){
+			return formLayer.id == lr.id
+		});
+		if (!savedLayer) {
+			let newLayer = {};
+			newLayer.id = formLayer.id;
+			newLayer['fabrics-names'] = $('#' + newLayer.id).val();
+			state.newItem.layers.push(newLayer);
 		}
-	})
-	let textInputs = $('.text-input');
-	Array.from(textInputs).forEach(function(input){
-		state.newItem.answers[input.id] = $('#' + input.id).val();
-	})
+	});
+	for (let i=0; i<state.newItem.layers.length; i++) {
+		let formLayer = formLayers.find(function(lr){
+			return state.newItem.layers[i].id == lr.id
+		});
+		if (!formLayer) {
+			state.newItem.layers.splice(i, 1)
+		}
+	}
+	state.newItem.layers.forEach(function(savedLayer){
+		let formLayer = formLayers.find(function(lr){
+			return lr.id == savedLayer.id
+		});
+		let savedLayerFabrics = savedLayer['fabrics-names'];
+		let formLayerFabrics = formLayer['fabrics-names'];
+		for (let i=0; i<savedLayerFabrics.length; i++) {
+			let formLayerFabric = formLayerFabrics.find(function(lr){
+				return lr == savedLayerFabrics[i];
+			});
+			if (!formLayerFabric) {
+				savedLayerFabrics.splice(i, 1);
+			};
+		};
+		formLayerFabrics.forEach(function(formLayerFabric){
+			let newFabric = savedLayerFabrics.find(function(lr){
+				return lr == formLayerFabric
+			});
+			if (!newFabric) {
+				savedLayer['fabrics-names'].push(formLayerFabric);
+			};
+		});
+	});
 }
 
 function savePercentageComposition () {
 	let layers = $('.layer')
 	Array.from(layers).forEach(function(layer){
-		let layerData = {};
-		let layerId = layer.id;
-		layerData['layer-id'] = layerId;
-		layerData.fabrics = [];
-		let inputs = $('.' + layerId);
+		let savedLayer = state.newItem.layers.find(function(lr){
+			return lr.id == layer.id
+		});
+		savedLayer.fabrics = [];
+		let inputs = $('.' + layer.id);
 		Array.from(inputs).forEach(function(input){
 			let fabric = {};
 			fabric.name = input.getAttribute('name');
 			fabric.percentage = input.value;
-			layerData.fabrics.push(fabric);
+			savedLayer.fabrics.push(fabric);
 		})
-		state.newItem.fabrics.push(layerData);
+
 	})
 }
 
 function saveSizes () {
-	state.newItem.sizes = [];
-	let chosenSizes = $('#sizes-input').val();
+	let sizes = state.newItem.sizes;
+	let newSizesNames = $('#sizes-input').val();
 	let databaseSizes = state.sizes;
-	chosenSizes.forEach(function(chosenSize){
-		let sizeData = databaseSizes.find(function(databaseSize){
-			return chosenSize == databaseSize.name
-		})
-		state.newItem.sizes.push(sizeData);
-	})
+	if (sizes) {
+		for (let i=0; i<sizes.length; i++) {
+			let newSize = newSizesNames.find(function(newSizeName){
+				return sizes[i].name == newSizeName
+			});
+			if (!newSize) {
+				sizes.splice(i, 1)
+			};
+		};
+		newSizesNames.forEach(function(newSizeName) {
+			let addedSizeName = sizes.find(function(size){
+				return size.name == newSizeName
+			});
+			if (!addedSizeName) {
+				let sizeData = databaseSizes.find(function(databaseSize){
+					return newSizeName == databaseSize.name
+				});
+				sizes.push(sizeData);
+			};
+		});
+	} else {
+		state.newItem.sizes = [];
+		newSizesNames.forEach(function(newSizeName){
+			let sizeData = databaseSizes.find(function(databaseSize){
+				return newSizeName == databaseSize.name
+			});
+			state.newItem.sizes.push(sizeData);
+		});
+	};
 }
 
 function savePatternNames () {
 	let patterNamesInputs = $('.pattern-name');
-	state.newItem.patterns = {};
+	state.newItem.patterns = [];
 	Array.from(patterNamesInputs).forEach(function(input){
-		let patternNumberValue = input.getAttribute('pattern-number');
-		state.newItem.patterns[patternNumberValue] = {};
-		let inputId = input.id
-		let name = $('#' + inputId).val();
-		state.newItem.patterns[patternNumberValue].name = $('#' + input.id).val();
+		let pattern = {};
+		pattern['pattern-nr'] = input.getAttribute('pattern-number');
+		pattern.name = $('#' + input.id).val();
+		state.newItem.patterns.push(pattern);
 	})
 }
 
-function saveChosenCategoryData () {
-	let chosenCategory = $('#diaper-categories-input').val()[0]
-	state.newItem.categoryData = findCategoryData (chosenCategory, state.diaperCategories);
+function saveChosenCategoryData (chosenCategory) {
+	let category = chosenCategory;
+	state.newItem.categoryData = findCategoryData (category, state.diaperCategories);
 	const attributes = Object.values(state.newItem.categoryData.attributes);
 	attributes.forEach(function(attribute){
 		if (attribute.answer == true) {
 			let attributeId = attribute.id;
 			state.newItem.answers[attributeId] = attribute.answer;
-		}
+		};
 	});
-}
-
-function removeLayersFromAnswers () {
-	let layers = [];
-	let attributes = state.newItem.answers;
-	let attributeIds = Object.keys(attributes)
-	Array.from(attributeIds).forEach(function(attributeId){
-		let lastCharacters = attributeId.substr(attributeId.length - 8);
-		if (lastCharacters == '-fabrics') {
-			delete state.newItem.answers[attributeId]
-		}
-	});
-}
-
-function getLayers () {
-	let layers = [];
-	let attributes = state.newItem.answers;
-	let attributeIds = Object.keys(attributes)
-	Array.from(attributeIds).forEach(function(attributeId){
-		let lastCharacters = attributeId.substr(attributeId.length - 8);
-		if (lastCharacters == '-fabrics') {
-			let layer = {};
-			layer.title = getQuestionText (attributeId).text;
-			layer.id = attributeId;
-			layer.fabrics = attributes[attributeId];
-			layers.push(layer);
-		}
-	});
-	return layers
 }
 
 function createPercentageCompositionPage () {
-	let layers = getLayers ();
+	let layers = state.newItem.layers;
 	let selectedLayers = [];
 	layers.forEach(function(layer){
-		let fabricNames = layer.fabrics;
+		layer.title = getQuestionText (layer.id).text;
+		let fabricNames = layer['fabrics-names'];
 		if (fabricNames.length > 1) {
 			selectedLayers.push(layer)
 		};
@@ -450,7 +821,7 @@ function createPercentageCompositionPage () {
 	createTemplate ('layers-template', formPageName, {'layers': selectedLayers});
 	selectedLayers.forEach(function(layer){
 		let fabrics = [];
-		layer.fabrics.forEach(function(fabricName){
+		layer['fabrics-names'].forEach(function(fabricName){
 			let fabric = {};
 			fabric.name = fabricName;
 			fabric['layer-id'] = layer.id;
@@ -461,15 +832,11 @@ function createPercentageCompositionPage () {
 }
 
 function saveOneFabricLayer (layer) {
-	let layerData = {};
-	let layerId = layer.id;
-	layerData['layer-id'] = layerId;
-	layerData.fabrics = [];
+	layer.fabrics = [];
 	let fabric = {};
-	fabric.name = layer.fabrics[0];
+	fabric.name = layer['fabrics-names'][0];
 	fabric.percentage = 100;
-	layerData.fabrics.push(fabric);
-	state.newItem.fabrics.push(layerData);
+	layer.fabrics.push(fabric);
 }
 
 function createDimensionsPage () {
@@ -482,13 +849,14 @@ function createDimensionsPage () {
 	})
 	createTemplate ('size-inputs-column-template', 'inputs-box', {'sizes': sizes});
 	sizes.forEach(function(size){
-		createTemplate ('size-input-template', size.shortcut + '-inputs-box', {'dimensions': dimensions, 'size': size});
+		createTemplate ('size-input-template', size.id + '-inputs-box', {'dimensions': dimensions, 'size': size});
 	})
 	let inputHeight = document.getElementsByClassName('dimension-input')[0].offsetHeight;
 	Array.from(document.getElementsByClassName('dimension-title')).forEach(function(title){
 		title.style.height = inputHeight + 'px'
 	})
 	createTemplate ('weight-input-template', formPageName, {'sizes': sizes});
+	createTemplate ('form-page-title-template', 'weight-inputs-title', {'title': 'Przedział wagowy'})
 }
 
 function saveWeights () {
@@ -521,18 +889,18 @@ function saveDimensions () {
 					dimensionData.id = dimension.id;
 					dimensionData.value = input.value;
 					size.dimensions.push(dimensionData);
-				}
-			})
-		})
-	})
+				};
+			});
+		});
+	});
 }
 
 function getDimensions () {
+	state.dimensions.length = 0;
 	let attributes = state.attributes
 	let diaper = state.newItem.categoryData.attributes;
 	const filteredAttributes = attributes.filter(function(attribute) {
 		let attributeId = attribute.id;
-//		return !(!diaper[attributeId] || attribute['form-page-name'] !== formPageName);
 		return (attribute.dimension == true && diaper[attributeId]);
 	}).forEach(function(attribute){
 		state.dimensions.push(attribute);
@@ -553,13 +921,11 @@ function createSizesQuestion () {
 	$('#sizes-input').selectpicker();
 }
 
-function createFormNavigation () {
-	let navItems = {'form-pages': formPages}
-	createTemplate ('form-template', 'form-view-wrapper')
-	createTemplate ('nav-item-template', 'nav-items-wrapper', navItems);
-}
-
 let formPages = [
+	{
+		'name': 'Ogólne informacje',
+		'id': 'main-info',
+	},
 	{
 		'name': 'Zdjęcia',
 		'id': 'images',
@@ -601,7 +967,7 @@ function getformPageNames () {
 	})
 }
 
-function findCategoryData (chosenCategory, categories) {
+export function findCategoryData (chosenCategory, categories) {
 	return Array.from(categories).find(function(category){
 		return category.name == chosenCategory
 	})

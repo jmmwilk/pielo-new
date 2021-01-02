@@ -4,9 +4,6 @@ export let state = {
 }
 
 export let newItem = {
-	answers: {},
-	images: [],
-	fabrics: [],
 }
 
 export let attributesTitles = [];

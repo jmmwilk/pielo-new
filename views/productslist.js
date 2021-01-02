@@ -13,7 +13,7 @@ export function createProductsList () {
 	.then(function(diapers) {
 	  	let loadedDiapers = {'data': diapers};
 	  	fillSizesInCard ();
-		fillDiaperCards ();
+	  	createProfileImage ();
 		createItemsPageTemplate(loadedDiapers)
 		createItemsListTemplate (loadedDiapers);	
 		enableCardClick ();
@@ -229,7 +229,6 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	  		}
 	  	})
 	  	let newItems = {'data': items}
-//		fillDiaperCards ();
 		removeProductsList ();
 		createItemsPageTemplate (newItems);
 		createItemsListTemplate (newItems);
@@ -243,21 +242,14 @@ export function removeProductsList () {
 	page.removeChild(main);
 }
 
-function fillDiaperCards () {
-	let pieluchaTemplate = $('#pielucha-template').html();
-	Handlebars.registerHelper('printdiaper', function(){
-		return this.name + ' ' + this.type + ' ' + this.fabricprint
-	})
-}
-
 function getDatabaseDiapers () {
 	const promise1 = new Promise ((resolve, reject) => {
-		let ref = firebase.database().ref('diapers-mocks/');
+		let ref = firebase.database().ref('mock-diapers/');
 		let diapers = [];
 		ref.once('value', function(snapshot) {
 		    snapshot.forEach(function(childSnapshot) {
 		    	var key = childSnapshot.key;
-		      	var childData = childSnapshot.val().diaper;
+		      	var childData = childSnapshot.val();
 		      	childData.key = key;
 		      	diapers.push(childData);
 		    });
@@ -265,6 +257,13 @@ function getDatabaseDiapers () {
 	  	});
 	});
 	return promise1
+}
+
+function createProfileImage () {
+	let itemPreview = $('#items-list-template').html();
+	Handlebars.registerHelper('printimage', function(){
+		return this.images[0].url
+	})
 }
 
 function createItemsListTemplate (loadedDiapers) {
@@ -285,36 +284,6 @@ function createFavouritesPageTemplate (loadedDiapers) {
 	$('#page').append(compiledFavouritesPageTemplate(loadedDiapers));
 }
 
-
-// function createNewDiapersTemplate (newItems) {
-// 	let pieluchaTemplate = $('#pielucha-template').html();
-// 	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
-// 	$('#page').append(compiledPieluchaTemplate(newItems));
-// }
-
-// function printDiapers () {
-// 	let menuItems = document.getElementsByClassName('menu-item');
-// 	Array.from(menuItems).forEach(function(menuItem) {
-// 		menuItem.onclick = function() {
-// 			clickedMenuItem = menuItem;
-// 			let category = findCategory ();
-// 			let newItems = {'diapers': []} ;
-// 			let dpr;
-// 			for (let i=0; i<diaperslist.items.diapers.length; i++) {
-// 				dpr = diaperslist.items.diapers[i][category].toLowerCase();
-// 				if (dpr == clickedMenuItem.id) {
-// 					newItems.diapers.push(diaperslist.items.diapers[i]);
-// 				} else {
-// 				}
-// 			}
-// 			removeProductsList ();
-// 			createNewDiapersTemplate (newItems);
-// 			fillDiaperCards ();
-// 			enableCardClick ();
-// 		}
-// 	})
-// }
-
 export function enableAllDiapersClick () {
 	let allDiapers = document.getElementById('all-diapers-nav');
 	allDiapers.onclick = function () {
@@ -327,7 +296,7 @@ function enableCardClick () {
 	let cards = document.getElementsByClassName('card');
 	Array.from(cards).forEach(function(card) {
 		card.onclick = function () {
-			removeProductsContainer ();
+			clearPage ();
 			let key = card.dataset.key;
 			productpage.createProductScreen (key, 'productScreen');
 		}
