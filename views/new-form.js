@@ -700,11 +700,11 @@ function saveFabrics () {
 		let formLayer = formLayers.find(function(lr){
 			return lr.id == savedLayer.id
 		});
+		if (!savedLayer['fabrics-names']) {
+			savedLayer['fabrics-names'] = [];
+		}
 		let savedLayerFabrics = savedLayer['fabrics-names'];
 		let formLayerFabrics = formLayer['fabrics-names'];
-		if (!savedLayerFabrics) {
-			savedLayerFabrics = [];
-		}
 		console.log('savedLayerFabrics', savedLayerFabrics)
 		for (let i=0; i<savedLayerFabrics.length; i++) {
 			let formLayerFabric = formLayerFabrics.find(function(lr){
@@ -754,13 +754,17 @@ function saveSizes () {
 	let newSizesNames = $('#sizes-input').val();
 	let databaseSizes = state.sizes;
 	if (sizes) {
+		let sizesToDelete = [];
 		for (let i=0; i<sizes.length; i++) {
 			let newSize = newSizesNames.find(function(newSizeName){
 				return sizes[i].name == newSizeName
 			});
 			if (!newSize) {
-				sizes.splice(i, 1)
+				sizesToDelete.push(i)
 			};
+		};
+		for (let x=0; x<sizesToDelete.length; x++) {
+			sizes.splice(sizesToDelete - x, 1)
 		};
 		newSizesNames.forEach(function(newSizeName) {
 			let addedSizeName = sizes.find(function(size){
