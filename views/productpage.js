@@ -60,26 +60,28 @@ function selectReviews (indexNumber) {
 function createSizeButtons (diaper) {
 	createTemplate ('size-buttons-template', 'size-buttons-container', {'diaper': diaper.diaper, 'container': 'main'});
 	let buttons = $('.main-size-button');
+	markFirstSizeButton (buttons);
+	showWeightInfo (buttons[0], diaper);
 	Array.from(buttons).forEach(function(button){
 		button.onclick = function (event) {
-			Array.from(buttons).forEach(function(btn){
-				let label = btn.parentElement;
-				$(label).button('toggle')
-			});
 			let label = button.parentElement;
 			$(label).button('toggle')
-			let sizeData = {};
-			let sizeName = event.target.getAttribute('size');
-			let sizes = diaper.diaper.sizes;
-			for (let i=0; i<sizes.length; i++) {
-				if (sizeName == sizes[i].id) {
-					sizeData = {'size': sizes[i]};
-				}
-			};
-			document.getElementById('size-description').innerHTML = '';
-			createTemplate ('size-range-template', 'size-description', sizeData);
+			showWeightInfo (event.target, diaper);
 		};
 	});
+}
+
+function showWeightInfo (sizeButton, diaper) {
+	let sizeData = {};
+	let sizeName = sizeButton.getAttribute('size');
+	let sizes = diaper.diaper.sizes;
+	for (let i=0; i<sizes.length; i++) {
+		if (sizeName == sizes[i].id) {
+			sizeData = {'size': sizes[i]};
+		};
+	};
+	document.getElementById('size-description').innerHTML = '';
+	createTemplate ('size-range-template', 'size-description', sizeData);
 }
 
 function createFabrics (diaper) {
@@ -110,13 +112,10 @@ function createDimensions (diaper) {
 	createTemplate ('size-buttons-template', 'size-buttons-dimensions', {'diaper': diaper.diaper, 'container': 'dimensions'});
 
 	let buttons = $('.dimensions-size-button');
-	createFirstButtonDimensions (diaper, buttons);
+	createFirstSizeDimensions (diaper, buttons);
+	markFirstSizeButton (buttons);
 	Array.from(buttons).forEach(function(button){
 		button.onclick = function (event) {
-			Array.from(buttons).forEach(function(btn){
-				let label = btn.parentElement;
-				$(label).button('toggle')
-			});
 			let label = button.parentElement;
 			$(label).button('toggle')
 			let sizeName = event.target.getAttribute('size');
@@ -136,7 +135,12 @@ function createDimensions (diaper) {
 	});
 }
 
-function createFirstButtonDimensions (diaper, buttons) {
+function markFirstSizeButton (buttons) {
+	let label = buttons[0].parentElement;
+	$(label).button('toggle')
+}
+
+function createFirstSizeDimensions (diaper, buttons) {
 	let firstButton = buttons[0];
 	firstButton.classList.remove('btn-outline-secondary');
 	firstButton.classList.add('btn-secondary');
@@ -275,6 +279,7 @@ export function createPreviewScreen (diaper, key, view) {
 		createTemplate ('detail-reviews-summary-template', 'detail-summary-wrapper');
 		createTemplate ('add-review-child-template', 'ar-child-wrapper');
 		createTemplate ('edit-item-button-template', 'edit-diaper-wrapper');
+		createTemplate ('delete-item-button-template', 'edit-diaper-wrapper');
 		$('#edit-item-button').click( function(){
 			console.log('IIIIIII', diaper)
 			index.clearPage ();
@@ -419,15 +424,13 @@ function fillSizesInfo () {
 function addMarginToParameters () {
 	let parameters = document.getElementsByClassName('parameters-row');
 	Array.from(parameters).forEach(function(parameter){
-		parameter.classList.add("mb-3");
+		parameter.classList.add("my-3");
 	})
 }
 
 function setClassesToParameters () {
 	let parameters = document.getElementsByClassName('parameters-row');
-	Array.from(parameters).forEach(function(parameter){
-		parameter.classList.add("mb-2");
-	});
+	addMarginToParameters ();
 	let parametersLeft = document.getElementsByClassName('parameter-column-left');
 	Array.from(parametersLeft).forEach(function(parameter){
 		parameter.classList.add("col-6");
