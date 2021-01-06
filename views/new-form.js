@@ -88,7 +88,8 @@ function activateNextButton (itemType, key) {
 		return
 	}
 	clearForm ();
-	createFormPage ();
+	let clickedButton = 'next';
+	createFormPage (clickedButton);
 	fillInputsWithSavedAnswers ();
 	setProgress ();
 }
@@ -99,7 +100,8 @@ function activateBackButton () {
 	formPageNumber = formPageNumber - 1;
 	formPageName = formPageNames[formPageNumber];
 	clearForm();
-	createFormPage ();
+	let clickedButton = 'back';
+	createFormPage (clickedButton);
 	setProgress ();
 	fillInputsWithSavedAnswers ();
 }
@@ -330,7 +332,7 @@ function deleteStateNewItem () {
 	delete state.newItem.producerName;
 }
 
-function createFormPage () {
+function createFormPage (clickedButton) {
 	let formPage = formPages.find(function(fPage){
 		return fPage.id == formPageName
 	});
@@ -355,7 +357,7 @@ function createFormPage () {
 		return
 	}
 	if (formPageName == 'percentage-composition') {
-		createPercentageCompositionPage ();
+		createPercentageCompositionPage (clickedButton);
 		return
 	}
 	createFormQuestions ();
@@ -811,7 +813,7 @@ function saveChosenCategoryData (chosenCategory) {
 	});
 }
 
-function createPercentageCompositionPage () {
+function createPercentageCompositionPage (clickedButton) {
 	let layers = state.newItem.layers;
 	let selectedLayers = [];
 	layers.forEach(function(layer){
@@ -827,6 +829,15 @@ function createPercentageCompositionPage () {
 			saveOneFabricLayer (layer);
 		};
 	});
+	if (selectedLayers.length == 0) {
+		if (clickedButton == 'next') {
+			activateNextButton ();
+		};
+		if (clickedButton == 'back') {
+			activateBackButton ();
+		};
+		return
+	}
 	createTemplate ('layers-template', formPageName, {'layers': selectedLayers});
 	selectedLayers.forEach(function(layer){
 		let fabrics = [];
