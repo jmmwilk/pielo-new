@@ -16,6 +16,7 @@ export function createProductScreen (key, view) {
 	})
 	.then (function (diaperData) {
 		let diaper = {'diaper': diaperData}
+		console.log ('diaper', diaper)
 		createPreviewScreen (diaper, key, view);
 	})
 }
@@ -183,7 +184,6 @@ function fillDiaperPreview (diaper) {
 
 		createTemplate ('attribute-template', parametersBox, {'parameters': parameters});
 	})
-	
 	createDimensions (diaper);
 	createFabrics (diaper);
 	let sizes = diaper.diaper.sizes
@@ -192,24 +192,23 @@ function fillDiaperPreview (diaper) {
 function getParameters (diaper, parametersGroup) {
 	let parameters = [];
 	let diaperAttributes = Object.keys(diaper.diaper.attributes);
-	let categoryAttributes = diaper.diaper['category-data'].attributes;
 	Array.from(parametersGroup.attributes).forEach(function(attribute){
-
 		let diaperAttribute = diaperAttributes.find(function(diaperAtt){
 			return attribute.id == diaperAtt
 		});
 		if (diaperAttribute !== undefined) {
 			parameters.push(attribute)
-		} 
+		};
 	});
 	const filteredParameters = parameters.filter(function(parameter) {
 		let parameterId = parameter.id;
 		return (diaper.diaper['category-data'].attributes[parameterId].answer !== true)
-	})
+	});
 
 	let attributesToPrint = [];
 	filteredParameters.forEach(function(parameter){
 		let parameterId = parameter.id;
+		console.log('parameterId', parameterId)
 		let attributeToPrint = {};
 
 		let attributeValue = diaper.diaper.attributes[parameterId];
@@ -233,7 +232,7 @@ function getParameters (diaper, parametersGroup) {
 		};
 		attributeToPrint.title = getParameterTitle (diaper, parameterId);
 		attributesToPrint.push(attributeToPrint);
-	})
+	});
 	return attributesToPrint
 }
 
@@ -277,6 +276,7 @@ export function createPreviewScreen (diaper, key, view) {
 		createTemplate ('add-review-child-template', 'ar-child-wrapper');
 		createTemplate ('edit-item-button-template', 'edit-diaper-wrapper');
 		$('#edit-item-button').click( function(){
+			console.log('IIIIIII', diaper)
 			index.clearPage ();
 			console.log('formDiaper', formDiaper)
 			form.goToForm ('editItem', formDiaper, key)
@@ -290,20 +290,19 @@ export function createPreviewScreen (diaper, key, view) {
 	enableMainImageChange (diaper);
 	enablePatternChange (diaper);
 	createTemplate ('pattern-name-template', 'pattern-name', {'name': diaper.diaper.patterns[0].name});
+	setTimeout(function(){console.log('UUUUU', diaper)}, 3000)
 }
 
 function removeBorderFromImages (images) {
 	Array.from(images).forEach(function(img){
-		let parent =  img.parentElement;
-		parent.classList.remove('border-primary');
-		parent.classList.remove('border');
+		img.classList.remove('border-primary');
+		img.classList.remove('border');
 	});
 }
 
 function makeBorderOnImage (image) {
-	let parent =  image.parentElement;
-	parent.classList.add('border');
-	parent.classList.add('border-primary');
+	image.classList.add('border');
+	image.classList.add('border-primary');
 }
 
 function enableMainImageChange (diaper) {
@@ -387,15 +386,6 @@ function createPatternsProfileImages (diaper) {
 	makeBorderOnImage (firstImage);
 }
 
-// function createPreviewTemplate (key) {
-// 	let dbRef = firebase.database().ref('diapers-mocks/' + key + '/');
-// 	let previewTemplate = $('#item-preview').html();
-// 	let compiledPreviewTemplate = Handlebars.compile(previewTemplate);
-// 	dbRef.on('value', function(snap){
-// 		$('#page').html(compiledPreviewTemplate(snap.val()))
-// 	})
-// }
-
 function loadItemData (key) {
 	const promise = new Promise ((resolve, reject) => {
 		let diaper;
@@ -461,12 +451,6 @@ function getCategoryData (category) {
 	  	});
 	});
 	return promise1
-}
-
-function stopProp () {
-	$('#ar-child-title').click(function( event ) {
-	  	event.stopPropagation();
-	});
 }
 
 function createTemplate (templateId, parentId, data) {

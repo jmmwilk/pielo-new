@@ -65,16 +65,16 @@ export let attributesOrder = [
 			{'id': 'next-to-skin-layer-fabrics'},
 			{'id': 'flaps-fabrics'},
 			{'id': 'ribbing-fabrics'},
-			{'id': 'wool-state'},
-			{'id': 'lanolised'},
-			{'id': 'impregnated'},
 		]
 	},
 	{
 		'id': 'others',
 		'name': 'Inne',
 		'attributes': [
+			{'id': 'wool-state'},
 			{'id': 'lanolised'},
+			{'id': 'impregnated'},
+			{'id': 'fabrics-condition'},
 			{'id': 'time'},
 			{'id': 'certificates'},
 			{'id': 'production-country-poland'},

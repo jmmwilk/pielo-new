@@ -143,6 +143,10 @@ input:error {
 	white-space: pre-line;
 }
 
+*{
+	box-sizing: content-box;
+}
+
 /*
 input:is-invalid {
   ~ .invalid-feedback {

@@ -47,12 +47,11 @@ function getNewItemData (diaper) {
 	let layers = diaper.diaper.layers;
 	layers.forEach(function(layer){
 		let layerId = layer.id
-		state.newItem.answers[layerId] = layer['fabrics-names'];
+//		state.newItem.answers[layerId] = layer['fabrics-names'];
 	});
 }
 
 function createForm (itemType, key) {
-	console.log (state.newItem, state.newItem)
 	let formPageNames = getformPageNames ()
 	formPageName = formPageNames[formPageNumber];
 	clearFormWrapper ();
@@ -471,8 +470,6 @@ function deletePreviousImage (patternNumberValue, imageNumberValue) {
 function createFormQuestions () {
 	let diaper = state.newItem.categoryData.attributes;
 	let attributes = state.attributes;
-	console.log ('attributes', attributes)
-
 	const filteredAttributes = attributes.filter(function(attribute) {
 		let attributeId = attribute.id;
 		return !(!diaper[attributeId] || attribute['form-page-name'] !== formPageName);
@@ -631,9 +628,7 @@ function saveAnswers () {
 		return
 	};
 	if (formPageName == 'percentage-composition') {
-		console.log('state.newItem', state.newItem)
 		savePercentageComposition ();
-		console.log('state.newItem', state.newItem)
 		return
 	};
 	if (formPageName == 'sizes') {
@@ -654,9 +649,7 @@ function saveAnswers () {
 		return
 	};
 	if (formPageName == 'fabrics') {
-		console.log('state.newItem', state.newItem)
 		saveFabrics ();
-		console.log('state.newItem', state.newItem)
 		return
 	};
 	let checkboxes = document.getElementsByClassName('form-input checkbox');
@@ -673,7 +666,6 @@ function saveAnswers () {
 			state.newItem.answers[select.id] = $('#' + select.id).val();
 		};
 	});
-	console.log('state.newItem', state.newItem)
 }
 
 function saveFabrics () {
@@ -710,6 +702,10 @@ function saveFabrics () {
 		});
 		let savedLayerFabrics = savedLayer['fabrics-names'];
 		let formLayerFabrics = formLayer['fabrics-names'];
+		if (!savedLayerFabrics) {
+			savedLayerFabrics = [];
+		}
+		console.log('savedLayerFabrics', savedLayerFabrics)
 		for (let i=0; i<savedLayerFabrics.length; i++) {
 			let formLayerFabric = formLayerFabrics.find(function(lr){
 				return lr == savedLayerFabrics[i];
@@ -718,15 +714,21 @@ function saveFabrics () {
 				savedLayerFabrics.splice(i, 1);
 			};
 		};
+		
 		formLayerFabrics.forEach(function(formLayerFabric){
+			console.log('formLayerFabric', formLayerFabric)
 			let newFabric = savedLayerFabrics.find(function(lr){
 				return lr == formLayerFabric
 			});
+			console.log('newFabric', newFabric)
 			if (!newFabric) {
-				savedLayer['fabrics-names'].push(formLayerFabric);
+				savedLayerFabrics.push(formLayerFabric);
+				console.log('savedLayerFabrics', savedLayerFabrics)
+				console.log (savedLayer['fabrics-names'])
 			};
 		});
 	});
+	console.log('state.newItem.layers', state.newItem.layers)
 }
 
 function savePercentageComposition () {
@@ -811,13 +813,16 @@ function createPercentageCompositionPage () {
 	layers.forEach(function(layer){
 		layer.title = getQuestionText (layer.id).text;
 		let fabricNames = layer['fabrics-names'];
+		if (!fabricNames) {
+			fabricNames = [];
+		}
 		if (fabricNames.length > 1) {
 			selectedLayers.push(layer)
 		};
 		if (fabricNames.length == 1) {
 			saveOneFabricLayer (layer);
 		};
-	})
+	});
 	createTemplate ('layers-template', formPageName, {'layers': selectedLayers});
 	selectedLayers.forEach(function(layer){
 		let fabrics = [];
