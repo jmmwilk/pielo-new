@@ -101,7 +101,6 @@ export function startPage () {
 			createStartPage (categoriesData);
 			enableHomeClick (categoriesData);
 			login.goToLoginScreen (categoriesData);
-			login.checkUser ();
 			enableButton ();
 			eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 		});

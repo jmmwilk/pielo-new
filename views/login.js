@@ -17,19 +17,6 @@ export function goToLoginScreen (categoriesData) {
 	}
 }
 
-export function checkUser () {
-	let button = document.getElementById('check-user-button');
-	button.onclick = function () {
-		console.log ('zupka')
-		let user = firebase.auth().currentUser;
-		if (user) {
-			console.log ('user is singned in')
-		} else {
-			console.log ('nie ma usera')
-		}
-	}
-}
-
 function enableCreateAccount (categoriesData) {
 	let createAccountButton = document.getElementById('create-account');
 	createAccountButton.onclick = function(){
