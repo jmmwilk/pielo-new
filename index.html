@@ -529,16 +529,26 @@
     {{/with}}
   </script>
   <script id="edit-item-button-template" type="text/x-handlebars-template">
-    <button id="edit-item-button" type="button" class="btn btn-danger mb-3">
+    <button id="edit-item-button" type="button" class="btn btn-outline-danger mb-3">
       Edytuj pieluchę
     </button>
   </script>
   <script id="delete-item-button-template" type="text/x-handlebars-template">
-    <button id="delete-item-button" type="button" class="btn btn-danger mb-3">
+    <button id="delete-item-button" type="button" class="btn btn-outline-danger mb-3">
       Usuń pieluchę
     </button>
   </script>
-  <script id="item-preview" type="text/x-handlebars-template">
+  <script id="back-and-add-item-buttons-template" type="text/x-handlebars-template">
+    <div class="d-flex justify-content-between order-first">
+      <button id="back-to-form-button" type="button" class="btn btn-outline-danger mb-3">
+        Wróć do formularza
+      </button>
+      <button id="add-item-button" type="button" class="btn btn-warning mb-3">
+        Dodaj pieluchę
+      </button>
+    </div>
+  </script>
+  <script id="product-page-template" type="text/x-handlebars-template">
     {{#with diaper}}
     <div id="main" class="col-md-12 order-1 mx-auto">
       <div id="product-page" class="col-md-10 d-flex flex-column order-1 mx-auto">

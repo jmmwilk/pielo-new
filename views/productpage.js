@@ -11,12 +11,11 @@ export function createProductScreen (key, view) {
 	const promise = getAttributesTitles ();
 	promise
 	.then(function(){
-		let newPromise = loadItemData (key)
+		let newPromise = loadItemData (key, view)
 		return newPromise
 	})
 	.then (function (diaperData) {
 		let diaper = {'diaper': diaperData}
-		console.log ('diaper', diaper)
 		createPreviewScreen (diaper, key, view);
 	})
 }
@@ -73,7 +72,7 @@ function createSizeButtons (diaper) {
 
 function showWeightInfo (sizeButton, diaper) {
 	let sizeData = {};
-	let sizeName = sizeButton.getAttribute('size');
+	let sizeName = sizeButton.getAttribute('sizeeą	DXWSZ');
 	let sizes = diaper.diaper.sizes;
 	for (let i=0; i<sizes.length; i++) {
 		if (sizeName == sizes[i].id) {
@@ -212,7 +211,6 @@ function getParameters (diaper, parametersGroup) {
 	let attributesToPrint = [];
 	filteredParameters.forEach(function(parameter){
 		let parameterId = parameter.id;
-		console.log('parameterId', parameterId)
 		let attributeToPrint = {};
 
 		let attributeValue = diaper.diaper.attributes[parameterId];
@@ -261,9 +259,7 @@ function getParameterTitle (diaper, parameterId) {
 }
 
 export function createPreviewScreen (diaper, key, view) {
-	console.log('diaper', diaper)
 	let formDiaper = diaper;
-	console.log ('formDiaper', formDiaper)
 	let images = diaper.diaper.images;
 	let profileImage = images.find(function(image){
 		return image['pattern-nr'] == 1 && image['image-nr'] == 1
@@ -271,7 +267,7 @@ export function createPreviewScreen (diaper, key, view) {
 	diaper.diaper.profileImage = profileImage;
 	fillProductMainInfo ();
 	fillSizesInfo ();
-	createTemplate ('item-preview', 'page', diaper)
+	createTemplate ('product-page-template', 'page', diaper)
 	if (view == 'productScreen') {
 		createTemplate ('stars-box-template', 'stars-box-wrapper');
 		createTemplate ('reviews-box-template', 'product-page');
@@ -281,12 +277,35 @@ export function createPreviewScreen (diaper, key, view) {
 		createTemplate ('edit-item-button-template', 'edit-diaper-wrapper');
 		createTemplate ('delete-item-button-template', 'edit-diaper-wrapper');
 		$('#edit-item-button').click( function(){
-			console.log('IIIIIII', diaper)
+			state.whereToAddNewItem.addTo = 'mock-diapers-preview'
 			index.clearPage ();
-			console.log('formDiaper', formDiaper)
 			form.goToForm ('editItem', formDiaper, key)
 		});
 	};
+	if (view == 'preview') {
+		createTemplate ('back-and-add-item-buttons-template', 'product-page');
+		$('#add-item-button').click( function(){
+			let itemType;
+			if (state.whereToAddNewItem.addTo == 'mock-diapers') {
+				itemType = 'editItem';
+			};
+			if (state.whereToAddNewItem.addTo == 'mock-diapers-preview') {
+				itemType = 'newItem';
+				state.whereToAddNewItem.addTo = 'mock-diapers';
+			};
+			form.addMockDiaper (itemType, key)
+			index.clearPage ();
+			deleteStateNewItem ();
+//			deletePreviewFromDatabase (key);
+		});
+		$('#back-to-form-button').click( function(){
+			index.clearPage ();
+			form.goToForm ('editItem', formDiaper, key)
+			form.addMockDiaper (itemType, key)
+			index.clearPage ();
+			deleteStateNewItem ();
+		});
+	}
 	fillDiaperPreview (diaper);
 	createProfileImage (diaper, 1, 1);
 	createImagesOnLeftSide (diaper, 1)
@@ -295,7 +314,24 @@ export function createPreviewScreen (diaper, key, view) {
 	enableMainImageChange (diaper);
 	enablePatternChange (diaper);
 	createTemplate ('pattern-name-template', 'pattern-name', {'name': diaper.diaper.patterns[0].name});
-	setTimeout(function(){console.log('UUUUU', diaper)}, 3000)
+}
+
+function deletePreviewFromDatabase (key) {
+	let dbRef = firebase.database().ref('mock-diapers-preview/' + key);
+	console.log ('dbRef', dbRef)
+    dbRef.remove()
+}
+
+function deleteStateNewItem () {
+	delete state.newItem.answers;
+	delete state.newItem.categoryData;
+	delete state.newItem.images;
+	delete state.newItem.sizes;
+	delete state.newItem.patterns;
+	delete state.newItem.layers;
+	delete state.newItem.description;
+	delete state.newItem.itemName;
+	delete state.newItem.producerName;
 }
 
 function removeBorderFromImages (images) {
@@ -391,10 +427,17 @@ function createPatternsProfileImages (diaper) {
 	makeBorderOnImage (firstImage);
 }
 
-function loadItemData (key) {
+function loadItemData (key, view) {
 	const promise = new Promise ((resolve, reject) => {
+		let databaseFolderName;
+		if (view == 'productScreen') {
+			databaseFolderName = 'mock-diapers/';
+		};
+		if (view == 'preview') {
+			databaseFolderName = 'mock-diapers-preview/';
+		};
 		let diaper;
-		let dbRef = firebase.database().ref('mock-diapers/' + key + '/');
+		let dbRef = firebase.database().ref(databaseFolderName + key + '/');
 		dbRef.on('value', function(snap){
 			diaper = snap.val();
 			state.downloadedItem.attributes = diaper.attributes;
@@ -408,14 +451,14 @@ function loadItemData (key) {
 }
 
 function fillProductMainInfo () {
-	let itemPreview = $('#item-preview').html();
+	let itemPreview = $('#product-page-template').html();
 	Handlebars.registerHelper('printnewinfo', function(){
 		return this['item-name']
 	})
 }
 
 function fillSizesInfo () {
-	let itemPreview = $('#item-preview').html();
+	let itemPreview = $('#product-page-template').html();
 	Handlebars.registerHelper('printsizesinfo', function(){
 		return this.name + ' ' + this.min + ' - ' + this.max + ' kg';
 	})

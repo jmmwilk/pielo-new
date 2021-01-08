@@ -3,6 +3,9 @@ export let state = {
 	userRole: undefined,
 }
 
+export let whereToAddNewItem = {
+}
+
 export let newItem = {
 }
 

@@ -7,7 +7,6 @@ let formPageNumber = 0;
 let formPageName;
 
 export function goToForm (itemType, diaper, key) {
-	console.log('diaper', diaper)
 	getAttributes ()
 	.then(function(){
 		getAttributesText ();
@@ -80,19 +79,20 @@ function activateNextButton (itemType, key) {
 		let page = document.getElementById('page');
 		page.innerHTML = '';
 		productPage.createProductScreen (dbKey, 'preview');
-		deleteStateNewItem ();
 		formPageNumber = 0;
 		state.questionsText.length = 0;
 		state.answersOptions.length = 0;
 		state.attributes.length = 0;
 		return
-	}
+	};
 	clearForm ();
 	let clickedButton = 'next';
 	createFormPage (clickedButton);
 	fillInputsWithSavedAnswers ();
 	setProgress ();
 }
+
+
 
 function activateBackButton () {
 	saveAnswers ();
@@ -292,14 +292,23 @@ function fillPatternNames () {
 	}
 }
 
-function addMockDiaper (itemType, key) {
-	let dbRef = firebase.database().ref('mock-diapers/');
+export function addMockDiaper (itemType, key) {
 	let newDbRef;
-	if (itemType == 'newItem') {
+	if (itemType == 'newItem' && state.whereToAddNewItem.addTo == 'mock-diapers-preview') {
+		let dbRef = firebase.database().ref('mock-diapers-preview/');
 		newDbRef = dbRef.push();
-	} else {
-		newDbRef = firebase.database().ref('mock-diapers/' + key)
-	}
+	};
+	if (itemType == 'newItem' && state.whereToAddNewItem.addTo == 'mock-diapers') {
+		let dbRef = firebase.database().ref('mock-diapers/');
+		newDbRef = dbRef.push();
+	};
+	if (itemType == 'editItem' && state.whereToAddNewItem.addTo == 'mock-diapers') {
+		newDbRef = firebase.database().ref('mock-diapers/' + key);
+	};
+	if (itemType == 'editItem' && state.whereToAddNewItem.addTo == 'mock-diapers-preview') {
+		newDbRef = firebase.database().ref('mock-diapers-preview/' + key);
+		state.whereToAddNewItem.addTo = 'mock-diapers'
+	};
 	let diaper = state.newItem;
 	newDbRef.set({
 	  'attributes': diaper.answers,
@@ -318,18 +327,6 @@ function addMockDiaper (itemType, key) {
 	} else {
 		return key
 	};
-}
-
-function deleteStateNewItem () {
-	delete state.newItem.answers;
-	delete state.newItem.categoryData;
-	delete state.newItem.images;
-	delete state.newItem.sizes;
-	delete state.newItem.patterns;
-	delete state.newItem.layers;
-	delete state.newItem.description;
-	delete state.newItem.itemName;
-	delete state.newItem.producerName;
 }
 
 function createFormPage (clickedButton) {
@@ -707,7 +704,6 @@ function saveFabrics () {
 		}
 		let savedLayerFabrics = savedLayer['fabrics-names'];
 		let formLayerFabrics = formLayer['fabrics-names'];
-		console.log('savedLayerFabrics', savedLayerFabrics)
 		for (let i=0; i<savedLayerFabrics.length; i++) {
 			let formLayerFabric = formLayerFabrics.find(function(lr){
 				return lr == savedLayerFabrics[i];
@@ -718,19 +714,14 @@ function saveFabrics () {
 		};
 		
 		formLayerFabrics.forEach(function(formLayerFabric){
-			console.log('formLayerFabric', formLayerFabric)
 			let newFabric = savedLayerFabrics.find(function(lr){
 				return lr == formLayerFabric
 			});
-			console.log('newFabric', newFabric)
 			if (!newFabric) {
 				savedLayerFabrics.push(formLayerFabric);
-				console.log('savedLayerFabrics', savedLayerFabrics)
-				console.log (savedLayer['fabrics-names'])
 			};
 		});
 	});
-	console.log('state.newItem.layers', state.newItem.layers)
 }
 
 function savePercentageComposition () {

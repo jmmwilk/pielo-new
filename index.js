@@ -156,6 +156,7 @@ export function createStartPage (categoriesData) {
 function enableButton () {
 	let button = document.getElementById('add-diaper');
 	button.onclick = function() {
+		state.whereToAddNewItem.addTo = 'mock-diapers-preview';
 		clearPage ();
 		form.goToForm ('newItem');
 	}

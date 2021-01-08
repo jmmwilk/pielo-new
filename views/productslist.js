@@ -269,7 +269,6 @@ function createProfileImage () {
 function createItemsListTemplate (loadedDiapers) {
 	let pieluchaTemplate = $('#items-list-template').html();
 	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
-	console.log('loadedDiapers', loadedDiapers)
 	$('#products-container').append(compiledPieluchaTemplate(loadedDiapers))
 }
 
