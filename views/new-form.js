@@ -92,8 +92,6 @@ function activateNextButton (itemType, key) {
 	setProgress ();
 }
 
-
-
 function activateBackButton () {
 	saveAnswers ();
 	let formPageNames = getformPageNames ()

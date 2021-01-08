@@ -85,8 +85,11 @@ $(document).ready(function(){
 // 	  		},
 // 	  	]
 // 	});
-
 	createTemplate ('application-template', 'application');
+	startPage ();
+})
+
+export function startPage () {
 	const promise = getCategories ();
 	promise.
 	then(function(data) {
@@ -103,7 +106,7 @@ $(document).ready(function(){
 			eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 		});
 	});
-})
+}
 
 function getDiaperCategories () {
 	const promise1 = new Promise ((resolve, reject) => {

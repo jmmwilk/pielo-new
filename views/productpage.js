@@ -297,6 +297,7 @@ export function createPreviewScreen (diaper, key, view) {
 			index.clearPage ();
 			deleteStateNewItem ();
 //			deletePreviewFromDatabase (key);
+			createItemAddedPage ();
 		});
 		$('#back-to-form-button').click( function(){
 			index.clearPage ();
@@ -316,10 +317,20 @@ export function createPreviewScreen (diaper, key, view) {
 	createTemplate ('pattern-name-template', 'pattern-name', {'name': diaper.diaper.patterns[0].name});
 }
 
+function createItemAddedPage () {
+	index.clearPage ();
+	createTemplate ('item-added-template', 'page');
+	$('#go-to-main-page').click(function () {
+		console.log ('zupka')
+		index.clearPage ();
+		index.startPage ();
+	});
+}
+
 function deletePreviewFromDatabase (key) {
 	let dbRef = firebase.database().ref('mock-diapers-preview/' + key);
 	console.log ('dbRef', dbRef)
-    dbRef.remove()
+    dbRef.remove();
 }
 
 function deleteStateNewItem () {
