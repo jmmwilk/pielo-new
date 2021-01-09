@@ -4,24 +4,30 @@ import * as eventBus from '../eventBus.js';
 
 let user;
 
-export function goToLoginScreen (categoriesData) {
-	let loginIcon = document.getElementById('login-icon');
-	loginIcon.onclick = function () {
+export function goToLoginScreen () {
+// 	let loginIcon = document.getElementById('login-icon');
+// 	loginIcon.onclick = function () {
+// 		clearPage ();
+// 		createLoginPage ();
+// 		firebase.auth().signOut();
+// 		checkForAuthStateChange ();
+// 		enablelogIn (categoriesData);
+// 		enableLogOut ();
+// //		enableCreateAccount (categoriesData);
+// 	};
 		clearPage ();
-		createLoginPage ();
+		createTemplate('login-page-template', 'page');
 		firebase.auth().signOut();
 		checkForAuthStateChange ();
-		enablelogIn (categoriesData);
+		enablelogIn ();
 		enableLogOut ();
-		enableCreateAccount (categoriesData);
-	}
 }
 
-function enableCreateAccount (categoriesData) {
+function enableCreateAccount () {
 	let createAccountButton = document.getElementById('create-account');
 	createAccountButton.onclick = function(){
 		createAccountScreen ();
-		enableSignUp (categoriesData);
+//		enableSignUp (categoriesData);
 	};
 }
 
@@ -34,11 +40,6 @@ function createAccountScreen () {
 function clearPage () {
 	let page = document.getElementById('page');
 	page.innerHTML = '';
-}
-
-function createLoginPage () {
-	let loginTemplate = $('#login-page-template').html();
-	$('#page').html(loginTemplate);
 }
 
 function findUserInDatabase (firebaseUser) {
@@ -78,12 +79,12 @@ function getAllUsersFromDatabase () {
 	return promise1
 }
 
-function goToStartPage (categoriesData) {
+function goToStartPage () {
 	clearPage ();
-	index.createStartPage (categoriesData);
+	index.createStartPage ();
 }
 
-function enablelogIn (categoriesData) {
+function enablelogIn () {
 	const btnLogIn = document.getElementById('log-in');
 	btnLogIn.addEventListener ('click', e => {
 		const email = document.getElementById('email').value;
@@ -98,8 +99,11 @@ function enablelogIn (categoriesData) {
 						changeStateLogIn (user, firebaseUser)
 					})
 					.then (function () {
-						eventBus.eventBus.trigger('userLoggedIn');
-						goToStartPage (categoriesData);
+						document.getElementById('application').innerHTML = '';
+						createTemplate ('title-bar-template', 'application');
+						createTemplate ('page-template', 'application');
+						index.createHomePage ();
+//						eventBus.eventBus.trigger('userLoggedIn');
 					})
 				} else {
 				}
@@ -108,7 +112,7 @@ function enablelogIn (categoriesData) {
 	})
 }
 
-function enableSignUp (categoriesData) {
+function enableSignUp () {
 //	eventBus.eventBus.subscribe('userLoggedIn', createUserInFirestore);
 	const btnSignUp = document.getElementById('sign-up');
 	btnSignUp.addEventListener ('click', e => {
@@ -134,7 +138,7 @@ function enableSignUp (categoriesData) {
 						})
 						.then (function() {
 							eventBus.eventBus.trigger('userLoggedIn');
-							goToStartPage (categoriesData);
+							goToStartPage ();
 						})
 					})
 				} else {
@@ -160,6 +164,7 @@ function changeStateSignUp (firebaseUser, role) {
 	const promise = new Promise ((resolve, reject) => {
 		state.state.user = firebaseUser;
 		state.state.userRole = role;
+		console.log (state.state.user)
 		resolve()
 	})
 	return promise
@@ -209,4 +214,15 @@ function enableLogOut () {
 	})
 }
 
+function createTemplateHtml (templateId, parentId, data) {
+	let template = $('#' + templateId).html();
+	let compiledTemplate = Handlebars.compile(template);
+	$('#' + parentId).append(compiledTemplate(data));
+}
+
+function createTemplate (templateId, parentId, data) {
+	let template = $('#' + templateId).html();
+	let compiledTemplate = Handlebars.compile(template);
+	$('#' + parentId).append(compiledTemplate(data));
+}
 

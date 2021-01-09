@@ -85,11 +85,16 @@ $(document).ready(function(){
 // 	  		},
 // 	  	]
 // 	});
-	createTemplate ('application-template', 'application');
+	createTemplate ('title-bar-template', 'application');
+	createTemplate ('page-template', 'application');
 	startPage ();
 })
 
 export function startPage () {
+	login.goToLoginScreen ();
+}
+
+export function createHomePage () {
 	const promise = getCategories ();
 	promise.
 	then(function(data) {
@@ -100,13 +105,13 @@ export function startPage () {
 		then(function(categoriesData) {
 			createStartPage (categoriesData);
 			enableHomeClick (categoriesData);
-			login.goToLoginScreen (categoriesData);
-			enableButton ();
+
+			enableCreateFormButton ();
 			eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 		});
 	});
 }
-
+ 
 function getDiaperCategories () {
 	const promise1 = new Promise ((resolve, reject) => {
 		let dbRef = firebase.database().ref('diaper-categories/');
@@ -147,6 +152,7 @@ export function createTemplate (templateId, parentTemplate) {
 
 function fillUserName () {
 	let userNameBox = document.getElementById('user-name-box');
+	console.log ('user', user)
  	userNameBox.innerText = state.state.user.email
 }
 
@@ -155,7 +161,7 @@ export function createStartPage (categoriesData) {
 	productslist.createProductsList ();
 }
 
-function enableButton () {
+function enableCreateFormButton () {
 	let button = document.getElementById('add-diaper');
 	button.onclick = function() {
 		state.whereToAddNewItem.addTo = 'mock-diapers-preview';

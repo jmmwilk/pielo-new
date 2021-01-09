@@ -39,8 +39,13 @@
       firebase.analytics();
     </script>
   </body>
-  <script id="application-template" type="text">
-    <div id="title-bar" class="container-fluid d-flex justify-content-between">
+  <script id="page-template" type="text">
+    <div id="page" class="row d-flex justify-content-md-center">
+    </div>
+  </script>
+  </script>
+  <script id="title-bar-template" type="text/x-handlebars-template">
+    <div id="title-bar" class="container-fluid d-flex justify-content-between order-1">
       <div id="home">
         <img id="home-icon" src="/images/home.png"/>
       </div>
@@ -53,14 +58,12 @@
             <img src="/images/heart-red-filled.png" id="heart-icon">
           </button>
         </div>
-        <div id="user-name-box">
+        <div id="user-name-box" class="text-end">
         </div>
         <div id="login-icon-box">
           <img id="login-icon" src="/images/login-icon.png"/>
         </div>
       </div>
-    </div>
-    <div id="page" class="row d-flex justify-content-md-center">
     </div>
   </script>
   <script id="thank-you-template" type="text/x-handlebars-template">
@@ -132,20 +135,24 @@
     </div>
   </script>
   <script id="login-page-template" type="text">
-    <div id="log-in-box" class="form mx-auto">
-      <div id="email-box" class="form-group">
-        <label for="inputEmail">Email</label>
-        <input id="email" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+    <div class="justify-content-center">
+      <div class="">
+        <div id="log-in-box" class="form mx-auto mt-5">
+          <div id="email-box" class="form-group">
+            <label for="inputEmail">Email</label>
+            <input id="email" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+          </div>
+          <div id="password-box" class="form-group">
+            <label for="exampleInputPassword1">Hasło</label>
+            <input id="password" type="password" class="form-control" id="exampleInputPassword1">
+          </div>
+          <button id="log-in" type="submit" class="btn btn-primary">Zaloguj</button>
+    <!--       <div id="create-account">
+            <a href="#application">Załóż konto</a>
+          </div> -->
+          <button id="log-out" type="button" class="btn btn-primary d-none">Wyloguj</button>
+        </div>
       </div>
-      <div id="password-box" class="form-group">
-        <label for="exampleInputPassword1">Hasło</label>
-        <input id="password" type="password" class="form-control" id="exampleInputPassword1">
-      </div>
-      <button id="log-in" type="submit" class="btn btn-primary">Zaloguj</button>
-      <div id="create-account">
-        <a href="#application">Załóż konto</a>
-      </div>
-      <button id="log-out" type="button" class="btn btn-primary d-none">Wyloguj</button>
     </div>
   </script>
   <script id="subscribe-template" type="text">

@@ -270,10 +270,10 @@ export function createPreviewScreen (diaper, key, view) {
 	createTemplate ('product-page-template', 'page', diaper)
 	if (view == 'productScreen') {
 		createTemplate ('stars-box-template', 'stars-box-wrapper');
-		createTemplate ('reviews-box-template', 'product-page');
-		createTemplate ('add-review-template', 'add-review-form-wrapper', diaper);
-		createTemplate ('detail-reviews-summary-template', 'detail-summary-wrapper');
-		createTemplate ('add-review-child-template', 'ar-child-wrapper');
+//		createTemplate ('reviews-box-template', 'product-page');
+//		createTemplate ('add-review-template', 'add-review-form-wrapper', diaper);
+//		createTemplate ('detail-reviews-summary-template', 'detail-summary-wrapper');
+//		createTemplate ('add-review-child-template', 'ar-child-wrapper');
 		createTemplate ('edit-item-button-template', 'edit-diaper-wrapper');
 		createTemplate ('delete-item-button-template', 'edit-diaper-wrapper');
 		$('#edit-item-button').click( function(){
@@ -323,7 +323,7 @@ function createItemAddedPage () {
 	$('#go-to-main-page').click(function () {
 		console.log ('zupka')
 		index.clearPage ();
-		index.startPage ();
+		index.createHomePage ();
 	});
 }
 
