@@ -72,7 +72,7 @@ function createSizeButtons (diaper) {
 
 function showWeightInfo (sizeButton, diaper) {
 	let sizeData = {};
-	let sizeName = sizeButton.getAttribute('sizeeą	DXWSZ');
+	let sizeName = sizeButton.getAttribute('size');
 	let sizes = diaper.diaper.sizes;
 	for (let i=0; i<sizes.length; i++) {
 		if (sizeName == sizes[i].id) {
@@ -80,6 +80,9 @@ function showWeightInfo (sizeButton, diaper) {
 		};
 	};
 	document.getElementById('size-description').innerHTML = '';
+	console.log ('sizeData', sizeData)
+	console.log ('diaper', diaper)
+	console.log ('sizes', sizes)
 	createTemplate ('size-range-template', 'size-description', sizeData);
 }
 
