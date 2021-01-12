@@ -34,10 +34,6 @@ body {
 #menu-template-container {
 }
 
-html, body {
-  height: 100vh;
-}
-
 #main {
   padding: 10px;
   display: flex;
@@ -92,6 +88,8 @@ html, body {
 
 #user-name-box {
 	height: 50px;
+	width: 200px;
+	border: black solid 1px;
 }
 
 .heart {
@@ -117,32 +115,6 @@ html, body {
 
 input:error {
   border-color: red
-}
-
-.tick-image {
-	height: 20px;
- 	width: 20px;
-}
-
-.dimensions-image {
-	height: 250px;
- 	width: 250px;
-}
-
-.attribute-title {
-	font-weight: 500;
-}
-
-.parameters-group-title {
-	font-weight: 600;
-}
-
-.white-space-preline {
-	white-space: pre-line;
-}
-
-*{
-	box-sizing: content-box;
 }
 
 /*
