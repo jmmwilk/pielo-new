@@ -79,11 +79,6 @@ function getAllUsersFromDatabase () {
 	return promise1
 }
 
-function goToStartPage () {
-	clearPage ();
-	index.createStartPage ();
-}
-
 function enablelogIn () {
 	const btnLogIn = document.getElementById('log-in');
 	btnLogIn.addEventListener ('click', e => {
@@ -138,7 +133,8 @@ function enableSignUp () {
 						})
 						.then (function() {
 							eventBus.eventBus.trigger('userLoggedIn');
-							goToStartPage ();
+							clearPage ();
+							index.createStartPage ();
 						})
 					})
 				} else {

@@ -32,12 +32,6 @@ function getAttributesTitles () {
 	return promise
 }
 
-export function removeProductScreen () {
-	let page = document.getElementById('page');
-	let main = document.getElementById('main');
-	page.removeChild(main);
-}
-
 function createSizeButtons (diaper) {
 	createTemplate ('size-buttons-template', 'size-buttons-container', {'diaper': diaper.diaper, 'container': 'main'});
 	let buttons = $('.main-size-button');
@@ -277,7 +271,7 @@ export function createPreviewScreen (diaper, key, view) {
 			};
 			form.addMockDiaper (itemType, key)
 			index.clearPage ();
-			deleteStateNewItem ();
+			form.deleteStateNewItem ();
 //			deletePreviewFromDatabase (key);
 			createItemAddedPage ();
 		});
@@ -286,14 +280,14 @@ export function createPreviewScreen (diaper, key, view) {
 			form.goToForm ('editItem', formDiaper, key)
 			form.addMockDiaper (itemType, key)
 			index.clearPage ();
-			deleteStateNewItem ();
+			form.deleteStateNewItem ();
 		});
 	}
 	fillDiaperPreview (diaper);
 	createProfileImage (diaper, 1, 1);
 	createImagesOnLeftSide (diaper, 1)
 	createPatternsProfileImages (diaper)
-	setClassesToParameters ();
+	setUIClassesToParameters ();
 	enableMainImageChange (diaper);
 	enablePatternChange (diaper);
 	createTemplate ('pattern-name-template', 'pattern-name', {'name': diaper.diaper.patterns[0].name});
@@ -311,18 +305,6 @@ function createItemAddedPage () {
 function deletePreviewFromDatabase (key) {
 	let dbRef = firebase.database().ref('mock-diapers-preview/' + key);
     dbRef.remove();
-}
-
-export function deleteStateNewItem () {
-	delete state.newItem.answers;
-	delete state.newItem.categoryData;
-	delete state.newItem.images;
-	delete state.newItem.sizes;
-	delete state.newItem.patterns;
-	delete state.newItem.layers;
-	delete state.newItem.description;
-	delete state.newItem.itemName;
-	delete state.newItem.producerName;
 }
 
 function removeBorderFromImages (images) {
@@ -420,15 +402,14 @@ function createPatternsProfileImages (diaper) {
 
 function loadItemData (key, view) {
 	const promise = new Promise ((resolve, reject) => {
-		let databaseFolderName;
+		let dbRef
 		if (view == 'productScreen') {
-			databaseFolderName = 'mock-diapers/';
+			dbRef = firebase.database().ref('mock-diapers/' + key + '/');
 		};
 		if (view == 'preview') {
-			databaseFolderName = 'mock-diapers-preview/';
+			dbRef = firebase.database().ref('mock-diapers-preview/' + key + '/');
 		};
 		let diaper;
-		let dbRef = firebase.database().ref(databaseFolderName + key + '/');
 		dbRef.on('value', function(snap){
 			diaper = snap.val();
 			state.downloadedItem.attributes = diaper.attributes;
@@ -462,7 +443,7 @@ function addMarginToParameters () {
 	})
 }
 
-function setClassesToParameters () {
+function setUIClassesToParameters () {
 	let parameters = document.getElementsByClassName('parameters-row');
 	addMarginToParameters ();
 	let parametersLeft = document.getElementsByClassName('parameter-column-left');

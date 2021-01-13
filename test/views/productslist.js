@@ -12,16 +12,16 @@ export function createProductsList () {
 	.then(function(diapers) {
 	  	let loadedDiapers = {'data': diapers};
 	  	fillSizesInCard ();
-	  	createProfileImage ();
-		createItemsPageTemplate(loadedDiapers)
-		createItemsListTemplate (loadedDiapers);	
+	  	createProfileImageTemplate ();
+		createTemplate ('items-page-template', 'page');
+		createTemplate ('items-list-template', 'products-container', loadedDiapers);
 		enableCardClick ();
 		enableGoToFavouritesPage (loadedDiapers);
 		const promise = markFavourites ();
 		promise.then(function(){
 			enableHeartChange ();
 		});
-	})
+	});
 }
 
 function enableGoToFavouritesPage (loadedDiapers) {
@@ -36,21 +36,16 @@ function enableGoToFavouritesPage (loadedDiapers) {
 				favouriteDiapers.forEach(function(favouriteDiaper){
 					if(ldDiaper.key == favouriteDiaper) {
 						newDiapers.push(ldDiaper);
-					}
-				})
-			})
-			createFavouritesPageTemplate ();
-			createItemsListTemplate ({'data': newDiapers});
+					};
+				});
+			});
+			createTemplate ('items-page-template', 'page');
+			createTemplate ('items-list-template', 'products-container', {'data': newDiapers});	
 			markFavourites ();
 			enableCardClick ();
 			enableHeartChange ();
 		})
 	}
-}
-
-function clearPage () {
-	let page = document.getElementById('page');
-	page.innerHTML = '';
 }
 
 function addDiaperToFavourites (heart) {
@@ -74,7 +69,7 @@ function removeDiaperFromFavourites (heart) {
 		    	let key = childSnapshot.key		    	
 		    	let itemRef = firebase.database().ref('users/' + userKey + '/favourites/' + key);
 		    	itemRef.remove()
-		    }
+		    };
 	    });
   	});
 
@@ -91,7 +86,8 @@ function loadFavourites () {
 				if (isDiaperInFav == true) {
 					diapers.push(diaperKey);
 				}
-				if (i=hearts.length - 1) {
+				if (i==hearts.length - 1) {
+					console.log ('diapers', diapers)
 					resolve(diapers)
 				}
 			})
@@ -177,14 +173,6 @@ function enableHeartChange () {
 	});
 }
 
-function changeHeartClicked (heart) {
-	heart.src = "/images/heart-red-filled.png";
-}
-
-function changeHeartUnClicked (heart) {
-	heart.src = "/images/hear2.png";
-}
-
 export function createNewProductsList (navCategoryGroup, navCategory) {
 	const promise = getDatabaseDiapers ();
 	promise
@@ -230,7 +218,9 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	  	let newItems = {'data': items}
 		removeProductsList ();
 		createItemsPageTemplate (newItems);
-		createItemsListTemplate (newItems);
+		createTemplate ('items-page-template', 'page');
+		createTemplate ('items-list-template', 'products-container', newItems);	
+
 		enableCardClick ();
 	})
 }
@@ -258,29 +248,11 @@ function getDatabaseDiapers () {
 	return promise1
 }
 
-function createProfileImage () {
+function createProfileImageTemplate () {
 	let itemPreview = $('#items-list-template').html();
 	Handlebars.registerHelper('printimage', function(){
 		return this.images[0].url
 	})
-}
-
-function createItemsListTemplate (loadedDiapers) {
-	let pieluchaTemplate = $('#items-list-template').html();
-	let compiledPieluchaTemplate = Handlebars.compile(pieluchaTemplate);
-	$('#products-container').append(compiledPieluchaTemplate(loadedDiapers))
-}
-
-function createItemsPageTemplate (loadedDiapers) {
-	let itemsPageTemplate = $('#items-page-template').html();
-	let compiledItemsPageTemplate = Handlebars.compile(itemsPageTemplate);
-	$('#page').append(compiledItemsPageTemplate(loadedDiapers));
-}
-
-function createFavouritesPageTemplate (loadedDiapers) {
-	let favouritesPageTemplate = $('#favourites-page').html();
-	let compiledFavouritesPageTemplate = Handlebars.compile(favouritesPageTemplate);
-	$('#page').append(compiledFavouritesPageTemplate(loadedDiapers));
 }
 
 export function enableAllDiapersClick () {
@@ -295,9 +267,8 @@ function enableCardClick () {
 	let cards = document.getElementsByClassName('card');
 	Array.from(cards).forEach(function(card) {
 		card.onclick = function () {
-			clearPage ();
-			let key = card.dataset.key;
-			productpage.createProductScreen (key, 'productScreen');
+			document.getElementById('page').innerHTML = '';
+			productpage.createProductScreen (card.dataset.key, 'productScreen');
 		}
 	})
 }
@@ -308,45 +279,27 @@ function removeProductsContainer () {
 	page.removeChild(main);
 }
 
-function findCategory () {
-	let category;
-	let isItType = clickedMenuItem.classList.contains('type');
-	let isItFabric = clickedMenuItem.classList.contains('fabric');
-	let isItSize = clickedMenuItem.classList.contains('size');
-	let isItBrand = clickedMenuItem.classList.contains('brand');
-	if (isItType == true) {
-		category = 'name';
-		return category
-	};
-	if (isItFabric == true) {
-		category = 'fabric';
-		return category
-	};
-	if (isItSize == true) {
-		category = 'size';
-		return category
-	};
-	if (isItBrand == true) {
-		category = 'brand';
-		return category
-	};
-}
-
-function removeCards () {
-	let productsContainer = document.getElementById('products-container')
-	let cards = document.getElementsByClassName('card');
-	Array.from(cards).forEach(function(card) {
-		productsContainer.removeChild(card)
-	})
-}
-
 function fillSizesInCard () {
 	let itemPreview = $('#pielucha-template').html();
 	Handlebars.registerHelper('printsizes', function(){
-		return this.shortcut + ', '
-	})
+		let print = '';
+		let sizes = this.sizes;
+		for (let i=0; i<sizes.length; i++) {
+			if (i<sizes.length - 1) {
+				print = print + sizes[i].shortcut + ', ';
+			} else {
+				print = print + sizes[i].shortcut
+			};
+		};
+		return print
+	});
 }
 
+function createTemplate (templateId, parentId, data) {
+	let template = $('#' + templateId).html();
+	let compiledTemplate = Handlebars.compile(template);
+	$('#' + parentId).append(compiledTemplate(data));
+}
 
 
 

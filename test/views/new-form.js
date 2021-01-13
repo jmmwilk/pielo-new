@@ -7,20 +7,13 @@ let formPageNumber;
 let formPageName;
 
 export function goToForm (itemType, diaper, key) {
-	formPageNumber = 0;
-	productPage.deleteStateNewItem ();
-	state.questionsText.length = 0;
-	state.answersOptions.length = 0;
-	state.attributes.length = 0;
+	resetForm ();
 	getAttributes ()
 	.then(function(){
 		getAttributesText ();
 		getAnswersOptions ();
 	})
 	.then(function(){
-		state.newItem.answers = {};
-		state.newItem.images = [];
-		state.newItem.layers = [];
 		createTemplate ('form-view-template', 'page');
 		if (itemType == 'newItem') {
 			createDiaperCategoriesPage ();
@@ -37,13 +30,27 @@ export function goToForm (itemType, diaper, key) {
 	});
 }
 
-function enableHomeClick (categoriesData) {
-	let home = document.getElementById('home');
-	home.onclick = function () {
-		clearPage ();
-		createStartPage (categoriesData);
-		productPage.deleteStateNewItem ();
-	}
+function resetForm () {
+	formPageNumber = 0;
+	deleteStateNewItem ();
+	state.questionsText.length = 0;
+	state.answersOptions.length = 0;
+	state.attributes.length = 0;
+	state.newItem.answers = {};
+	state.newItem.images = [];
+	state.newItem.layers = [];
+}
+
+export function deleteStateNewItem () {
+	delete state.newItem.answers;
+	delete state.newItem.categoryData;
+	delete state.newItem.images;
+	delete state.newItem.sizes;
+	delete state.newItem.patterns;
+	delete state.newItem.layers;
+	delete state.newItem.description;
+	delete state.newItem.itemName;
+	delete state.newItem.producerName;
 }
 
 function getNewItemData (diaper) {
@@ -60,14 +67,13 @@ function getNewItemData (diaper) {
 	let layers = diaper.diaper.layers;
 	layers.forEach(function(layer){
 		let layerId = layer.id
-//		state.newItem.answers[layerId] = layer['fabrics-names'];
 	});
 }
 
 function createForm (itemType, key) {
 	let formPageNames = getformPageNames ()
 	formPageName = formPageNames[formPageNumber];
-	clearFormWrapper ();
+	document.getElementById('form-view-wrapper').innerHTML = '';
 	createTemplate ('form-template', 'form-view-wrapper');
 	createFormPage ();
 	setProgress ();
@@ -93,13 +99,10 @@ function activateNextButton (itemType, key) {
 		let page = document.getElementById('page');
 		page.innerHTML = '';
 		productPage.createProductScreen (dbKey, 'preview');
-		formPageNumber = 0;
-		state.questionsText.length = 0;
-		state.answersOptions.length = 0;
-		state.attributes.length = 0;
+		resetForm ();
 		return
 	};
-	clearForm ();
+	document.getElementById('form-wrapper').innerHTML = '';
 	let clickedButton = 'next';
 	createFormPage (clickedButton);
 	fillInputsWithSavedAnswers ();
@@ -111,7 +114,7 @@ function activateBackButton () {
 	let formPageNames = getformPageNames ()
 	formPageNumber = formPageNumber - 1;
 	formPageName = formPageNames[formPageNumber];
-	clearForm();
+	document.getElementById('form-wrapper').innerHTML = '';
 	let clickedButton = 'back';
 	createFormPage (clickedButton);
 	setProgress ();
@@ -123,34 +126,33 @@ function fillInputsWithSavedAnswers () {
 		$('#' + 'item-name-input').val(state.newItem.itemName);
 		$('#' + 'producer-name-input').val(state.newItem.producerName);
 		return
-	}
+	};
 	if (formPageName == 'fabrics') {
 		fillFabrics ();
 		return
-	}
+	};
 	if (formPageName == 'percentage-composition') {
 		fillPercentageComposition ();
 		return
-	}
+	};
 	if (formPageName == 'sizes') {
 		fillSizes ();
 		return
-	}
+	};
 	if (formPageName == 'dimensions') {
 		fillDimensions ();
 		fillWeights ();
 		return
-	}
+	};
 	if (formPageName == 'images') {
 		fillImagesPreviews ();
 		fillPatternNames ()
 		return
-	}
+	};
 	if (formPageName == 'description') {
 		$('#' + 'description-input').val(state.newItem.description);
 		return
-	}
-	let selects = $('.form-input .select');
+	};
 	let checkboxes = document.getElementsByClassName('form-input checkbox');
 	Array.from(checkboxes).forEach(function(checkbox){
 		checkbox.checked = state.newItem.answers[checkbox.id];
@@ -171,6 +173,7 @@ function fillInputsWithSavedAnswers () {
 			document.getElementById(boxId).classList.add('show');
 		};
 	});
+	let selects = $('.form-input .select');
 	Array.from(selects).forEach(function(select){
 		let attributeValue = state.newItem.answers[select.id]
 		$('#' + select.id).selectpicker('val', attributeValue);
@@ -357,7 +360,7 @@ function createFormPage (clickedButton) {
 		return
 	}
 	if (formPageName == 'sizes') {
-		createSizesQuestion ();
+		createSizesPage ();
 		return
 	}
 	if (formPageName == 'dimensions') {
@@ -480,8 +483,7 @@ function deletePreviousImage (patternNumberValue, imageNumberValue) {
 
 function createFormQuestions () {
 	let diaper = state.newItem.categoryData.attributes;
-	let attributes = state.attributes;
-	const filteredAttributes = attributes.filter(function(attribute) {
+	const filteredAttributes = state.attributes.filter(function(attribute) {
 		let attributeId = attribute.id;
 		return !(!diaper[attributeId] || attribute['form-page-name'] !== formPageName);
 	})
@@ -493,13 +495,13 @@ function createFormQuestions () {
 					createCheckboxInput (attributeId);
 					if (attribute['dependent-questions']) {
 						createDependentQuestions (attribute, filteredAttributes)
-					}
-				}
+					};
+				};
 				if (diaper[attributeId].answer == true) {
 					if (attribute['dependent-questions']) {
 						createDependentQuestions (attribute, filteredAttributes)
-					}
-				}
+					};
+				};
 			};
 			if (attribute['input-type'] == 'select') {
 				createSelectInput (attributeId);
@@ -511,14 +513,14 @@ function createFormQuestions () {
 		let parentId = attribute['parent-id'];
 		if (attribute['question-type'] == 'dependent'
 			&& state.newItem.answers[parentId] == true) {
-			let parentFormPageName = attributes.find(function(att){
+			let parentFormPageName = state.attributes.find(function(att){
 				return att.id == parentId
 			})['form-page-name']
 			if (parentFormPageName !== formPageName) {
 				createSelectInput (attributeId);
-			}
-		}
-	})
+			};
+		};
+	});
 }
 
 function createDependentQuestions (attribute, attributes) {
@@ -805,8 +807,7 @@ function savePatternNames () {
 }
 
 function saveChosenCategoryData (chosenCategory) {
-	let category = chosenCategory;
-	state.newItem.categoryData = findCategoryData (category, state.diaperCategories);
+	state.newItem.categoryData = findCategoryData (chosenCategory, state.diaperCategories);
 	const attributes = Object.values(state.newItem.categoryData.attributes);
 	attributes.forEach(function(attribute){
 		if (attribute.answer == true) {
@@ -817,9 +818,8 @@ function saveChosenCategoryData (chosenCategory) {
 }
 
 function createPercentageCompositionPage (clickedButton) {
-	let layers = state.newItem.layers;
 	let selectedLayers = [];
-	layers.forEach(function(layer){
+	state.newItem.layers.forEach(function(layer){
 		layer.title = getQuestionText (layer.id).text;
 		let fabricNames = layer['fabrics-names'];
 		if (!fabricNames) {
@@ -865,18 +865,16 @@ function saveOneFabricLayer (layer) {
 function createDimensionsPage () {
 	let sizes = state.newItem.sizes;
 	createTemplate ('dimensions-page-template', formPageName, {'sizes': sizes});
-	let dimensions = state.dimensions;
-	dimensions.forEach(function(dimension){
+	state.dimensions.forEach(function(dimension){
 		let title = getQuestionText (dimension.id)
 		createTemplate ('dimension-title-template', 'dimensions-titles', {'dimension-text': title.text});
 	})
 	createTemplate ('size-inputs-column-template', 'inputs-box', {'sizes': sizes});
 	sizes.forEach(function(size){
-		createTemplate ('size-input-template', size.id + '-inputs-box', {'dimensions': dimensions, 'size': size});
+		createTemplate ('size-input-template', size.id + '-inputs-box', {'dimensions': state.dimensions, 'size': size});
 	})
-	let inputHeight = document.getElementsByClassName('dimension-input')[0].offsetHeight;
 	Array.from(document.getElementsByClassName('dimension-title')).forEach(function(title){
-		title.style.height = inputHeight + 'px'
+		title.style.height = document.getElementsByClassName('dimension-input')[0].offsetHeight + 'px';
 	})
 	createTemplate ('weight-input-template', formPageName, {'sizes': sizes});
 	createTemplate ('form-page-title-template', 'weight-inputs-title', {'title': 'Przedział wagowy'})
@@ -920,9 +918,8 @@ function saveDimensions () {
 
 function getDimensions () {
 	state.dimensions.length = 0;
-	let attributes = state.attributes
 	let diaper = state.newItem.categoryData.attributes;
-	const filteredAttributes = attributes.filter(function(attribute) {
+	const filteredAttributes = state.attributes.filter(function(attribute) {
 		let attributeId = attribute.id;
 		return (attribute.dimension == true && diaper[attributeId]);
 	}).forEach(function(attribute){
@@ -937,7 +934,7 @@ function createDiaperCategoriesPage () {
 	$('#diaper-categories-input').selectpicker();
 }
 
-function createSizesQuestion () {
+function createSizesPage () {
 	let sizes = {'data': state.sizes};
 	createTemplate ('form-sizes-template', 'sizes');
 	createTemplate ('new-input-template', 'sizes-input', sizes);
@@ -1034,14 +1031,6 @@ function getAnswersOptions () {
 	  	
 	});
 	return promise1
-}
-
-function clearFormWrapper () {
-	document.getElementById('form-view-wrapper').innerHTML = '';
-}
-
-function clearForm () {
-	document.getElementById('form-wrapper').innerHTML = '';
 }
 
 function createTemplate (templateId, parentId, data) {

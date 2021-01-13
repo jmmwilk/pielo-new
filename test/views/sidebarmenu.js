@@ -1,5 +1,4 @@
 import * as productslist from '/test/views/productslist.js';
-import * as form from '/test/views/form.js';
 
 export function createSideBar (categoriesData) {
 	let menuCategories = ['diaper-categories', 'sizes', 'brands', 'fabrics'];
