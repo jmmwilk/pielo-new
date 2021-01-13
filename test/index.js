@@ -9,6 +9,7 @@ $(document).ready(function(){
 	addDataToDatabase ();
 	createTemplate ('title-bar-template', 'application');
 	createTemplate ('page-template', 'application');
+	eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 	login.goToLoginScreen ();
 })
 
@@ -21,9 +22,8 @@ export function createHomePage () {
 		then(function(categoriesData) {
 			createStartPage (categoriesData);
 			enableHomeClick (categoriesData);
-
 			enableCreateFormButton ();
-//			eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
+			
 		});
 	});
 }

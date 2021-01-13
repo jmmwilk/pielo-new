@@ -98,7 +98,7 @@ function enablelogIn () {
 						createTemplate ('title-bar-template', 'application');
 						createTemplate ('page-template', 'application');
 						index.createHomePage ();
-//						eventBus.eventBus.trigger('userLoggedIn');
+						eventBus.eventBus.trigger('userLoggedIn');
 					})
 				} else {
 				}
