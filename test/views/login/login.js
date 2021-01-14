@@ -4,6 +4,10 @@ import * as eventBus from '/test/eventBus.js';
 
 let user;
 
+$(document).ready(function(){
+	goToLoginScreen ();
+})
+
 export function goToLoginScreen () {
 // 	let loginIcon = document.getElementById('login-icon');
 // 	loginIcon.onclick = function () {
@@ -15,7 +19,10 @@ export function goToLoginScreen () {
 // 		enableLogOut ();
 // //		enableCreateAccount (categoriesData);
 // 	};
-		clearPage ();
+
+
+//		clearPage ();
+		createTemplateHtml ('page-template', 'application');
 		createTemplate('login-page-template', 'page');
 		firebase.auth().signOut();
 		checkForAuthStateChange ();
@@ -23,19 +30,19 @@ export function goToLoginScreen () {
 		enableLogOut ();
 }
 
-function enableCreateAccount () {
-	let createAccountButton = document.getElementById('create-account');
-	createAccountButton.onclick = function(){
-		createAccountScreen ();
-//		enableSignUp (categoriesData);
-	};
-}
+// function enableCreateAccount () {
+// 	let createAccountButton = document.getElementById('create-account');
+// 	createAccountButton.onclick = function(){
+// 		createAccountScreen ();
+// 		enableSignUp (categoriesData);
+// 	};
+// }
 
-function createAccountScreen () {
-	let subscribeTemplate = $('#subscribe-template').html();
-	let compiledSubscribeTemplate = Handlebars.compile(subscribeTemplate);
-	$('#page').html(compiledSubscribeTemplate());
-}
+// function createAccountScreen () {
+// 	let subscribeTemplate = $('#subscribe-template').html();
+// 	let compiledSubscribeTemplate = Handlebars.compile(subscribeTemplate);
+// 	$('#page').html(compiledSubscribeTemplate());
+// }
 
 function clearPage () {
 	let page = document.getElementById('page');
@@ -94,10 +101,7 @@ function enablelogIn () {
 						changeStateLogIn (user, firebaseUser)
 					})
 					.then (function () {
-						document.getElementById('application').innerHTML = '';
-						createTemplate ('title-bar-template', 'application');
-						createTemplate ('page-template', 'application');
-						index.createHomePage ();
+						console.log ('żółteczko')
 						eventBus.eventBus.trigger('userLoggedIn');
 					})
 				} else {
@@ -107,42 +111,42 @@ function enablelogIn () {
 	})
 }
 
-function enableSignUp () {
-//	eventBus.eventBus.subscribe('userLoggedIn', createUserInFirestore);
-	const btnSignUp = document.getElementById('sign-up');
-	btnSignUp.addEventListener ('click', e => {
-		const email = document.getElementById('email').value;
-		const password = document.getElementById('password').value;
-		const roleCheckbox = document.getElementById('producer');
-		let role;
-		if (roleCheckbox.checked == true) {
-			role = 'producer';
-		} else {
-			role = 'normalUser'
-		}
-		const auth = firebase.auth();
-		const promise = auth.createUserWithEmailAndPassword(email, password);
-		promise.then(function() {
-		    firebase.auth().onAuthStateChanged(firebaseUser => {
-				if (firebaseUser) {
-					const promise2 = changeStateSignUp (firebaseUser, role)
-					promise2.then (function () {
-						const promise3 = createUserInFirestore ();
-						promise3.then (function(key) {
-							state.state.userKey = key;
-						})
-						.then (function() {
-							eventBus.eventBus.trigger('userLoggedIn');
-							clearPage ();
-							index.createStartPage ();
-						})
-					})
-				} else {
-				}
-			})
-		})
-	})
-}
+// function enableSignUp () {
+// //	eventBus.eventBus.subscribe('userLoggedIn', createUserInFirestore);
+// 	const btnSignUp = document.getElementById('sign-up');
+// 	btnSignUp.addEventListener ('click', e => {
+// 		const email = document.getElementById('email').value;
+// 		const password = document.getElementById('password').value;
+// 		const roleCheckbox = document.getElementById('producer');
+// 		let role;
+// 		if (roleCheckbox.checked == true) {
+// 			role = 'producer';
+// 		} else {
+// 			role = 'normalUser'
+// 		}
+// 		const auth = firebase.auth();
+// 		const promise = auth.createUserWithEmailAndPassword(email, password);
+// 		promise.then(function() {
+// 		    firebase.auth().onAuthStateChanged(firebaseUser => {
+// 				if (firebaseUser) {
+// 					const promise2 = changeStateSignUp (firebaseUser, role)
+// 					promise2.then (function () {
+// 						const promise3 = createUserInFirestore ();
+// 						promise3.then (function(key) {
+// 							state.state.userKey = key;
+// 						})
+// 						.then (function() {
+// 							eventBus.eventBus.trigger('userLoggedIn');
+// 							clearPage ();
+// 							index.createStartPage ();
+// 						})
+// 					})
+// 				} else {
+// 				}
+// 			})
+// 		})
+// 	})
+// }
 
 function changeStateLogIn (user, firebaseUser) {
 	const promise = new Promise ((resolve, reject) => {
@@ -160,7 +164,6 @@ function changeStateSignUp (firebaseUser, role) {
 	const promise = new Promise ((resolve, reject) => {
 		state.state.user = firebaseUser;
 		state.state.userRole = role;
-		console.log (state.state.user)
 		resolve()
 	})
 	return promise
@@ -211,12 +214,14 @@ function enableLogOut () {
 }
 
 function createTemplateHtml (templateId, parentId, data) {
+	console.log(templateId, parentId)
 	let template = $('#' + templateId).html();
 	let compiledTemplate = Handlebars.compile(template);
-	$('#' + parentId).append(compiledTemplate(data));
+	$('#' + parentId).html(compiledTemplate(data));
 }
 
 function createTemplate (templateId, parentId, data) {
+	console.log(templateId, parentId)
 	let template = $('#' + templateId).html();
 	let compiledTemplate = Handlebars.compile(template);
 	$('#' + parentId).append(compiledTemplate(data));

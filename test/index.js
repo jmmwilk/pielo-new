@@ -1,17 +1,23 @@
 import * as productslist from '/test/views/productslist.js';
 import * as sidebarmenu from '/test/views/sidebarmenu.js';
 import * as form from '/test/views/new-form.js';
-import * as login from '/test/views/login.js';
+import * as login from '/test/views/login/login.js';
 import * as eventBus from '/test/eventBus.js';
 import * as state from '/test/state.js';
 
 $(document).ready(function(){
+	console.log ('kokoko')
 	addDataToDatabase ();
+	createMainPage ();
+	createHomePage ();
+	eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
+})
+
+export function createMainPage () {
+	console.log('kukuryku')
 	createTemplate ('title-bar-template', 'application');
 	createTemplate ('page-template', 'application');
-	eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
-	login.goToLoginScreen ();
-})
+}
 
 export function createHomePage () {
 	getCategories ().
@@ -23,7 +29,6 @@ export function createHomePage () {
 			createStartPage (categoriesData);
 			enableHomeClick (categoriesData);
 			enableCreateFormButton ();
-			
 		});
 	});
 }
@@ -55,6 +60,7 @@ function getSizes () {
 }
 
 export function createTemplate (templateId, parentTemplate) {
+	console.log (templateId, parentTemplate)
 	let template = $('#' + templateId).html();
 	let compiledTemplate = Handlebars.compile(template);
 	$('#' + parentTemplate).html(compiledTemplate());
