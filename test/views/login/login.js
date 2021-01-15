@@ -1,4 +1,4 @@
-import * as index from '/test/index.js';
+// import * as index from '/test/index.js';
 import * as state from '/test/state.js';
 import * as eventBus from '/test/eventBus.js';
 
@@ -102,7 +102,9 @@ function enablelogIn () {
 					})
 					.then (function () {
 						console.log ('żółteczko')
-						eventBus.eventBus.trigger('userLoggedIn');
+// 						eventBus.eventBus.trigger('userLoggedIn');
+						window.location.href='../../index.html';
+						
 					})
 				} else {
 				}
@@ -214,14 +216,12 @@ function enableLogOut () {
 }
 
 function createTemplateHtml (templateId, parentId, data) {
-	console.log(templateId, parentId)
 	let template = $('#' + templateId).html();
 	let compiledTemplate = Handlebars.compile(template);
 	$('#' + parentId).html(compiledTemplate(data));
 }
 
 function createTemplate (templateId, parentId, data) {
-	console.log(templateId, parentId)
 	let template = $('#' + templateId).html();
 	let compiledTemplate = Handlebars.compile(template);
 	$('#' + parentId).append(compiledTemplate(data));
