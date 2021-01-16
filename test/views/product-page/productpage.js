@@ -1,5 +1,5 @@
 import * as productslist from '/test/views/productslist.js';
-import * as form from '/test/views/new-form.js';
+import * as form from '/test/views/form/new-form.js';
 import * as state from '/test/state.js';
 import * as index from '/test/index.js';
 

@@ -1,6 +1,6 @@
 import * as productslist from '/test/views/productslist.js';
 import * as sidebarmenu from '/test/views/sidebarmenu.js';
-import * as form from '/test/views/new-form.js';
+import * as form from '/test/views/form/new-form.js';
 // import * as login from '/test/views/login/login.js';
 import * as eventBus from '/test/eventBus.js';
 import * as state from '/test/state.js';
