@@ -1,5 +1,5 @@
 import * as state from '/test/state.js';
-import * as productPage from '/test/views/productpage.js';
+import * as productPage from '/test/views/product-page/productpage.js';
 
 let database = firebase.database();
 let storage = firebase.storage();
@@ -14,7 +14,7 @@ export function goToForm (itemType, diaper, key) {
 		getAnswersOptions ();
 	})
 	.then(function(){
-		createTemplate ('form-view-template', 'page');
+		createTemplate ('form-view', 'page');
 		if (itemType == 'newItem') {
 			createDiaperCategoriesPage ();
 			document.getElementById('next-button').onclick = function () {
@@ -74,7 +74,7 @@ function createForm (itemType, key) {
 	let formPageNames = getformPageNames ()
 	formPageName = formPageNames[formPageNumber];
 	document.getElementById('form-view-wrapper').innerHTML = '';
-	createTemplate ('form-template', 'form-view-wrapper');
+	createTemplate ('form', 'form-view-wrapper');
 	createFormPage ();
 	setProgress ();
 	fillInputsWithSavedAnswers ();
@@ -99,7 +99,7 @@ function activateNextButton (itemType, key) {
 		let page = document.getElementById('page');
 		page.innerHTML = '';
 		productPage.createProductScreen (dbKey, 'preview');
-		resetForm ();
+//		resetForm ();
 		return
 	};
 	document.getElementById('form-wrapper').innerHTML = '';
@@ -348,8 +348,8 @@ function createFormPage (clickedButton) {
 	let formPage = formPages.find(function(fPage){
 		return fPage.id == formPageName
 	});
-	createTemplate ('form-page-template', 'form-wrapper', {'formPage': formPage});
-	createTemplate ('form-page-title-template', formPageName, {'title': formPage.name})
+	createTemplate ('form-page', 'form-wrapper', {'formPage': formPage});
+	createTemplate ('form-page-title', formPageName, {'title': formPage.name})
 	changeNextButton ();
 	if (formPageName == 'main-info') {
 		createMainInfoPage ();
@@ -395,7 +395,7 @@ function createMainInfoPage () {
 }
 
 function createImagesPage () {
-	createTemplate ('add-pattern-button-template', formPageName);
+	createTemplate ('add-pattern-button', formPageName);
 	let patternNumber = 1;
 	addPattern (patternNumber);
 	patternNumber = patternNumber + 1;
@@ -407,7 +407,7 @@ function createImagesPage () {
 
 function addPattern (patternNumber) {
 	let imageNumbers = setImageNumber (patternNumber);
-	createTemplate ('add-pattern-template', formPageName, imageNumbers);
+	createTemplate ('add-pattern', formPageName, imageNumbers);
 	loadImage (patternNumber);
 }
 
@@ -577,7 +577,7 @@ function findDependentAttributeData (attributes, depAttributeId) {
 
 function createCheckboxInput (attributeId) {
 	let questionData = getQuestionText (attributeId)
-	createTemplate ('checkbox-input-template', formPageName, questionData);
+	createTemplate ('checkbox-input', formPageName, questionData);
 }
 
 function createTextInput (attributeId, rowsNr, title) {
@@ -586,7 +586,7 @@ function createTextInput (attributeId, rowsNr, title) {
 		'rows-nr': rowsNr,
 		'title': title
 	}
-	createTemplate ('text-input-template', formPageName, {'input-data': inputData});
+	createTemplate ('text-input', formPageName, {'input-data': inputData});
 }
 
 function isFabricAttr (attributeId) {
@@ -600,7 +600,7 @@ function isFabricAttr (attributeId) {
 function createSelectInput (attributeId) {
 	let questionData = getQuestionText (attributeId);
 	questionData.fabrics = isFabricAttr (attributeId);
-	createTemplate ('select-input-template', formPageName, questionData);
+	createTemplate ('select-input', formPageName, questionData);
 	let answersData = {};
 	let answers = state.answersOptions;
 	let diaper = state.newItem.categoryData.attributes;
@@ -611,7 +611,7 @@ function createSelectInput (attributeId) {
 			answersData.data = answer.options
 		}
 	})
-	createTemplate ('new-input-template', attributeId, answersData);
+	createTemplate ('new-input', attributeId, answersData);
 	$('#' + attributeId).selectpicker();
 }
 
@@ -841,7 +841,7 @@ function createPercentageCompositionPage (clickedButton) {
 		};
 		return
 	}
-	createTemplate ('layers-template', formPageName, {'layers': selectedLayers});
+	createTemplate ('layers', formPageName, {'layers': selectedLayers});
 	selectedLayers.forEach(function(layer){
 		let fabrics = [];
 		layer['fabrics-names'].forEach(function(fabricName){
@@ -850,7 +850,7 @@ function createPercentageCompositionPage (clickedButton) {
 			fabric['layer-id'] = layer.id;
 			fabrics.push(fabric)
 		})
-		createTemplate ('fabrics-inputs-template', layer.id, {'fabrics': fabrics});
+		createTemplate ('fabrics-inputs', layer.id, {'fabrics': fabrics});
 	})
 }
 
@@ -864,20 +864,20 @@ function saveOneFabricLayer (layer) {
 
 function createDimensionsPage () {
 	let sizes = state.newItem.sizes;
-	createTemplate ('dimensions-page-template', formPageName, {'sizes': sizes});
+	createTemplate ('dimensions-page', formPageName, {'sizes': sizes});
 	state.dimensions.forEach(function(dimension){
 		let title = getQuestionText (dimension.id)
-		createTemplate ('dimension-title-template', 'dimensions-titles', {'dimension-text': title.text});
+		createTemplate ('dimension-title', 'dimensions-titles', {'dimension-text': title.text});
 	})
-	createTemplate ('size-inputs-column-template', 'inputs-box', {'sizes': sizes});
+	createTemplate ('size-inputs-column', 'inputs-box', {'sizes': sizes});
 	sizes.forEach(function(size){
-		createTemplate ('size-input-template', size.id + '-inputs-box', {'dimensions': state.dimensions, 'size': size});
+		createTemplate ('size-input', size.id + '-inputs-box', {'dimensions': state.dimensions, 'size': size});
 	})
 	Array.from(document.getElementsByClassName('dimension-title')).forEach(function(title){
 		title.style.height = document.getElementsByClassName('dimension-input')[0].offsetHeight + 'px';
 	})
-	createTemplate ('weight-input-template', formPageName, {'sizes': sizes});
-	createTemplate ('form-page-title-template', 'weight-inputs-title', {'title': 'Przedział wagowy'})
+	createTemplate ('weight-input', formPageName, {'sizes': sizes});
+	createTemplate ('form-page-title', 'weight-inputs-title', {'title': 'Przedział wagowy'})
 }
 
 function saveWeights () {
@@ -929,15 +929,15 @@ function getDimensions () {
 
 function createDiaperCategoriesPage () {
 	let diaperCategories = {'data': state.diaperCategories}
-	createTemplate ('diaper-category-template', 'form-view-wrapper');
-	createTemplate ('new-input-template', 'diaper-categories-input', diaperCategories);
+	createTemplate ('diaper-category', 'form-view-wrapper');
+	createTemplate ('new-input', 'diaper-categories-input', diaperCategories);
 	$('#diaper-categories-input').selectpicker();
 }
 
 function createSizesPage () {
 	let sizes = {'data': state.sizes};
-	createTemplate ('form-sizes-template', 'sizes');
-	createTemplate ('new-input-template', 'sizes-input', sizes);
+	createTemplate ('form-sizes', 'sizes');
+	createTemplate ('new-input', 'sizes-input', sizes);
 	$('#sizes-input').selectpicker();
 }
 
@@ -1033,8 +1033,8 @@ function getAnswersOptions () {
 	return promise1
 }
 
-function createTemplate (templateId, parentId, data) {
-	let template = $('#' + templateId).html();
-	let compiledTemplate = Handlebars.compile(template);
-	$('#' + parentId).append(compiledTemplate(data));
+function createTemplate (templateId, parentTemplate, data) {
+	let template = Handlebars.templates[templateId];
+	$('#' + parentTemplate).append(template(data));
 }
+

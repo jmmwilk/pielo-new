@@ -1,4 +1,4 @@
-import * as productslist from '/test/views/productslist.js';
+import * as productslist from '/test/views/products-list/productslist.js';
 import * as form from '/test/views/form/new-form.js';
 import * as state from '/test/state.js';
 import * as index from '/test/index.js';
@@ -33,7 +33,7 @@ function getAttributesTitles () {
 }
 
 function createSizeButtons (diaper) {
-	createTemplate ('size-buttons-template', 'size-buttons-container', {'diaper': diaper.diaper, 'container': 'main'});
+	createTemplate ('size-buttons', 'size-buttons-container', {'diaper': diaper.diaper, 'container': 'main'});
 	let buttons = $('.main-size-button');
 	markFirstSizeButton (buttons);
 	showWeightInfo (buttons[0], diaper);
@@ -56,7 +56,7 @@ function showWeightInfo (sizeButton, diaper) {
 		};
 	};
 	document.getElementById('size-description').innerHTML = '';
-	createTemplate ('size-range-template', 'size-description', sizeData);
+	createTemplate ('size-range', 'size-description', sizeData);
 }
 
 function createFabrics (diaper) {
@@ -79,12 +79,12 @@ function createFabrics (diaper) {
 		})
 		parameters.push(parameter);
 	});
-	createTemplate ('attribute-template', 'fabrics-parameters-group', {'parameters': parameters});
+	createTemplate ('attribute', 'fabrics-parameters-group', {'parameters': parameters});
 }
 
 function createDimensions (diaper) {
-	createTemplate ('dimensions-template', 'attributes-right', diaper);
-	createTemplate ('size-buttons-template', 'size-buttons-dimensions', {'diaper': diaper.diaper, 'container': 'dimensions'});
+	createTemplate ('dimensions', 'attributes-right', diaper);
+	createTemplate ('size-buttons', 'size-buttons-dimensions', {'diaper': diaper.diaper, 'container': 'dimensions'});
 
 	let buttons = $('.dimensions-size-button');
 	createFirstSizeDimensions (diaper, buttons);
@@ -104,7 +104,7 @@ function createDimensions (diaper) {
 				dimensionsData.push(dimensionData);
 			});
 			document.getElementById('dimensions-wrapper').innerHTML = '';
-			createTemplate ('dimensions-values-template', 'dimensions-wrapper', {'dimensions': dimensionsData});
+			createTemplate ('dimensions-values', 'dimensions-wrapper', {'dimensions': dimensionsData});
 			addMarginToParameters ();
 		};
 	});
@@ -130,7 +130,7 @@ function createFirstSizeDimensions (diaper, buttons) {
 		dimensionsData.push(dimensionData);
 	});
 	document.getElementById('dimensions-wrapper').innerHTML = '';
-	createTemplate ('dimensions-values-template', 'dimensions-wrapper', {'dimensions': dimensionsData});
+	createTemplate ('dimensions-values', 'dimensions-wrapper', {'dimensions': dimensionsData});
 
 }
 
@@ -154,14 +154,14 @@ function getDimensionTitle (dimensionId, diaper) {
 
 function fillDiaperPreview (diaper) {
 	createSizeButtons (diaper);
-	createTemplate ('parameters-wrapper-template', 'parameters', diaper);
+	createTemplate ('parameters-wrapper', 'parameters', diaper);
 	let parametersGroups = state.attributesOrder;
 	parametersGroups.forEach(function(parametersGroup){
-		createTemplate ('parameters-group-wrapper-template', 'attributes-left', {'parameters-group': parametersGroup});
+		createTemplate ('parameters-group-wrapper', 'attributes-left', {'parameters-group': parametersGroup});
 		let parameters = getParameters (diaper, parametersGroup);
 		let parametersBox = parametersGroup.id + '-parameters-group';
 
-		createTemplate ('attribute-template', parametersBox, {'parameters': parameters});
+		createTemplate ('attribute', parametersBox, {'parameters': parameters});
 	})
 	createDimensions (diaper);
 	createFabrics (diaper);
@@ -243,15 +243,15 @@ export function createPreviewScreen (diaper, key, view) {
 	diaper.diaper.profileImage = profileImage;
 	fillProductMainInfo ();
 	fillSizesInfo ();
-	createTemplate ('product-page-template', 'page', diaper)
+	createTemplate ('product-page', 'page', diaper)
 	if (view == 'productScreen') {
-		createTemplate ('stars-box-template', 'stars-box-wrapper');
-//		createTemplate ('reviews-box-template', 'product-page');
-//		createTemplate ('add-review-template', 'add-review-form-wrapper', diaper);
-//		createTemplate ('detail-reviews-summary-template', 'detail-summary-wrapper');
-//		createTemplate ('add-review-child-template', 'ar-child-wrapper');
-		createTemplate ('edit-item-button-template', 'edit-diaper-wrapper');
-		createTemplate ('delete-item-button-template', 'edit-diaper-wrapper');
+		createTemplate ('stars-box', 'stars-box-wrapper');
+//		createTemplate ('reviews-box', 'product-page');
+//		createTemplate ('add-review', 'add-review-form-wrapper', diaper);
+//		createTemplate ('detail-reviews-summary', 'detail-summary-wrapper');
+//		createTemplate ('add-review-child', 'ar-child-wrapper');
+		createTemplate ('edit-item-button', 'edit-diaper-wrapper');
+		createTemplate ('delete-item-button', 'edit-diaper-wrapper');
 		$('#edit-item-button').click( function(){
 			state.whereToAddNewItem.addTo = 'mock-diapers-preview'
 			index.clearPage ();
@@ -259,7 +259,7 @@ export function createPreviewScreen (diaper, key, view) {
 		});
 	};
 	if (view == 'preview') {
-		createTemplate ('back-and-add-item-buttons-template', 'product-page');
+		createTemplate ('back-and-add-item-buttons', 'product-page');
 		$('#add-item-button').click( function(){
 			let itemType;
 			if (state.whereToAddNewItem.addTo == 'mock-diapers') {
@@ -290,12 +290,12 @@ export function createPreviewScreen (diaper, key, view) {
 	setUIClassesToParameters ();
 	enableMainImageChange (diaper);
 	enablePatternChange (diaper);
-	createTemplate ('pattern-name-template', 'pattern-name', {'name': diaper.diaper.patterns[0].name});
+	createTemplate ('pattern-name', 'pattern-name', {'name': diaper.diaper.patterns[0].name});
 }
 
 function createItemAddedPage () {
 	index.clearPage ();
-	createTemplate ('item-added-template', 'page');
+	createTemplate ('item-added', 'page');
 	$('#go-to-main-page').click(function () {
 		index.clearPage ();
 		index.createHomePage ();
@@ -352,7 +352,7 @@ function enablePatternChange (diaper) {
 			let pattern = diaper.diaper.patterns.find(function(ptrn){
 				return ptrn['pattern-nr'] == patternNr
 			});
-			createTemplate ('pattern-name-template', 'pattern-name', {'name': pattern.name});
+			createTemplate ('pattern-name', 'pattern-name', {'name': pattern.name});
 		}
 	})
 }
@@ -366,7 +366,7 @@ function createImagesOnLeftSide (diaper, patternNr) {
 			patternImage.profile = true;
 			patternImage.id = 'left-profile-image'
 		}
-		createTemplate ('left-image-template', 'images-left-box', {'image': patternImage})
+		createTemplate ('left-image', 'images-left-box', {'image': patternImage})
 	})
 	let profileImage = document.getElementById('left-profile-image');
 	makeBorderOnImage (profileImage);
@@ -377,7 +377,7 @@ function createProfileImage (diaper, patternNr, imageNr) {
 	let image = patterns.find(function(pattern){
 		return pattern['image-nr'] == imageNr && pattern['pattern-nr'] == patternNr
 	})
-	createTemplate ('profile-image-template', 'profile-image-box', {'image': image})
+	createTemplate ('profile-image', 'profile-image-box', {'image': image})
 }
 
 function createPatternsProfileImages (diaper) {
@@ -388,13 +388,13 @@ function createPatternsProfileImages (diaper) {
 	})
 	for (let i=0; i<profileImages.length; i++) {
 		if (i%3 == 0 && i !== 0) {
-			createTemplate ('devider-template', 'patterns-images-box');
+			createTemplate ('devider', 'patterns-images-box');
 		}
 		if (profileImages[i]['pattern-nr'] == 1) {
 			profileImages[i].profile = true;
 			profileImages[i].id = 'first-profile-image'
 		}
-		createTemplate ('pattern-profile-image-template', 'patterns-images-box', {'image': profileImages[i]});
+		createTemplate ('pattern-profile-image', 'patterns-images-box', {'image': profileImages[i]});
 	}
 	let firstImage = document.getElementById('first-profile-image');
 	makeBorderOnImage (firstImage);
@@ -423,14 +423,14 @@ function loadItemData (key, view) {
 }
 
 function fillProductMainInfo () {
-	let itemPreview = $('#product-page-template').html();
+	let itemPreview = $('#product-page').html();
 	Handlebars.registerHelper('printnewinfo', function(){
 		return this['item-name']
 	})
 }
 
 function fillSizesInfo () {
-	let itemPreview = $('#product-page-template').html();
+	let itemPreview = $('#product-page').html();
 	Handlebars.registerHelper('printsizesinfo', function(){
 		return this.name + ' ' + this.min + ' - ' + this.max + ' kg';
 	})
@@ -471,8 +471,7 @@ function getCategoryData (category) {
 	return promise1
 }
 
-function createTemplate (templateId, parentId, data) {
-	let template = $('#' + templateId).html();
-	let compiledTemplate = Handlebars.compile(template);
-	$('#' + parentId).append(compiledTemplate(data));
+function createTemplate (templateId, parentTemplate, data) {
+	let template = Handlebars.templates[templateId];
+	$('#' + parentTemplate).append(template(data));
 }

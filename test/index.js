@@ -1,146 +1,17 @@
-import * as productslist from '/test/views/productslist.js';
-import * as sidebarmenu from '/test/views/sidebarmenu.js';
-import * as form from '/test/views/form/new-form.js';
-// import * as login from '/test/views/login/login.js';
-import * as eventBus from '/test/eventBus.js';
-import * as state from '/test/state.js';
+import * as login from '/test/views/login/login.js';
+import * as mainPage from '/test/views/main-page/main-page.js';
+
+
+
+
+
 
 $(document).ready(function(){
-	addDataToDatabase ();
-	createMainPage ();
-	createHomePage ();
+// 	addDataToDatabase ();
+	login.goToLoginScreen ();
+	// mainPage.createMainPage ();
 //	eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 })
-
-export function createMainPage () {
-	createTemplate ('title-bar-template', 'application');
-	createTemplate ('page-template', 'application');
-}
-
-export function createHomePage () {
-	getCategories ().
-	then(function(data) {
-		getDiaperCategories ();
-		getSizes ();
-		getCategoriesData (data).
-		then(function(categoriesData) {
-			createStartPage (categoriesData);
-			enableHomeClick (categoriesData);
-			enableCreateFormButton ();
-		});
-	});
-}
- 
-function getDiaperCategories () {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref('diaper-categories/');
-		dbRef.once('value',   function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      state.diaperCategories.push(childData);
-		    });
-		    resolve ()
-	  	});
-	});
-}
-
-function getSizes () {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref('sizes/');
-		dbRef.once('value',   function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      state.sizes.push(childData);
-		    });
-		    resolve ()
-	  	});
-	});
-}
-
-export function createTemplate (templateId, parentTemplate) {
-	console.log (templateId, parentTemplate)
-	let template = $('#' + templateId).html();
-	let compiledTemplate = Handlebars.compile(template);
-	$('#' + parentTemplate).append(compiledTemplate());
-}
-
-function fillUserName () {
-	let userNameBox = document.getElementById('user-name-box');
- 	userNameBox.innerText = state.state.user.email
-}
-
-export function createStartPage (categoriesData) {
-	sidebarmenu.createSideBar (categoriesData);
-	productslist.createProductsList ();
-}
-
-function enableCreateFormButton () {
-	let button = document.getElementById('add-diaper');
-	button.onclick = function() {
-		state.whereToAddNewItem.addTo = 'mock-diapers-preview';
-		clearPage ();
-		form.goToForm ('newItem');
-	}
-}
-
-function enableHomeClick (categoriesData) {
-	let home = document.getElementById('home');
-	home.onclick = function () {
-		clearPage ();
-		createStartPage (categoriesData);
-	}
-}
-
-export function clearPage () {
-	let page = document.getElementById('page');
-	page.innerHTML = '';
-}
-
-export function getCategories () {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref('categories/');
-		let data = [];
-		dbRef.once('value',   function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      data.push(childData);
-		    });
-		    resolve (data)
-	  	});
-	  	
-	});
-	return promise1
-}
-
-export function getCategoriesData (data) {
-	let categories = data;
-	let categoriesData = [];
-	let count = 0;
-	const promise = new Promise ((resolve, reject) => {
-		Array.from(categories).forEach(function(category){
-		    let dbRef = firebase.database().ref(category.id + '/');
-		    let categoryData = [];
-		    dbRef.once('value',   function(snapshot) {
-			    snapshot.forEach(function(childSnapshot) {
-			      var childData = childSnapshot.val();
-			      categoryData.push(childData);
-			    });
-			    count = count + 1;
-				let object = {};
-				object.data = categoryData;
-				object.name = category.name;
-				object['menu-name'] = category['menu-name'];
-				object.id = category.id;
-				object.issubmenu = category.issubmenu;
-			    categoriesData.push(object);
-			    if (count == categories.length) {
-			    	resolve (categoriesData)
-			    }
-		  	});
-		})
-	});
-	return promise
-}
 
 function addDataToDatabase () {
 		// let dbRef = firebase.database().ref('diaper-categories/-MF0Ea0U4Yi9TXqG1WSw/');

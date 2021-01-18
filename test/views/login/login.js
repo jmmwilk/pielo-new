@@ -1,12 +1,9 @@
 // import * as index from '/test/index.js';
+import * as mainPage from '/test/views/main-page/main-page.js';
 import * as state from '/test/state.js';
 import * as eventBus from '/test/eventBus.js';
 
 let user;
-
-$(document).ready(function(){
-	goToLoginScreen ();
-})
 
 export function goToLoginScreen () {
 // 	let loginIcon = document.getElementById('login-icon');
@@ -20,10 +17,9 @@ export function goToLoginScreen () {
 // //		enableCreateAccount (categoriesData);
 // 	};
 
-
-//		clearPage ();
-		createTemplateHtml ('page-template', 'application');
-		createTemplate('login-page-template', 'page');
+		document.getElementById('application').innerHTML = '';
+		createTemplate ('page', 'application');
+		createTemplate('login-page', 'page');
 		firebase.auth().signOut();
 		checkForAuthStateChange ();
 		enablelogIn ();
@@ -103,8 +99,8 @@ function enablelogIn () {
 					.then (function () {
 						console.log ('żółteczko')
 // 						eventBus.eventBus.trigger('userLoggedIn');
-						window.location.href='../../index.html';
-						
+						mainPage.createMainPage ();
+//						window.location.href='../../index.html';
 					})
 				} else {
 				}
@@ -215,15 +211,11 @@ function enableLogOut () {
 	})
 }
 
-function createTemplateHtml (templateId, parentId, data) {
-	let template = $('#' + templateId).html();
-	let compiledTemplate = Handlebars.compile(template);
-	$('#' + parentId).html(compiledTemplate(data));
-}
-
-function createTemplate (templateId, parentId, data) {
-	let template = $('#' + templateId).html();
-	let compiledTemplate = Handlebars.compile(template);
-	$('#' + parentId).append(compiledTemplate(data));
+function createTemplate (templateName, parentId, data) {
+	console.log('Handlebars.templates', Handlebars.templates);
+	console.log ('templateName', templateName)
+	console.log('parentId', parentId)
+	let template = Handlebars.templates[templateName];
+	$('#' + parentId).append(template(data));
 }
 

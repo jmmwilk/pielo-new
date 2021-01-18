@@ -9,6 +9,7 @@
     <script type="text/javascript" src="../libs/jquery-3.3.1.min.js"></script>
     <script type="module" src="index.js"></script>
     <script src='../libs/handlebars-v4.7.6.js'></script>
+    <script src="templates.precompiled.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -39,32 +40,7 @@
       firebase.analytics();
     </script>
   </body>
-  <script id="page-template" type="text">
-    <div id="page" class="row d-flex justify-content-md-center">
-    </div>
-  </script>
-  <script id="title-bar-template" type="text/x-handlebars-template">
-    <div id="title-bar" class="container-fluid d-flex justify-content-between order-1">
-      <div id="home">
-        <img id="home-icon" src="/images/home.png"/>
-      </div>
-      <button id="add-diaper" class="btn-primary btn">
-        Dodaj pieluchę
-      </button>
-      <div id="user-box" class="row">
-        <div id="favourites-icon-box">
-          <button id="heart-button" class="btn">
-            <img src="/images/heart-red-filled.png" id="heart-icon">
-          </button>
-        </div>
-        <div id="user-name-box" class="text-end">
-        </div>
-        <div id="login-icon-box">
-          <img id="login-icon" src="/images/login-icon.png"/>
-        </div>
-      </div>
-    </div>
-  </script>
+  
 <!--   <script id="review-template" type="text/x-handlebars-template">
     <div id="box" class="">
       {{#each reviews}}
@@ -88,81 +64,6 @@
       {{/each}}
     </div>
   </script> -->
-  <script id="sidebar-template" type="text/x-handlebars-template">
-    <div id="menu-template-container" class="nav collapse show navbar-light bg-light overflow-auto sticky-top" id="navbarNav">
-      <ul id="menu-template" class="nav flex-column flex-nowrap overflow-hidden">
-        <li class="nav-item">
-          <a id="all-diapers-nav" class="nav-link" href="#application">
-            Wszystkie Pieluszki
-          </a>
-        </li>
-      </ul>
-    </div>
-  </script>
-  <script id="nav-template" type="text/x-handlebars-template">
-    <li class="nav-item">
-      <a id="{{id}}" class="nav-link collapsed text-truncate" href="#{{id}}-submenu" data-toggle="collapse" data-target="#{{id}}-submenu">
-      {{menu-name}}
-      </a>
-      <ul id="{{id}}-submenu" class="collapse flex-column pl-2 nav" aria-expanded="false">
-        {{#each data}}
-        <li class="nav-item">
-          <a id="{{id}}" class="menu-item nav-link" data-categorygroup="{{../id}}" data-category="{{id}}">
-          {{this.name}}
-          </a>
-        </li>
-        {{/each}}
-      </ul>
-    </li>
-  </script>
-  <script id="favourites-page" type="text/x-handlebars-template">
-    <div id="main" class="col-md-10 order-1 mx-auto">
-      <div class="col">
-        <div id="favourites-title">
-          Moje Ulubione
-        </div>
-        <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
-        </div>
-      </div>
-    </div>
-  </script>
-  <script id="items-page-template" type="text/x-handlebars-template">
-    <div id="main" class="col-md-10 order-1 mx-auto">
-      <div id="products-container" class="d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto">
-      </div>
-    </div>
-  </script>
-  <script id="items-list-template" type="text/x-handlebars-template">
-    {{#each data}}
-      <li class="card text-center col pielucha-template" data-key="{{key}}">
-        <div class="card-body">
-          <div class="card-top row justify-content-between">
-            <div class="stars-box text-muted row">
-              <img src="/images/star.png" class="star">
-              <p class="mr-1">5,0</p>
-            </div>
-            <div class="heart-box">
-              <img src="/images/hear2.png" class="heart" key="{{key}}">
-            </div>
-          </div>
-          <div class="embed-responsive embed-responsive-1by1">
-            <img src={{printimage}} class="img embed-responsive-item rounded pielucha-image"/>
-          </div>
-          <div class="row justify-content-between">
-            <div class="col-auto">
-              <a href="#application" class="card-link text-warning">{{producer-name}}</a>
-            </div>
-            <div class="col-auto">
-              <div class="row m-0 text-muted">
-                {{printsizes}}
-              </div>
-            </div>
-          </div>
-          <h5 class="text-primary">{{item-name}}</h5>
-        </div>
-      </li>
-    {{/each}}
-  </script>
 </html>
 
 

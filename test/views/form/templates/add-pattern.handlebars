@@ -1,0 +1,16 @@
+<div  class="mt-4">
+  <div class="form-group">
+    Wzór nr {{pattern-number}}
+    <input type="text" class="form-control mb-2 pattern-name" id="pattern-{{pattern-number}}-name"pattern-number={{pattern-number}} placeholder="Nazwa Koloru/ Wzoru">
+  </div>
+  {{#each image-numbers}}
+    <div class="form-group m-3 p-2">
+      {{#if profile-image}}
+        <label for="pattern-{{../pattern-number}}-image-{{image-number}}">Zdjęcie profilowe wzoru:</label>
+      {{/if}}
+      <input type="file" class="form-control-file image-input pattern-{{../pattern-number}}" id="pattern-{{../pattern-number}}-image-{{image-number}}" pattern-number="{{../pattern-number}}" image-number="{{image-number}}">
+      <div id="file-preview-pattern-{{../pattern-number}}-image-{{image-number}}" class="preview-image-box" pattern-nr="{{../pattern-number}}" image-nr="{{image-number}}">
+      </div>
+    </div>
+  {{/each}}
+</div>
