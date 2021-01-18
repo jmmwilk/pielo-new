@@ -97,7 +97,6 @@ function enablelogIn () {
 						changeStateLogIn (user, firebaseUser)
 					})
 					.then (function () {
-						console.log ('żółteczko')
 // 						eventBus.eventBus.trigger('userLoggedIn');
 						mainPage.createMainPage ();
 //						window.location.href='../../index.html';
@@ -212,9 +211,6 @@ function enableLogOut () {
 }
 
 function createTemplate (templateName, parentId, data) {
-	console.log('Handlebars.templates', Handlebars.templates);
-	console.log ('templateName', templateName)
-	console.log('parentId', parentId)
 	let template = Handlebars.templates[templateName];
 	$('#' + parentId).append(template(data));
 }
