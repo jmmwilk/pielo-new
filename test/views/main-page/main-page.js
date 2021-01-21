@@ -2,6 +2,7 @@ import * as state from '/test/state.js';
 import * as sidebarmenu from '/test/views/sidebar-menu/sidebarmenu.js';
 import * as productslist from '/test/views/products-list/productslist.js';
 import * as form from '/test/views/form/new-form.js';
+import * as general from '/test/general.js';
 import * as eventBus from '/test/eventBus.js';
 
 export function createMainPage () {
@@ -62,6 +63,8 @@ function enableCreateFormButton () {
 	button.onclick = function() {
 		state.whereToAddNewItem.addTo = 'mock-diapers-preview';
 		clearPage ();
+		window.location.href='#new-form';
+		general.updateHistory('#new-form');
 		form.goToForm ('newItem');
 	}
 }
@@ -74,7 +77,7 @@ function enableHomeClick (categoriesData) {
 	}
 }
 
-export function clearPage () {
+function clearPage () {
 	let page = document.getElementById('page');
 	page.innerHTML = '';
 }

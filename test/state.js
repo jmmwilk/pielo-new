@@ -3,6 +3,10 @@ export let state = {
 	userRole: undefined,
 }
 
+export let formType = {}
+
+export let currentProduct = {};
+
 export let whereToAddNewItem = {
 }
 

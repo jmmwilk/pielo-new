@@ -1,6 +1,7 @@
 import * as productpage from '/test/views/product-page/productpage.js';
 import * as eventBus from '/test/eventBus.js';
 import * as state from '/test/state.js';
+import * as general from '/test/general.js';
 
 let database = firebase.database();
 
@@ -267,6 +268,8 @@ function enableCardClick () {
 	Array.from(cards).forEach(function(card) {
 		card.onclick = function () {
 			document.getElementById('page').innerHTML = '';
+			window.location.href='#product-page';
+			general.updateHistory('#product-page');
 			productpage.createProductScreen (card.dataset.key, 'productScreen');
 		}
 	})

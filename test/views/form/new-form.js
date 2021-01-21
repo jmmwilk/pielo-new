@@ -1,5 +1,6 @@
 import * as state from '/test/state.js';
 import * as productPage from '/test/views/product-page/productpage.js';
+import * as general from '/test/general.js';
 
 let database = firebase.database();
 let storage = firebase.storage();
@@ -7,6 +8,12 @@ let formPageNumber;
 let formPageName;
 
 export function goToForm (itemType, diaper, key) {
+	document.getElementById('page').innerHTML = '';
+	if (itemType == 'newForm') {
+		state.formType.type = 'new-form';
+	} else {
+		state.formType.type = 'edit-form';
+	};
 	resetForm ();
 	getAttributes ()
 	.then(function(){
@@ -98,6 +105,8 @@ function activateNextButton (itemType, key) {
 		let dbKey = addMockDiaper (itemType, key);
 		let page = document.getElementById('page');
 		page.innerHTML = '';
+		window.location.href='#product-page';
+		general.updateHistory('#product-page');
 		productPage.createProductScreen (dbKey, 'preview');
 //		resetForm ();
 		return

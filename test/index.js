@@ -1,17 +1,72 @@
 import * as login from '/test/views/login/login.js';
 import * as mainPage from '/test/views/main-page/main-page.js';
-
-
-
-
+import * as productPage from '/test/views/product-page/productpage.js';
+import * as form from '/test/views/form/new-form.js';
+import * as general from '/test/general.js';
+import * as state from '/test/state.js';
 
 
 $(document).ready(function(){
+	window.location.history = [];
+	window.location.historyIndex = -1;
+	window.location.href='#main-page';
+	general.updateHistory('#main-page');
+	mainPage.createMainPage ();
 // 	addDataToDatabase ();
-	login.goToLoginScreen ();
-	// mainPage.createMainPage ();
 //	eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 })
+
+
+
+document.onmouseover = function() {
+    //User's mouse is inside the page.
+    window.innerDocClick = true;
+}
+
+document.onmouseleave = function() {
+    //User's mouse has left the page.
+    window.innerDocClick = false;
+}
+
+window.onhashchange = function() {
+	let history = window.location.history;
+	let index = window.location.historyIndex;
+	let hash = window.location.hash;
+	if (hash == history[index]) {
+		if (window.innerDocClick) {
+	        window.innerDocClick = false;
+	    }
+	} else {
+		if (window.innerDocClick) {
+			index = index - 1;
+	        window.innerDocClick = false;
+	    } else {
+    		if (hash == history[index + 1]) {
+    			window.location.historyIndex = index + 1;
+    		}
+    		if (hash == history[index - 1]) {
+    			window.location.historyIndex = index - 1;
+    		}
+    		goToPage();
+	    }
+	}
+}
+
+function goToPage () {
+	let hash = window.location.hash;
+    if (hash == '#main-page') {
+		mainPage.createMainPage ();
+	};
+	if (hash == '#product-page') {
+		productPage.createProductScreen (state.currentProduct.key, state.currentProduct.view);
+	};
+	if (hash == '#edit-form') {
+		form.goToForm ('editItem', state.currentProduct.diaperData, state.currentProduct.key);
+	};
+	if (hash == '#new-form') {
+		form.goToForm ('newItem');
+	};
+}
 
 function addDataToDatabase () {
 		// let dbRef = firebase.database().ref('diaper-categories/-MF0Ea0U4Yi9TXqG1WSw/');

@@ -1,5 +1,6 @@
 // import * as index from '/test/index.js';
 import * as mainPage from '/test/views/main-page/main-page.js';
+import * as general from '/test/general.js';
 import * as state from '/test/state.js';
 import * as eventBus from '/test/eventBus.js';
 
@@ -16,7 +17,8 @@ export function goToLoginScreen () {
 // 		enableLogOut ();
 // //		enableCreateAccount (categoriesData);
 // 	};
-
+		window.location.href='#login';
+		general.updateHistory('#login');
 		document.getElementById('application').innerHTML = '';
 		createTemplate ('page', 'application');
 		createTemplate('login-page', 'page');

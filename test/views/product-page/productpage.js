@@ -1,11 +1,16 @@
 import * as productslist from '/test/views/products-list/productslist.js';
+import * as mainPage from '/test/views/main-page/main-page.js';
 import * as form from '/test/views/form/new-form.js';
+import * as general from '/test/general.js';
 import * as state from '/test/state.js';
-import * as index from '/test/index.js';
 
 let database = firebase.database();
 
 export function createProductScreen (key, view) {
+	state.currentProduct.key = key;
+	state.currentProduct.view = view;
+	state.formType.type = 'edit-form';
+	document.getElementById('page').innerHTML = '';
 	const promise = getAttributesTitles ();
 	promise
 	.then(function(){
@@ -254,7 +259,10 @@ export function createPreviewScreen (diaper, key, view) {
 		createTemplate ('delete-item-button', 'edit-diaper-wrapper');
 		$('#edit-item-button').click( function(){
 			state.whereToAddNewItem.addTo = 'mock-diapers-preview'
-			index.clearPage ();
+			clearPage ();
+			window.location.href='#' + state.formType.type;
+			general.updateHistory('#' + state.formType.type)
+			state.currentProduct.diaperData = formDiaper;
 			form.goToForm ('editItem', formDiaper, key)
 		});
 	};
@@ -270,16 +278,19 @@ export function createPreviewScreen (diaper, key, view) {
 				state.whereToAddNewItem.addTo = 'mock-diapers';
 			};
 			form.addMockDiaper (itemType, key)
-			index.clearPage ();
+			clearPage ();
 			form.deleteStateNewItem ();
 //			deletePreviewFromDatabase (key);
 			createItemAddedPage ();
 		});
 		$('#back-to-form-button').click( function(){
-			index.clearPage ();
+			clearPage ();
+			window.location.href='#' + state.formType.type;
+			general.updateHistory('#' + state.formType.type);
+			state.currentProduct.diaperData = formDiaper;
 			form.goToForm ('editItem', formDiaper, key)
 			form.addMockDiaper (itemType, key)
-			index.clearPage ();
+			clearPage ();
 			form.deleteStateNewItem ();
 		});
 	}
@@ -294,11 +305,12 @@ export function createPreviewScreen (diaper, key, view) {
 }
 
 function createItemAddedPage () {
-	index.clearPage ();
+	clearPage ();
 	createTemplate ('item-added', 'page');
 	$('#go-to-main-page').click(function () {
-		index.clearPage ();
-		index.createHomePage ();
+		window.location.href='#main-page';
+		general.updateHistory('#main-page');
+		mainPage.createMainPage ();
 	});
 }
 
@@ -454,6 +466,11 @@ function setUIClassesToParameters () {
 	Array.from(parametersRight).forEach(function(parameter){
 		parameter.classList.add("col-6");
 	})
+}
+
+function clearPage () {
+	let page = document.getElementById('page');
+	page.innerHTML = '';
 }
 
 function getCategoryData (category) {
