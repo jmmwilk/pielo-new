@@ -100,8 +100,9 @@ function enablelogIn () {
 					})
 					.then (function () {
 // 						eventBus.eventBus.trigger('userLoggedIn');
+						window.location.href='#main-page';
+						general.updateHistory('#main-page');
 						mainPage.createMainPage ();
-//						window.location.href='../../index.html';
 					})
 				} else {
 				}
