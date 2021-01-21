@@ -73,6 +73,8 @@ function enableHomeClick (categoriesData) {
 	let home = document.getElementById('home');
 	home.onclick = function () {
 		clearPage ();
+		window.location.href='#main-page';
+		general.updateHistory('#main-page');
 		createStartPage (categoriesData);
 	}
 }
