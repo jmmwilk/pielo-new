@@ -360,6 +360,12 @@ function createFormPage (clickedButton) {
 	createTemplate ('form-page', 'form-wrapper', {'formPage': formPage});
 	createTemplate ('form-page-title', formPageName, {'title': formPage.name})
 	changeNextButton ();
+	console.log ('formPageName', formPageName)
+	if (formPageName == formPages[0].id) {
+		$('#back-button').addClass('d-none');
+	} else {
+		$('#back-button').removeClass('d-none');
+	}
 	if (formPageName == 'main-info') {
 		createMainInfoPage ();
 		return

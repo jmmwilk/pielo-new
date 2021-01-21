@@ -662,7 +662,7 @@ templates['form-view'] = template({"compiler":[8,">= 4.3.0"],"main":function(con
     return "<div id=\"form-view-wrapper\" class=\"col-6 bg-white mt-6\">\n</div>";
 },"useData":true});
 templates['form'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div  class=\"d-flex flex-column\">\n  <div class=\"progress my-3\">\n    <div id=\"progress-bar\" class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n  </div>\n  <div id=\"form-wrapper\">\n  </div>\n  <div class=\"mb-3 d-flex flex-row justify-content-between\">\n    <button id=\"back-button\" type=\"button\" class=\"btn btn-primary\">Cofnij</button>\n    <button id=\"next-button\" type=\"button\" class=\"btn btn-primary\">Dalej</button>\n  </div>\n</div>";
+    return "<div  class=\"d-flex flex-column\">\n  <div class=\"progress my-3\">\n    <div id=\"progress-bar\" class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"0\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>\n  </div>\n  <div id=\"form-wrapper\">\n  </div>\n  <div class=\"mb-3\">\n    <button id=\"back-button\" type=\"button\" class=\"btn btn-outline-primary\"> Cofnij</button>\n    <button id=\"next-button\" type=\"button\" class=\"btn btn-primary float-right\"> Dalej</button>\n  </div>\n</div>";
 },"useData":true});
 templates['layers'] = template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
