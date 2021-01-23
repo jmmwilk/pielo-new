@@ -28,6 +28,10 @@ export function createProductsList () {
 function enableGoToFavouritesPage (loadedDiapers) {
 	let heartButton = document.getElementById('heart-button');
 	heartButton.onclick = function () {
+		console.log('window.location.hash', window.location.hash)
+		if (window.location.hash != '#main-page') {
+			
+		}
 		const promise = loadFavourites ();
 		promise.then(function(favouriteDiapers){
 			removeProductsList ();

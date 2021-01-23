@@ -284,14 +284,9 @@ export function createPreviewScreen (diaper, key, view) {
 			createItemAddedPage ();
 		});
 		$('#back-to-form-button').click( function(){
-			clearPage ();
 			window.location.href='#' + state.formType.type;
-			general.updateHistory('#' + state.formType.type);
 			state.currentProduct.diaperData = formDiaper;
-			form.goToForm ('editItem', formDiaper, key)
-			form.addMockDiaper (itemType, key)
-			clearPage ();
-			form.deleteStateNewItem ();
+			form.goToForm ('editItem', formDiaper, key);
 		});
 	}
 	fillDiaperPreview (diaper);
@@ -424,8 +419,8 @@ function loadItemData (key, view) {
 		let diaper;
 		dbRef.on('value', function(snap){
 			diaper = snap.val();
+			diaper['category-data'] = form.findCategoryData (diaper['diaper-category-name'], state.diaperCategories);
 			state.downloadedItem.attributes = diaper.attributes;
-			state.downloadedItem.categoryData = diaper['category-data'];
 			state.downloadedItem.sizes = diaper.sizes;
 			state.downloadedItem.images = diaper.images;
 			resolve (diaper)
@@ -471,21 +466,6 @@ function setUIClassesToParameters () {
 function clearPage () {
 	let page = document.getElementById('page');
 	page.innerHTML = '';
-}
-
-function getCategoryData (category) {
-	const promise1 = new Promise ((resolve, reject) => {
-		let dbRef = firebase.database().ref(category + '/');
-		let data = [];
-		dbRef.once('value',   function(snapshot) {
-		    snapshot.forEach(function(childSnapshot) {
-		      var childData = childSnapshot.val();
-		      data.push(childData);
-		    });
-		    resolve (data)
-	  	});
-	});
-	return promise1
 }
 
 function createTemplate (templateId, parentTemplate, data) {

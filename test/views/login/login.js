@@ -17,8 +17,6 @@ export function goToLoginScreen () {
 // 		enableLogOut ();
 // //		enableCreateAccount (categoriesData);
 // 	};
-		window.location.href='#login';
-		general.updateHistory('#login');
 		document.getElementById('application').innerHTML = '';
 		createTemplate ('page', 'application');
 		createTemplate('login-page', 'page');
@@ -190,8 +188,10 @@ function checkForAuthStateChange () {
 	const btnLogOut = document.getElementById('log-out');
 	firebase.auth().onAuthStateChanged(firebaseUser => {
 		if (firebaseUser) {
-			btnLogOut.classList.remove('d-none');
+//			btnLogOut.classList.remove('d-none');
 			user = firebaseUser;
+
+
 //			eventBus.eventBus.trigger('subscribe')
 
 			// const promise = state.changeEventBus ();

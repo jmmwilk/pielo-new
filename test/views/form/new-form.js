@@ -9,7 +9,7 @@ let formPageName;
 
 export function goToForm (itemType, diaper, key) {
 	document.getElementById('page').innerHTML = '';
-	if (itemType == 'newForm') {
+	if (itemType == 'newItem') {
 		state.formType.type = 'new-form';
 	} else {
 		state.formType.type = 'edit-form';
@@ -336,7 +336,8 @@ export function addMockDiaper (itemType, key) {
 	let diaper = state.newItem;
 	newDbRef.set({
 	  'attributes': diaper.answers,
-	  'category-data': diaper.categoryData,
+//	  'category-data': diaper.categoryData,
+		'diaper-category-name': diaper.categoryData.name,
 	  'images': diaper.images,
 	  'sizes': diaper.sizes,
 	  'patterns': diaper.patterns,
