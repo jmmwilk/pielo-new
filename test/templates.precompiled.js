@@ -46,7 +46,7 @@ templates['nav'] = template({"1":function(container,depth0,helpers,partials,data
     + "  </ul>\n</li>";
 },"useData":true,"useDepths":true});
 templates['sidebar'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"menu-template-container\" class=\"nav collapse show navbar-light bg-light overflow-auto sticky-top\" id=\"navbarNav\">\n  <ul id=\"menu-template\" class=\"nav flex-column flex-nowrap overflow-hidden\">\n    <li class=\"nav-item\">\n      <a id=\"all-diapers-nav\" class=\"nav-link\" href=\"#application\">\n        Wszystkie Pieluszki\n      </a>\n    </li>\n  </ul>\n</div>\n";
+    return "<div id=\"menu-template-container\" class=\"nav collapse show overflow-auto sticky-top col-2\" id=\"navbarNav\">\n  <ul id=\"menu-template\" class=\"nav flex-column flex-nowrap overflow-hidden bg-white w-100\">\n    <li class=\"nav-item\">\n      <a id=\"all-diapers-nav\" class=\"nav-link\" href=\"#application\">\n        Wszystkie Pieluszki\n      </a>\n    </li>\n  </ul>\n</div>\n";
 },"useData":true});
 templates['favourites-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div id=\"main\" class=\"col-md-10 order-1 mx-auto\">\n  <div class=\"col\">\n    <div id=\"favourites-title\">\n      Moje Ulubione\n    </div>\n    <div id=\"products-container\" class=\"d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto\">\n    </div>\n  </div>\n</div>\n";
