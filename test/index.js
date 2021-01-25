@@ -9,13 +9,13 @@ import * as state from '/test/state.js';
 $(document).ready(function(){
 	window.location.history = [];
 	window.location.historyIndex = -1;
-	// window.location.href='#main-page';
-	// general.updateHistory('#main-page');
-	// mainPage.createMainPage ();
+	window.location.href='#main-page';
+	general.updateHistory('#main-page');
+	mainPage.createMainPage ();
 
-	window.location.href='#login';
-	general.updateHistory('#login');
-	login.goToLoginScreen();
+	// window.location.href='#login';
+	// general.updateHistory('#login');
+	// login.goToLoginScreen();
 
 // 	addDataToDatabase ();
 //	eventBus.eventBus.subscribe('userLoggedIn', fillUserName);

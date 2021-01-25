@@ -1,14 +1,19 @@
 import * as productslist from '/test/views/products-list/productslist.js';
+import * as sizesList from '/test/sizes.js';
 
 export function createSideBar (categoriesData) {
-	let menuCategories = ['diaper-categories', 'sizes', 'brands', 'fabrics'];
+	let menuCategories = ['diaper-categories'];
 	let data = {};
 	data.categories = categoriesData;
+	console.log ('data', data)
 	createTemplate ('sidebar', 'page', data);
-	createNavItems (data, menuCategories)
+	createNavItems (data, menuCategories);
+	createSizesNav ();
 	productslist.enableAllDiapersClick ();
 	enableNavClick ();
 }
+
+
 
 function enableNavClick () {
 	let menuItems = document.getElementsByClassName('menu-item');
@@ -73,6 +78,15 @@ function createNavItems (data, menuCategories) {
 			}
 		}
 	}
+}
+
+function createDiaperCategoriesNav () {
+	let categories = state.diaperCategories;
+}
+
+function createSizesNav () {
+	let sizesGroups = {'id':'sizes', 'menu-name':'Rozmiary', 'data': sizesList.sizesGroups}
+	createTemplate ('nav', 'menu-template', sizesGroups);
 }
 
 function createTemplate (templateId, parentTemplate, data) {
