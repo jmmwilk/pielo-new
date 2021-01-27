@@ -284,7 +284,8 @@ function fillImagesPreviews () {
 		if (image['pattern-nr'] > patternsNumber) {
 			patternsNumber = parseInt(image['pattern-nr'], 10);
 		}
-	})
+	});
+
 	for (let i=2; i<patternsNumber + 1; i++) {
 		addPattern (i)
 	}
@@ -294,6 +295,7 @@ function fillImagesPreviews () {
 		let box = Array.from(imageBoxes).find(function(imageBox){
 			return $(imageBox).attr('pattern-nr') == parseInt(image['pattern-nr'], 10) 
 			&& $(imageBox).attr('image-nr') == parseInt(image['image-nr'], 10)
+			&& $(imageBox).attr('size-id') == image['size-id']
 		});
 		img.className = 'small-image mx-auto img-fluid img-thumbnail m-1';
 		img.src = image.url;
@@ -421,8 +423,16 @@ function createImagesPage () {
 }
 
 function addPattern (patternNumber) {
-	let imageNumbers = setImageNumber (patternNumber);
-	createTemplate ('add-pattern', formPageName, imageNumbers);
+	let sizes = state.newItem.sizes;
+	if (!sizes) {
+		return
+	}
+	createTemplate ('add-pattern', formPageName, {'pattern-number': patternNumber});
+	sizes.forEach(function(size){
+		let imagesData = setImageData (patternNumber, size);
+		let wrapperId = 'pattern-' + patternNumber + '-images-wrapper';
+		createTemplate ('images-size-box', wrapperId, imagesData);
+	})
 	loadImage (patternNumber);
 }
 
@@ -439,15 +449,26 @@ function loadImage (patternNumber) {
 	})
 }
 
-function setImageNumber (patternNumber) {
+function setImageData (patternNumber, size) {
 	let imageNumbers = {
-		'pattern-number': patternNumber, 
+		'pattern-number': patternNumber,
+		'size-name': size.name,
+		'size-id': size.id,
 		'image-numbers': [
-			{'image-number': 1, 
-			'profile-image': true}, 
-			{'image-number': 2}, 
-			{'image-number': 3}, 
-			{'image-number': 4}]
+			{
+				'image-number': 1, 
+				'profile-image': true,
+			},
+			{
+				'image-number': 2,
+			},
+			{
+				'image-number': 3,
+			},
+			{
+				'image-number': 4,
+			},
+		]
 	};
 	return imageNumbers
 }
@@ -464,7 +485,8 @@ function createImagePreview (event, input) {
 function addImageToStorage (input) {
 	let patternNumberValue = input.getAttribute('pattern-number');
 	let imageNumberValue = input.getAttribute('image-number');
-	deletePreviousImage (patternNumberValue, imageNumberValue);
+	let sizeIdValue = input.getAttribute('size-id');
+	deletePreviousImage (patternNumberValue, imageNumberValue, sizeIdValue);
 	const selectedFile = document.getElementById(input.id).files[0];
 	let dbRef = firebase.database().ref('images/');
 	var newDbRef = dbRef.push();
@@ -481,16 +503,19 @@ function addImageToStorage (input) {
 		let image = {}
 		image['pattern-nr'] = patternNumberValue;
 		image['image-nr'] = imageNumberValue;
+		image['size-id'] = sizeIdValue;
 		image.url = downloadURL;
 		state.newItem.images.push(image);
 		return downloadURL
 	})
 }
 
-function deletePreviousImage (patternNumberValue, imageNumberValue) {
+function deletePreviousImage (patternNumberValue, imageNumberValue, sizeIdValue) {
 	let images = state.newItem.images;
 	for (let i=0; i<images.length; i++) {
-		if (images[i]['pattern-nr'] == patternNumberValue && images[i]['image-nr'] == imageNumberValue) {
+		if (images[i]['pattern-nr'] == patternNumberValue 
+			&& images[i]['image-nr'] == imageNumberValue 
+			&& images[i]['size-id'] == sizeIdValue) {
 			images.splice(i, 1);
 		}
 	}
@@ -962,8 +987,16 @@ let formPages = [
 		'id': 'main-info',
 	},
 	{
+		'name': 'Rozmiary',
+		'id': 'sizes',
+	},
+	{
 		'name': 'Zdjęcia',
 		'id': 'images',
+	},
+	{
+		'name': 'Wymiary',
+		'id': 'dimensions',
 	},
 	{
 		'name': 'Budowa',
@@ -976,14 +1009,6 @@ let formPages = [
 	{
 		'name': 'Skład procentowy',
 		'id': 'percentage-composition',
-	},
-	{
-		'name': 'Rozmiary',
-		'id': 'sizes',
-	},
-	{
-		'name': 'Wymiary',
-		'id': 'dimensions',
 	},
 	{
 		'name': 'Inne',

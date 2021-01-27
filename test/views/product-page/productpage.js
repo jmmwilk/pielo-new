@@ -5,11 +5,17 @@ import * as general from '/test/general.js';
 import * as state from '/test/state.js';
 
 let database = firebase.database();
+let clickedSize;
+let chosenPatternNr;
+let chosenImageNr;
 
 export function createProductScreen (key, view) {
 	state.currentProduct.key = key;
 	state.currentProduct.view = view;
 	state.formType.type = 'edit-form';
+	clickedSize = '';
+	chosenPatternNr = 1;
+	chosenImageNr = 1;
 	document.getElementById('page').innerHTML = '';
 	const promise = getAttributesTitles ();
 	promise
@@ -44,9 +50,19 @@ function createSizeButtons (diaper) {
 	showWeightInfo (buttons[0], diaper);
 	Array.from(buttons).forEach(function(button){
 		button.onclick = function (event) {
+			clickedSize = button.getAttribute('size');
 			let label = button.parentElement;
 			$(label).button('toggle')
 			showWeightInfo (event.target, diaper);
+			document.getElementById('images-left-box').innerHTML = '';
+			document.getElementById('patterns-images-box').innerHTML = '';
+			document.getElementById('profile-image-box').innerHTML = '';
+			createImagesOnLeftSide (diaper);
+			createProfileImage (diaper, chosenPatternNr, chosenImageNr);
+			createPatternsProfileImages (diaper);
+
+			enableMainImageChange (diaper);
+			enablePatternChange (diaper);
 		};
 	});
 }
@@ -242,6 +258,7 @@ function getParameterTitle (diaper, parameterId) {
 export function createPreviewScreen (diaper, key, view) {
 	let formDiaper = diaper;
 	let images = diaper.diaper.images;
+	clickedSize = diaper.diaper.sizes[0].id;
 	let profileImage = images.find(function(image){
 		return image['pattern-nr'] == 1 && image['image-nr'] == 1
 	})
@@ -291,7 +308,7 @@ export function createPreviewScreen (diaper, key, view) {
 	}
 	fillDiaperPreview (diaper);
 	createProfileImage (diaper, 1, 1);
-	createImagesOnLeftSide (diaper, 1)
+	createImagesOnLeftSide (diaper)
 	createPatternsProfileImages (diaper)
 	setUIClassesToParameters ();
 	enableMainImageChange (diaper);
@@ -332,10 +349,10 @@ function enableMainImageChange (diaper) {
 		image.onclick = function (event) {
 			removeBorderFromImages (images);
 			makeBorderOnImage (event.target);
-			let patternNr = event.target.getAttribute('pattern-nr');
-			let imageNr = event.target.getAttribute('image-nr');
+//			chosenPatternNr = event.target.getAttribute('pattern-nr');
+			chosenImageNr = event.target.getAttribute('image-nr');
 			document.getElementById('profile-image-box').innerHTML = '';
-			createProfileImage (diaper, patternNr, imageNr);
+			createProfileImage (diaper);
 		}
 	})
 }
@@ -346,43 +363,50 @@ function enablePatternChange (diaper) {
 		image.onclick = function (event) {
 			removeBorderFromImages (images);
 			makeBorderOnImage (event.target);
-			let patternNr = event.target.getAttribute('pattern-nr');
-			let imageNr = event.target.getAttribute('image-nr');
+			chosenPatternNr = event.target.getAttribute('pattern-nr');
+//			let imageNr = event.target.getAttribute('image-nr');
 			document.getElementById('profile-image-box').innerHTML = '';
-			createProfileImage (diaper, patternNr, imageNr);
 			document.getElementById('images-left-box').innerHTML = '';
-			createImagesOnLeftSide (diaper, patternNr);
+			createImagesOnLeftSide (diaper);
+			createProfileImage (diaper);
 			enableMainImageChange (diaper);
-			let profileImage = document.getElementById('left-profile-image');
-			makeBorderOnImage (profileImage);
+			// let profileImage = document.getElementById('left-profile-image');
+			// makeBorderOnImage (profileImage);
 			document.getElementById('pattern-name').innerHTML = '';
 			let pattern = diaper.diaper.patterns.find(function(ptrn){
-				return ptrn['pattern-nr'] == patternNr
+				return ptrn['pattern-nr'] == chosenPatternNr
 			});
 			createTemplate ('pattern-name', 'pattern-name', {'name': pattern.name});
 		}
 	})
 }
 
-function createImagesOnLeftSide (diaper, patternNr) {
+function createImagesOnLeftSide (diaper) {
 	let patterns = diaper.diaper.images;
 	const patternImages = patterns.filter(function(pattern){
-		return (pattern['pattern-nr'] == patternNr)
+		return (pattern['pattern-nr'] == chosenPatternNr && pattern['size-id'] == clickedSize)
 	}).forEach(function(patternImage){
-		if (patternImage['image-nr'] == 1) {
-			patternImage.profile = true;
-			patternImage.id = 'left-profile-image'
-		}
 		createTemplate ('left-image', 'images-left-box', {'image': patternImage})
 	})
-	let profileImage = document.getElementById('left-profile-image');
-	makeBorderOnImage (profileImage);
+
+	let imageInBorder = Array.from($('.left-image')).find(function(image){
+		return image.getAttribute('image-nr') == chosenImageNr
+	})
+	if (!imageInBorder) {
+		chosenImageNr = 1;
+		imageInBorder = Array.from($('.left-image')).find(function(image){
+			return image.getAttribute('image-nr') == 1
+		})
+	}
+	makeBorderOnImage (imageInBorder);
 }
 
-function createProfileImage (diaper, patternNr, imageNr) {
+function createProfileImage (diaper) {
 	const patterns = diaper.diaper.images;
 	let image = patterns.find(function(pattern){
-		return pattern['image-nr'] == imageNr && pattern['pattern-nr'] == patternNr
+		return pattern['image-nr'] == chosenImageNr 
+		&& pattern['pattern-nr'] == chosenPatternNr
+		&& pattern['size-id'] == clickedSize 
 	})
 	createTemplate ('profile-image', 'profile-image-box', {'image': image})
 }
@@ -391,20 +415,18 @@ function createPatternsProfileImages (diaper) {
 	let patterns = diaper.diaper.images;
 	let height = document.getElementsByClassName('left-image')[0].parentElement.offsetHeight;
 	const profileImages = patterns.filter(function(pattern){
-		return (pattern['image-nr'] == 1)
+		return (pattern['image-nr'] == 1 && pattern['size-id'] == clickedSize)
 	})
 	for (let i=0; i<profileImages.length; i++) {
 		if (i%3 == 0 && i !== 0) {
 			createTemplate ('devider', 'patterns-images-box');
 		}
-		if (profileImages[i]['pattern-nr'] == 1) {
-			profileImages[i].profile = true;
-			profileImages[i].id = 'first-profile-image'
-		}
 		createTemplate ('pattern-profile-image', 'patterns-images-box', {'image': profileImages[i]});
 	}
-	let firstImage = document.getElementById('first-profile-image');
-	makeBorderOnImage (firstImage);
+	let imageInBorder = Array.from($('.pattern-profile-image')).find(function(image){
+		return image.getAttribute('pattern-nr') == chosenPatternNr
+	})
+	makeBorderOnImage (imageInBorder);
 }
 
 function loadItemData (key, view) {
