@@ -6,6 +6,7 @@ let database = firebase.database();
 let storage = firebase.storage();
 let formPageNumber;
 let formPageName;
+let patternNr;
 
 export function goToForm (itemType, diaper, key) {
 	document.getElementById('page').innerHTML = '';
@@ -154,7 +155,7 @@ function fillInputsWithSavedAnswers () {
 		return
 	};
 	if (formPageName == 'images') {
-		fillImagesPreviews ();
+		createAndFillPatterns ();
 		fillPatternNames ()
 		return
 	};
@@ -278,7 +279,7 @@ function fillSizes () {
 	$('#sizes-input').selectpicker('val', value);
 }
 
-function fillImagesPreviews () {
+function createAndFillPatterns () {
 	let patternsNumber = 0;
 	state.newItem.images.forEach(function(image){
 		if (image['pattern-nr'] > patternsNumber) {
@@ -288,7 +289,8 @@ function fillImagesPreviews () {
 
 	for (let i=2; i<patternsNumber + 1; i++) {
 		addPattern (i)
-	}
+	};
+	patternNr = patternsNumber + 1;
 	let imageBoxes = $('.preview-image-box');
 	state.newItem.images.forEach(function(image){
 		let img = document.createElement('img');
@@ -301,7 +303,6 @@ function fillImagesPreviews () {
 		img.src = image.url;
 		box.appendChild(img);
 	})
-	
 }
 
 function fillPatternNames () {
@@ -412,13 +413,13 @@ function createMainInfoPage () {
 }
 
 function createImagesPage () {
+	patternNr = 1;
 	createTemplate ('add-pattern-button', formPageName);
-	let patternNumber = 1;
-	addPattern (patternNumber);
-	patternNumber = patternNumber + 1;
+	addPattern (patternNr);
+	patternNr = patternNr + 1;
 	document.getElementById('add-pattern-button').onclick = function () {
-		addPattern (patternNumber);
-		patternNumber = patternNumber + 1;
+		addPattern (patternNr);
+		patternNr = patternNr + 1;
 	}
 }
 
@@ -432,8 +433,54 @@ function addPattern (patternNumber) {
 		let imagesData = setImageData (patternNumber, size);
 		let wrapperId = 'pattern-' + patternNumber + '-images-wrapper';
 		createTemplate ('images-size-box', wrapperId, imagesData);
-	})
+	});
+	enableRemovePattern (patternNumber);
 	loadImage (patternNumber);
+}
+
+function enableRemovePattern (patternNumber) {
+	let buttonId = 'remove-pattern-nr-' + patternNumber;
+	let removeButton = document.getElementById(buttonId);
+	let length = state.newItem.images.length
+	removeButton.onclick = function() {
+		let filteredImages = state.newItem.images.filter(function(image){
+			return (parseInt(image['pattern-nr'], 10) !== patternNumber)
+		});
+		filteredImages.forEach(function(image){
+			let imgPatternNr = parseInt(image['pattern-nr'], 10) 
+			if (imgPatternNr > patternNumber) {
+				image['pattern-nr'] = imgPatternNr - 1;
+			};
+		});
+		state.newItem.images = filteredImages;
+		let filterdPatterns = state.newItem.patterns.filter(function(pattern){
+			return (parseInt(pattern['pattern-nr'], 10) !== patternNumber)
+		});
+		filterdPatterns.forEach(function(pattern){
+			let pttrnNr = parseInt(pattern['pattern-nr'], 10) 
+			if (pttrnNr > patternNumber) {
+				pattern['pattern-nr'] = pttrnNr - 1;
+			};
+		})
+		state.newItem.patterns = filterdPatterns;
+		for (let i=1; i<patternNr; i++) {
+			removePatternWrapper (i);
+		}
+		patternNr = 1;
+		addPattern (patternNr);
+		patternNr = patternNr + 1;
+		document.getElementById('add-pattern-button').onclick = function () {
+			addPattern (patternNr);
+			patternNr = patternNr + 1;
+		}
+		fillInputsWithSavedAnswers ();
+	}
+}
+
+function removePatternWrapper (patternNumber) {
+	let patternWrapperId = 'pattern-wrapper-nr-' + patternNumber;
+	let patternWrapper = document.getElementById(patternWrapperId);
+	patternWrapper.parentElement.removeChild(patternWrapper);
 }
 
 function loadImage (patternNumber) {

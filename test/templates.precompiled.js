@@ -477,15 +477,19 @@ templates['add-pattern'] = template({"compiler":[8,">= 4.3.0"],"main":function(c
         return undefined
     };
 
-  return "<div  class=\"mt-4\">\n  <div class=\"form-group\">\n    Wzór nr "
-    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":3,"column":12},"end":{"line":3,"column":30}}}) : helper)))
-    + "\n    <input type=\"text\" class=\"form-control mb-2 pattern-name\" id=\"pattern-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":4,"column":74},"end":{"line":4,"column":92}}}) : helper)))
+  return "<div  class=\"mt-4\" id=\"pattern-wrapper-nr-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":1,"column":42},"end":{"line":1,"column":60}}}) : helper)))
+    + "\">\n	<div class=\"row justify-content-between align-items-center\">\n		<div class=\"form-group col\">\n    		Wzór nr "
+    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":4,"column":14},"end":{"line":4,"column":32}}}) : helper)))
+    + "\n    		<input type=\"text\" class=\"form-control mb-2 pattern-name\" id=\"pattern-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":5,"column":76},"end":{"line":5,"column":94}}}) : helper)))
     + "-name\"pattern-number="
-    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":4,"column":113},"end":{"line":4,"column":131}}}) : helper)))
-    + " placeholder=\"Nazwa Koloru/ Wzoru\">\n  </div>\n  <div id=\"pattern-"
-    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":6,"column":19},"end":{"line":6,"column":37}}}) : helper)))
-    + "-images-wrapper\">\n  </div>\n</div>";
+    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":5,"column":115},"end":{"line":5,"column":133}}}) : helper)))
+    + " placeholder=\"Nazwa Koloru/ Wzoru\">\n  		</div>\n  		<div class=\"col-auto\">\n	  		<button id=\"remove-pattern-nr-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":8,"column":35},"end":{"line":8,"column":53}}}) : helper)))
+    + "\" type=\"button\" class=\"btn btn-outline-danger\">\n	    		Usuń wzór i jego zdjęcia\n	  		</button>\n  		</div>\n	</div>\n 	<div id=\"pattern-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"pattern-number") || (depth0 != null ? lookupProperty(depth0,"pattern-number") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"pattern-number","hash":{},"data":data,"loc":{"start":{"line":13,"column":19},"end":{"line":13,"column":37}}}) : helper)))
+    + "-images-wrapper\">\n	</div>\n</div>";
 },"useData":true});
 templates['checkbox-input'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -632,30 +636,30 @@ templates['images-size-box'] = template({"1":function(container,depth0,helpers,p
 
   return "    <div class=\"form-group m-3 p-2\">\n"
     + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"profile-image") : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0, blockParams, depths),"inverse":container.noop,"data":data,"loc":{"start":{"line":7,"column":6},"end":{"line":9,"column":13}}})) != null ? stack1 : "")
-    + "      <input type=\"file\" class=\"form-control-file image-input pattern-"
+    + "      <div class=\"d-flex flex-row\">\n        <button type=\"button\" class=\"btn btn-outline-danger btn-sm remove-image-button mr-2\">\n          X\n        </button>\n        <input type=\"file\" class=\"form-control-file image-input pattern-"
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"pattern-number") : depths[1]), depth0))
     + "\" id=\"pattern-"
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"pattern-number") : depths[1]), depth0))
     + "-size-"
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"size-id") : depths[1]), depth0))
     + "-image-"
-    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":10,"column":153},"end":{"line":10,"column":169}}}) : helper)))
+    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":14,"column":155},"end":{"line":14,"column":171}}}) : helper)))
     + "\" pattern-number=\""
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"pattern-number") : depths[1]), depth0))
     + "\" image-number=\""
-    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":10,"column":224},"end":{"line":10,"column":240}}}) : helper)))
+    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":14,"column":226},"end":{"line":14,"column":242}}}) : helper)))
     + "\" size-id=\""
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"size-id") : depths[1]), depth0))
-    + "\">\n      <div id=\"file-preview-pattern-"
+    + "\">\n      </div>\n      <div id=\"file-preview-pattern-"
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"pattern-number") : depths[1]), depth0))
     + "-size-"
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"size-id") : depths[1]), depth0))
     + "-image-"
-    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":11,"column":84},"end":{"line":11,"column":100}}}) : helper)))
+    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":16,"column":84},"end":{"line":16,"column":100}}}) : helper)))
     + "\" class=\"preview-image-box\" pattern-nr=\""
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"pattern-number") : depths[1]), depth0))
     + "\" image-nr=\""
-    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":11,"column":173},"end":{"line":11,"column":189}}}) : helper)))
+    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":16,"column":173},"end":{"line":16,"column":189}}}) : helper)))
     + "\" size-id=\""
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"size-id") : depths[1]), depth0))
     + "\">\n      </div>\n    </div>\n";
@@ -689,7 +693,7 @@ templates['images-size-box'] = template({"1":function(container,depth0,helpers,p
     + "\">\n  <div class=\"ml-2 mt-2\">\n    "
     + alias4(((helper = (helper = lookupProperty(helpers,"size-name") || (depth0 != null ? lookupProperty(depth0,"size-name") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"size-name","hash":{},"data":data,"loc":{"start":{"line":3,"column":4},"end":{"line":3,"column":17}}}) : helper)))
     + "\n  </div>\n"
-    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"image-numbers") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":2},"end":{"line":14,"column":11}}})) != null ? stack1 : "")
+    + ((stack1 = lookupProperty(helpers,"each").call(alias1,(depth0 != null ? lookupProperty(depth0,"image-numbers") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":2},"end":{"line":19,"column":11}}})) != null ? stack1 : "")
     + "</div>";
 },"useData":true,"useDepths":true});
 templates['layers'] = template({"1":function(container,depth0,helpers,partials,data) {

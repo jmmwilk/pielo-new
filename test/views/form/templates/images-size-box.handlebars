@@ -7,7 +7,12 @@
       {{#if profile-image}}
         <label for="pattern-{{../pattern-number}}-size-{{../size-id}}-image-{{image-number}}">Zdjęcie profilowe pieluszki:</label>
       {{/if}}
-      <input type="file" class="form-control-file image-input pattern-{{../pattern-number}}" id="pattern-{{../pattern-number}}-size-{{../size-id}}-image-{{image-number}}" pattern-number="{{../pattern-number}}" image-number="{{image-number}}" size-id="{{../size-id}}">
+      <div class="d-flex flex-row">
+        <button type="button" class="btn btn-outline-danger btn-sm remove-image-button mr-2">
+          X
+        </button>
+        <input type="file" class="form-control-file image-input pattern-{{../pattern-number}}" id="pattern-{{../pattern-number}}-size-{{../size-id}}-image-{{image-number}}" pattern-number="{{../pattern-number}}" image-number="{{image-number}}" size-id="{{../size-id}}">
+      </div>
       <div id="file-preview-pattern-{{../pattern-number}}-size-{{../size-id}}-image-{{image-number}}" class="preview-image-box" pattern-nr="{{../pattern-number}}" image-nr="{{image-number}}" size-id="{{../size-id}}">
       </div>
     </div>
