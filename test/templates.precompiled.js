@@ -636,7 +636,13 @@ templates['images-size-box'] = template({"1":function(container,depth0,helpers,p
 
   return "    <div class=\"form-group m-3 p-2\">\n"
     + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"profile-image") : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0, blockParams, depths),"inverse":container.noop,"data":data,"loc":{"start":{"line":7,"column":6},"end":{"line":9,"column":13}}})) != null ? stack1 : "")
-    + "      <div class=\"d-flex flex-row\">\n        <button type=\"button\" class=\"btn btn-outline-danger btn-sm remove-image-button mr-2\">\n          X\n        </button>\n        <input type=\"file\" class=\"form-control-file image-input pattern-"
+    + "      <div class=\"d-flex flex-row\">\n        <button type=\"button\" class=\"btn btn-outline-danger btn-sm remove-image-button mr-2\" pattern-nr=\""
+    + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"pattern-number") : depths[1]), depth0))
+    + "\" image-nr=\""
+    + alias3(((helper = (helper = lookupProperty(helpers,"image-number") || (depth0 != null ? lookupProperty(depth0,"image-number") : depth0)) != null ? helper : alias4),(typeof helper === alias5 ? helper.call(alias1,{"name":"image-number","hash":{},"data":data,"loc":{"start":{"line":11,"column":138},"end":{"line":11,"column":154}}}) : helper)))
+    + "\" size-id=\""
+    + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"size-id") : depths[1]), depth0))
+    + "\" >\n          X\n        </button>\n        <input type=\"file\" class=\"form-control-file image-input pattern-"
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"pattern-number") : depths[1]), depth0))
     + "\" id=\"pattern-"
     + alias3(alias2((depths[1] != null ? lookupProperty(depths[1],"pattern-number") : depths[1]), depth0))

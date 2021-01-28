@@ -417,10 +417,48 @@ function createImagesPage () {
 	createTemplate ('add-pattern-button', formPageName);
 	addPattern (patternNr);
 	patternNr = patternNr + 1;
+	enableRemoveImage ();
 	document.getElementById('add-pattern-button').onclick = function () {
 		addPattern (patternNr);
 		patternNr = patternNr + 1;
+		enableRemoveImage ();
 	}
+}
+
+function enableRemoveImage () {
+	let deleteImageButtons = $('.remove-image-button');
+	Array.from(deleteImageButtons).forEach(function(button){
+		$(button).click(function(){
+			let btnPatternNumber = button.getAttribute('pattern-nr');
+			let btnImageNr = button.getAttribute('image-nr');
+			let btnSizeNr = button.getAttribute('size-id');
+
+			let inputs = $('.image-input');
+			let imageInput = Array.from(inputs).find(function(input){
+				return (input.getAttribute('pattern-number') == btnPatternNumber
+				&& input.getAttribute('image-number') == btnImageNr
+				&& input.getAttribute('size-id') == btnSizeNr)
+			})
+			imageInput.value = '';
+
+			let previewImageBoxes = $('.preview-image-box');
+			let previewImageBox = Array.from(previewImageBoxes).find(function(box){
+				return (box.getAttribute('pattern-nr') == btnPatternNumber
+				&& box.getAttribute('image-nr') == btnImageNr
+				&& box.getAttribute('size-id') == btnSizeNr)
+			});
+			$(previewImageBox).empty();
+
+			let images = state.newItem.images;
+			for (let i=0; i<images.length; i++) {
+				if (images[i]['pattern-nr'] == btnPatternNumber
+				&& images[i]['image-nr'] == btnImageNr
+				&& images[i]['size-id'] == btnSizeNr) {
+					images.splice(i,1)
+				};
+			};
+		})
+	})
 }
 
 function addPattern (patternNumber) {
@@ -721,6 +759,21 @@ function getQuestionText (attributeId) {
 	return questionData
 }
 
+function updateImages () {
+	let images = state.newItem.images;
+	let sizes = state.newItem.sizes;
+	let filteredImages = state.newItem.images.filter(function(image){
+		image.remove = true;
+		for (let x=0; x<sizes.length; x++) {
+			if (image['size-id'] == sizes[x].id) {
+				image.remove = false
+			}
+		}
+		return (image.remove == false)
+	})
+	state.newItem.images = filteredImages;
+}
+
 function saveAnswers () {
 	if (formPageName == 'main-info') {
 		state.newItem.itemName = $('#' + 'item-name-input').val();
@@ -733,6 +786,7 @@ function saveAnswers () {
 	};
 	if (formPageName == 'sizes') {
 		saveSizes ();
+		updateImages ();
 		return
 	};
 	if (formPageName == 'dimensions') {
