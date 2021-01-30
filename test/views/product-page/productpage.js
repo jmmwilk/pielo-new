@@ -24,7 +24,6 @@ export function createProductScreen (key, view) {
 		return newPromise
 	})
 	.then (function (diaperData) {
-		console.log ('diaperData', diaperData)
 		let diaper = {'diaper': diaperData}
 		createPreviewScreen (diaper, key, view);
 	})

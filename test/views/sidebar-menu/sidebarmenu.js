@@ -1,13 +1,10 @@
 import * as productslist from '/test/views/products-list/productslist.js';
 import * as sizesList from '/test/sizes.js';
+import * as state from '/test/state.js';
 
-export function createSideBar (categoriesData) {
-	let menuCategories = ['diaper-categories'];
-	let data = {};
-	data.categories = categoriesData;
-	console.log ('data', data)
-	createTemplate ('sidebar', 'page', data);
-	createNavItems (data, menuCategories);
+export function createSideBar () {
+	createTemplate ('sidebar', 'page');
+	createDiaperCategoriesNav ();
 	createSizesNav ();
 	productslist.enableAllDiapersClick ();
 	enableNavClick ();
@@ -69,24 +66,14 @@ export function removeSidebarMenu () {
 	page.removeChild(sideBarMenu);
 }
 
-function createNavItems (data, menuCategories) {
-	for (let i=0; i<menuCategories.length; i++) {
-		for (let x=0; x<data.categories.length; x++) {
-			if (menuCategories[i] == data.categories[x].id) {
-				let category = data.categories[x];
-				createTemplate ('nav', 'menu-template', category);
-			}
-		}
-	}
-}
-
-function createDiaperCategoriesNav () {
-	let categories = state.diaperCategories;
-}
-
 function createSizesNav () {
 	let sizesGroups = {'id':'sizes', 'menu-name':'Rozmiary', 'data': sizesList.sizesGroups}
 	createTemplate ('nav', 'menu-template', sizesGroups);
+}
+
+function createDiaperCategoriesNav () {
+	let diaperCategories = {'id':'diaper-categories', 'menu-name':'Rodzaje', 'data': state.diaperCategories}
+	createTemplate ('nav', 'menu-template', diaperCategories);
 }
 
 function createTemplate (templateId, parentTemplate, data) {

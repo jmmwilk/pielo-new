@@ -25,10 +25,38 @@ export function createProductsList () {
 	});
 }
 
+export function createNewProductsList (navCategoryGroup, navCategory) {
+	const promise = getDatabaseDiapers ();
+	promise
+	.then(function(diapers) {
+		console.log ('diapers', diapers)
+	  	let items = [];
+	  	diapers.forEach(function(diaper) {
+	  		if (navCategoryGroup == 'sizes') {
+	  			for (let i=0; i<diaper.sizes.length; i++) {
+	  				if (diaper.sizes[i].id == navCategory) {
+	  					items.push(diaper);
+	  				}
+	  			}
+	  		}
+	  		if (navCategoryGroup == 'diaper-categories') {
+  				if (diaper['diaper-category-id'] == navCategory) {
+  					items.push(diaper);
+  				}
+	  		}
+	  	})
+	  	let newItems = {'data': items}
+		removeProductsList ();
+		createTemplate ('items-page', 'page');
+		createTemplate ('items-list', 'products-container', newItems);	
+
+		enableCardClick ();
+	})
+}
+
 function enableGoToFavouritesPage (loadedDiapers) {
 	let heartButton = document.getElementById('heart-button');
 	heartButton.onclick = function () {
-		console.log('window.location.hash', window.location.hash)
 		if (window.location.hash != '#main-page') {
 			
 		}
@@ -175,58 +203,6 @@ function enableHeartChange () {
 	$('.heart-box').click(function( event ) {
 	  	event.stopPropagation();
 	});
-}
-
-export function createNewProductsList (navCategoryGroup, navCategory) {
-	const promise = getDatabaseDiapers ();
-	promise
-	.then(function(diapers) {
-	  	let loadedDiapers = {'data': diapers};
-	  	let databaseDiapers = loadedDiapers.data;
-	  	let items = [];
-	  	databaseDiapers.forEach(function(databaseDiaper) {
-	  		if (navCategoryGroup == 'sizes') {
-	  			for (let i=0; i<databaseDiaper.sizes.length; i++) {
-	  				if (databaseDiaper.sizes[i].id == navCategory) {
-	  					items.push(databaseDiaper);
-	  				}
-	  			}
-	  		}
-	  		if (navCategoryGroup == 'diaper-categories') {
-  				if (databaseDiaper.diaperCategory.id == navCategory) {
-  					items.push(databaseDiaper);
-  				}
-	  		}
-	  		if (navCategoryGroup == 'brands') {
-  				if (databaseDiaper.brand.id == navCategory) {
-  					items.push(databaseDiaper);
-  				}
-	  		}
-	  		if (navCategoryGroup == 'fabrics') {
-	  			if (databaseDiaper.outsideFabrics !== undefined) {
-	  				for (let i=0; i<databaseDiaper.outsideFabrics.length; i++) {
-		  				if (databaseDiaper.outsideFabrics[i].id == navCategory) {
-		  					items.push(databaseDiaper);
-		  				}
-		  			}
-	  			}
-	  			if (databaseDiaper.innerFabrics !== undefined) {
-	  				for (let i=0; i<databaseDiaper.innerFabrics.length; i++) {
-		  				if (databaseDiaper.innerFabrics[i].id == navCategory) {
-		  					items.push(databaseDiaper);
-		  				}
-		  			}
-	  			}
-	  		}
-	  	})
-	  	let newItems = {'data': items}
-		removeProductsList ();
-		createItemsPageTemplate (newItems);
-		createTemplate ('items-page', 'page');
-		createTemplate ('items-list', 'products-container', newItems);	
-
-		enableCardClick ();
-	})
 }
 
 export function removeProductsList () {

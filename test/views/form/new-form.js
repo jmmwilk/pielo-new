@@ -338,16 +338,17 @@ export function addMockDiaper (itemType, key) {
 	};
 	let diaper = state.newItem;
 	newDbRef.set({
-	  'attributes': diaper.answers,
+	  	'attributes': diaper.answers,
 //	  'category-data': diaper.categoryData,
 		'diaper-category-name': diaper.categoryData.name,
-	  'images': diaper.images,
-	  'sizes': diaper.sizes,
-	  'patterns': diaper.patterns,
-	  'layers': diaper.layers,
-	  'description': diaper.description,
-	  'item-name': diaper.itemName,
-	  'producer-name': diaper.producerName,
+		'diaper-category-id': diaper.categoryData.id,
+	  	'images': diaper.images,
+	  	'sizes': diaper.sizes,
+	  	'patterns': diaper.patterns,
+	  	'layers': diaper.layers,
+	  	'description': diaper.description,
+	  	'item-name': diaper.itemName,
+	 	'producer-name': diaper.producerName,
 	});
 	let newItemKey = newDbRef.getKey();
 	if (itemType == 'newItem') {
