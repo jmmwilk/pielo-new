@@ -2,6 +2,7 @@ import * as productpage from '/test/views/product-page/productpage.js';
 import * as eventBus from '/test/eventBus.js';
 import * as state from '/test/state.js';
 import * as general from '/test/general.js';
+import * as sizesList from '/test/sizes.js';
 
 let database = firebase.database();
 
@@ -34,26 +35,37 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	.then(function(diapers) {
 		let items = [];
 		let isSizeClicked;
+		let diaperSizeToPrint;
 	  	diapers.forEach(function(diaper) {
 	  		if (navCategoryGroup == 'sizes') {
 	  			isSizeClicked = true;
-  				for (let i=0; i<diaper.sizes.length; i++) {
-	  				if (diaper.sizes[i].id == navCategory) {
-	  					items.push(diaper);
-	  					return
-	  				}
-	  			}
-	  		}
+	  			let diaperSizeIds = diaper.sizes.map(function(size){
+	  				return size.id
+	  			});
+	  			diaperSizeIds.forEach(function(diaperSizeId){
+	  				let databaseSize = sizesList.sizes.find(function(databaseSize){
+  						return (databaseSize.id == diaperSizeId)
+  					});
+  					let databaseSizeGroupName = databaseSize.groups.find(function(groupName){
+  						return groupName == navCategory
+  					});
+  					if (databaseSizeGroupName) {
+  						items.push(diaper)
+  						diaperSizeToPrint = diaperSizeId;
+  						return
+  					}
+	  			})
+	  		};
 	  		if (navCategoryGroup == 'diaper-categories') {
 	  			isSizeClicked = false;
   				if (diaper['diaper-category-id'] == navCategory) {
   					items.push(diaper);
-  				}
-	  		}
-	  	})
+  				};
+	  		};
+	  	});
 	  	let newItems = {'data': items}
 		removeProductsList ();
-		const promise2 = createProfileImageTemplate (isSizeClicked, navCategory)
+		const promise2 = createProfileImageTemplate (isSizeClicked, diaperSizeToPrint)
 		promise2
 		.then(function(){
 			createTemplate ('items-page', 'page');
@@ -249,15 +261,12 @@ function createProfileImageTemplate (isSize, chosenSizeId) {
 				});
 				filteredImage = filteredImages[0];
 			} else {
-				filteredImage = this.images.filter(function(image){
+				filteredImage = this.images.find(function(image){
 					return (image['size-id'] == chosenSizeId
 					&& image['image-nr'] == 1
 					&& image['pattern-nr'] == 1)
 				});
-				console.log ('filteredImage', filteredImage)
 			}
-			console.log ('filteredImage', filteredImage)
-			console.log ('filteredImage.url', filteredImage.url)
 			return filteredImage.url
 		})
 		resolve()
