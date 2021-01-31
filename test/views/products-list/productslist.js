@@ -13,15 +13,18 @@ export function createProductsList () {
 	.then(function(diapers) {
 	  	let loadedDiapers = {'data': diapers};
 	  	fillSizesInCard ();
-	  	createProfileImageTemplate ();
-		createTemplate ('items-page', 'page');
-		createTemplate ('items-list', 'products-container', loadedDiapers);
-		enableCardClick ();
-		enableGoToFavouritesPage (loadedDiapers);
-		const promise = markFavourites ();
-		promise.then(function(){
-			enableHeartChange ();
-		});
+	  	const promise2 = createProfileImageTemplate (false);
+	  	promise2
+	  	.then (function(){
+	  		createTemplate ('items-page', 'page');
+			createTemplate ('items-list', 'products-container', loadedDiapers);
+			enableCardClick ();
+			enableGoToFavouritesPage (loadedDiapers);
+			const promise = markFavourites ();
+			promise.then(function(){
+				enableHeartChange ();
+			});
+	  	})
 	});
 }
 
@@ -29,10 +32,11 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	const promise = getDatabaseDiapers ();
 	promise
 	.then(function(diapers) {
-		console.log ('diapers', diapers)
-	  	let items = [];
+		let items = [];
+		let isSizeClicked;
 	  	diapers.forEach(function(diaper) {
 	  		if (navCategoryGroup == 'sizes') {
+	  			isSizeClicked = true;
 	  			for (let i=0; i<diaper.sizes.length; i++) {
 	  				if (diaper.sizes[i].id == navCategory) {
 	  					items.push(diaper);
@@ -40,6 +44,7 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	  			}
 	  		}
 	  		if (navCategoryGroup == 'diaper-categories') {
+	  			isSizeClicked = false;
   				if (diaper['diaper-category-id'] == navCategory) {
   					items.push(diaper);
   				}
@@ -47,11 +52,15 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	  	})
 	  	let newItems = {'data': items}
 		removeProductsList ();
-		createTemplate ('items-page', 'page');
-		createTemplate ('items-list', 'products-container', newItems);	
-
-		enableCardClick ();
-	})
+		const promise2 = createProfileImageTemplate (isSizeClicked, navCategory)
+		promise2
+		.then(function(){
+			createTemplate ('items-page', 'page');
+			createTemplate ('items-list', 'products-container', newItems);	
+			enableCardClick ();
+		});
+		
+	});
 }
 
 function enableGoToFavouritesPage (loadedDiapers) {
@@ -228,11 +237,31 @@ function getDatabaseDiapers () {
 	return promise1
 }
 
-function createProfileImageTemplate () {
-	let itemPreview = $('#items-list').html();
-	Handlebars.registerHelper('printimage', function(){
-		return this.images[0].url
+function createProfileImageTemplate (isSize, chosenSizeId) {
+	const promise = new Promise ((resolve, reject) => {
+		let itemPreview = $('#items-list').html();
+		Handlebars.registerHelper('printimage', function(){
+			let filteredImage;
+			if (isSize == false) {
+				let filteredImages = this.images.filter(function(image){
+					return (image['image-nr'] == 1 && image['pattern-nr'] == 1)
+				});
+				filteredImage = filteredImages[0];
+			} else {
+				filteredImage = this.images.filter(function(image){
+					return (image['size-id'] == chosenSizeId
+					&& image['image-nr'] == 1
+					&& image['pattern-nr'] == 1)
+				});
+				console.log ('filteredImage', filteredImage)
+			}
+			console.log ('filteredImage', filteredImage)
+			console.log ('filteredImage.url', filteredImage.url)
+			return filteredImage.url
+		})
+		resolve()
 	})
+	return promise
 }
 
 export function enableAllDiapersClick () {
