@@ -37,9 +37,10 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	  	diapers.forEach(function(diaper) {
 	  		if (navCategoryGroup == 'sizes') {
 	  			isSizeClicked = true;
-	  			for (let i=0; i<diaper.sizes.length; i++) {
+  				for (let i=0; i<diaper.sizes.length; i++) {
 	  				if (diaper.sizes[i].id == navCategory) {
 	  					items.push(diaper);
+	  					return
 	  				}
 	  			}
 	  		}
