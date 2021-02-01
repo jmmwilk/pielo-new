@@ -20,7 +20,7 @@ templates['nav'] = template({"1":function(container,depth0,helpers,partials,data
     + alias4(alias5((depths[1] != null ? lookupProperty(depths[1],"id") : depths[1]), depth0))
     + "\" data-category=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"id") || (depth0 != null ? lookupProperty(depth0,"id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"id","hash":{},"data":data,"loc":{"start":{"line":8,"column":94},"end":{"line":8,"column":100}}}) : helper)))
-    + "\">\n      "
+    + "\" type=\"button\">\n      "
     + alias4(alias5((depth0 != null ? lookupProperty(depth0,"name") : depth0), depth0))
     + "\n      </a>\n    </li>\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
