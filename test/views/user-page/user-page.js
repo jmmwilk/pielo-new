@@ -20,12 +20,11 @@ export function goToUserPage () {
 			createTemplate ('items-page', 'main-content');
 			console.log ('filteredDiapers', filteredDiapers)
 			let loadedDiapers = {'data': filteredDiapers};
-			console.log ('loadedDiapers', loadedDiapers)
+
 			createTemplate ('items-list', 'products-container', loadedDiapers);
 			productslist.enableCardClick ();
 		});
 	});
-	
 }
 
 function filterDiapers (diapers) {
@@ -55,7 +54,7 @@ function clearPage () {
 	page.innerHTML = '';
 }
 
-function createTemplate (templateId, parentTemplate) {
+function createTemplate (templateId, parentTemplate, data) {
 	let template = Handlebars.templates[templateId];
-	$('#' + parentTemplate).append(template());
+	$('#' + parentTemplate).append(template(data));
 }
