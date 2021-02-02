@@ -55,10 +55,10 @@ function findUserInDatabase (firebaseUser) {
 					let key = usersData[i].key;
 					user.key = key;
 					resolve (user)
-				}
-			}
-		})
-	})
+				};
+			};
+		});
+	});
 	return promise
 }
 
@@ -153,6 +153,12 @@ function changeStateLogIn (user, firebaseUser) {
 		state.state.user = firebaseUser;
 		state.state.userRole = role;
 		state.state.userKey = key;
+		if (role == 'normalUser') {
+			state.state.normalUser = true
+		}
+		if (role == 'producer') {
+			state.state.producer = true
+		}
 		resolve()
 	})
 	return promise

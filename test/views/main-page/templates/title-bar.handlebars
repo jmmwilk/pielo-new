@@ -2,15 +2,14 @@
   <div id="home" type="button">
     <img id="home-icon" src="/images/home.png"/>
   </div>
-  <button id="add-diaper" class="btn-primary btn">
-    Dodaj pieluchę
-  </button>
   <div id="user-box" class="row">
+    {{#if normal-user}}
     <div id="favourites-icon-box">
       <button id="heart-button" class="btn">
         <img src="/images/heart-red-filled.png" id="heart-icon">
       </button>
     </div>
+    {{/if}}
     <div id="user-name-box" class="text-end">
     </div>
     <div id="login-icon-box" type="button">

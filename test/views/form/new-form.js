@@ -349,6 +349,7 @@ export function addMockDiaper (itemType, key) {
 	  	'description': diaper.description,
 	  	'item-name': diaper.itemName,
 	 	'producer-name': diaper.producerName,
+	 	'producer-key': state.state.userKey,
 	});
 	let newItemKey = newDbRef.getKey();
 	if (itemType == 'newItem') {

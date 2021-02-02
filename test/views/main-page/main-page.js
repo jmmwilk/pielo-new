@@ -1,22 +1,25 @@
 import * as state from '/test/state.js';
 import * as sidebarmenu from '/test/views/sidebar-menu/sidebarmenu.js';
 import * as productslist from '/test/views/products-list/productslist.js';
+import * as userPage from '/test/views/user-page/user-page.js';
 import * as form from '/test/views/form/new-form.js';
 import * as general from '/test/general.js';
 import * as eventBus from '/test/eventBus.js';
 
 export function createMainPage () {
 	document.getElementById('application').innerHTML = '';
-	createTemplate ('title-bar', 'application');
+	createTemplate ('title-bar', 'application', {'normal-user': state.state.normalUser});
 	createTemplate ('page', 'application');
 	getSizes ()
 	getDiaperCategories ().
 	then(function() {
 		createStartPage ();
 		enableHomeClick ();
-		enableCreateFormButton ();
+		document.getElementById('login-icon').onclick = userPage.goToUserPage
+		
 	});
 }
+
 
 function getSizes () {
 	const promise1 = new Promise ((resolve, reject) => {
@@ -54,17 +57,6 @@ function fillUserName () {
 export function createStartPage () {
 	sidebarmenu.createSideBar ();
 	productslist.createProductsList ();
-}
-
-function enableCreateFormButton () {
-	let button = document.getElementById('add-diaper');
-	button.onclick = function() {
-		state.whereToAddNewItem.addTo = 'mock-diapers-preview';
-		clearPage ();
-		window.location.href='#new-form';
-		general.updateHistory('#new-form');
-		form.goToForm ('newItem');
-	}
 }
 
 function enableHomeClick () {

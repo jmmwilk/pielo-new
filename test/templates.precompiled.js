@@ -1,10 +1,24 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['main'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div id=\"main\" class=\"col-md-10 order-1 mx-auto\">\n</div>";
+},"useData":true});
 templates['page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div id=\"page\" class=\"row d-flex justify-content-md-center\">\n</div>\n";
 },"useData":true});
-templates['title-bar'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"title-bar\" class=\"container-fluid d-flex justify-content-between order-1\">\n  <div id=\"home\" type=\"button\">\n    <img id=\"home-icon\" src=\"/images/home.png\"/>\n  </div>\n  <button id=\"add-diaper\" class=\"btn-primary btn\">\n    Dodaj pieluchę\n  </button>\n  <div id=\"user-box\" class=\"row\">\n    <div id=\"favourites-icon-box\">\n      <button id=\"heart-button\" class=\"btn\">\n        <img src=\"/images/heart-red-filled.png\" id=\"heart-icon\">\n      </button>\n    </div>\n    <div id=\"user-name-box\" class=\"text-end\">\n    </div>\n    <div id=\"login-icon-box\" type=\"button\">\n      <img id=\"login-icon\" src=\"/images/login-icon.png\"/>\n    </div>\n  </div>\n</div>\n";
+templates['title-bar'] = template({"1":function(container,depth0,helpers,partials,data) {
+    return "    <div id=\"favourites-icon-box\">\n      <button id=\"heart-button\" class=\"btn\">\n        <img src=\"/images/heart-red-filled.png\" id=\"heart-icon\">\n      </button>\n    </div>\n";
+},"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "<div id=\"title-bar\" class=\"container-fluid d-flex justify-content-between order-1\">\n  <div id=\"home\" type=\"button\">\n    <img id=\"home-icon\" src=\"/images/home.png\"/>\n  </div>\n  <div id=\"user-box\" class=\"row\">\n"
+    + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"normal-user") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":6,"column":4},"end":{"line":12,"column":11}}})) != null ? stack1 : "")
+    + "    <div id=\"user-name-box\" class=\"text-end\">\n    </div>\n    <div id=\"login-icon-box\" type=\"button\">\n      <img id=\"login-icon\" src=\"/images/login-icon.png\"/>\n    </div>\n  </div>\n</div>\n";
 },"useData":true});
 templates['nav'] = template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -49,7 +63,7 @@ templates['sidebar'] = template({"compiler":[8,">= 4.3.0"],"main":function(conta
     return "<div id=\"menu-template-container\" class=\"nav collapse show overflow-auto sticky-top col-2\" id=\"navbarNav\">\n  <ul id=\"menu-template\" class=\"nav flex-column flex-nowrap overflow-hidden bg-white w-100\">\n    <li class=\"nav-item\">\n      <a id=\"all-diapers-nav\" class=\"nav-link\" href=\"#application\">\n        Wszystkie Pieluszki\n      </a>\n    </li>\n  </ul>\n</div>\n";
 },"useData":true});
 templates['favourites-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"main\" class=\"col-md-10 order-1 mx-auto\">\n  <div class=\"col\">\n    <div id=\"favourites-title\">\n      Moje Ulubione\n    </div>\n    <div id=\"products-container\" class=\"d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto\">\n    </div>\n  </div>\n</div>\n";
+    return "<div class=\"col\">\n	<div id=\"favourites-title\">\n	  Moje Ulubione\n	</div>\n	<div id=\"products-container\" class=\"d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto\">\n	</div>\n</div>";
 },"useData":true});
 templates['items-list'] = template({"1":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -59,18 +73,18 @@ templates['items-list'] = template({"1":function(container,depth0,helpers,partia
         return undefined
     };
 
-  return "  <li class=\"card text-center col pielucha-template\" data-key=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"key") || (depth0 != null ? lookupProperty(depth0,"key") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data,"loc":{"start":{"line":2,"column":63},"end":{"line":2,"column":70}}}) : helper)))
+  return "blabla\n  <li class=\"card text-center col pielucha-template\" data-key=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"key") || (depth0 != null ? lookupProperty(depth0,"key") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data,"loc":{"start":{"line":4,"column":63},"end":{"line":4,"column":70}}}) : helper)))
     + "\">\n    <div class=\"card-body\">\n      <div class=\"card-top row justify-content-between\">\n        <div class=\"stars-box text-muted row\">\n          <img src=\"/images/star.png\" class=\"star\">\n          <p class=\"mr-1\">5,0</p>\n        </div>\n        <div class=\"heart-box\">\n          <img src=\"/images/hear2.png\" class=\"heart\" key=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"key") || (depth0 != null ? lookupProperty(depth0,"key") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data,"loc":{"start":{"line":10,"column":58},"end":{"line":10,"column":65}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"key") || (depth0 != null ? lookupProperty(depth0,"key") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"key","hash":{},"data":data,"loc":{"start":{"line":12,"column":58},"end":{"line":12,"column":65}}}) : helper)))
     + "\">\n        </div>\n      </div>\n      <div class=\"embed-responsive embed-responsive-1by1\">\n        <img src="
-    + alias4(((helper = (helper = lookupProperty(helpers,"printimage") || (depth0 != null ? lookupProperty(depth0,"printimage") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"printimage","hash":{},"data":data,"loc":{"start":{"line":14,"column":17},"end":{"line":14,"column":31}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"printimage") || (depth0 != null ? lookupProperty(depth0,"printimage") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"printimage","hash":{},"data":data,"loc":{"start":{"line":16,"column":17},"end":{"line":16,"column":31}}}) : helper)))
     + " class=\"img embed-responsive-item rounded pielucha-image\"/>\n      </div>\n      <div class=\"row justify-content-between\">\n        <div class=\"col-auto\">\n          <a href=\"#application\" class=\"card-link text-warning\">"
-    + alias4(((helper = (helper = lookupProperty(helpers,"producer-name") || (depth0 != null ? lookupProperty(depth0,"producer-name") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"producer-name","hash":{},"data":data,"loc":{"start":{"line":18,"column":64},"end":{"line":18,"column":81}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"producer-name") || (depth0 != null ? lookupProperty(depth0,"producer-name") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"producer-name","hash":{},"data":data,"loc":{"start":{"line":20,"column":64},"end":{"line":20,"column":81}}}) : helper)))
     + "</a>\n        </div>\n        <div class=\"col-auto\">\n          <div class=\"row m-0 text-muted\">\n            "
-    + alias4(((helper = (helper = lookupProperty(helpers,"printsizes") || (depth0 != null ? lookupProperty(depth0,"printsizes") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"printsizes","hash":{},"data":data,"loc":{"start":{"line":22,"column":12},"end":{"line":22,"column":26}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"printsizes") || (depth0 != null ? lookupProperty(depth0,"printsizes") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"printsizes","hash":{},"data":data,"loc":{"start":{"line":24,"column":12},"end":{"line":24,"column":26}}}) : helper)))
     + "\n          </div>\n        </div>\n      </div>\n      <h5 class=\"text-primary\">"
-    + alias4(((helper = (helper = lookupProperty(helpers,"item-name") || (depth0 != null ? lookupProperty(depth0,"item-name") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"item-name","hash":{},"data":data,"loc":{"start":{"line":26,"column":31},"end":{"line":26,"column":44}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"item-name") || (depth0 != null ? lookupProperty(depth0,"item-name") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"item-name","hash":{},"data":data,"loc":{"start":{"line":28,"column":31},"end":{"line":28,"column":44}}}) : helper)))
     + "</h5>\n    </div>\n  </li>\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -80,10 +94,11 @@ templates['items-list'] = template({"1":function(container,depth0,helpers,partia
         return undefined
     };
 
-  return ((stack1 = lookupProperty(helpers,"each").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"data") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":1,"column":0},"end":{"line":29,"column":9}}})) != null ? stack1 : "");
+  return "umieram\n"
+    + ((stack1 = lookupProperty(helpers,"each").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"data") : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":2,"column":0},"end":{"line":31,"column":9}}})) != null ? stack1 : "");
 },"useData":true});
 templates['items-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"main\" class=\"col-md-10 order-1 mx-auto\">\n  <div id=\"products-container\" class=\"d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto\">\n  </div>\n</div>";
+    return "<div id=\"products-container\" class=\"d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto\">\n</div>\n";
 },"useData":true});
 templates['add-review-child'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div id=\"ar-child-basic-data-wrapper\" class=\"form-group row\">\n  <div class=\"col-form-label col-auto\">\n    Wiek dziecka\n  </div>\n  <input class=\"form-control col-1\" type=\"number\" id=\"age-from-input\">\n  <div class=\"col-form-label mx-2\">\n    do\n  </div>\n  <input class=\"form-control col-1\" type=\"number\" id=\"age-to-input\">\n  <div class=\"col-form-label ml-2 mr-5\">\n    miesięcy\n  </div>\n  <div class=\"col-form-label col-auto\">\n    Waga dziecka\n  </div>\n  <input class=\"form-control col-1\" type=\"number\" id=\"weight-from-input\">\n  <div class=\"col-form-label mx-2\">\n    do\n  </div>\n  <input class=\"form-control col-1\" type=\"number\" id=\"weight-to-input\">\n  <div class=\"col-form-label ml-2\">\n    kg\n  </div>\n</div>\n<div id=\"ar-child-desciption-wrapper\" class=\"my-2\">\n  <div class=\"py-1\">\n    <div>\n      Dziecko:\n    </div>\n    <div class=\"form-check form-check-inline\">\n      <input class=\"form-check-input\" type=\"checkbox\" id=\"pulchne\" value=\"option1\">\n      <label class=\"form-check-label\" for=\"pulchne\">pulchne</label>\n    </div>\n    <div class=\"form-check form-check-inline\">\n      <input class=\"form-check-input\" type=\"checkbox\" id=\"szczuple\" value=\"option1\">\n      <label class=\"form-check-label\" for=\"szczuple\">szczupłe</label>\n    </div>\n    <div class=\"form-check form-check-inline\">\n      <input class=\"form-check-input\" type=\"checkbox\" id=\"srednie\" value=\"option1\">\n      <label class=\"form-check-label\" for=\"srednie\">średnie</label>\n    </div>\n  </div>\n  <div class=\"py-1\">\n    <div>\n      Uda:\n    </div>\n    <div class=\"form-check form-check-inline\">\n      <input class=\"form-check-input\" type=\"checkbox\" id=\"pulchne-udka\" value=\"option1\">\n      <label class=\"form-check-label\" for=\"pulchne-udka\">pulchne udka</label>\n    </div>\n    <div class=\"form-check form-check-inline\">\n      <input class=\"form-check-input\" type=\"checkbox\" id=\"szczuple-udka\" value=\"option1\">\n      <label class=\"form-check-label\" for=\"szczuple-udka\">szczupłe udka</label>\n    </div>\n    <div class=\"form-check form-check-inline\">\n      <input class=\"form-check-input\" type=\"checkbox\" id=\"srednie-udka\" value=\"option1\">\n      <label class=\"form-check-label\" for=\"srednie udka\">średnie udka</label>\n    </div>\n  </div>\n</div>\n";
@@ -899,5 +914,11 @@ templates['login-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(co
 },"useData":true});
 templates['subscribe'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div id=\"subscribe-box\" class=\"form mx-auto\">\n  <div id=\"email-box\" class=\"form-group\">\n    <label for=\"inputEmail\">Email</label>\n    <input id=\"email\" type=\"email\" class=\"form-control\" id=\"inputEmail\" aria-describedby=\"emailHelp\">\n  </div>\n  <div id=\"password-box\" class=\"form-group\">\n    <label for=\"exampleInputPassword1\">Hasło</label>\n    <input id=\"password\" type=\"password\" class=\"form-control\" id=\"exampleInputPassword1\">\n  </div>\n  <div class=\"form-group\">\n    <div id=\"role-checkbox\" class=\"form-check\">\n      <input data-toggle=\"collapse\" data-target='#outside-fabrics' class=\"form-check-input\" type=\"checkbox\" id=\"producer\" value=\"\">\n      <label class=\"form-check-label\" for=\"producer\">Jestem producentem</label>\n    </div>\n  </div>\n  <button id=\"sign-up\" type=\"button\" class=\"btn btn-primary\">Zarejestruj</button>\n</div>";
+},"useData":true});
+templates['add-new-diaper'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div>\n	<button id=\"add-diaper\" class=\"btn-primary btn\">\n	Dodaj pieluchę\n	</button>\n</div>\n";
+},"useData":true});
+templates['user-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div>\n	<div id=\"user-navbar\">\n		<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n		  <div class=\"collapse navbar-collapse\" id=\"navbarNavAltMarkup\">\n		    <div class=\"navbar-nav\">\n		      <a class=\"nav-item nav-link active\" href=\"#\">Moje pieluszki<span class=\"sr-only\">(current)</span></a>\n		      <a class=\"nav-item nav-link disabled\" href=\"#\">Ustawienia</a>\n		    </div>\n		  </div>\n		</nav>\n	</div>\n	<div id=\"main-content\">\n	</div>\n</div>";
 },"useData":true});
 })();

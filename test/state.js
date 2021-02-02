@@ -1,6 +1,8 @@
 export let state = {
 	user: undefined,
 	userRole: undefined,
+	normalUser: undefined,
+	producer: undefined,
 }
 
 export let formType = {}

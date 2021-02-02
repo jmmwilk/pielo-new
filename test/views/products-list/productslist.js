@@ -12,20 +12,23 @@ export function createProductsList () {
 	const promise = getDatabaseDiapers ();
 	promise
 	.then(function(diapers) {
+		console.log ('diapers', diapers)
 	  	let loadedDiapers = {'data': diapers};
+	  	console.log ('loadedDiapers', loadedDiapers)
 	  	fillSizesInCard ();
-	  	const promise2 = createProfileImageTemplate (false);
-	  	promise2
-	  	.then (function(){
-	  		createTemplate ('items-page', 'page');
-			createTemplate ('items-list', 'products-container', loadedDiapers);
-			enableCardClick ();
-			enableGoToFavouritesPage (loadedDiapers);
+	  	createProfileImageTemplate (false);
+  		createTemplate ('main', 'page');
+  		createTemplate ('items-page', 'main');
+		createTemplate ('items-list', 'products-container', loadedDiapers);
+		enableCardClick ();
+		console.log ('state.state.userRole', state.state.userRole)
+		if (state.state.userRole == 'normalUser') {
 			const promise = markFavourites ();
 			promise.then(function(){
+				enableGoToFavouritesPage (loadedDiapers);
 				enableHeartChange ();
 			});
-	  	})
+		};
 	});
 }
 
@@ -65,14 +68,11 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
 	  	});
 	  	let newItems = {'data': items}
 		removeProductsList ();
-		const promise2 = createProfileImageTemplate (isSizeClicked, diaperSizeToPrint)
-		promise2
-		.then(function(){
-			createTemplate ('items-page', 'page');
-			createTemplate ('items-list', 'products-container', newItems);	
-			enableCardClick ();
-		});
-		
+		createProfileImageTemplate (isSizeClicked, diaperSizeToPrint)
+		createTemplate ('main', 'page');
+		createTemplate ('items-page', 'main');
+		createTemplate ('items-list', 'products-container', newItems);	
+		enableCardClick ();
 	});
 }
 
@@ -94,7 +94,8 @@ function enableGoToFavouritesPage (loadedDiapers) {
 					};
 				});
 			});
-			createTemplate ('items-page', 'page');
+			createTemplate ('main', 'page');
+			createTemplate ('items-page', 'main');
 			createTemplate ('items-list', 'products-container', {'data': newDiapers});	
 			markFavourites ();
 			enableCardClick ();
@@ -233,7 +234,7 @@ export function removeProductsList () {
 	page.removeChild(main);
 }
 
-function getDatabaseDiapers () {
+export function getDatabaseDiapers () {
 	const promise1 = new Promise ((resolve, reject) => {
 		let ref = firebase.database().ref('mock-diapers/');
 		let diapers = [];
@@ -250,7 +251,7 @@ function getDatabaseDiapers () {
 	return promise1
 }
 
-function createProfileImageTemplate (isSize, chosenSizeId) {
+export function createProfileImageTemplate (isSize, chosenSizeId) {
 	const promise = new Promise ((resolve, reject) => {
 		let itemPreview = $('#items-list').html();
 		Handlebars.registerHelper('printimage', function(){
@@ -282,7 +283,7 @@ export function enableAllDiapersClick () {
 	}
 }
 
-function enableCardClick () {
+export function enableCardClick () {
 	let cards = document.getElementsByClassName('card');
 	Array.from(cards).forEach(function(card) {
 		card.onclick = function () {

@@ -7,3 +7,8 @@ export function updateHistory(curr) {
 // export function updateTotalHistory(curr) {
 // 	window.location.history.push(window.location.hash);
 // }
+
+export function createTemplate (templateId, parentTemplate) {
+	let template = Handlebars.templates[templateId];
+	$('#' + parentTemplate).append(template());
+}
