@@ -4,7 +4,7 @@ templates['main'] = template({"compiler":[8,">= 4.3.0"],"main":function(containe
     return "<div id=\"main\" class=\"col-md-10 order-1 mx-auto pt-3\">\n</div>";
 },"useData":true});
 templates['page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"page\" class=\"row d-flex justify-content-md-center\">\n</div>\n";
+    return "<div id=\"page\" class=\"row d-flex justify-content-md-center bg-light\">\n</div>\n";
 },"useData":true});
 templates['title-bar'] = template({"1":function(container,depth0,helpers,partials,data) {
     return "    <div id=\"favourites-icon-box\" class=\"mx-2\">\n      <button id=\"heart-button\" class=\"btn\">\n        <img src=\"/images/heart-red-filled.png\" id=\"heart-icon\">\n      </button>\n    </div>\n";
@@ -391,7 +391,7 @@ templates['product-page'] = template({"1":function(container,depth0,helpers,part
         return undefined
     };
 
-  return "<div id=\"main\" class=\"col-md-12 order-1 mx-auto\">\n  <div id=\"product-page\" class=\"col-md-10 d-flex flex-column order-1 mx-auto\">\n    <div class=\"main-info-box row my-2 p-3 mx-1 bg-white\">\n      <div class=\"col-2 pr-0 pl-1\">\n        <div class=\"row justify-content-center\">\n          <div id=\"images-left-box\" class=\"col-10 d-flex flex-column\">\n          </div>\n        </div>\n      </div>\n      <div id=\"profile-image-box\" class=\"col-md-6\">\n      </div>\n      <div class=\"title-box col\">\n        <div id=\"edit-diaper-wrapper\">\n        </div>\n        <h4 class=\"text-primary mb-3\"> "
+  return "<div id=\"main\" class=\"col-md-12 order-1 mx-auto\">\n  <div id=\"product-page\" class=\"col-md-10 d-flex flex-column order-1 mx-auto\">\n    <div class=\"main-info-box row my-2 p-3 mx-1 bg-white border\">\n      <div class=\"col-2 pr-0 pl-1\">\n        <div class=\"row justify-content-center\">\n          <div id=\"images-left-box\" class=\"col-10 d-flex flex-column\">\n          </div>\n        </div>\n      </div>\n      <div id=\"profile-image-box\" class=\"col-md-6\">\n      </div>\n      <div class=\"title-box col\">\n        <div id=\"edit-diaper-wrapper\">\n        </div>\n        <h4 class=\"text-primary mb-3\"> "
     + alias3((lookupProperty(helpers,"printnewinfo")||(depth0 && lookupProperty(depth0,"printnewinfo"))||alias2).call(alias1,depth0,{"name":"printnewinfo","hash":{},"data":data,"loc":{"start":{"line":16,"column":39},"end":{"line":16,"column":60}}}))
     + " </h4>\n        <div class=\"d-flex flex-row mb-3\">\n          <h5 class=\"text-secondary mr-2\">od</h5>\n          <h5 href=\"#application\" class=\"text-warning\" type=\"button\">"
     + alias3(((helper = (helper = lookupProperty(helpers,"producer-name") || (depth0 != null ? lookupProperty(depth0,"producer-name") : depth0)) != null ? helper : alias2),(typeof helper === alias4 ? helper.call(alias1,{"name":"producer-name","hash":{},"data":data,"loc":{"start":{"line":19,"column":69},"end":{"line":19,"column":86}}}) : helper)))
