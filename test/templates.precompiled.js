@@ -1,13 +1,13 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['main'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"main\" class=\"col-md-10 order-1 mx-auto\">\n</div>";
+    return "<div id=\"main\" class=\"col-md-10 order-1 mx-auto pt-3\">\n</div>";
 },"useData":true});
 templates['page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div id=\"page\" class=\"row d-flex justify-content-md-center\">\n</div>\n";
 },"useData":true});
 templates['title-bar'] = template({"1":function(container,depth0,helpers,partials,data) {
-    return "    <div id=\"favourites-icon-box\">\n      <button id=\"heart-button\" class=\"btn\">\n        <img src=\"/images/heart-red-filled.png\" id=\"heart-icon\">\n      </button>\n    </div>\n";
+    return "    <div id=\"favourites-icon-box\" class=\"mx-2\">\n      <button id=\"heart-button\" class=\"btn\">\n        <img src=\"/images/heart-red-filled.png\" id=\"heart-icon\">\n      </button>\n    </div>\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
@@ -16,9 +16,9 @@ templates['title-bar'] = template({"1":function(container,depth0,helpers,partial
         return undefined
     };
 
-  return "<div id=\"title-bar\" class=\"container-fluid d-flex justify-content-between order-1\">\n  <div id=\"home\" type=\"button\">\n    <img id=\"home-icon\" src=\"/images/home.png\"/>\n  </div>\n  <div id=\"user-box\" class=\"row\">\n"
+  return "<div id=\"title-bar\" class=\"d-flex justify-content-between order-1 align-items-center border-bottom\">\n  <div id=\"home\" type=\"button\" class=\"mx-2\">\n    <img id=\"home-icon\" src=\"/images/home.png\"/>\n  </div>\n  <div id=\"user-box\" class=\"row\">\n"
     + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"normal-user") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":6,"column":4},"end":{"line":12,"column":11}}})) != null ? stack1 : "")
-    + "    <div id=\"user-name-box\" class=\"text-end\">\n    </div>\n    <div id=\"login-icon-box\" type=\"button\">\n      <img id=\"login-icon\" src=\"/images/login-icon.png\"/>\n    </div>\n  </div>\n</div>\n";
+    + "    <div id=\"user-name-box\" class=\"text-end\">\n    </div>\n    <div id=\"login-icon-box\" type=\"button\" class=\"mx-4\">\n      <img id=\"login-icon\" src=\"/images/login-icon.png\"/>\n    </div>\n  </div>\n</div>\n";
 },"useData":true});
 templates['nav'] = template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -60,7 +60,7 @@ templates['nav'] = template({"1":function(container,depth0,helpers,partials,data
     + "  </ul>\n</li>";
 },"useData":true,"useDepths":true});
 templates['sidebar'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"menu-template-container\" class=\"nav collapse show overflow-auto sticky-top col-2\" id=\"navbarNav\">\n  <ul id=\"menu-template\" class=\"nav flex-column flex-nowrap overflow-hidden bg-white w-100\">\n    <li class=\"nav-item\">\n      <a id=\"all-diapers-nav\" class=\"nav-link\" href=\"#application\">\n        Wszystkie Pieluszki\n      </a>\n    </li>\n  </ul>\n</div>\n";
+    return "<div id=\"menu-template-container\" class=\"nav collapse show overflow-auto sticky-top col-2 pl-3 pt-3 border-right\" id=\"navbarNav\">\n  <ul id=\"menu-template\" class=\"nav flex-column flex-nowrap overflow-hidden w-100\">\n    <li class=\"nav-item\">\n      <a id=\"all-diapers-nav\" class=\"nav-link\" href=\"#application\">\n        Wszystkie Pieluszki\n      </a>\n    </li>\n  </ul>\n</div>\n";
 },"useData":true});
 templates['favourites-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"col\">\n	<div id=\"favourites-title\">\n	  Moje Ulubione\n	</div>\n	<div id=\"products-container\" class=\"d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto\">\n	</div>\n</div>";
@@ -915,9 +915,9 @@ templates['subscribe'] = template({"compiler":[8,">= 4.3.0"],"main":function(con
     return "<div id=\"subscribe-box\" class=\"form mx-auto\">\n  <div id=\"email-box\" class=\"form-group\">\n    <label for=\"inputEmail\">Email</label>\n    <input id=\"email\" type=\"email\" class=\"form-control\" id=\"inputEmail\" aria-describedby=\"emailHelp\">\n  </div>\n  <div id=\"password-box\" class=\"form-group\">\n    <label for=\"exampleInputPassword1\">Hasło</label>\n    <input id=\"password\" type=\"password\" class=\"form-control\" id=\"exampleInputPassword1\">\n  </div>\n  <div class=\"form-group\">\n    <div id=\"role-checkbox\" class=\"form-check\">\n      <input data-toggle=\"collapse\" data-target='#outside-fabrics' class=\"form-check-input\" type=\"checkbox\" id=\"producer\" value=\"\">\n      <label class=\"form-check-label\" for=\"producer\">Jestem producentem</label>\n    </div>\n  </div>\n  <button id=\"sign-up\" type=\"button\" class=\"btn btn-primary\">Zarejestruj</button>\n</div>";
 },"useData":true});
 templates['add-new-diaper'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div>\n	<button id=\"add-diaper\" class=\"btn-primary btn\">\n	Dodaj pieluchę\n	</button>\n</div>\n";
+    return "<div class=\"mb-3\">\n	<button id=\"add-diaper\" class=\"btn-primary btn\">\n	Dodaj pieluchę\n	</button>\n</div>\n";
 },"useData":true});
 templates['user-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"d-flex flex-column w-100\">\n	<div id=\"user-navbar\">\n		<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n		  <div class=\"collapse navbar-collapse\" id=\"navbarNavAltMarkup\">\n		    <div class=\"navbar-nav\">\n		      <a class=\"nav-item nav-link active\" href=\"#\">Moje pieluszki<span class=\"sr-only\">(current)</span></a>\n		      <a class=\"nav-item nav-link disabled\" href=\"#\">Ustawienia</a>\n		    </div>\n		  </div>\n		</nav>\n	</div>\n	<div id=\"main-content\">\n	</div>\n</div>";
+    return "<div class=\"d-flex flex-column w-100\">\n	<div id=\"user-navbar\">\n		<nav class=\"navbar navbar-expand-lg navbar-light bg-light\">\n		  <div class=\"collapse navbar-collapse\" id=\"navbarNavAltMarkup\">\n		    <div class=\"navbar-nav\">\n		      <a class=\"nav-item nav-link active\" href=\"#\">\n		      <h5>Moje pieluszki</h5> <span class=\"sr-only\">(current)</span></a>\n		      <a class=\"nav-item nav-link disabled\" href=\"#\"> <h5>Ustawienia</h5> </a>\n		    </div>\n		  </div>\n		</nav>\n	</div>\n	<div id=\"main-content\">\n	</div>\n</div>";
 },"useData":true});
 })();

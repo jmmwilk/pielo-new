@@ -1,10 +1,10 @@
-<div id="title-bar" class="container-fluid d-flex justify-content-between order-1">
-  <div id="home" type="button">
+<div id="title-bar" class="d-flex justify-content-between order-1 align-items-center border-bottom">
+  <div id="home" type="button" class="mx-2">
     <img id="home-icon" src="/images/home.png"/>
   </div>
   <div id="user-box" class="row">
     {{#if normal-user}}
-    <div id="favourites-icon-box">
+    <div id="favourites-icon-box" class="mx-2">
       <button id="heart-button" class="btn">
         <img src="/images/heart-red-filled.png" id="heart-icon">
       </button>
@@ -12,7 +12,7 @@
     {{/if}}
     <div id="user-name-box" class="text-end">
     </div>
-    <div id="login-icon-box" type="button">
+    <div id="login-icon-box" type="button" class="mx-4">
       <img id="login-icon" src="/images/login-icon.png"/>
     </div>
   </div>
