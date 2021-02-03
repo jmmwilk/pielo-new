@@ -1,9 +1,11 @@
 import * as login from '/test/views/login/login.js';
 import * as mainPage from '/test/views/main-page/main-page.js';
 import * as productPage from '/test/views/product-page/productpage.js';
+import * as userPage from '/test/views/user-page/user-page.js';
 import * as form from '/test/views/form/new-form.js';
 import * as general from '/test/general.js';
 import * as state from '/test/state.js';
+
 
 
 $(document).ready(function(){
@@ -40,17 +42,21 @@ window.onhashchange = function() {
 	if (hash == history[index]) {
 		if (window.innerDocClick) {
 	        window.innerDocClick = false;
+//	        console.log ('IN FORWARD')
 	    }
 	} else {
 		if (window.innerDocClick) {
 			index = index - 1;
 	        window.innerDocClick = false;
+//	        console.log ('IN BACK')
 	    } else {
     		if (hash == history[index + 1]) {
     			window.location.historyIndex = index + 1;
+//    			console.log ('OUT FORWARD')
     		}
     		if (hash == history[index - 1]) {
     			window.location.historyIndex = index - 1;
+//    			console.log ('OUT BACK')
     		}
     		goToPage();
 	    }
@@ -70,6 +76,9 @@ function goToPage () {
 	};
 	if (hash == '#new-form') {
 		form.goToForm ('newItem');
+	};
+	if (hash == '#user-page') {
+		userPage.goToUserPage ();
 	};
 }
 

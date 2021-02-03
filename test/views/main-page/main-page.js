@@ -15,8 +15,11 @@ export function createMainPage () {
 	then(function() {
 		createStartPage ();
 		enableHomeClick ();
-		document.getElementById('login-icon').onclick = userPage.goToUserPage
-		
+		 	document.getElementById('login-icon').onclick = function(){
+			window.location.href='#user-page';
+			general.updateHistory('#user-page');
+			userPage.goToUserPage();
+		};
 	});
 }
 

@@ -1,4 +1,4 @@
-{{#each data}}
+{{#each diapers}}
   <li class="card text-center col pielucha-template" data-key="{{key}}">
     <div class="card-body">
       <div class="card-top row justify-content-between">
@@ -6,9 +6,11 @@
           <img src="/images/star.png" class="star">
           <p class="mr-1">5,0</p>
         </div>
-        <div class="heart-box">
-          <img src="/images/hear2.png" class="heart" key="{{key}}">
-        </div>
+        {{#if ../isheart}}
+          <div class="heart-box">
+            <img src="/images/hear2.png" class="heart" key="{{key}}">
+          </div>
+        {{/if}}
       </div>
       <div class="embed-responsive embed-responsive-1by1">
         <img src={{printimage}} class="img embed-responsive-item rounded pielucha-image"/>

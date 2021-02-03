@@ -12,16 +12,17 @@ export function createProductsList () {
 	const promise = getDatabaseDiapers ();
 	promise
 	.then(function(diapers) {
-		console.log ('diapers', diapers)
-	  	let loadedDiapers = {'data': diapers};
-	  	console.log ('loadedDiapers', loadedDiapers)
+		let isHeart;
+		if (!state.state.producer) {
+			isHeart = true
+		}
+	  	let loadedDiapers = {'diapers': diapers, 'isheart': isHeart};
 	  	fillSizesInCard ();
 	  	createProfileImageTemplate (false);
   		createTemplate ('main', 'page');
   		createTemplate ('items-page', 'main');
 		createTemplate ('items-list', 'products-container', loadedDiapers);
 		enableCardClick ();
-		console.log ('state.state.userRole', state.state.userRole)
 		if (state.state.userRole == 'normalUser') {
 			const promise = markFavourites ();
 			promise.then(function(){
@@ -30,6 +31,14 @@ export function createProductsList () {
 			});
 		};
 	});
+}
+
+function isHeart () {
+	let isHeart;
+	if (!state.state.producer) {
+		isHeart = true
+	}
+	return isHeart
 }
 
 export function createNewProductsList (navCategoryGroup, navCategory) {

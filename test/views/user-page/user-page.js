@@ -18,9 +18,7 @@ export function goToUserPage () {
 			enableCreateFormButton ();
 			productslist.createProfileImageTemplate (false);
 			createTemplate ('items-page', 'main-content');
-			console.log ('filteredDiapers', filteredDiapers)
-			let loadedDiapers = {'data': filteredDiapers};
-
+			let loadedDiapers = {'diapers': filteredDiapers};
 			createTemplate ('items-list', 'products-container', loadedDiapers);
 			productslist.enableCardClick ();
 		});

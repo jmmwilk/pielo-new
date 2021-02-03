@@ -272,8 +272,13 @@ export function createPreviewScreen (diaper, key, view) {
 //		createTemplate ('add-review', 'add-review-form-wrapper', diaper);
 //		createTemplate ('detail-reviews-summary', 'detail-summary-wrapper');
 //		createTemplate ('add-review-child', 'ar-child-wrapper');
-		createTemplate ('edit-item-button', 'edit-diaper-wrapper');
-		createTemplate ('delete-item-button', 'edit-diaper-wrapper');
+		if (state.state.userKey == diaper.diaper['producer-key']) {
+			createTemplate ('edit-item-button', 'edit-diaper-wrapper');
+			createTemplate ('delete-item-button', 'edit-diaper-wrapper');
+		};
+		if (state.state.normalUser) {
+//			create template add review button
+		};
 		$('#edit-item-button').click( function(){
 			state.whereToAddNewItem.addTo = 'mock-diapers-preview'
 			clearPage ();
