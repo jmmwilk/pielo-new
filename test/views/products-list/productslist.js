@@ -67,7 +67,7 @@ export function createNewProductsList (navCategoryGroup, navCategory) {
   				};
 	  		};
 	  	});
-	  	let newItems = {'data': items}
+	  	let newItems = {'diapers': items}
 		removeProductsList ();
 		createProfileImageTemplate (isSizeClicked, diaperSizeToPrint)
 		createTemplate ('main', 'page');
@@ -97,7 +97,7 @@ function enableGoToFavouritesPage (loadedDiapers) {
 			});
 			createTemplate ('main', 'page');
 			createTemplate ('items-page', 'main');
-			createTemplate ('items-list', 'products-container', {'data': newDiapers});	
+			createTemplate ('items-list', 'products-container', {'diapers': newDiapers});	
 			markFavourites ();
 			enableCardClick ();
 			enableHeartChange ();
