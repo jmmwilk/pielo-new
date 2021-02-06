@@ -5,25 +5,23 @@ import * as userPage from '/test/views/user-page/user-page.js';
 import * as form from '/test/views/form/new-form.js';
 import * as general from '/test/general.js';
 import * as state from '/test/state.js';
-
+import * as eventBus from '/test/eventBus.js';
 
 
 $(document).ready(function(){
 	window.location.history = [];
 	window.location.historyIndex = -1;
-	// window.location.href='#main-page';
-	// general.updateHistory('#main-page');
-	// mainPage.createMainPage ();
+	window.location.href='#main-page';
+	general.updateHistory('#main-page');
+	mainPage.createMainPage ();
+	login.checkForAuthStateChange ();
 
-	window.location.href='#login';
-	general.updateHistory('#login');
-	login.goToLoginScreen();
+	// window.location.href='#login';
+	// general.updateHistory('#login');
+	// login.goToLoginScreen();
 
 // 	addDataToDatabase ();
-//	eventBus.eventBus.subscribe('userLoggedIn', fillUserName);
 })
-
-
 
 document.onmouseover = function() {
     //User's mouse is inside the page.
@@ -79,6 +77,9 @@ function goToPage () {
 	};
 	if (hash == '#user-page') {
 		userPage.goToUserPage ();
+	};
+	if (hash == '#login') {
+		login.goToLoginScreen ();
 	};
 }
 

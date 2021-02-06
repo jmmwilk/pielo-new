@@ -21,7 +21,7 @@ export function goToLoginScreen () {
 		createTemplate ('page', 'application');
 		createTemplate('login-page', 'page');
 		firebase.auth().signOut();
-		checkForAuthStateChange ();
+//		checkForAuthStateChange ();
 		enablelogIn ();
 		enableLogOut ();
 }
@@ -52,8 +52,7 @@ function findUserInDatabase (firebaseUser) {
 			for (let i=0; i<usersData.length; i++) {
 				let user = usersData[i].data[0].user
 				if (firebaseUser.uid == user.uid) {
-					let key = usersData[i].key;
-					user.key = key;
+					user.key = usersData[i].key;
 					resolve (user)
 				};
 			};
@@ -90,22 +89,10 @@ function enablelogIn () {
 		const auth = firebase.auth();
 		const promise = auth.signInWithEmailAndPassword(email, password);
 		promise.then(function() {
-		    firebase.auth().onAuthStateChanged(firebaseUser => {
-				if (firebaseUser) {
-					const promise2 = findUserInDatabase (firebaseUser);
-					promise2.then(function(user) {
-						changeStateLogIn (user, firebaseUser)
-					})
-					.then (function () {
-// 						eventBus.eventBus.trigger('userLoggedIn');
-						window.location.href='#main-page';
-						general.updateHistory('#main-page');
-						mainPage.createMainPage ();
-					})
-				} else {
-				}
-			})
-		})
+			window.location.href='#main-page';
+			general.updateHistory('#main-page');
+			mainPage.createMainPage ();
+		});
 	})
 }
 
@@ -148,15 +135,14 @@ function enablelogIn () {
 
 function changeStateLogIn (user, firebaseUser) {
 	const promise = new Promise ((resolve, reject) => {
-		let role = user.role;
-		let key = user.key
 		state.state.user = firebaseUser;
-		state.state.userRole = role;
-		state.state.userKey = key;
-		if (role == 'normalUser') {
+		state.state.userRole = user.role;
+		state.state.userKey = user.key;
+		state.state.userName = user.name;
+		if (user.role == 'normalUser') {
 			state.state.normalUser = true
 		}
-		if (role == 'producer') {
+		if (user.role == 'producer') {
 			state.state.producer = true
 		}
 		resolve()
@@ -190,27 +176,41 @@ function createUserInFirestore () {
 	return promise
 }
 
-function checkForAuthStateChange () {
-	const btnLogOut = document.getElementById('log-out');
+export function checkForAuthStateChange () {
 	firebase.auth().onAuthStateChanged(firebaseUser => {
-		if (firebaseUser) {
-//			btnLogOut.classList.remove('d-none');
-			user = firebaseUser;
-
-
-//			eventBus.eventBus.trigger('subscribe')
-
-			// const promise = state.changeEventBus ();
-			// promise
-			// .then (function () {
-			// 	state.eventBus.trigger();
-			// })
-		} else {
-			btnLogOut.classList.add('d-none');
+		if (firebaseUser && !state.state.userLoggedIn) {
+			state.state.userLoggedIn = true;
+			const promise2 = findUserInDatabase (firebaseUser);
+			promise2.then(function(user) {
+				changeStateLogIn (user, firebaseUser);
+				eventBus.eventBus.trigger('userLoggedIn');
+			});
 		}
-		return firebaseUser
+
 	})
 }
+
+// function checkForAuthStateChange () {
+// 	const btnLogOut = document.getElementById('log-out');
+// 	firebase.auth().onAuthStateChanged(firebaseUser => {
+// 		if (firebaseUser) {
+// //			btnLogOut.classList.remove('d-none');
+// 			user = firebaseUser;
+
+
+// //			eventBus.eventBus.trigger('subscribe')
+
+// 			// const promise = state.changeEventBus ();
+// 			// promise
+// 			// .then (function () {
+// 			// 	state.eventBus.trigger();
+// 			// })
+// 		} else {
+// 			btnLogOut.classList.add('d-none');
+// 		}
+// 		return firebaseUser
+// 	})
+// }
 
 function enableLogOut () {
 	const btnLogOut = document.getElementById('log-out');

@@ -1,5 +1,8 @@
 (function() {
   var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
+templates['log-out-link'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<a id=\"log-out-link\" class=\"text-secondary align-self-end\" type=\"button\">Wyloguj</a>";
+},"useData":true});
 templates['main'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div id=\"main\" class=\"col-md-10 order-1 mx-auto pt-3\">\n</div>";
 },"useData":true});
@@ -16,9 +19,9 @@ templates['title-bar'] = template({"1":function(container,depth0,helpers,partial
         return undefined
     };
 
-  return "<div id=\"title-bar\" class=\"d-flex justify-content-between order-1 align-items-center border-bottom\">\n  <div id=\"home\" type=\"button\" class=\"mx-2\">\n    <img id=\"home-icon\" src=\"/images/home.png\"/>\n  </div>\n  <div id=\"user-box\" class=\"row\">\n"
+  return "<div id=\"title-bar\" class=\"d-flex justify-content-between order-1 align-items-center border-bottom\">\n  <div id=\"home\" type=\"button\" class=\"mx-2\">\n    <img id=\"home-icon\" src=\"/images/home.png\"/>\n  </div>\n  <div id=\"user-box\" class=\"row mx-4\">\n"
     + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"normal-user") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":6,"column":4},"end":{"line":12,"column":11}}})) != null ? stack1 : "")
-    + "    <div id=\"user-name-box\" class=\"text-end\">\n    </div>\n    <div id=\"login-icon-box\" type=\"button\" class=\"mx-4\">\n      <img id=\"login-icon\" src=\"/images/login-icon.png\"/>\n    </div>\n  </div>\n</div>\n";
+    + "    <div id=\"user-name-box\" class=\"text-end\">\n    </div>\n    <div id=\"login-icon-box\" type=\"button\" class=\"mx-2\">\n      <img id=\"login-icon\" src=\"/images/login-icon.png\"/>\n    </div>\n    <div id=\"log-out-box\" class=\"d-flex\">\n    </div>\n  </div>\n</div>\n";
 },"useData":true});
 templates['nav'] = template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, alias5=container.lambda, lookupProperty = container.lookupProperty || function(parent, propertyName) {

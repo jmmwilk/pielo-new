@@ -1,4 +1,5 @@
 export let state = {
+	userLoggedIn: undefined,
 	user: undefined,
 	userRole: undefined,
 	normalUser: undefined,

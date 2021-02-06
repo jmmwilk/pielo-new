@@ -33,14 +33,6 @@ export function createProductsList () {
 	});
 }
 
-function isHeart () {
-	let isHeart;
-	if (!state.state.producer) {
-		isHeart = true
-	}
-	return isHeart
-}
-
 export function createNewProductsList (navCategoryGroup, navCategory) {
 	const promise = getDatabaseDiapers ();
 	promise

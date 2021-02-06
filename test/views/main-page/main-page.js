@@ -5,22 +5,69 @@ import * as userPage from '/test/views/user-page/user-page.js';
 import * as form from '/test/views/form/new-form.js';
 import * as general from '/test/general.js';
 import * as eventBus from '/test/eventBus.js';
+import * as login from '/test/views/login/login.js';
 
 export function createMainPage () {
+	console.log ('state', state.state)
 	document.getElementById('application').innerHTML = '';
 	createTemplate ('title-bar', 'application', {'normal-user': state.state.normalUser});
 	createTemplate ('page', 'application');
-	getSizes ()
+	getSizes ();
 	getDiaperCategories ().
 	then(function() {
 		createStartPage ();
 		enableHomeClick ();
-		 	document.getElementById('login-icon').onclick = function(){
-			window.location.href='#user-page';
-			general.updateHistory('#user-page');
-			userPage.goToUserPage();
-		};
+ 		eventBus.eventBus.subscribe('userLoggedIn', function(){
+ 			adjustPageToUserLoggedIn ();
+ 		});
+ 		if (state.state.userLoggedIn) {
+ 			adjustPageToUserLoggedIn ();
+ 		}
+ 		eventBus.eventBus.subscribe('userLoggedOut', function(){
+ 			document.getElementById('login-icon').onclick = function() {
+ 				window.location.href='#login';
+				general.updateHistory('#login');
+				login.goToLoginScreen();
+	 		};
+ 		});
+ 		if (!state.state.userLoggedIn) {
+ 			document.getElementById('login-icon').onclick = function() {
+ 				window.location.href='#login';
+				general.updateHistory('#login');
+				login.goToLoginScreen();
+	 		};
+ 		};
 	});
+}
+
+function adjustPageToUserLoggedIn () {
+	document.getElementById('log-out-box').innerHTML = '';
+	createTemplate('log-out-link', 'log-out-box');
+	enableLogOutButton ();
+	fillUserName ();
+	document.getElementById('login-icon').onclick = function() {
+		window.location.href='#user-page';
+		general.updateHistory('#user-page');
+		userPage.goToUserPage();
+	};
+}
+
+export function fillUserName () {
+	document.getElementById('user-name-box').innerHTML = state.state.userName;
+}
+
+function enableLogOutButton () {
+	document.getElementById('log-out-link').onclick = function(){
+		document.getElementById('log-out-box').innerHTML = '';
+		firebase.auth().signOut();
+		state.state.userLoggedIn = false;
+		state.state.user = undefined;
+		state.state.userRole = undefined;
+		state.state.normalUser = undefined;
+		state.state.producer = undefined;
+		eventBus.eventBus.trigger('userLoggedOut');
+		createMainPage ();
+	};
 }
 
 
@@ -52,11 +99,6 @@ function getDiaperCategories () {
 	return promise
 }
 
-function fillUserName () {
-	let userNameBox = document.getElementById('user-name-box');
- 	userNameBox.innerText = state.state.user.email
-}
-
 export function createStartPage () {
 	sidebarmenu.createSideBar ();
 	productslist.createProductsList ();
@@ -77,7 +119,7 @@ function clearPage () {
 	page.innerHTML = '';
 }
 
-function createTemplate (templateId, parentTemplate) {
+function createTemplate (templateId, parentTemplate, data) {
 	let template = Handlebars.templates[templateId];
-	$('#' + parentTemplate).append(template());
+	$('#' + parentTemplate).append(template(data));
 }
