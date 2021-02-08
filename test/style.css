@@ -28,10 +28,7 @@ body {
 }
 
 #title-bar {
-  height: 100px;
-}
-
-#menu-template-container {
+	height: 70px;
 }
 
 html, body {
@@ -143,6 +140,10 @@ input:error {
 
 *{
 	box-sizing: content-box;
+}
+
+#menu-template-container {
+    top: 70px;
 }
 
 /*

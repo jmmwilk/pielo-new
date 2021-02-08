@@ -19,7 +19,7 @@ templates['title-bar'] = template({"1":function(container,depth0,helpers,partial
         return undefined
     };
 
-  return "<div id=\"title-bar\" class=\"d-flex justify-content-between order-1 align-items-center border-bottom\">\n  <div id=\"home\" type=\"button\" class=\"mx-2\">\n    <img id=\"home-icon\" src=\"/images/home.png\"/>\n  </div>\n  <div id=\"user-box\" class=\"row mx-4\">\n"
+  return "<div id=\"title-bar\" class=\"d-flex justify-content-between order-1 align-items-center border-bottom sticky-top bg-light p-2\">\n  <div id=\"home\" type=\"button\" class=\"mx-2\">\n    <img id=\"home-icon\" src=\"/images/home.png\"/>\n  </div>\n  <div id=\"user-box\" class=\"row mx-4\">\n"
     + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),(depth0 != null ? lookupProperty(depth0,"normal-user") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":6,"column":4},"end":{"line":12,"column":11}}})) != null ? stack1 : "")
     + "    <div id=\"user-name-box\" class=\"text-end\">\n    </div>\n    <div id=\"login-icon-box\" type=\"button\" class=\"mx-2\">\n      <img id=\"login-icon\" src=\"/images/login-icon.png\"/>\n    </div>\n    <div id=\"log-out-box\" class=\"d-flex\">\n    </div>\n  </div>\n</div>\n";
 },"useData":true});
@@ -63,7 +63,7 @@ templates['nav'] = template({"1":function(container,depth0,helpers,partials,data
     + "  </ul>\n</li>";
 },"useData":true,"useDepths":true});
 templates['sidebar'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div id=\"menu-template-container\" class=\"nav collapse show overflow-auto sticky-top col-2 pl-3 pt-3 border-right\" id=\"navbarNav\">\n  <ul id=\"menu-template\" class=\"nav flex-column flex-nowrap overflow-hidden w-100\">\n    <li class=\"nav-item\">\n      <a id=\"all-diapers-nav\" class=\"nav-link\" href=\"#application\">\n        Wszystkie Pieluszki\n      </a>\n    </li>\n  </ul>\n</div>\n";
+    return "<div id=\"menu-template-container\" class=\"nav collapse show overflow-auto sticky-top sticky-offset col-2 pl-3 pt-3 border-right\" id=\"navbarNav\">\n  <ul id=\"menu-template\" class=\"nav flex-column flex-nowrap overflow-hidden w-100\">\n    <li class=\"nav-item\">\n      <a id=\"all-diapers-nav\" class=\"nav-link\" href=\"#application\">\n        Wszystkie Pieluszki\n      </a>\n    </li>\n  </ul>\n</div>\n";
 },"useData":true});
 templates['favourites-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"col\">\n	<div id=\"favourites-title\">\n	  Moje Ulubione\n	</div>\n	<div id=\"products-container\" class=\"d-flex flex-row row row-cols-sm-1 row-cols-md-2 row-cols-lg-3 w-100 mx-auto\">\n	</div>\n</div>";
