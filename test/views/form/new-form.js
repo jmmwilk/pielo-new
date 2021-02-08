@@ -188,6 +188,10 @@ function fillInputsWithSavedAnswers () {
 		let attributeValue = state.newItem.answers[select.id]
 		$('#' + select.id).selectpicker('val', attributeValue);
 	});
+	if (formPageName == 'others') {
+		$('#release-date-input').val(state.newItem.answers['release-date']);
+		$('#date').datepicker('update', state.newItem.answers['release-date']);
+	}
 }
 
 function fillFabrics () {
@@ -393,6 +397,16 @@ function createFormPage (clickedButton) {
 		return
 	}
 	createFormQuestions ();
+	if (formPageName == 'others') {
+		let questionText = getQuestionText('release-date');
+		createTemplate ('date-input', 'others', {'text': questionText.text})
+		$('#date').datepicker({
+			format: "mm/yyyy",
+		    minViewMode: 1,
+		    maxViewMode: 2,
+		    language: "pl"
+		});
+	};
 }
 
 function changeNextButton () {
@@ -822,6 +836,9 @@ function saveAnswers () {
 			state.newItem.answers[select.id] = $('#' + select.id).val();
 		};
 	});
+	if (formPageName == 'others') {
+		state.newItem.answers['release-date'] = $('#release-date-input').val();
+	}
 }
 
 function saveFabrics () {

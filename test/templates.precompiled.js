@@ -535,6 +535,18 @@ templates['checkbox-input'] = template({"compiler":[8,">= 4.3.0"],"main":functio
     + alias4(((helper = (helper = lookupProperty(helpers,"text") || (depth0 != null ? lookupProperty(depth0,"text") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data,"loc":{"start":{"line":4,"column":56},"end":{"line":4,"column":64}}}) : helper)))
     + "</label>\n  </div>\n</div>";
 },"useData":true});
+templates['date-input'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "<div id=\"date\" class=\"form-group date flex-column col-12\" data-provide=\"datepicker\">\n	<label for=\"date-input\" >"
+    + container.escapeExpression(((helper = (helper = lookupProperty(helpers,"text") || (depth0 != null ? lookupProperty(depth0,"text") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"text","hash":{},"data":data,"loc":{"start":{"line":2,"column":26},"end":{"line":2,"column":34}}}) : helper)))
+    + "</label>\n    <input id=\"release-date-input\" type=\"text\" class=\"form-control d-none\">\n</div>";
+},"useData":true});
 templates['diaper-category'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div  class=\"mt-4\">\n  <div class=\"form-group flex-column col-12\">\n    <label for=\"diaper-categories-input\">Rodzaj pieluszki</label>\n    <select id=\"diaper-categories-input\" class=\" selectpicker col-12\" multiple data-max-options=\"1\">\n    </select>\n  </div>      \n  <button id=\"next-button\" type=\"button\" class=\"btn btn-primary m-3 align-self-end\">Dalej</button>\n</div>";
 },"useData":true});

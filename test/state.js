@@ -88,6 +88,7 @@ export let attributesOrder = [
 			{'id': 'time'},
 			{'id': 'certificates'},
 			{'id': 'production-country-poland'},
+			{'id': 'release-date'},
 		]
 	},
 ]
