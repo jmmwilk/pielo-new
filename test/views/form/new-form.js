@@ -284,29 +284,32 @@ function fillSizes () {
 }
 
 function createAndFillPatterns () {
-	let patternsNumber = 0;
-	state.newItem.images.forEach(function(image){
-		if (image['pattern-nr'] > patternsNumber) {
-			patternsNumber = parseInt(image['pattern-nr'], 10);
-		}
-	});
-
-	for (let i=2; i<patternsNumber + 1; i++) {
-		addPattern (i)
-	};
-	patternNr = patternsNumber + 1;
-	let imageBoxes = $('.preview-image-box');
-	state.newItem.images.forEach(function(image){
-		let img = document.createElement('img');
-		let box = Array.from(imageBoxes).find(function(imageBox){
-			return $(imageBox).attr('pattern-nr') == parseInt(image['pattern-nr'], 10) 
-			&& $(imageBox).attr('image-nr') == parseInt(image['image-nr'], 10)
-			&& $(imageBox).attr('size-id') == image['size-id']
+	if (state.newItem.images.length > 0) {
+		let patternsNumber = 0;
+		state.newItem.images.forEach(function(image){
+			if (image['pattern-nr'] > patternsNumber) {
+				patternsNumber = parseInt(image['pattern-nr'], 10);
+			};
 		});
-		img.className = 'small-image mx-auto img-fluid img-thumbnail m-1';
-		img.src = image.url;
-		box.appendChild(img);
-	})
+
+		for (let i=2; i<patternsNumber + 1; i++) {
+			addPattern (i)
+		};
+		patternNr = patternsNumber + 1;
+
+		let imageBoxes = $('.preview-image-box');
+		state.newItem.images.forEach(function(image){
+			let img = document.createElement('img');
+			let box = Array.from(imageBoxes).find(function(imageBox){
+				return $(imageBox).attr('pattern-nr') == parseInt(image['pattern-nr'], 10) 
+				&& $(imageBox).attr('image-nr') == parseInt(image['image-nr'], 10)
+				&& $(imageBox).attr('size-id') == image['size-id']
+			});
+			img.className = 'small-image mx-auto img-fluid img-thumbnail m-1';
+			img.src = image.url;
+			box.appendChild(img);
+		});
+	};
 }
 
 function fillPatternNames () {
@@ -465,22 +468,6 @@ function enableRemoveImage () {
 				&& box.getAttribute('size-id') == btnSizeNr)
 			});
 			$(previewImageBox).empty();
-
-			// let images = state.newItem.images;
-			// for (let i=0; i<images.length; i++) {
-			// 	if (images[i]['pattern-nr'] == btnPatternNumber
-			// 	&& images[i]['image-nr'] == btnImageNr
-			// 	&& images[i]['size-id'] == btnSizeNr) {
-			// 		console.log('zupa')
-			// 		images.splice(i,1)
-			// 		console.log ('state.newItem.images', console.log('images', JSON.stringify(state.newItem.images))  )
-			// 		console.log ('images', images)
-			// 		console.log ('images[i]', images[i])
-			// 		console.log ('images[i].key', images[i].key)
-			// 	};
-			// };
-
-
 		})
 	})
 }
@@ -508,7 +495,6 @@ function deleteImageFromState (patternNumberValue, imageNumberValue, sizeIdValue
 function deleteImageFromStorage (key) {
 	let name = 'diapers/' + key;
 	storage.ref().child(name).delete().then(() => {
-		console.log ('success')
 	}).catch((error) => {
 		console.log ('error')
 	});
@@ -530,10 +516,9 @@ function addPattern (patternNumber) {
 }
 
 function enableRemovePattern (patternNumber) {
-	console.log ('patternNumber', patternNumber)
 	let buttonId = 'remove-pattern-nr-' + patternNumber;
 	let removeButton = document.getElementById(buttonId);
-	let length = state.newItem.images.length
+	let length = state.newItem.images.length;
 	removeButton.onclick = function() {
 		
 		let inputs = Array.from($('.image-input')).filter(function(input){
@@ -543,16 +528,9 @@ function enableRemovePattern (patternNumber) {
 			let key = input.getAttribute('image-key')
 			if (!key) {
 				return
-			} 
+			} ;
 			deleteImageFromStorage (key);
-		})
-		// let imageInput = Array.from(inputs).find(function(input){
-		// 	return (input.getAttribute('pattern-number') == btnPatternNumber
-		// 	&& input.getAttribute('image-number') == btnImageNr
-		// 	&& input.getAttribute('size-id') == btnSizeNr)
-		// })
-		// deletePreviousImage (btnPatternNumber, btnImageNr, btnSizeNr, imageInput);
-
+		});
 		let filteredImages = state.newItem.images.filter(function(image){
 			return (parseInt(image['pattern-nr'], 10) !== patternNumber)
 		});
@@ -563,26 +541,29 @@ function enableRemovePattern (patternNumber) {
 			};
 		});
 		state.newItem.images = filteredImages;
-		let filteredPatterns = state.newItem.patterns.filter(function(pattern){
-			return (parseInt(pattern['pattern-nr'], 10) !== patternNumber)
-		});
-		filteredPatterns.forEach(function(pattern){
-			let pttrnNr = parseInt(pattern['pattern-nr'], 10) 
-			if (pttrnNr > patternNumber) {
-				pattern['pattern-nr'] = pttrnNr - 1;
-			};
-		})
-		state.newItem.patterns = filteredPatterns;
+		savePatternNames ();
+		if (state.newItem.patterns) {
+			let filteredPatterns = state.newItem.patterns.filter(function(pattern){
+				return (parseInt(pattern['pattern-nr'], 10) !== patternNumber)
+			});
+			filteredPatterns.forEach(function(pattern){
+				let pttrnNr = parseInt(pattern['pattern-nr'], 10) 
+				if (pttrnNr > patternNumber) {
+					pattern['pattern-nr'] = pttrnNr - 1;
+				};
+			});
+			state.newItem.patterns = filteredPatterns;
+		};
 		for (let i=1; i<patternNr; i++) {
 			removePatternWrapper (i);
-		}
+		};
 		patternNr = 1;
 		addPattern (patternNr);
 		patternNr = patternNr + 1;
 		document.getElementById('add-pattern-button').onclick = function () {
 			addPattern (patternNr);
 			patternNr = patternNr + 1;
-		}
+		};
 		fillInputsWithSavedAnswers ();
 	}
 }
