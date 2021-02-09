@@ -9,6 +9,25 @@ import * as eventBus from '/test/eventBus.js';
 
 
 $(document).ready(function(){
+	// const promise = new Promise ((resolve, reject) => {
+	// 	let dbRef = firebase.database().ref('images/');
+	// 	dbRef.once('value',   function(snapshot) {
+	// 	    snapshot.forEach(function(childSnapshot) {
+	// 	    	let databaseKey = childSnapshot.key
+	// 	    	let imageRef = firebase.storage().ref().child(databaseKey);
+	// 	    	imageRef.delete().then(() => {
+	// 	    		console.log ('_')
+	// 			}).catch((error) => {
+	// 				console.log ('AAAAA')
+	// 			  // Uh-oh, an error occurred!
+	// 			});
+	// 	    });
+	// 	    resolve ()
+	//   	});
+	// });
+	// return promise
+	// console.log ('promise', promise)
+
 	window.location.history = [];
 	window.location.historyIndex = -1;
 	window.location.href='#main-page';

@@ -8,7 +8,6 @@ import * as eventBus from '/test/eventBus.js';
 import * as login from '/test/views/login/login.js';
 
 export function createMainPage () {
-	console.log ('state', state.state)
 	document.getElementById('application').innerHTML = '';
 	createTemplate ('title-bar', 'application', {'normal-user': state.state.normalUser});
 	createTemplate ('page', 'application');
@@ -92,7 +91,6 @@ function getDiaperCategories () {
 		      var childData = childSnapshot.val();
 		      state.diaperCategories.push(childData);
 		    });
-//		    console.log ('state.diaperCategories', state.diaperCategories)
 		    resolve ()
 	  	});
 	});

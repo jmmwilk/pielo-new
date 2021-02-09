@@ -6,6 +6,8 @@ export let state = {
 	producer: undefined,
 }
 
+export let newUser = {};
+
 export let formType = {}
 
 export let currentProduct = {};

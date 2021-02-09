@@ -595,7 +595,7 @@ function addImageToStorage (input) {
 	  'image': 'small'
 	});
 	let key = newDbRef.getKey(); 
-	let imageRef = storage.ref().child(key);
+	let imageRef = storage.ref().child('diapers/' + key);
 	imageRef.put(selectedFile)
 	.then(function(snapshot) {
 	  	return imageRef.getDownloadURL();
@@ -606,6 +606,7 @@ function addImageToStorage (input) {
 		image['image-nr'] = imageNumberValue;
 		image['size-id'] = sizeIdValue;
 		image.url = downloadURL;
+		image.key = key;
 		state.newItem.images.push(image);
 		return downloadURL
 	})

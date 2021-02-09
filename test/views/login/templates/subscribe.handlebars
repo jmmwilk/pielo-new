@@ -1,11 +1,19 @@
-<div id="subscribe-box" class="form mx-auto">
+<div id="subscribe-box" class="form mx-auto mt-5">
+  <div class="mb-2 text-warning">
+    Na ten moment zapraszamy do rejestracji tylko producentów pieluszek.
+  </div>
   <div id="email-box" class="form-group">
-    <label for="inputEmail">Email</label>
-    <input id="email" type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp">
+    <label for="email">Email</label>
+    <input id="email" type="email" class="form-control" aria-describedby="emailHelp" placeholder="Email">
+    <small id="emailHelp" class="form-text text-muted">Aby założyć konto, podaj email</small>
   </div>
   <div id="password-box" class="form-group">
-    <label for="exampleInputPassword1">Hasło</label>
-    <input id="password" type="password" class="form-control" id="exampleInputPassword1">
+    <label for="password1">Podaj Hasło</label>
+    <input id="password1" type="password" class="form-control" placeholder="Podaj Hasło">
+  </div>
+  <div id="repeat-password-box" class="form-group">
+    <label for="password2">Powtórz Hasło</label>
+    <input id="password2" type="password" class="form-control" placeholder="Powtórz Hasło">
   </div>
   <div class="form-group">
     <div id="role-checkbox" class="form-check">
@@ -13,5 +21,9 @@
       <label class="form-check-label" for="producer">Jestem producentem</label>
     </div>
   </div>
-  <button id="sign-up" type="button" class="btn btn-primary">Zarejestruj</button>
+  <div id="name-box" class="form-group">
+    <label for="name">Nazwa Producenta</label>
+    <input id="name" type="text" class="form-control" aria-describedby="emailHelp" placeholder="Nazwa Producenta">
+  </div>
+  <button id="sign-up" type="button" class="btn btn-primary mt-2">Zarejestruj</button>
 </div>
