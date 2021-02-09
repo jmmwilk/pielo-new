@@ -455,6 +455,7 @@ function enableRemoveImage () {
 				&& input.getAttribute('image-number') == btnImageNr
 				&& input.getAttribute('size-id') == btnSizeNr)
 			})
+			deletePreviousImage (btnPatternNumber, btnImageNr, btnSizeNr, imageInput);
 			imageInput.value = '';
 
 			let previewImageBoxes = $('.preview-image-box');
@@ -465,18 +466,53 @@ function enableRemoveImage () {
 			});
 			$(previewImageBox).empty();
 
-			let images = state.newItem.images;
-			for (let i=0; i<images.length; i++) {
-				if (images[i]['pattern-nr'] == btnPatternNumber
-				&& images[i]['image-nr'] == btnImageNr
-				&& images[i]['size-id'] == btnSizeNr) {
-					images.splice(i,1)
-				};
-			};
+			// let images = state.newItem.images;
+			// for (let i=0; i<images.length; i++) {
+			// 	if (images[i]['pattern-nr'] == btnPatternNumber
+			// 	&& images[i]['image-nr'] == btnImageNr
+			// 	&& images[i]['size-id'] == btnSizeNr) {
+			// 		console.log('zupa')
+			// 		images.splice(i,1)
+			// 		console.log ('state.newItem.images', console.log('images', JSON.stringify(state.newItem.images))  )
+			// 		console.log ('images', images)
+			// 		console.log ('images[i]', images[i])
+			// 		console.log ('images[i].key', images[i].key)
+			// 	};
+			// };
+
+
 		})
 	})
 }
 
+function deletePreviousImage (patternNumberValue, imageNumberValue, sizeIdValue, input) {
+	deleteImageFromState (patternNumberValue, imageNumberValue, sizeIdValue);
+	let key = input.getAttribute('image-key')
+	if (!key) {
+		return
+	} 
+	deleteImageFromStorage (key);
+}
+
+function deleteImageFromState (patternNumberValue, imageNumberValue, sizeIdValue) {
+	let images = state.newItem.images;
+	for (let i=0; i<images.length; i++) {
+		if (images[i]['pattern-nr'] == patternNumberValue 
+			&& images[i]['image-nr'] == imageNumberValue 
+			&& images[i]['size-id'] == sizeIdValue) {
+			images.splice(i, 1);
+		};
+	};
+}
+function deleteImageFromStorage (key) {
+	let name = 'diapers/' + key;
+	storage.ref().child(name).delete().then(() => {
+		console.log ('success')
+	}).catch((error) => {
+		console.log ('error')
+	});
+}
+ 
 function addPattern (patternNumber) {
 	let sizes = state.newItem.sizes;
 	if (!sizes) {
@@ -493,10 +529,29 @@ function addPattern (patternNumber) {
 }
 
 function enableRemovePattern (patternNumber) {
+	console.log ('patternNumber', patternNumber)
 	let buttonId = 'remove-pattern-nr-' + patternNumber;
 	let removeButton = document.getElementById(buttonId);
 	let length = state.newItem.images.length
 	removeButton.onclick = function() {
+		
+		let inputs = Array.from($('.image-input')).filter(function(input){
+			return (input.getAttribute('pattern-number') == patternNumber)
+		});
+		inputs.forEach(function(input){
+			let key = input.getAttribute('image-key')
+			if (!key) {
+				return
+			} 
+			deleteImageFromStorage (key);
+		})
+		// let imageInput = Array.from(inputs).find(function(input){
+		// 	return (input.getAttribute('pattern-number') == btnPatternNumber
+		// 	&& input.getAttribute('image-number') == btnImageNr
+		// 	&& input.getAttribute('size-id') == btnSizeNr)
+		// })
+		// deletePreviousImage (btnPatternNumber, btnImageNr, btnSizeNr, imageInput);
+
 		let filteredImages = state.newItem.images.filter(function(image){
 			return (parseInt(image['pattern-nr'], 10) !== patternNumber)
 		});
@@ -507,16 +562,16 @@ function enableRemovePattern (patternNumber) {
 			};
 		});
 		state.newItem.images = filteredImages;
-		let filterdPatterns = state.newItem.patterns.filter(function(pattern){
+		let filteredPatterns = state.newItem.patterns.filter(function(pattern){
 			return (parseInt(pattern['pattern-nr'], 10) !== patternNumber)
 		});
-		filterdPatterns.forEach(function(pattern){
+		filteredPatterns.forEach(function(pattern){
 			let pttrnNr = parseInt(pattern['pattern-nr'], 10) 
 			if (pttrnNr > patternNumber) {
 				pattern['pattern-nr'] = pttrnNr - 1;
 			};
 		})
-		state.newItem.patterns = filterdPatterns;
+		state.newItem.patterns = filteredPatterns;
 		for (let i=1; i<patternNr; i++) {
 			removePatternWrapper (i);
 		}
@@ -587,7 +642,7 @@ function addImageToStorage (input) {
 	let patternNumberValue = input.getAttribute('pattern-number');
 	let imageNumberValue = input.getAttribute('image-number');
 	let sizeIdValue = input.getAttribute('size-id');
-	deletePreviousImage (patternNumberValue, imageNumberValue, sizeIdValue);
+	deletePreviousImage (patternNumberValue, imageNumberValue, sizeIdValue, input);
 	const selectedFile = document.getElementById(input.id).files[0];
 	let dbRef = firebase.database().ref('images/');
 	var newDbRef = dbRef.push();
@@ -607,20 +662,10 @@ function addImageToStorage (input) {
 		image['size-id'] = sizeIdValue;
 		image.url = downloadURL;
 		image.key = key;
+		$(input).attr('image-key', key)
 		state.newItem.images.push(image);
 		return downloadURL
 	})
-}
-
-function deletePreviousImage (patternNumberValue, imageNumberValue, sizeIdValue) {
-	let images = state.newItem.images;
-	for (let i=0; i<images.length; i++) {
-		if (images[i]['pattern-nr'] == patternNumberValue 
-			&& images[i]['image-nr'] == imageNumberValue 
-			&& images[i]['size-id'] == sizeIdValue) {
-			images.splice(i, 1);
-		}
-	}
 }
 
 function createFormQuestions () {

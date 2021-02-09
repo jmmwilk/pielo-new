@@ -9,6 +9,16 @@ import * as eventBus from '/test/eventBus.js';
 
 
 $(document).ready(function(){
+	// let desertRef = firebase.storage().ref().child('-MT4w8pPVN5gk-hvk6S6');
+	// 	console.log ('desertRef', desertRef)
+	// 	desertRef.delete().then(() => {
+	// 		console.log ('success')
+	// 	  // File deleted successfully
+	// 	}).catch((error) => {
+	// 		console.log ('dupa')
+	// 	  // Uh-oh, an error occurred!
+	// 	});
+	
 	// const promise = new Promise ((resolve, reject) => {
 	// 	let dbRef = firebase.database().ref('images/');
 	// 	dbRef.once('value',   function(snapshot) {
