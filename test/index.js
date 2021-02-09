@@ -9,35 +9,6 @@ import * as eventBus from '/test/eventBus.js';
 
 
 $(document).ready(function(){
-	// let desertRef = firebase.storage().ref().child('-MT4w8pPVN5gk-hvk6S6');
-	// 	console.log ('desertRef', desertRef)
-	// 	desertRef.delete().then(() => {
-	// 		console.log ('success')
-	// 	  // File deleted successfully
-	// 	}).catch((error) => {
-	// 		console.log ('dupa')
-	// 	  // Uh-oh, an error occurred!
-	// 	});
-	
-	// const promise = new Promise ((resolve, reject) => {
-	// 	let dbRef = firebase.database().ref('images/');
-	// 	dbRef.once('value',   function(snapshot) {
-	// 	    snapshot.forEach(function(childSnapshot) {
-	// 	    	let databaseKey = childSnapshot.key
-	// 	    	let imageRef = firebase.storage().ref().child(databaseKey);
-	// 	    	imageRef.delete().then(() => {
-	// 	    		console.log ('_')
-	// 			}).catch((error) => {
-	// 				console.log ('AAAAA')
-	// 			  // Uh-oh, an error occurred!
-	// 			});
-	// 	    });
-	// 	    resolve ()
-	//   	});
-	// });
-	// return promise
-	// console.log ('promise', promise)
-
 	window.location.history = [];
 	window.location.historyIndex = -1;
 	window.location.href='#main-page';
