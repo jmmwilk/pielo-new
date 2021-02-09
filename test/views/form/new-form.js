@@ -581,7 +581,7 @@ function loadImage (patternNumber) {
 		$('#' + input.id).change(function(event) {
 			if (event.target.files.length > 0) {
 				createImagePreview (event, input);
-				addImageToStorage (input);
+				addImage (input);
 			}
 		});
 	})
@@ -620,7 +620,7 @@ function createImagePreview (event, input) {
 	box.appendChild(image);
 }
 
-function addImageToStorage (input) {
+function addImage (input) {
 	let patternNumberValue = input.getAttribute('pattern-number');
 	let imageNumberValue = input.getAttribute('image-number');
 	let sizeIdValue = input.getAttribute('size-id');
@@ -638,16 +638,19 @@ function addImageToStorage (input) {
 	  	return imageRef.getDownloadURL();
 	})
 	.then(function(downloadURL) {
-		let image = {}
-		image['pattern-nr'] = patternNumberValue;
-		image['image-nr'] = imageNumberValue;
-		image['size-id'] = sizeIdValue;
-		image.url = downloadURL;
-		image.key = key;
-		$(input).attr('image-key', key)
-		state.newItem.images.push(image);
-		return downloadURL
-	})
+		saveImageToState (patternNumberValue, imageNumberValue, sizeIdValue, downloadURL, key, input);
+	});
+}
+
+function saveImageToState (patternNumberValue, imageNumberValue, sizeIdValue, downloadURL, key, input) {
+	let image = {}
+	image['pattern-nr'] = patternNumberValue;
+	image['image-nr'] = imageNumberValue;
+	image['size-id'] = sizeIdValue;
+	image.url = downloadURL;
+	image.key = key;
+	$(input).attr('image-key', key)
+	state.newItem.images.push(image);
 }
 
 function createFormQuestions () {
