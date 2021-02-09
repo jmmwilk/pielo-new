@@ -487,11 +487,12 @@ function enableRemoveImage () {
 
 function deletePreviousImage (patternNumberValue, imageNumberValue, sizeIdValue, input) {
 	deleteImageFromState (patternNumberValue, imageNumberValue, sizeIdValue);
-	let key = input.getAttribute('image-key')
+	let key = input.getAttribute('image-key');
 	if (!key) {
 		return
-	} 
+	}
 	deleteImageFromStorage (key);
+	$(input).removeAttr('key');
 }
 
 function deleteImageFromState (patternNumberValue, imageNumberValue, sizeIdValue) {
