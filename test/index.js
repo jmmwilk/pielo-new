@@ -7,6 +7,8 @@ import * as general from '/test/general.js';
 import * as state from '/test/state.js';
 import * as eventBus from '/test/eventBus.js';
 
+let siteHash;
+let lastHash;
 
 $(document).ready(function(){
 	window.location.history = [];
@@ -37,6 +39,13 @@ window.onhashchange = function() {
 	let history = window.location.history;
 	let index = window.location.historyIndex;
 	let hash = window.location.hash;
+	console.log ('lastHash', lastHash)
+	if (lastHash == '#new-form') {
+		console.log ('zupa')
+	}
+	if (lastHash == undefined) {
+		lastHash = hash
+	} 
 	console.log ('history', history)
 	console.log ('index', index)
 	console.log ('hash', hash)
