@@ -13,14 +13,15 @@ let lastHash;
 $(document).ready(function(){
 	window.location.history = [];
 	window.location.historyIndex = -1;
-	window.location.href='#main-page';
-	general.updateHistory('#main-page');
-	mainPage.createMainPage ();
-	login.checkForAuthStateChange ();
+	// window.location.href='#main-page';
+	// general.updateHistory('#main-page');
+	// mainPage.createMainPage ();
 
-	// window.location.href='#login';
-	// general.updateHistory('#login');
-	// login.goToLoginScreen();
+	window.location.href='#login';
+	general.updateHistory('#login');
+	login.goToLoginScreen();
+
+	login.checkForAuthStateChange ();
 
 // 	addDataToDatabase ();
 })
