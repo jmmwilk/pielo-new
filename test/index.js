@@ -39,16 +39,15 @@ window.onhashchange = function() {
 	let history = window.location.history;
 	let index = window.location.historyIndex;
 	let hash = window.location.hash;
-	console.log ('lastHash', lastHash)
+//	console.log ('lastHash', lastHash)
 	if (lastHash == '#new-form') {
-		console.log ('zupa')
 	}
 	if (lastHash == undefined) {
 		lastHash = hash
 	} 
-	console.log ('history', history)
-	console.log ('index', index)
-	console.log ('hash', hash)
+	// console.log ('history', history)
+	// console.log ('index', index)
+	// console.log ('hash', hash)
 	if (hash == history[index]) {
 		if (window.innerDocClick) {
 	        window.innerDocClick = false;

@@ -709,19 +709,10 @@ function createDependentQuestions (attribute, attributes) {
 		if (diaper[depAttributeId].answer == 'ask'
 			&& depAttributeData['input-type'] == 'select'
 			&& diaper[attributeId].answer !== true) {
-			collapseElement (depAttributeId + '-box', attributeId);
+			general.collapseElement (depAttributeId + '-box', attributeId);
 		}
 		document.getElementById(depAttributeId + '-box').classList.add('mb-3')
 	})
-}
-
-function collapseElement (elementId, parentId) {
-	document.getElementById(parentId).setAttribute("data-toggle", "collapse");
-	document.getElementById(parentId).setAttribute("aria-expanded", false);
-	document.getElementById(parentId).setAttribute("href", "#" + elementId);
-	document.getElementById(parentId).setAttribute("aria-controls", elementId);
-	document.getElementById(elementId).setAttribute("collapse", "collapse");
-	document.getElementById(elementId).classList.add('collapse')
 }
 
 function isThisFormPage (attributes, depAttributeId) {

@@ -8,13 +8,13 @@ let user;
 
 
 export function goToLoginScreen () {
-		document.getElementById('application').innerHTML = '';
-		createTemplate ('page', 'application');
-		createTemplate('login-page', 'page');
-		firebase.auth().signOut();
-		enablelogIn ();
-		enableLogOut ();
-		enableGoToSignUpPage ();
+	document.getElementById('application').innerHTML = '';
+	createTemplate ('page', 'application');
+	createTemplate('login-page', 'page');
+	firebase.auth().signOut();
+	enablelogIn ();
+	enableLogOut ();
+	enableGoToSignUpPage ();
 }
 
 function enableGoToSignUpPage () {
@@ -22,6 +22,7 @@ function enableGoToSignUpPage () {
 	createAccountButton.onclick = function(){
 		clearPage ();
 		createTemplate ('subscribe', 'page');
+		general.collapseElement ('name-box', 'producer');
 		enableSignUp ();
 	};
 }
@@ -87,30 +88,81 @@ function enableSignUp () {
 	const btnSignUp = document.getElementById('sign-up');
 	btnSignUp.addEventListener ('click', e => {
 		const email = document.getElementById('email').value;
-		const password1 = document.getElementById('password1').value;
-		const password2 = document.getElementById('password2').value
-		if (password1 !== password2) {
+		const password1 = document.getElementById('password1');
+		const password2 = document.getElementById('password2');
+		const password1Value = password1.value;
+		const password2Value = password2.value;
+		if (password1Value !== password2Value) {
+			password1.classList.add('is-invalid');
+			password2.classList.add('is-invalid');
+			document.getElementById('invalid-feedback-password2').innerText = 'Wpisz takie same haslo';
 			return
 		};
+		if (password1Value.length < 6) {
+			password1.classList.add('is-invalid');
+			password2.classList.add('is-invalid');
+			document.getElementById('invalid-feedback-password1').innerText = 'Haslo musi miec co najmniej 6 znakow';
+			document.getElementById('invalid-feedback-password2').innerText = 'Haslo musi miec co najmniej 6 znakow';
+			return
+		}
 		const roleCheckbox = document.getElementById('producer');
+		const name = document.getElementById('name');
+		const nameValue = name.value;
 		let role;
 		if (roleCheckbox.checked == true) {
 			role = 'producer';
+			name.setAttribute('required', 'required');
 		} else {
 			role = 'normal-user';
+			name.removeAttribute('required');
 		};
-		const name = document.getElementById('name').value;
 		const auth = firebase.auth();
-		const promise = auth.createUserWithEmailAndPassword(email, password1);
-		promise.then(function() {
-			state.newUser.name = name;
-			state.newUser.role = role;
-			state.newUser.email = email;
-			window.location.href='#main-page';
-			general.updateHistory('#main-page');
-			mainPage.createMainPage ();
-		});
+		const promise = submit ();
+		promise.then(function(isValidated){
+			console.log ('isValidated', isValidated)
+			if (isValidated) {
+				const promise2 = auth.createUserWithEmailAndPassword(email, password1Value);
+				promise2.then(function(message) {
+					console.log ('message', message)
+					state.newUser.name = nameValue;
+					state.newUser.role = role;
+					state.newUser.email = email;
+					window.location.href='#main-page';
+					general.updateHistory('#main-page');
+					mainPage.createMainPage ();
+				})
+				.catch((error) => {
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				console.log ('errorCode', errorCode)
+				console.log ('errorMessage', errorMessage)
+				password1.classList.add('is-invalid')
+				password2.classList.add('is-invalid')
+				});
+			}
+		})
 	})
+}
+
+function submit () {
+	const promise = new Promise ((resolve, reject) => {
+		const forms = document.querySelectorAll('.needs-validation')
+		let form = forms[0];
+		let isValidated;
+      	form.addEventListener('submit', function (event) {
+	        if (!form.checkValidity()) {
+		        event.preventDefault()
+		        event.stopPropagation()
+		        isValidated = false;
+	        } else {
+	        	isValidated = true
+	        }
+	        form.classList.add('was-validated')
+	        resolve(isValidated)
+      	}, false)
+		
+	})
+	return promise
 }
 
 function changeStateLogIn (user, firebaseUser) {
