@@ -14,7 +14,7 @@ export function goToLoginScreen () {
 	firebase.auth().signOut();
 	enablelogIn ();
 	enableLogOut ();
-	enableGoToSignUpPage ();
+//	enableGoToSignUpPage ();
 }
 
 function enableGoToSignUpPage () {
