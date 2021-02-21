@@ -7,10 +7,12 @@ let storage = firebase.storage();
 let formPageNumber;
 let formPageName;
 let patternNr;
+let formType;
 
 export function goToForm (itemType, diaper, key) {
 	document.getElementById('page').innerHTML = '';
-	if (itemType == 'newItem') {
+	formType = itemType;
+	if (formType == 'newItem') {
 		state.formType.type = 'new-form';
 	} else {
 		state.formType.type = 'edit-form';
@@ -23,17 +25,22 @@ export function goToForm (itemType, diaper, key) {
 	})
 	.then(function(){
 		createTemplate ('form-view', 'page');
-		if (itemType == 'newItem') {
+		if (formType == 'newItem') {
 			createDiaperCategoriesPage ();
-			document.getElementById('next-button').onclick = function () {
-				let chosenCategory = $('#diaper-categories-input').val()[0]
-				saveChosenCategoryData (chosenCategory)
-				createForm (itemType);
-			};
+			document.getElementById('next-button').addEventListener ('click', e => {
+				const promise = general.submit ();
+				promise.then(function(isValidated){
+					if (isValidated) {
+						let chosenCategory = $('#diaper-categories-input').val()[0]
+						saveChosenCategoryData (chosenCategory)
+						createForm ();
+					}
+				})
+			})
 		} else {
 			saveChosenCategoryData (diaper.diaper['category-data'].name)
 			getNewItemData (diaper);
-			createForm (itemType, key);
+			createForm (key);
 		};
 	});
 }
@@ -78,16 +85,14 @@ function getNewItemData (diaper) {
 	});
 }
 
-function createForm (itemType, key) {
+function createForm (key) {
 	let formPageNames = getformPageNames ()
 	formPageName = formPageNames[formPageNumber];
 	document.getElementById('form-view-wrapper').innerHTML = '';
 	createTemplate ('form', 'form-view-wrapper');
-	createFormPage ();
+	createFormPage (key);
 	setProgress ();
 	fillInputsWithSavedAnswers ();
-	document.getElementById('next-button').onclick = function() { activateNextButton (itemType, key) };
-	document.getElementById('back-button').onclick = activateBackButton;
 }
 
 function setProgress () {
@@ -97,36 +102,61 @@ function setProgress () {
 	bar.style.width = progressNumber + '%';
 }
 
-function activateNextButton (itemType, key) {
+function shouldISkipPerCompPage () {
+	let selectedLayers = [];
+	state.newItem.layers.forEach(function(layer){
+		if (layer['fabrics-names'].length > 1) {
+			selectedLayers.push(layer)
+		};
+	});
+	if (selectedLayers.length == 0) {
+		return true
+	} else {
+		return false
+	}
+}
+
+function activateNextButton (key) {
 	saveAnswers ();
 	let formPageNames = getformPageNames ()
 	formPageNumber = formPageNumber + 1
 	formPageName = formPageNames[formPageNumber];
+	if (formPageName == 'percentage-composition') {
+		if (shouldISkipPerCompPage () == true) {
+			formPageNumber = formPageNumber + 1
+		}
+	}
+	formPageName = formPageNames[formPageNumber];
 	if (formPageName == undefined) {
-		let dbKey = addMockDiaper (itemType, key);
+		let dbKey = addMockDiaper (key);
 		let page = document.getElementById('page');
 		page.innerHTML = '';
 		window.location.href='#product-page';
 		general.updateHistory('#product-page');
 		productPage.createProductScreen (dbKey, 'preview');
-//		resetForm ();
 		return
 	};
 	document.getElementById('form-wrapper').innerHTML = '';
 	let clickedButton = 'next';
-	createFormPage (clickedButton);
+	createFormPage (key, clickedButton);
 	fillInputsWithSavedAnswers ();
 	setProgress ();
 }
 
-function activateBackButton () {
+function activateBackButton (key) {
 	saveAnswers ();
 	let formPageNames = getformPageNames ()
 	formPageNumber = formPageNumber - 1;
 	formPageName = formPageNames[formPageNumber];
+	if (formPageName == 'percentage-composition') {
+		if (shouldISkipPerCompPage () == true) {
+			formPageNumber = formPageNumber - 1
+		}
+	}
+	formPageName = formPageNames[formPageNumber];
 	document.getElementById('form-wrapper').innerHTML = '';
 	let clickedButton = 'back';
-	createFormPage (clickedButton);
+	createFormPage (key, clickedButton);
 	setProgress ();
 	fillInputsWithSavedAnswers ();
 }
@@ -308,6 +338,9 @@ function createAndFillPatterns () {
 			img.className = 'small-image mx-auto img-fluid img-thumbnail m-1';
 			img.src = image.url;
 			box.appendChild(img);
+			if (parseInt(image['image-nr'], 10) == 1) {
+				removeAttrRequiredFromInput (parseInt(image['pattern-nr'], 10), 1, image['size-id']);
+			}
 		});
 	};
 }
@@ -326,20 +359,23 @@ function fillPatternNames () {
 	}
 }
 
-export function addMockDiaper (itemType, key) {
+export function addMockDiaper (key, itemType) {
+	if (itemType) {
+		formType = itemType;
+	}
 	let newDbRef;
-	if (itemType == 'newItem' && state.whereToAddNewItem.addTo == 'mock-diapers-preview') {
+	if (formType == 'newItem' && state.whereToAddNewItem.addTo == 'mock-diapers-preview') {
 		let dbRef = firebase.database().ref('mock-diapers-preview/');
 		newDbRef = dbRef.push();
 	};
-	if (itemType == 'newItem' && state.whereToAddNewItem.addTo == 'mock-diapers') {
+	if (formType == 'newItem' && state.whereToAddNewItem.addTo == 'mock-diapers') {
 		let dbRef = firebase.database().ref('mock-diapers/');
 		newDbRef = dbRef.push();
 	};
-	if (itemType == 'editItem' && state.whereToAddNewItem.addTo == 'mock-diapers') {
+	if (formType == 'editItem' && state.whereToAddNewItem.addTo == 'mock-diapers') {
 		newDbRef = firebase.database().ref('mock-diapers/' + key);
 	};
-	if (itemType == 'editItem' && state.whereToAddNewItem.addTo == 'mock-diapers-preview') {
+	if (formType == 'editItem' && state.whereToAddNewItem.addTo == 'mock-diapers-preview') {
 		newDbRef = firebase.database().ref('mock-diapers-preview/' + key);
 		state.whereToAddNewItem.addTo = 'mock-diapers'
 	};
@@ -359,14 +395,14 @@ export function addMockDiaper (itemType, key) {
 	 	'producer-key': state.state.userKey,
 	});
 	let newItemKey = newDbRef.getKey();
-	if (itemType == 'newItem') {
+	if (formType == 'newItem') {
 		return newItemKey
 	} else {
 		return key
 	};
 }
 
-function createFormPage (clickedButton) {
+function createFormPage (key, clickedButton) {
 	let formPage = formPages.find(function(fPage){
 		return fPage.id == formPageName
 	});
@@ -380,36 +416,59 @@ function createFormPage (clickedButton) {
 	}
 	if (formPageName == 'main-info') {
 		createMainInfoPage ();
-		return
 	}
 	if (formPageName == 'images') {
 		createImagesPage ();
-		return
 	}
 	if (formPageName == 'sizes') {
 		createSizesPage ();
-		return
 	}
 	if (formPageName == 'dimensions') {
 		getDimensions ();
 		createDimensionsPage ();
-		return
 	}
 	if (formPageName == 'percentage-composition') {
-		createPercentageCompositionPage (clickedButton);
-		return
+		createPercentageCompositionPage (clickedButton, key);
 	}
-	createFormQuestions ();
-	if (formPageName == 'others') {
-		let questionText = getQuestionText('release-date');
-		createTemplate ('date-input', 'others', {'text': questionText.text})
-		$('#date').datepicker({
-			format: "mm/yyyy",
-		    minViewMode: 1,
-		    maxViewMode: 2,
-		    language: "pl"
-		});
-	};
+	if (formPageName == 'others' || formPageName == 'structure' || formPageName == 'description' || formPageName == 'fabrics') {
+		createFormQuestions ();
+		if (formPageName == 'others') {
+			let questionText = getQuestionText('release-date');
+			createTemplate ('date-input', 'others', {'text': questionText.text})
+			$('#date').datepicker({
+				format: "mm/yyyy",
+			    minViewMode: 1,
+			    maxViewMode: 2,
+			    language: "pl"
+			});
+		};
+	}
+	document.getElementById('next-button').addEventListener ('click', e => {
+		// if (formPageName == 'images') {
+		// 	if (checkIfFilled ()) {
+		// 		const promise = general.submit ();
+		// 		promise.then(function(isValidated){
+		// 			if (isValidated) {
+		// 				activateNextButton (key)
+		// 			}
+		// 		})
+		// 	}
+		// 	return
+		// }
+		const promise = general.submit ();
+		promise.then(function(isValidated){
+			if (isValidated) {
+				activateNextButton (key)
+			}
+		})
+	})
+	document.getElementById('back-button').addEventListener ('click', e => {
+		activateBackButton (key);
+	})
+}
+
+function checkIfFilled () {
+
 }
 
 function changeNextButton () {
@@ -427,8 +486,8 @@ function changeNextButton () {
 }
 
 function createMainInfoPage () {
-	createTextInput ('item-name', 1, 'Nazwa Pieluszki', 'main-info-input');
-	createTextInput ('producer-name', 1, 'Nazwa Producenta');
+	createTextInput ('item-name', 1, 'Nazwa Pieluszki', true);
+	createTextInput ('producer-name', 1, 'Nazwa Producenta', true);
 }
 
 function createImagesPage () {
@@ -468,8 +527,53 @@ function enableRemoveImage () {
 				&& box.getAttribute('size-id') == btnSizeNr)
 			});
 			$(previewImageBox).empty();
+
+			let image1 = state.newItem.images.find(function(img){
+				return (img['pattern-nr'] == btnPatternNumber && img['image-nr'] == 1 && img['size-id'] == btnSizeNr)
+			})
+			let image2 = state.newItem.images.find(function(img){
+				return (img['pattern-nr'] == btnPatternNumber && img['image-nr'] == 2 && img['size-id'] == btnSizeNr)
+			})
+			let image3 = state.newItem.images.find(function(img){
+				return (img['pattern-nr'] == btnPatternNumber && img['image-nr'] == 3 && img['size-id'] == btnSizeNr)
+			})
+			let image4 = state.newItem.images.find(function(img){
+				return (img['pattern-nr'] == btnPatternNumber && img['image-nr'] == 4 && img['size-id'] == btnSizeNr)
+			})
+
+			if (btnImageNr == 4) {
+				removeAttrRequiredFromInput (btnPatternNumber, 3, btnSizeNr);
+			};
+			if (btnImageNr == 3) {
+				if (!image4) {
+					removeAttrRequiredFromInput (btnPatternNumber, 3, btnSizeNr);
+					removeAttrRequiredFromInput (btnPatternNumber, 2, btnSizeNr);
+				}
+				if (image4) {
+					setAttrRequiredToInput (btnPatternNumber, 3, btnSizeNr);
+				}
+			};
+			if (btnImageNr == 2) {
+				if (!image3 && !image4) {
+					removeAttrRequiredFromInput (btnPatternNumber, 2, btnSizeNr);
+				} else {
+					setAttrRequiredToInput (btnPatternNumber, 2, btnSizeNr);
+				}
+			};
+			if (btnImageNr == 1) {
+				if (!image2 && !image3 && !image4) {
+					setAttrRequiredToInput (btnPatternNumber, 1, btnSizeNr);
+				} else {
+					setAttrRequiredToInput (btnPatternNumber, 1, btnSizeNr);
+				}
+			}
 		})
 	})
+}
+
+function removeAttrRequiredFromInput (patternNumberValue, imageNumberValue, sizeIdValue) {
+	let input = document.getElementById ('pattern-' + patternNumberValue + '-size-' + sizeIdValue + '-image-' + imageNumberValue);
+	input.removeAttribute('required');
 }
 
 function deletePreviousImage (patternNumberValue, imageNumberValue, sizeIdValue, input) {
@@ -576,8 +680,6 @@ function removePatternWrapper (patternNumber) {
 
 function loadImage (patternNumber) {
 	Array.from($('.pattern-' + patternNumber)).forEach(function(input){
-		let patternNumberValue = input.getAttribute('pattern-number');
-		let imageNumberValue = input.getAttribute('image-number');
 		$('#' + input.id).change(function(event) {
 			if (event.target.files.length > 0) {
 				createImagePreview (event, input);
@@ -585,6 +687,11 @@ function loadImage (patternNumber) {
 			}
 		});
 	})
+}
+
+function setAttrRequiredToInput (patternNumberValue, imageNumberValue, sizeIdValue) {
+	let input = document.getElementById ('pattern-' + patternNumberValue + '-size-' + sizeIdValue + '-image-' + imageNumberValue);
+	input.setAttribute('required', 'required')
 }
 
 function setImageData (patternNumber, size) {
@@ -639,7 +746,28 @@ function addImage (input) {
 	})
 	.then(function(downloadURL) {
 		saveImageToState (patternNumberValue, imageNumberValue, sizeIdValue, downloadURL, key, input);
-	});
+	})
+	.then(function() {
+		let image2 = state.newItem.images.find(function(img){
+			return (img['pattern-nr'] == patternNumberValue && img['image-nr'] == 2 && img['size-id'] == sizeIdValue)
+		})
+		let image3 = state.newItem.images.find(function(img){
+			return (img['pattern-nr'] == patternNumberValue && img['image-nr'] == 3 && img['size-id'] == sizeIdValue)
+		})
+		if (imageNumberValue == 4) {
+			if (!image2) {
+				setAttrRequiredToInput (patternNumberValue, 2, sizeIdValue);
+			}
+			if (!image3) {
+				setAttrRequiredToInput (patternNumberValue, 3, sizeIdValue);
+			}
+		};
+		if (imageNumberValue == 3) {
+			if (!image2) {
+				setAttrRequiredToInput (patternNumberValue, 2, sizeIdValue);
+			}
+		};
+	})
 }
 
 function saveImageToState (patternNumberValue, imageNumberValue, sizeIdValue, downloadURL, key, input) {
@@ -679,7 +807,7 @@ function createFormQuestions () {
 				createSelectInput (attributeId);
 			};
 			if (attribute['input-type'] == 'text-input') {
-				createTextInput (attributeId, 15, 'Opis pieluszki', );
+				createTextInput (attributeId, 15, 'Opis pieluszki', false);
 			};
 		};
 		let parentId = attribute['parent-id'];
@@ -743,11 +871,12 @@ function createCheckboxInput (attributeId) {
 	createTemplate ('checkbox-input', formPageName, questionData);
 }
 
-function createTextInput (attributeId, rowsNr, title) {
+function createTextInput (attributeId, rowsNr, title, required) {
 	let inputData = {
 		'id': attributeId,
 		'rows-nr': rowsNr,
-		'title': title
+		'title': title,
+		'required': required,
 	}
 	createTemplate ('text-input', formPageName, {'input-data': inputData});
 }
@@ -917,6 +1046,9 @@ function saveFabrics () {
 				savedLayerFabrics.push(formLayerFabric);
 			};
 		});
+		if (savedLayerFabrics.length == 1) {
+			saveOneFabricLayer (savedLayer);
+		};
 	});
 }
 
@@ -999,30 +1131,14 @@ function saveChosenCategoryData (chosenCategory) {
 	});
 }
 
-function createPercentageCompositionPage (clickedButton) {
+function createPercentageCompositionPage (clickedButton, key) {
 	let selectedLayers = [];
 	state.newItem.layers.forEach(function(layer){
 		layer.title = getQuestionText (layer.id).text;
-		let fabricNames = layer['fabrics-names'];
-		if (!fabricNames) {
-			fabricNames = [];
-		}
-		if (fabricNames.length > 1) {
+		if (layer['fabrics-names'].length > 1) {
 			selectedLayers.push(layer)
 		};
-		if (fabricNames.length == 1) {
-			saveOneFabricLayer (layer);
-		};
 	});
-	if (selectedLayers.length == 0) {
-		if (clickedButton == 'next') {
-			activateNextButton ();
-		};
-		if (clickedButton == 'back') {
-			activateBackButton ();
-		};
-		return
-	}
 	createTemplate ('layers', formPageName, {'layers': selectedLayers});
 	selectedLayers.forEach(function(layer){
 		let fabrics = [];

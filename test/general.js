@@ -21,3 +21,24 @@ export function collapseElement (elementId, parentId) {
 	document.getElementById(elementId).setAttribute("collapse", "collapse");
 	document.getElementById(elementId).classList.add('collapse')
 }
+
+export function submit () {
+	const promise = new Promise ((resolve, reject) => {
+		const forms = document.querySelectorAll('.needs-validation')
+		let form = forms[0];
+		let isValidated;
+      	form.addEventListener('submit', function (event) {
+	        if (!form.checkValidity()) {
+		        event.preventDefault()
+		        event.stopPropagation()
+		        isValidated = false;
+	        } else {
+	        	isValidated = true
+	        }
+	        form.classList.add('was-validated')
+	        resolve(isValidated)
+      	}, false)
+		
+	})
+	return promise
+}

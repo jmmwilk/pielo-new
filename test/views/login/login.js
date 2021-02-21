@@ -117,7 +117,7 @@ function enableSignUp () {
 			name.removeAttribute('required');
 		};
 		const auth = firebase.auth();
-		const promise = submit ();
+		const promise = general.submit ();
 		promise.then(function(isValidated){
 			console.log ('isValidated', isValidated)
 			if (isValidated) {
@@ -142,27 +142,6 @@ function enableSignUp () {
 			}
 		})
 	})
-}
-
-function submit () {
-	const promise = new Promise ((resolve, reject) => {
-		const forms = document.querySelectorAll('.needs-validation')
-		let form = forms[0];
-		let isValidated;
-      	form.addEventListener('submit', function (event) {
-	        if (!form.checkValidity()) {
-		        event.preventDefault()
-		        event.stopPropagation()
-		        isValidated = false;
-	        } else {
-	        	isValidated = true
-	        }
-	        form.classList.add('was-validated')
-	        resolve(isValidated)
-      	}, false)
-		
-	})
-	return promise
 }
 
 function changeStateLogIn (user, firebaseUser) {

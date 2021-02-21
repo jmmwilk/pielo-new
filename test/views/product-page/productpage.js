@@ -299,7 +299,7 @@ export function createPreviewScreen (diaper, key, view) {
 				itemType = 'newItem';
 				state.whereToAddNewItem.addTo = 'mock-diapers';
 			};
-			form.addMockDiaper (itemType, key)
+			form.addMockDiaper (key, itemType)
 			clearPage ();
 			form.deleteStateNewItem ();
 //			deletePreviewFromDatabase (key);
