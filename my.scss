@@ -1,0 +1,10 @@
+@import "../node_modules/bootstrap-scss/functions";
+
+$position-values: (
+  30: 30%
+);
+
+$position-values: map-merge($position-values, $30);
+
+@import "../node_modules/bootstrap-scss/variables";
+@import "../node_modules/bootstrap-scss/utilities";

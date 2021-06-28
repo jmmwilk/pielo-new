@@ -5,111 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="theme-color" content="#000000">
     <title>Pielo</title>
-    <link href='style.css' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="../libs/jquery-3.3.1.min.js"></script>
+    <link href='css/style.css' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="libs/jquery-3.3.1.min.js"></script>
     <script type="module" src="index.js"></script>
     <script src='libs/handlebars-v4.7.6.js'></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="templates.precompiled.js"></script>
+    <script src="templates.precompiled.js"></script>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" type="text/css">
+    
+
   </head>
   <body>
-    <div id="application" class="container-fluid bg-light">
+    <div id="application" class="container">
     </div>
-    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/7.17.1/firebase-analytics.js"></script>
-
-    <script>
-      var firebaseConfig = {
-        apiKey: "AIzaSyAIpPvZ3RCdPV9o4VOEo16YTKI7rqrgsF8",
-        authDomain: "wielo-pielo.firebaseapp.com",
-        databaseURL: "https://wielo-pielo.firebaseio.com",
-        projectId: "wielo-pielo",
-        storageBucket: "wielo-pielo.appspot.com",
-        messagingSenderId: "104016685413",
-        appId: "1:104016685413:web:9bc39931f4251a2da2198c",
-        measurementId: "G-4KKS4BMPSJ"
-      };
-      firebase.initializeApp(firebaseConfig);
-      firebase.analytics();
-    </script>
+<!--     <div class="ml-form-embed"
+      data-account="3216661:z0h5v3y8a5"
+      data-form="4233088:o3r9m1">
+    </div> -->
   </body>
-  <script id="newsletter-page-template" type="text/x-handlebars-template">
-    <div class="position-absolute">
-      <a  href="test/index.html">
-        Zaloguj się
-      </a>
-    </div>
-    <div id="newsletter-page-box" class="row justify-content-center h-100">
-      <div class="col-lg-10 d-flex flex-column justify-content-center">
-        <div id="pielo" class="text-center text-warning my-3">
-          <h1>Pielo.pl</h1>
-        </div>
-        <div id="thank-you-text" class="my-2 text-center text-secondary d-none">
-          <h4>Dziękujemy i do zobaczenia. Miłego wielopieluchowania :)</h4>
-        </div>
-        <div id="welcome-text" class="text-center my-3">
-          <div class="my-2 text-info">
-            <h3>Witaj na stronie pierwszej porównywarki nowoczesnych pieluszek wielorazowych.<h3>
-          </div>
-          <div id="leave-email-text" class="my-2 text-secondary">
-            <h4>Zostaw swój email, a kiedy tylko strona ruszy, dowiesz się o tym jako pierwsza.</h4>
-          </div>
-          <div id="thank-you-text" class="my-2 text-secondary d-none">
-            <h4>Dziękujemy i do zobaczenia. Miłego wielopieluchowania :)</h4>
-          </div>
-        </div>
-        <form id="form" class="needs-validation novalidate">
-          <div id="makapaka" class="my-3">
-            <div class="form-row d-flex justify-content-center">
-              <div class="form-group mx-2">
-                <input id="email-input" type="email" class="form-control" id="inputEmail" placeholder="Email" value="" required>
-                <div class="invalid-feedback">
-                  Wpisz poprawny adres email.
-                </div>
-              </div>
-              <div class="form-group mx-2">
-                <input id="name-input" type="text" class="form-control" id="validationCustom01" placeholder="Imię" value="" required>
-                <div class="invalid-feedback">
-                  <small>Wpisz imię.</small>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="text-secondary row justify-content-md-center">
-            <div class="col-auto">
-              <div class="form-check m-2">
-                <input class="form-check-input" type="checkbox" value="nappies-user" id="nappies-user-checkbox">
-                <label class="form-check-label" for="nappies-user-checkbox">
-                  Używam pieluszek wielorazowych lub jestem tym zainteresowana.
-                </label>
-              </div>
-              <div class="form-check m-2">
-                <input  class="form-check-input" type="checkbox" value="producer" id="producer-checkbox">
-                <label class="form-check-label" for="producer-checkbox">
-                  Jestem producentem pieluszek wielorazowych.
-                </label>
-              </div>
-              <div class="form-check m-2">
-                <input class="form-check-input" type="checkbox" value="shop-owner" id="shop-owner-checkbox">
-                <label class="form-check-label" for="shop-owner-checkbox">
-                  Prowadzę sklep z pieluszkami wielorazowymi.
-                </label>
-              </div>
-              <div class="row d-flex justify-content-end m-2">
-                <button id="button" type="submit" class="btn btn-primary my-4">Wyślij</button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </script>
 </html>
 
 
