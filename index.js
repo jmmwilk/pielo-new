@@ -4,6 +4,9 @@ $(document).ready(function(){
 	createTemplate ('main-page', 'main');
 	$('#newsletter-button').click(goToNewsletter);
 //	window.location.href = "https://pielo.pl#newsletter";
+	$('#background-image').css("height", $('#left-column').width() + 'px');
+	$('#background-image').css("width", 7/6*$('#left-column').width() + 'px');
+	$('#background-image-container').css("right", 1/6*$('#left-column').width() + 'px');
 })
 
 function goToNewsletter () {
