@@ -1,4 +1,47 @@
+@import "../node_modules/bootstrap-scss/functions";
+@import "../node_modules/bootstrap-scss/variables";
+@import "../node_modules/bootstrap-scss/utilities";
+@import "../node_modules/bootstrap-scss/mixins";
 
+.right-column {
+  display: none;
+}
+
+.lg-background-image {
+	display: none;
+}
+
+.md-background-image {
+	display: none;
+}
+
+.sm-background-image {
+	display: none;
+}
+
+@include media-breakpoint-down(md) {
+	.sm-background-image {
+    display: block;
+  }
+}
+
+@include media-breakpoint-only(md) {
+	.md-background-image {
+    display: block;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .right-column {
+    display: block;
+  };
+}
+
+@include media-breakpoint-up(lg) {
+  .lg-background-image {
+    display: block;
+  }
+}
 
 body {
   background-color: white;
@@ -43,6 +86,17 @@ body {
 	width: 100%;
 }
 
+#sm-circle-wrapper {
+	z-index: -1;
+}
+
 #left-column-elements-wrapper {
 	top: 30%
 }
+
+#footer {
+	z-index: 2;
+}
+
+
+

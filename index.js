@@ -4,13 +4,33 @@ $(document).ready(function(){
 	createTemplate ('main-page', 'main');
 	$('#newsletter-button').click(goToNewsletter);
 //	window.location.href = "https://pielo.pl#newsletter";
-	$('#background-image').css("height", $('#left-column').width() + 'px');
-	$('#background-image').css("width", 7/6*$('#left-column').width() + 'px');
-	$('#background-image-container').css("right", 1/6*$('#left-column').width() + 'px');
+	adjustBgImage ();
+	window.addEventListener('resize', adjustBgImage );
+	
 })
 
+function adjustBgImage () {
+	let bgImage;
+	if ($(window).width() >= 992) {
+		bgImage = $('#lg-background-image');
+	  	$(bgImage).css("height", $('#left-column').width() + 'px');
+		$(bgImage).css("width", 7/6*$('#left-column').width() + 'px');
+		$(bgImage).parent().css("right", 1/6*$('#left-column').width() + 'px');
+	}
+	if ($(window).width() >= 768 && $(window).width() < 992) {
+		bgImage = $('#md-background-image');
+	  	$(bgImage).css("height", $('#left-column').width() + 'px');
+		$(bgImage).parent().css("right", 1/4*$('#left-column').width() + 'px');
+	}
+	if ($(window).width() < 768) {
+		bgImage = $('#circle');
+	  	$(bgImage).css("height", 3/2 * $(window).width() + 'px');
+	  	$(bgImage).parent().css("top", 3/4*$(window).height() + 'px');
+	  	$(bgImage).parent().css("left", -1/10*$(window).width() + 'px');
+	}
+}
+
 function goToNewsletter () {
-	console.log ('cebula');
 	window.location.href = "#newsletter";
 	$('#main').html('');
 	createTemplate ('newsletter-page', 'main');
