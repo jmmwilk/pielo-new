@@ -74,8 +74,8 @@ body {
 }
 
 #magnifying-glass {
-	width: 30px;
-	height: 30px;
+	width: 25px;
+	height: 27px;
 }
 
 #background-image-wrapper {
@@ -96,6 +96,16 @@ body {
 
 #footer {
 	z-index: 2;
+}
+
+.footer-border-top {
+   @include media-breakpoint-up(md) { 
+       border-top: 1px solid $warning;
+   }
+}
+
+.search-text-color {
+	color: $gray-400;
 }
 
 
