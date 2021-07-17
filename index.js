@@ -27,6 +27,8 @@ function adjustBgImage () {
 	  	$(bgImage).css("height", 3/2 * $(window).width() + 'px');
 	  	$(bgImage).parent().css("top", 3/4*$(window).height() + 'px');
 	  	$(bgImage).parent().css("left", -1/10*$(window).width() + 'px');
+	  	$(bgImage).parent().css("height", 1/4*$(window).height() + ($('#footer').outerHeight(true)) + 'px');
+	  	$(bgImage).parent().css("width", 11/10*$(window).width() + 'px');
 	}
 }
 
