@@ -6,7 +6,9 @@ $(document).ready(function(){
 //	window.location.href = "https://pielo.pl#newsletter";
 	adjustBgImage ();
 	window.addEventListener('resize', adjustBgImage );
-	
+	for (let i=0; i<brands.length; i++) {
+		createTemplate ('badge', 'brands-propositions-wrapper', {'brand-name': brands[i]['brand-name']});
+	}
 })
 
 function adjustBgImage () {
@@ -44,6 +46,24 @@ function createTemplate (templateId, parentTemplate, data) {
 	$('#' + parentTemplate).append(template(data));
 }
 
+
+let brands = [
+	{
+		'brand-name': 'Pieluszki Ratuski', 
+	},
+	{
+		'brand-name': 'Anavy', 
+	},
+	{
+		'brand-name': 'Eko Manufaktura', 
+	},
+	{
+		'brand-name': 'Anna Luna', 
+	},
+	{
+		'brand-name': 'Bee3', 
+	},
+]
 
 
 

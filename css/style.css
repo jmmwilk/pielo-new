@@ -1,3 +1,18 @@
+#search-box-input {
+  border: 0px;
+  color: #ced4da;
+}
+
+#search-box-input:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+input.placeholder-color::placeholder {
+  color: #ced4da;
+  opacity: 1;
+}
+
 .right-column {
   display: none;
 }
@@ -35,7 +50,6 @@
   }
 }
 body {
-  background-color: white;
   font-family: "DM Sans", sans-serif;
 }
 
@@ -95,8 +109,11 @@ body {
   }
 }
 
-.search-text-color {
-  color: #ced4da;
+.proposition-badge {
+  height: 30px;
+  width: 140px;
+  background-color: #e9ecef;
+  color: #495057;
 }
 
 /*# sourceMappingURL=style.css.map */

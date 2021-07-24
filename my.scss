@@ -8,3 +8,10 @@ $position-values: map-merge($position-values, $30);
 
 @import "../node_modules/bootstrap-scss/variables";
 @import "../node_modules/bootstrap-scss/utilities";
+
+
+
+input.placeholder-color::placeholder {
+    color: $input-placeholder-color;
+    opacity: 1;
+}
