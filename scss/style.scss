@@ -8,7 +8,6 @@ $grey-badge-color : #979797;
 @import "../node_modules/bootstrap-scss/mixins";
 @import "../node_modules/bootstrap-scss/utilities";
 
-
 $custom-colors: (
   "grey-badge-color": $grey-badge-color
 );
@@ -52,26 +51,26 @@ input.placeholder-color::placeholder {
 
 @include media-breakpoint-down(md) {
 	.sm-background-image {
-    display: block;
-  }
+    	display: block;
+  	};
 }
 
 @include media-breakpoint-only(md) {
 	.md-background-image {
-    display: block;
+    	display: block;
   }
 }
 
 @include media-breakpoint-up(md) {
-  .right-column {
-    display: block;
-  };
+	.right-column {
+		display: block;
+	};
 }
 
 @include media-breakpoint-up(lg) {
-  .lg-background-image {
-    display: block;
-  }
+	.lg-background-image {
+	    display: block;
+	}
 }
 
 body {
@@ -141,3 +140,9 @@ body {
 	color: $gray-700;
 }
 
+@include media-breakpoint-only(xs) {
+  	.proposition-badge {
+		font-size: .875em;
+		width: 120px;
+	};
+}

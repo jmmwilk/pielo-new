@@ -116,4 +116,11 @@ body {
   color: #495057;
 }
 
+@media (max-width: 575.98px) {
+  .proposition-badge {
+    font-size: 0.875em;
+    width: 120px;
+  }
+}
+
 /*# sourceMappingURL=style.css.map */
