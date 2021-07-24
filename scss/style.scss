@@ -137,12 +137,12 @@ body {
 	height: 30px;
 	width: 140px;
 	background-color: $gray-200;
-	color: $gray-700;
+	color: $gray-600;
 }
 
 @include media-breakpoint-only(xs) {
   	.proposition-badge {
-		font-size: .875em;
-		width: 120px;
+		font-size: .85em;
+		width: 100px;
 	};
 }

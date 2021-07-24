@@ -49,13 +49,13 @@ function createTemplate (templateId, parentTemplate, data) {
 
 let brands = [
 	{
-		'brand-name': 'Pieluszki Ratuski', 
+		'brand-name': 'Kokosi', 
 	},
 	{
 		'brand-name': 'Anavy', 
 	},
 	{
-		'brand-name': 'Eko Manufaktura', 
+		'brand-name': 'Gagatki', 
 	},
 	{
 		'brand-name': 'Anna Luna', 

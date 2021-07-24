@@ -113,13 +113,13 @@ body {
   height: 30px;
   width: 140px;
   background-color: #e9ecef;
-  color: #495057;
+  color: #6c757d;
 }
 
 @media (max-width: 575.98px) {
   .proposition-badge {
-    font-size: 0.875em;
-    width: 120px;
+    font-size: 0.85em;
+    width: 100px;
   }
 }
 
