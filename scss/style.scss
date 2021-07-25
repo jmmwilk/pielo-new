@@ -135,7 +135,7 @@ body {
 
 .proposition-badge {
 	height: 30px;
-	width: 140px;
+	width: 135px;
 	background-color: $gray-200;
 	color: $gray-600;
 }
@@ -143,6 +143,32 @@ body {
 @include media-breakpoint-only(xs) {
   	.proposition-badge {
 		font-size: .85em;
-		width: 100px;
+		width: 125px;
 	};
 }
+
+@media (max-width: 350px) {
+	.proposition-badge {
+		width: 85px;
+	};
+}
+
+@media (min-width: 351px) and (max-width: 380px) {
+	.proposition-badge {
+		width: 95px;
+	};
+}
+
+@media (min-width: 380px) and (max-width: 410px) {
+	.proposition-badge {
+		width: 105px;
+	};
+}
+
+@media (min-width: 410px) and (max-width: 440px) {
+	.proposition-badge {
+		width: 115px;
+	};
+}
+
+
