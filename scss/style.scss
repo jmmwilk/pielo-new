@@ -153,15 +153,33 @@ body {
 	};
 }
 
-@media (min-width: 351px) and (max-width: 380px) {
+@media (min-width: 351px) and (max-width: 362px) {
 	.proposition-badge {
 		width: 95px;
 	};
 }
 
-@media (min-width: 380px) and (max-width: 410px) {
+@media (min-width: 363px) and (max-width: 375px) {
+	.proposition-badge {
+		width: 95px;
+	};
+}
+
+@media (min-width: 376px) and (max-width: 380px) {
+	.proposition-badge {
+		width: 100px;
+	};
+}
+
+@media (min-width: 380px) and (max-width: 395px) {
 	.proposition-badge {
 		width: 105px;
+	};
+}
+
+@media (min-width: 396px) and (max-width: 410px) {
+	.proposition-badge {
+		width: 110px;
 	};
 }
 
