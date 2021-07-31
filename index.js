@@ -1,3 +1,7 @@
+import * as brandsList from '/brands-list.js';
+
+let searchTermCount = 0;
+
 
 $(document).ready(function(){
 	createTemplate ('structure', 'application');
@@ -6,10 +10,48 @@ $(document).ready(function(){
 //	window.location.href = "https://pielo.pl#newsletter";
 	adjustBgImage ();
 	window.addEventListener('resize', adjustBgImage );
-	for (let i=0; i<brands.length; i++) {
-		createTemplate ('badge', 'brands-propositions-wrapper', {'brand-name': brands[i]['brand-name']});
-	}
+	createBrandsList ();
 })
+
+
+function createBrandsList () {
+	$('#search-box-input').on("keyup", function() {
+		let newCount = $(this).val().length;
+		if (newCount < 2) {
+			$("#brands-propositions-wrapper").html('');
+			return
+		}
+		if (newCount === 2) {
+			$("#brands-propositions-wrapper").html('');
+			loadBrands ();
+		};
+		if (newCount > 2 && newCount > searchTermCount) {
+			filterBrands ();
+		};
+		if (newCount >= 2 && newCount < searchTermCount) {
+			$("#brands-propositions-wrapper").html('');
+			loadBrands ();
+		}
+		searchTermCount = newCount;
+  	});
+}
+
+function loadBrands () {
+	let searchTerm = $('#search-box-input').val().toLowerCase();
+	let results = $.grep(brandsList.sortedBrands, function(elem) {
+	    return elem['brand-name'].toLowerCase().indexOf(searchTerm) > -1;
+	}); 
+	for (let i=0; i<results.length; i++) {
+		createTemplate ('badge', 'brands-propositions-wrapper', {'brand-name': results[i]['brand-name']});
+	};
+}
+
+function filterBrands () {
+	let searchTerm = $('#search-box-input').val().toLowerCase();
+	$("#brands-propositions-wrapper *").filter(function() {
+  		$(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1)
+	});
+}
 
 function adjustBgImage () {
 	let bgImage;
@@ -47,23 +89,6 @@ function createTemplate (templateId, parentTemplate, data) {
 }
 
 
-let brands = [
-	{
-		'brand-name': 'Kokosi', 
-	},
-	{
-		'brand-name': 'Anavy', 
-	},
-	{
-		'brand-name': 'Gagatki', 
-	},
-	{
-		'brand-name': 'Anna Luna', 
-	},
-	{
-		'brand-name': 'Bee3', 
-	},
-]
 
 
 
