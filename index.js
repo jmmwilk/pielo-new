@@ -1,4 +1,4 @@
-import * as brandsList from '/brands-list.js';
+import * as brandsList from './brands-list.js';
 
 let searchTermCount = 0;
 
