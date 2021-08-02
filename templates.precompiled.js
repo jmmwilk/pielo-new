@@ -8,11 +8,19 @@ templates['badge'] = template({"compiler":[8,">= 4.3.0"],"main":function(contain
         return undefined
     };
 
-  return "<div class=\"col\">\n	<div class=\"brand-badge "
-    + alias4(((helper = (helper = lookupProperty(helpers,"badge-type") || (depth0 != null ? lookupProperty(depth0,"badge-type") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"badge-type","hash":{},"data":data,"loc":{"start":{"line":2,"column":25},"end":{"line":2,"column":39}}}) : helper)))
+  return "<div class=\"col\">\n	<div id=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"brand-id") || (depth0 != null ? lookupProperty(depth0,"brand-id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"brand-id","hash":{},"data":data,"loc":{"start":{"line":2,"column":10},"end":{"line":2,"column":22}}}) : helper)))
+    + "-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"badge-type") || (depth0 != null ? lookupProperty(depth0,"badge-type") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"badge-type","hash":{},"data":data,"loc":{"start":{"line":2,"column":23},"end":{"line":2,"column":37}}}) : helper)))
+    + "\" class=\"brand-badge "
+    + alias4(((helper = (helper = lookupProperty(helpers,"badge-type") || (depth0 != null ? lookupProperty(depth0,"badge-type") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"badge-type","hash":{},"data":data,"loc":{"start":{"line":2,"column":58},"end":{"line":2,"column":72}}}) : helper)))
     + " rounded-pill position-relative mb-2\" role=\"button\" brand-id="
-    + alias4(((helper = (helper = lookupProperty(helpers,"brand-id") || (depth0 != null ? lookupProperty(depth0,"brand-id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"brand-id","hash":{},"data":data,"loc":{"start":{"line":2,"column":100},"end":{"line":2,"column":112}}}) : helper)))
-    + ">\n		<div class=\"position-absolute top-50 start-50 translate-middle text-nowrap\">\n			<small>"
+    + alias4(((helper = (helper = lookupProperty(helpers,"brand-id") || (depth0 != null ? lookupProperty(depth0,"brand-id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"brand-id","hash":{},"data":data,"loc":{"start":{"line":2,"column":133},"end":{"line":2,"column":145}}}) : helper)))
+    + ">\n		<div id=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"brand-id") || (depth0 != null ? lookupProperty(depth0,"brand-id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"brand-id","hash":{},"data":data,"loc":{"start":{"line":3,"column":11},"end":{"line":3,"column":23}}}) : helper)))
+    + "-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"badge-type") || (depth0 != null ? lookupProperty(depth0,"badge-type") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"badge-type","hash":{},"data":data,"loc":{"start":{"line":3,"column":24},"end":{"line":3,"column":38}}}) : helper)))
+    + "-text\" class=\"position-absolute top-50 start-50 translate-middle text-nowrap\">\n			<small>"
     + alias4(((helper = (helper = lookupProperty(helpers,"brand-name") || (depth0 != null ? lookupProperty(depth0,"brand-name") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"brand-name","hash":{},"data":data,"loc":{"start":{"line":4,"column":10},"end":{"line":4,"column":24}}}) : helper)))
     + "</small>\n		</div>\n	</div>\n</div>";
 },"useData":true});

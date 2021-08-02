@@ -76,6 +76,14 @@ let brandsList = [
 		'brand-name': 'Łatki Dwie',
 		'brand-id': 'latki-dwie', 
 	},
+	{
+		'brand-name': 'Ekomanufaktura',
+		'brand-id': 'ekomanufaktura',
+	},
+	{
+		'brand-name': 'Fabryka Różności "Bajka"',
+		'brand-id': 'fabryka-roznosci-bajka',
+	},
 ]
 
 export let sortedBrands = _.sortBy( brandsList, 'name' );
