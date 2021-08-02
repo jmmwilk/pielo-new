@@ -13,27 +13,38 @@ $(document).ready(function(){
 	createBrandsList ();
 })
 
-
 function createBrandsList () {
 	$('#search-box-input').on("keyup", function() {
 		let newCount = $(this).val().length;
 		if (newCount < 2) {
-			$("#brands-propositions-wrapper").html('');
+			$("#filtered-brands-wrapper").html('');
 			return
 		}
 		if (newCount === 2) {
-			$("#brands-propositions-wrapper").html('');
+			$("#filtered-brands-wrapper").html('');
 			loadBrands ();
 		};
 		if (newCount > 2 && newCount > searchTermCount) {
 			filterBrands ();
 		};
 		if (newCount >= 2 && newCount < searchTermCount) {
-			$("#brands-propositions-wrapper").html('');
+			$("#filtered-brands-wrapper").html('');
 			loadBrands ();
 		}
 		searchTermCount = newCount;
   	});
+}
+
+function enableSelectBrand () {
+	$('.brand-badge').on('click',function(){
+   		console.log('this', $(this))
+   		let name = $(this).attr('brand-name');
+   		let brandId = $(this).attr('brand-id');
+   		let selectedBrandName =  brandsList.sortedBrands.find(function(brand){
+			return brand['brand-id'] == brandId
+		})['brand-name'];
+   		createTemplate ('badge', 'selected-items-wrapper', {'brand-name': selectedBrandName, 'brand-id': brandId, 'badge-type': 'selected-brand-badge'});
+	});  
 }
 
 function loadBrands () {
@@ -42,13 +53,14 @@ function loadBrands () {
 	    return elem['brand-name'].toLowerCase().indexOf(searchTerm) > -1;
 	}); 
 	for (let i=0; i<results.length; i++) {
-		createTemplate ('badge', 'brands-propositions-wrapper', {'brand-name': results[i]['brand-name']});
+		createTemplate ('badge', 'filtered-brands-wrapper', {'brand-name': results[i]['brand-name'], 'brand-id': results[i]['brand-id'], 'badge-type': 'filtered-brand-badge'});
+		enableSelectBrand ();
 	};
 }
 
 function filterBrands () {
 	let searchTerm = $('#search-box-input').val().toLowerCase();
-	$("#brands-propositions-wrapper *").filter(function() {
+	$("#filtered-brands-wrapper *").filter(function() {
   		$(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1)
 	});
 }

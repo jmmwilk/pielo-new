@@ -1,64 +1,80 @@
 
 let brandsList = [
 	{
-		'brand-name': 'Kokosi', 
+		'brand-name': 'Kokosi',
+		'brand-id': 'kokosi',
 	},
 	{
-		'brand-name': 'Anavy', 
+		'brand-name': 'Anavy',
+		'brand-id': 'anavy',
 	},
 	{
 		'brand-name': 'Gagatki', 
+		'brand-id': 'gagatki',
 	},
 	{
-		'brand-name': 'Anna Luna', 
+		'brand-name': 'Anna Luna',
+		'brand-id': 'anna-luna',
 	},
 	{
-		'brand-name': 'Bee3', 
+		'brand-name': 'Bee3',
+		'brand-id': 'bee3', 
 	},
 	{
-		'brand-name': 'Regatki', 
+		'brand-name': 'Regatki',
+		'brand-id': 'regatki',
 	},
 	{
-		'brand-name': 'Rasppies', 
+		'brand-name': 'Rasppies',
+		'brand-id': 'rasppies', 
 	},
 	{
-		'brand-name': 'Drimi', 
+		'brand-name': 'Drimi',
+		'brand-id': 'drimi', 
 	},
 	{
-		'brand-name': 'Lulli', 
+		'brand-name': 'Lulli',
+		'brand-id': 'lulli', 
 	},
 	{
-		'brand-name': 'AliManii', 
+		'brand-name': 'AliManii',
+		'brand-id': 'alimanii', 
 	},
 	{
-		'brand-name': 'Doodush', 
+		'brand-name': 'Doodush',
+		'brand-id': 'doodush', 
 	},
 	{
-		'brand-name': 'Magabi', 
+		'brand-name': 'Magabi',
+		'brand-id': 'magabi', 
 	},
 	{
-		'brand-name': 'Funky Monkey', 
+		'brand-name': 'Funky Monkey',
+		'brand-id': 'funky-monkey', 
 	},
 	{
-		'brand-name': 'Fomi', 
+		'brand-name': 'Fomi',
+		'brand-id': 'fomi', 
 	},
 	{
-		'brand-name': 'INAczej', 
+		'brand-name': 'INAczej',
+		'brand-id': 'inaczej', 
 	},
 	{
-		'brand-name': 'Kokosi', 
+		'brand-name': 'Joopi',
+		'brand-id': 'joopi',
 	},
 	{
-		'brand-name': 'Joopi', 
+		'brand-name': 'Just Nappy',
+		'brand-id': 'just-nappy', 
 	},
 	{
-		'brand-name': 'Just Nappy', 
+		'brand-name': 'Malunio',
+		'brand-id': 'malunio', 
 	},
 	{
-		'brand-name': 'Malunio', 
-	},
-	{
-		'brand-name': 'Łatki Dwie', 
+		'brand-name': 'Łatki Dwie',
+		'brand-id': 'latki-dwie', 
 	},
 ]
 

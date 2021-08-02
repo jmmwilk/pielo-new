@@ -133,58 +133,65 @@ body {
    }
 }
 
-.proposition-badge {
+.brand-badge {
 	height: 30px;
 	width: 135px;
-	background-color: $gray-200;
 	color: $gray-600;
 }
 
+.filtered-brand-badge {
+	background-color: $gray-200;
+}
+
+.selected-brand-badge {
+	background-color: $yellow-200;
+}
+
 @include media-breakpoint-only(xs) {
-  	.proposition-badge {
+  	.brand-badge {
 		font-size: .85em;
 		width: 125px;
 	};
 }
 
 @media (max-width: 350px) {
-	.proposition-badge {
+	.brand-badge {
 		width: 85px;
 	};
 }
 
 @media (min-width: 351px) and (max-width: 362px) {
-	.proposition-badge {
+	.brand-badge {
 		width: 95px;
 	};
 }
 
 @media (min-width: 363px) and (max-width: 375px) {
-	.proposition-badge {
+	.brand-badge {
 		width: 95px;
 	};
 }
 
 @media (min-width: 376px) and (max-width: 380px) {
-	.proposition-badge {
+	.brand-badge {
 		width: 100px;
 	};
 }
 
 @media (min-width: 380px) and (max-width: 395px) {
-	.proposition-badge {
+	.brand-badge {
 		width: 105px;
 	};
 }
 
 @media (min-width: 396px) and (max-width: 410px) {
-	.proposition-badge {
+	.brand-badge {
 		width: 110px;
 	};
 }
 
 @media (min-width: 410px) and (max-width: 440px) {
-	.proposition-badge {
+	.brand-badge {
 		width: 115px;
 	};
 }
