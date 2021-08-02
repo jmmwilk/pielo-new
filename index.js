@@ -1,4 +1,5 @@
 import * as brandsList from './brands-list.js';
+import * as state from './state.js';
 
 let searchTermCount = 0;
 
@@ -27,7 +28,7 @@ function createBrandsList () {
 		if (newCount > 2 && newCount > searchTermCount) {
 			filterBrands ();
 		};
-		if (newCount >= 2 && newCount < searchTermCount) {
+		if (newCount > 2 && newCount < searchTermCount) {
 			$("#filtered-brands-wrapper").html('');
 			loadBrands ();
 		}
@@ -36,14 +37,24 @@ function createBrandsList () {
 }
 
 function enableSelectBrand () {
-	$('.brand-badge').on('click',function(){
-   		console.log('this', $(this))
-   		let name = $(this).attr('brand-name');
+	$('.filtered-brand-badge').on('click',function(e){
    		let brandId = $(this).attr('brand-id');
    		let selectedBrandName =  brandsList.sortedBrands.find(function(brand){
 			return brand['brand-id'] == brandId
 		})['brand-name'];
-   		createTemplate ('badge', 'selected-items-wrapper', {'brand-name': selectedBrandName, 'brand-id': brandId, 'badge-type': 'selected-brand-badge'});
+   		let isAlreadySelected = false
+   		for (let i=0; i<state.selectedBrands.length; i++) {
+   			if (state.selectedBrands[i]['brand-id'] == brandId) {
+   				isAlreadySelected = true;
+   				return
+   			};
+   		};
+   		console.log ('isAlreadySelected', isAlreadySelected)
+   		if (!isAlreadySelected) {
+   			state.selectedBrands.push({'brand-id': brandId});
+   			createTemplate ('badge', 'selected-items-wrapper', {'brand-name': selectedBrandName, 'brand-id': brandId, 'badge-type': 'selected-brand-badge'});
+   		}
+   		console.log ('state', state.selectedBrands)
 	});  
 }
 
@@ -54,8 +65,8 @@ function loadBrands () {
 	}); 
 	for (let i=0; i<results.length; i++) {
 		createTemplate ('badge', 'filtered-brands-wrapper', {'brand-name': results[i]['brand-name'], 'brand-id': results[i]['brand-id'], 'badge-type': 'filtered-brand-badge'});
-		enableSelectBrand ();
 	};
+	enableSelectBrand ();
 }
 
 function filterBrands () {
