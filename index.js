@@ -42,17 +42,15 @@ function searchBrands () {
 	searchTermCount = newCount;
 }
 
-function enableRemoveBrand () {
-	$('.selected-brand-badge').on('click',function(e){
-   		let brandId = $(this).attr('brand-id');
-   		for (let i=0; i<state.selectedBrands.length; i++) {
-   			if (state.selectedBrands[i]['brand-id'] == brandId) {
-   				state.selectedBrands.splice(i,1);
-   				$(this).parent().remove();
-   				return
-   			};
-   		};
-	});
+function removeBrand (selectedBrand) {
+	let brandId = $(selectedBrand).attr('brand-id');
+	for (let i=0; i<state.selectedBrands.length; i++) {
+		if (state.selectedBrands[i]['brand-id'] == brandId) {
+			state.selectedBrands.splice(i,1);
+			$(selectedBrand).parent().remove();
+			return
+		};
+	};
 }
 
 function selectBrand (selectedBrand) {
@@ -71,7 +69,10 @@ function selectBrand (selectedBrand) {
 		state.selectedBrands.push({'brand-id': brandId});
 		createTemplate ('badge', 'selected-items-wrapper', {'brand-name': selectedBrandName, 'brand-id': brandId, 'badge-type': 'selected-brand-badge'});
 	};
-	enableRemoveBrand ();
+	$('.selected-brand-badge').on('click',function(e){
+   		removeBrand (this);
+	});
+	
 }
 
 function suggestBrands () {
