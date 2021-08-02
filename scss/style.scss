@@ -147,6 +147,10 @@ body {
 	background-color: $yellow-200;
 }
 
+#selected-items-wrapper {
+	min-height: 38px;
+}
+
 @include media-breakpoint-only(xs) {
   	.brand-badge {
 		font-size: .85em;

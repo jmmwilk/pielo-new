@@ -123,6 +123,10 @@ body {
   background-color: #ffe69c;
 }
 
+#selected-items-wrapper {
+  min-height: 38px;
+}
+
 @media (max-width: 575.98px) {
   .brand-badge {
     font-size: 0.85em;
