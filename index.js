@@ -11,54 +11,70 @@ $(document).ready(function(){
 //	window.location.href = "https://pielo.pl#newsletter";
 	adjustBgImage ();
 	window.addEventListener('resize', adjustBgImage );
-	createBrandsList ();
+	$('#search-box-input').on("keyup", function() {
+		searchBrands ();
+  	});
 })
 
-function createBrandsList () {
-	$('#search-box-input').on("keyup", function() {
-		let newCount = $(this).val().length;
-		if (newCount < 2) {
-			$("#filtered-brands-wrapper").html('');
-			return
-		}
-		if (newCount === 2) {
-			$("#filtered-brands-wrapper").html('');
-			loadBrands ();
-		};
-		if (newCount > 2 && newCount > searchTermCount) {
-			filterBrands ();
-		};
-		if (newCount > 2 && newCount < searchTermCount) {
-			$("#filtered-brands-wrapper").html('');
-			loadBrands ();
-		}
-		searchTermCount = newCount;
-  	});
+function searchBrands () {
+	let newCount = $('#search-box-input').val().length;
+	if (newCount < 2) {
+		$("#filtered-brands-wrapper").html('');
+		return
+	}
+	if (newCount === 2) {
+		$("#filtered-brands-wrapper").html('');
+		suggestBrands ();
+		$('.filtered-brand-badge').on('click',function(e){
+	   		selectBrand (this);
+		});
+	};
+	if (newCount > 2 && newCount > searchTermCount) {
+		filterBrands ();
+	};
+	if (newCount > 2 && newCount < searchTermCount) {
+		$("#filtered-brands-wrapper").html('');
+		suggestBrands ();
+		$('.filtered-brand-badge').on('click',function(e){
+	   		selectBrand (this);
+		});
+	}
+	searchTermCount = newCount;
 }
 
-function enableSelectBrand () {
-	$('.filtered-brand-badge').on('click',function(e){
+function enableRemoveBrand () {
+	$('.selected-brand-badge').on('click',function(e){
    		let brandId = $(this).attr('brand-id');
-   		let selectedBrandName =  brandsList.sortedBrands.find(function(brand){
-			return brand['brand-id'] == brandId
-		})['brand-name'];
-   		let isAlreadySelected = false
    		for (let i=0; i<state.selectedBrands.length; i++) {
    			if (state.selectedBrands[i]['brand-id'] == brandId) {
-   				isAlreadySelected = true;
+   				state.selectedBrands.splice(i,1);
+   				$(this).parent().remove();
    				return
    			};
    		};
-   		console.log ('isAlreadySelected', isAlreadySelected)
-   		if (!isAlreadySelected) {
-   			state.selectedBrands.push({'brand-id': brandId});
-   			createTemplate ('badge', 'selected-items-wrapper', {'brand-name': selectedBrandName, 'brand-id': brandId, 'badge-type': 'selected-brand-badge'});
-   		}
-   		console.log ('state', state.selectedBrands)
-	});  
+	});
 }
 
-function loadBrands () {
+function selectBrand (selectedBrand) {
+	let brandId = $(selectedBrand).attr('brand-id');
+	let selectedBrandName =  brandsList.sortedBrands.find(function(brand){
+		return brand['brand-id'] == brandId
+	})['brand-name'];
+	let isAlreadySelected = false
+	for (let i=0; i<state.selectedBrands.length; i++) {
+		if (state.selectedBrands[i]['brand-id'] == brandId) {
+			isAlreadySelected = true;
+			return
+		};
+	};
+	if (!isAlreadySelected) {
+		state.selectedBrands.push({'brand-id': brandId});
+		createTemplate ('badge', 'selected-items-wrapper', {'brand-name': selectedBrandName, 'brand-id': brandId, 'badge-type': 'selected-brand-badge'});
+	};
+	enableRemoveBrand ();
+}
+
+function suggestBrands () {
 	let searchTerm = $('#search-box-input').val().toLowerCase();
 	let results = $.grep(brandsList.sortedBrands, function(elem) {
 	    return elem['brand-name'].toLowerCase().indexOf(searchTerm) > -1;
@@ -66,7 +82,6 @@ function loadBrands () {
 	for (let i=0; i<results.length; i++) {
 		createTemplate ('badge', 'filtered-brands-wrapper', {'brand-name': results[i]['brand-name'], 'brand-id': results[i]['brand-id'], 'badge-type': 'filtered-brand-badge'});
 	};
-	enableSelectBrand ();
 }
 
 function filterBrands () {
