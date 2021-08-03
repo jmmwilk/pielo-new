@@ -151,6 +151,11 @@ body {
 	min-height: 38px;
 }
 
+#search-button {
+	height: 40px;
+	border-radius: 8px;
+}
+
 @include media-breakpoint-only(xs) {
   	.brand-badge {
 		font-size: .85em;

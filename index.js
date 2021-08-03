@@ -81,7 +81,6 @@ function adjustBrandBadgeSize (brandId, badgeType) {
 	let badgeTextWidth = $('#' + badgeTextId).width();
 	let badgeWidth = $('#' + badgeTextId).parent().width();
 	if (badgeTextWidth + 15 > badgeWidth) {
-		console.log ('za duże')
 		$('#' + badgeTextId).parent().width(badgeTextWidth + 15)
 		$('#' + badgeTextId).parent().parent().removeClass('col').addClass('col-auto');
 	}

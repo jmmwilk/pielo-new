@@ -127,6 +127,11 @@ body {
   min-height: 38px;
 }
 
+#search-button {
+  height: 40px;
+  border-radius: 8px;
+}
+
 @media (max-width: 575.98px) {
   .brand-badge {
     font-size: 0.85em;
