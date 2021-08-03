@@ -42,7 +42,7 @@ function searchBrands () {
 	searchTermCount = newCount;
 }
 
-function removeBrand (selectedBrand) {
+function removeBrandFromSelected (selectedBrand) {
 	let brandId = $(selectedBrand).attr('brand-id');
 	for (let i=0; i<state.selectedBrands.length; i++) {
 		if (state.selectedBrands[i]['brand-id'] == brandId) {
@@ -70,9 +70,12 @@ function selectBrand (selectedBrand) {
 		let badgeType = 'selected-brand-badge';
 		createTemplate ('badge', 'selected-items-wrapper', {'brand-name': selectedBrandName, 'brand-id': brandId, 'badge-type': badgeType});
 		adjustBrandBadgeSize (brandId, badgeType);
+		$('#filtered-brands-wrapper').html('');
+		$('#search-box-input').val('');
+		$('#search-button').removeClass('d-none');
 	};
 	$('.selected-brand-badge').on('click',function(e){
-   		removeBrand (this);
+   		removeBrandFromSelected (this);
 	});
 }
 
