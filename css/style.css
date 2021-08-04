@@ -123,6 +123,11 @@ body {
   background-color: #ffe69c;
 }
 
+.store-logo-wrapper {
+  height: 100px;
+  width: 100px;
+}
+
 #selected-items-wrapper {
   min-height: 38px;
 }

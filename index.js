@@ -1,5 +1,6 @@
 import * as brandsList from './brands-list.js';
 import * as state from './state.js';
+import * as stores from './stores.js';
 
 let searchTermCount = 0;
 
@@ -14,6 +15,9 @@ $(document).ready(function(){
 	$('#search-box-input').on("keyup", function() {
 		searchBrands ();
   	});
+  	$('#search-button').on('click',function(){
+   		searchStores ();
+	});
 })
 
 function searchBrands () {
@@ -112,6 +116,36 @@ function filterBrands () {
   		$(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1)
 	});
 }
+
+function searchStores () {
+	$('#stores-wrapper').removeClass('d-none');
+	$('#search-box-container').addClass('d-none');
+	$('#search-button').addClass('d-none');
+	$('#matching-stores-wrapper').html('');
+	let matchingStores = stores.storesList.filter(function(store){
+		let areAllItems = true;
+		state.selectedBrands.forEach(function(selectedBrand){
+			let brandInStore = store['store-brands'].find(function(brand){
+				return brand == selectedBrand['brand-id']
+			});
+			if (!brandInStore) {
+				areAllItems = false
+				return
+			};
+		});
+		return areAllItems === true
+	});
+	if (matchingStores.length === 0) {
+		$('#stores-text').html('Żaden sklep nie spełnia kryteriów. Spróbuj usunąć niektóre wyszukiwania.')
+		return
+	}
+	$('#stores-text').html('Sklepy:')
+	matchingStores.forEach(function(store){
+		let logo = 'images/stores-logos/' + store['store-src'];
+		createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
+	});
+}
+
 
 function adjustBgImage () {
 	let bgImage;
