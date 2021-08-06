@@ -102,12 +102,26 @@ function suggestBrands () {
 	let brandId;
 	let badgeType;
 	for (let i=0; i<results.length; i++) {
-		brandName = results[i]['brand-name'];
 		brandId = results[i]['brand-id'];
-		badgeType = 'filtered-brand-badge';
-		createTemplate ('badge', 'filtered-brands-wrapper', {'brand-name': brandName, 'brand-id': brandId, 'badge-type': badgeType});
-		adjustBrandBadgeSize (brandId, badgeType);
+		let isAlreadySelected = isThisBrandSelected (brandId)
+		if (!isAlreadySelected) {
+			brandName = results[i]['brand-name'];
+			badgeType = 'filtered-brand-badge';
+			createTemplate ('badge', 'filtered-brands-wrapper', {'brand-name': brandName, 'brand-id': brandId, 'badge-type': badgeType});
+			adjustBrandBadgeSize (brandId, badgeType);
+		};
 	};
+}
+
+function isThisBrandSelected (brandId) {
+	let isAlreadySelected = false
+	for (let i=0; i<state.selectedBrands.length; i++) {
+		if (state.selectedBrands[i]['brand-id'] == brandId) {
+			isAlreadySelected = true;
+			return isAlreadySelected
+		};
+	};
+	return isAlreadySelected
 }
 
 function filterBrands () {
