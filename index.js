@@ -169,18 +169,10 @@ function adjustBgImage () {
 		$(bgImage).css("width", 7/6*$('#left-column').width() + 'px');
 		$(bgImage).parent().css("right", 1/6*$('#left-column').width() + 'px');
 	}
-	if ($(window).width() >= 768 && $(window).width() < 992) {
+	if ($(window).width() < 992) {
 		bgImage = $('#md-background-image');
 	  	$(bgImage).css("height", $('#left-column').width() + 'px');
 		$(bgImage).parent().css("right", 1/4*$('#left-column').width() + 'px');
-	}
-	if ($(window).width() < 768) {
-		bgImage = $('#circle');
-	  	$(bgImage).css("height", 3/2 * $(window).width() + 'px');
-	  	$(bgImage).parent().css("top", 3/4*$(window).height() + 'px');
-	  	$(bgImage).parent().css("left", -1/10*$(window).width() + 'px');
-	  	$(bgImage).parent().css("height", 1/4*$(window).height() + ($('#footer').outerHeight(true)) + 'px');
-	  	$(bgImage).parent().css("width", 11/10*$(window).width() + 'px');
 	}
 }
 

@@ -1,3 +1,8 @@
+#diaper-icon {
+  height: 120px;
+  width: 120px;
+}
+
 #search-box-input {
   border: 0px;
   color: #ced4da;
@@ -25,15 +30,6 @@ input.placeholder-color::placeholder {
   display: none;
 }
 
-.sm-background-image {
-  display: none;
-}
-
-@media (max-width: 767.98px) {
-  .sm-background-image {
-    display: block;
-  }
-}
 @media (min-width: 768px) and (max-width: 991.98px) {
   .md-background-image {
     display: block;
@@ -96,17 +92,15 @@ body {
 }
 
 #left-column-elements-wrapper {
-  top: 30%;
+  top: 10%;
 }
 
 #footer {
   z-index: 2;
 }
 
-@media (min-width: 768px) {
-  .footer-border-top {
-    border-top: 1px solid #ffc107;
-  }
+.footer-border-top {
+  border-top: 1px solid #ffc107;
 }
 
 .brand-badge {

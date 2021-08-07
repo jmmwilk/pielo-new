@@ -17,6 +17,10 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 $input-placeholder-color: $gray-400;
 
+#diaper-icon {
+	height: 120px;
+	width: 120px;
+}
 
 #search-box-input {
     border: 0px;
@@ -43,16 +47,6 @@ input.placeholder-color::placeholder {
 
 .md-background-image {
 	display: none;
-}
-
-.sm-background-image {
-	display: none;
-}
-
-@include media-breakpoint-down(md) {
-	.sm-background-image {
-    	display: block;
-  	};
 }
 
 @include media-breakpoint-only(md) {
@@ -120,7 +114,7 @@ body {
 }
 
 #left-column-elements-wrapper {
-	top: 30%
+	top: 10%
 }
 
 #footer {
@@ -128,9 +122,7 @@ body {
 }
 
 .footer-border-top {
-   @include media-breakpoint-up(md) { 
-       border-top: 1px solid $warning;
-   }
+	border-top: 1px solid $warning;
 }
 
 .brand-badge {
