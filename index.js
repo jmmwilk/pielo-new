@@ -18,6 +18,7 @@ $(document).ready(function(){
   	$('#search-button').on('click',function(){
    		searchStores ();
 	});
+
 })
 
 function searchBrands () {
@@ -55,6 +56,7 @@ function removeBrandFromSelected (selectedBrand) {
 			return
 		};
 	};
+	setSearchBoxPlaceholder ();
 }
 
 function selectBrand (selectedBrand) {
@@ -81,6 +83,16 @@ function selectBrand (selectedBrand) {
 	$('.selected-brand-badge').on('click',function(e){
    		removeBrandFromSelected (this);
 	});
+	setSearchBoxPlaceholder ();
+}
+
+function setSearchBoxPlaceholder () {
+	if (state.selectedBrands.length > 0) {
+		console.log ('cumulonimbus')
+		$('#search-box-input').attr("placeholder", "Wpisz kolejną markę pieluszek");
+	} else {
+		$('#search-box-input').attr("placeholder", "Wpisz dowolną markę pieluszek");
+	}
 }
 
 function adjustBrandBadgeSize (brandId, badgeType) {
@@ -158,6 +170,21 @@ function searchStores () {
 		let logo = 'images/stores-logos/' + store['store-src'];
 		createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
 	});
+	let height1 = $('#left-column').height();
+	let height2 = $('#left-column-elements-wrapper').height();
+	let difference = height1 - height2;
+	console.log ('difference', difference)
+	if (difference < 200 && difference >= 0) {
+		console.log ('aaa')
+		height1 = height1 + 200 + difference
+	}
+	if (difference < 0) {
+		console.log ('bbbb')
+		$('#left-column').removeClass('h-100')
+//		let newHeight = height1 + 200 - difference
+		$('#main').height(2000);
+
+	}
 }
 
 
