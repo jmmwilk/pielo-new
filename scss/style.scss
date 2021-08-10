@@ -79,10 +79,6 @@ body {
 	height: 100vh;
 }
 
-#head-and-main-wrapper {
-	height: 100vh;
-}
-
 #pielo {
 	width: 150px;
 	height: 40px;
@@ -152,6 +148,10 @@ body {
 	height: 40px;
 	border-radius: 8px;
 	box-shadow: rgb(50 50 53 / 20%) 0px 10px 5px -5px, rgb(0 0 0 / 10%) 0px 8px 16px -10px;
+}
+
+#z-index-minus-box {
+	z-index: -1;
 }
 
 @include media-breakpoint-only(xs) {

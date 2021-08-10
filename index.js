@@ -48,15 +48,17 @@ function searchBrands () {
 }
 
 function removeBrandFromSelected (selectedBrand) {
+
 	let brandId = $(selectedBrand).attr('brand-id');
 	for (let i=0; i<state.selectedBrands.length; i++) {
 		if (state.selectedBrands[i]['brand-id'] == brandId) {
 			state.selectedBrands.splice(i,1);
 			$(selectedBrand).parent().remove();
-			return
+			{ break; }
 		};
 	};
 	setSearchBoxPlaceholder ();
+	$('#search-button').addClass('d-none');
 }
 
 function selectBrand (selectedBrand) {
@@ -84,11 +86,11 @@ function selectBrand (selectedBrand) {
    		removeBrandFromSelected (this);
 	});
 	setSearchBoxPlaceholder ();
+
 }
 
 function setSearchBoxPlaceholder () {
 	if (state.selectedBrands.length > 0) {
-		console.log ('cumulonimbus')
 		$('#search-box-input').attr("placeholder", "Wpisz kolejną markę pieluszek");
 	} else {
 		$('#search-box-input').attr("placeholder", "Wpisz dowolną markę pieluszek");
@@ -170,20 +172,14 @@ function searchStores () {
 		let logo = 'images/stores-logos/' + store['store-src'];
 		createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
 	});
-	let height1 = $('#left-column').height();
-	let height2 = $('#left-column-elements-wrapper').height();
-	let difference = height1 - height2;
-	console.log ('difference', difference)
-	if (difference < 200 && difference >= 0) {
-		console.log ('aaa')
-		height1 = height1 + 200 + difference
-	}
-	if (difference < 0) {
-		console.log ('bbbb')
-		$('#left-column').removeClass('h-100')
-//		let newHeight = height1 + 200 - difference
-		$('#main').height(2000);
-
+	let storesWrapperPosition = $('#stores-wrapper').offset().top;
+	let spaceForStores = $(window).height() - storesWrapperPosition
+	let newStoresHeight = $('#stores-wrapper').height();
+	let spaceNeeded = newStoresHeight - spaceForStores;
+	if (spaceNeeded > 0) {
+		let emptyBoxHeight = $('#empty-box').height();
+		$('#empty-box').height(emptyBoxHeight + spaceNeeded)
+		$('#empty-box').removeClass('vh-100');
 	}
 }
 

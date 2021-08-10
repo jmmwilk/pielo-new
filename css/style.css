@@ -57,10 +57,6 @@ body {
   height: 100vh;
 }
 
-#head-and-main-wrapper {
-  height: 100vh;
-}
-
 #pielo {
   width: 150px;
   height: 40px;
@@ -130,6 +126,10 @@ body {
   height: 40px;
   border-radius: 8px;
   box-shadow: rgba(50, 50, 53, 0.2) 0px 10px 5px -5px, rgba(0, 0, 0, 0.1) 0px 8px 16px -10px;
+}
+
+#z-index-minus-box {
+  z-index: -1;
 }
 
 @media (max-width: 575.98px) {
