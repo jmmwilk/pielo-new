@@ -135,9 +135,9 @@ body {
 	background-color: $yellow-200;
 }
 
-.store-logo-wrapper {
-	height: 110px;
-	width: 110px;
+.store-logo {
+	max-height: 150px;
+	max-width: 150px;
 }
 
 #selected-items-wrapper {

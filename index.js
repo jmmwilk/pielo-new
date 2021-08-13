@@ -168,19 +168,39 @@ function searchStores () {
 		return
 	}
 	$('#stores-text').html('Sklepy:')
-	matchingStores.forEach(function(store){
-		let logo = 'images/stores-logos/' + store['store-src'];
-		createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
+	// matchingStores.forEach(function(store){
+	// 	let logo = 'images/stores-logos/' + store['store-src'];
+	// 	createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
+	// });
+
+	const promise = new Promise ((resolve, reject) => {
+		let num = 0
+		matchingStores.forEach(function(store){
+			num = num + num
+			let logo = 'images/stores-logos/' + store['store-src'];
+			createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
+		});
+		resolve (num)
 	});
-	let storesWrapperPosition = $('#stores-wrapper').offset().top;
+	promise.then((num) => {
+		 makeSpaceForFooter ()
+		 console.log('num', num)
+	})
+
+	
+}
+
+function makeSpaceForFooter () {
+	let storesWrapperPosition = $('#matching-stores-wrapper').offset().top;
 	let spaceForStores = $(window).height() - storesWrapperPosition
-	let newStoresHeight = $('#stores-wrapper').height();
+	let newStoresHeight = $('#matching-stores-wrapper').height();
+	console.log ('newStoresHeight', newStoresHeight)
 	let spaceNeeded = newStoresHeight - spaceForStores;
 	if (spaceNeeded > 0) {
 		let emptyBoxHeight = $('#empty-box').height();
 		$('#empty-box').height(emptyBoxHeight + spaceNeeded)
 		$('#empty-box').removeClass('vh-100');
-	}
+	} 
 }
 
 
