@@ -176,7 +176,7 @@ function searchStores () {
 	const promise = new Promise ((resolve, reject) => {
 		let num = 0
 		matchingStores.forEach(function(store){
-			num = num + num
+			num = num + 1
 			let logo = 'images/stores-logos/' + store['store-src'];
 			createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
 		});
