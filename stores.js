@@ -27,4 +27,32 @@ export let storesList = [
 		'store-brands': [ 'anavy', 'sue-and-sophie', 'kokosi', 'za-maszyna', 'magabi', 'zufizo', 'green-pieluszki', 'pupus', 'xkko', 'jellyfish', 'green-pieluszki', 'zufizo', 'fomi', 'anna-luna', 'doodush', 'rasppies', 'timi', 'tulipoopka', 'bambino-mio' ],
 		'store-url': 'https://wieluszki.pl/',
 	},
+	{
+		'store-id': 'blabla',
+		'store-name': 'blabla',
+		'store-src': 'wieluszki.jpeg',
+		'store-brands': [ 'anavy', 'sue-and-sophie', 'kokosi', 'za-maszyna', 'magabi', 'zufizo', 'green-pieluszki', 'pupus', 'xkko', 'jellyfish', 'green-pieluszki', 'zufizo', 'fomi', 'anna-luna', 'doodush', 'rasppies', 'timi', 'tulipoopka', 'bambino-mio' ],
+		'store-url': 'https://wieluszki.pl/',
+	},
+	{
+		'store-id': 'aaaa',
+		'store-name': 'aaaaa',
+		'store-src': 'wieluszki.jpeg',
+		'store-brands': [ 'anavy', 'sue-and-sophie', 'kokosi', 'za-maszyna', 'magabi', 'zufizo', 'green-pieluszki', 'pupus', 'xkko', 'jellyfish', 'green-pieluszki', 'zufizo', 'fomi', 'anna-luna', 'doodush', 'rasppies', 'timi', 'tulipoopka', 'bambino-mio' ],
+		'store-url': 'https://wieluszki.pl/',
+	},
+	{
+		'store-id': 'yyyyy',
+		'store-name': 'yyyyy',
+		'store-src': 'better-land.jpeg',
+		'store-brands': [ 'anavy', 'sue-and-sophie', 'kokosi', 'lbd', 'puppi', 'magabi', 'disana', 'za-maszyna', 'magabi', 'zufizo', 'green-pieluszki', 'pupus', 'xkko', 'jellyfish', 'green-pieluszki', 'zufizo', 'baby-lemur', 'funky-monkey', 'little-rhino', 'fomi', 'anna-luna', 'funky-monkey',],
+		'store-url': 'https://www.drogeria-ekologiczna.pl/',
+	},
+	{
+		'store-id': 'cccc',
+		'store-name': 'ccccccc',
+		'store-src': 'chmurka-biala.png',
+		'store-brands': [ 'kokosi', 'lbd', 'puppi', 'pupus', 'xkko', 'jellyfish', 'green-pieluszki', 'zufizo', 'rasppies', 'timi', 'tulipoopka', 'bambino-mio', 'latki-dwie', 'anavy', 'baby-lemur', 'funky-monkey', 'little-rhino' ],
+		'store-url': 'https://chmurkabiala.pl/',
+	},
 ]

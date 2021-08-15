@@ -18,7 +18,7 @@ input.placeholder-color::placeholder {
   opacity: 1;
 }
 
-.right-column {
+#right-column {
   display: none;
 }
 
@@ -36,8 +36,12 @@ input.placeholder-color::placeholder {
   }
 }
 @media (min-width: 768px) {
-  .right-column {
-    display: block;
+  #right-column {
+    display: flex;
+  }
+
+  #title-wrapper {
+    padding-top: 20vh;
   }
 }
 @media (min-width: 992px) {
@@ -85,10 +89,6 @@ body {
 
 #sm-circle-wrapper {
   z-index: -1;
-}
-
-#left-column-elements-wrapper {
-  top: 10%;
 }
 
 #footer {

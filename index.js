@@ -18,6 +18,7 @@ $(document).ready(function(){
   	$('#search-button').on('click',function(){
    		searchStores ();
 	});
+	$('#right-column').height($(window).height() - $('#header').height());
 
 })
 
@@ -168,41 +169,11 @@ function searchStores () {
 		return
 	}
 	$('#stores-text').html('Sklepy:')
-	// matchingStores.forEach(function(store){
-	// 	let logo = 'images/stores-logos/' + store['store-src'];
-	// 	createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
-	// });
-
-	const promise = new Promise ((resolve, reject) => {
-		let num = 0
-		matchingStores.forEach(function(store){
-			num = num + 1
-			let logo = 'images/stores-logos/' + store['store-src'];
-			createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
-		});
-		resolve (num)
+	matchingStores.forEach(function(store){
+		let logo = 'images/stores-logos/' + store['store-src'];
+		createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
 	});
-	promise.then((num) => {
-		 makeSpaceForFooter ()
-		 console.log('num', num)
-	})
-
-	
 }
-
-function makeSpaceForFooter () {
-	let storesWrapperPosition = $('#matching-stores-wrapper').offset().top;
-	let spaceForStores = $(window).height() - storesWrapperPosition
-	let newStoresHeight = $('#matching-stores-wrapper').height();
-	console.log ('newStoresHeight', newStoresHeight)
-	let spaceNeeded = newStoresHeight - spaceForStores;
-	if (spaceNeeded > 0) {
-		let emptyBoxHeight = $('#empty-box').height();
-		$('#empty-box').height(emptyBoxHeight + spaceNeeded)
-		$('#empty-box').removeClass('vh-100');
-	} 
-}
-
 
 function adjustBgImage () {
 	let bgImage;
@@ -215,6 +186,7 @@ function adjustBgImage () {
 	if ($(window).width() < 992) {
 		bgImage = $('#md-background-image');
 	  	$(bgImage).css("height", $('#left-column').width() + 'px');
+	  	// czy tu nie trzeba powiekszyc szerokosci??
 		$(bgImage).parent().css("right", 1/4*$('#left-column').width() + 'px');
 	}
 }
