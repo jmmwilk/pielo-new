@@ -49,17 +49,18 @@ function searchBrands () {
 }
 
 function removeBrandFromSelected (selectedBrand) {
-
-	let brandId = $(selectedBrand).attr('brand-id');
-	for (let i=0; i<state.selectedBrands.length; i++) {
-		if (state.selectedBrands[i]['brand-id'] == brandId) {
-			state.selectedBrands.splice(i,1);
-			$(selectedBrand).parent().remove();
-			{ break; }
+	if (state.pageName.name == 'startPage') {
+		let brandId = $(selectedBrand).attr('brand-id');
+		for (let i=0; i<state.selectedBrands.length; i++) {
+			if (state.selectedBrands[i]['brand-id'] == brandId) {
+				state.selectedBrands.splice(i,1);
+				$(selectedBrand).parent().remove();
+				{ break; }
+			};
 		};
-	};
-	setSearchBoxPlaceholder ();
-	$('#search-button').addClass('d-none');
+		setSearchBoxPlaceholder ();
+		$('#search-button').addClass('d-none');
+	}
 }
 
 function selectBrand (selectedBrand) {
@@ -85,10 +86,12 @@ function selectBrand (selectedBrand) {
 	};
 	$('.selected-brand-badge').on('click',function(e){
    		removeBrandFromSelected (this);
+
 	});
 	setSearchBoxPlaceholder ();
 
 }
+
 
 function setSearchBoxPlaceholder () {
 	if (state.selectedBrands.length > 0) {
@@ -147,10 +150,18 @@ function filterBrands () {
 }
 
 function searchStores () {
+	state.pageName.name = 'storesPage';
 	$('#stores-wrapper').removeClass('d-none');
 	$('#search-box-container').addClass('d-none');
 	$('#search-button').addClass('d-none');
 	$('#matching-stores-wrapper').html('');
+	$('.selected-brand-badge').each(function(badge) {
+	  	$(this).removeAttr('role');
+	 //  	$(this).on('click',function(e){
+	 //  		console.log ('pierdziu')
+  //  			e.preventDefault();
+		// });
+	});
 	let matchingStores = stores.storesList.filter(function(store){
 		let areAllItems = true;
 		state.selectedBrands.forEach(function(selectedBrand){
