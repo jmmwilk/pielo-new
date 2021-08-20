@@ -50,6 +50,11 @@ input.placeholder-color::placeholder {
 	display: none;
 }
 
+.store-logo-wrapper {
+	max-height: 120px;
+	max-width: 120px;
+}
+
 @include media-breakpoint-only(md) {
 	.md-background-image {
     	display: block;
@@ -62,6 +67,10 @@ input.placeholder-color::placeholder {
 	};
 	#title-wrapper {
 		padding-top: 20vh
+	}
+	.store-logo-wrapper {
+		max-height: 150px;
+		max-width: 150px;
 	}
 }
 
@@ -133,11 +142,6 @@ body {
 
 .selected-brand-badge {
 	background-color: $yellow-200;
-}
-
-.store-logo {
-	max-height: 150px;
-	max-width: 150px;
 }
 
 #selected-items-wrapper {

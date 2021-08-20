@@ -35,11 +35,11 @@ templates['matching-stores'] = template({"compiler":[8,">= 4.3.0"],"main":functi
         return undefined
     };
 
-  return "<div class=\"col store-logo-wrapper mb-5 d-flex align-items-center\">\n  <a href=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"store-url") || (depth0 != null ? lookupProperty(depth0,"store-url") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-url","hash":{},"data":data,"loc":{"start":{"line":2,"column":11},"end":{"line":2,"column":24}}}) : helper)))
-    + "\" role=\"button\">\n    <img class=\"img-fluid store-logo\" src=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"store-logo") || (depth0 != null ? lookupProperty(depth0,"store-logo") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-logo","hash":{},"data":data,"loc":{"start":{"line":3,"column":43},"end":{"line":3,"column":57}}}) : helper)))
-    + "\" >\n  </a>\n</div>";
+  return "<div class=\"col mb-5 d-flex align-items-center justify-content-center\">\n  <div class=\"store-logo-wrapper\">\n    <a href=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"store-url") || (depth0 != null ? lookupProperty(depth0,"store-url") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-url","hash":{},"data":data,"loc":{"start":{"line":3,"column":13},"end":{"line":3,"column":26}}}) : helper)))
+    + "\" role=\"button\">\n      <img class=\"img-fluid store-logo\" src=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"store-logo") || (depth0 != null ? lookupProperty(depth0,"store-logo") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-logo","hash":{},"data":data,"loc":{"start":{"line":4,"column":45},"end":{"line":4,"column":59}}}) : helper)))
+    + "\" >\n    </a>\n  </div>\n</div>";
 },"useData":true});
 templates['newsletter-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<!-- MailerLite Universal -->\n    <script>\n    (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){\n    var c={ a:arguments,q:[]};var r=this.push(c);return \"number\"!=typeof r?r:f.bind(c.q);}\n    f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=m[e].q||f.q;r=a.createElement(i);\n    var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l+'?v'+(~~(new Date().getTime()/1000000));\n    _.parentNode.insertBefore(r,_);})(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');\n\n    var ml_account = ml('accounts', '3216661', 'z0h5v3y8a5', 'load');\n    </script>\n    <!-- End MailerLite Universal -->\n\n<div class=\"ml-form-embed\"\n  data-account=\"3216661:z0h5v3y8a5\"\n  data-form=\"4233088:o3r9m1\">\n</div>";

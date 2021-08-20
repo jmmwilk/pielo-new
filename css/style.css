@@ -30,6 +30,11 @@ input.placeholder-color::placeholder {
   display: none;
 }
 
+.store-logo-wrapper {
+  max-height: 120px;
+  max-width: 120px;
+}
+
 @media (min-width: 768px) and (max-width: 991.98px) {
   .md-background-image {
     display: block;
@@ -42,6 +47,11 @@ input.placeholder-color::placeholder {
 
   #title-wrapper {
     padding-top: 20vh;
+  }
+
+  .store-logo-wrapper {
+    max-height: 150px;
+    max-width: 150px;
   }
 }
 @media (min-width: 992px) {
@@ -111,11 +121,6 @@ body {
 
 .selected-brand-badge {
   background-color: #ffe69c;
-}
-
-.store-logo {
-  max-height: 150px;
-  max-width: 150px;
 }
 
 #selected-items-wrapper {
