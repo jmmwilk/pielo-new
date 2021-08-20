@@ -155,12 +155,9 @@ function searchStores () {
 	$('#search-box-container').addClass('d-none');
 	$('#search-button').addClass('d-none');
 	$('#matching-stores-wrapper').html('');
+	$('#add-more-brands').removeClass('d-none');
 	$('.selected-brand-badge').each(function(badge) {
 	  	$(this).removeAttr('role');
-	 //  	$(this).on('click',function(e){
-	 //  		console.log ('pierdziu')
-  //  			e.preventDefault();
-		// });
 	});
 	let matchingStores = stores.storesList.filter(function(store){
 		let areAllItems = true;
@@ -183,6 +180,20 @@ function searchStores () {
 	matchingStores.forEach(function(store){
 		let logo = 'images/stores-logos/' + store['store-src'];
 		createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
+	});
+	$('#add-more-brands').on('click',function(){
+   		goToStartPage ();
+	});
+}
+
+function goToStartPage () {
+	state.pageName.name = 'startPage';
+	$('#stores-wrapper').addClass('d-none');
+	$('#search-box-container').removeClass('d-none');
+	$('#search-button').removeClass('d-none');
+	$('#add-more-brands').addClass('d-none');
+	$('.selected-brand-badge').each(function(badge) {
+		$(this).attr('role', 'button');
 	});
 }
 
