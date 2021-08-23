@@ -50,7 +50,7 @@ function searchBrands () {
 
 function removeBrandFromSelected (selectedBrand) {
 	if (state.pageName.name == 'startPage') {
-		if (state.selectedBrands.length == 0) {
+		if (state.selectedBrands.length === 1) {
 			$('#search-button').addClass('d-none');
 		}
 		let brandId = $(selectedBrand).attr('brand-id');
@@ -85,13 +85,12 @@ function selectBrand (selectedBrand) {
 		$('#filtered-brands-wrapper').html('');
 		$('#search-box-input').val('');
 		$('#search-button').removeClass('d-none');
+		let badgeId = brandId + '-' + badgeType;
+		$('#' + badgeId).on('click',function(e){
+	   		removeBrandFromSelected (this);
+		});
+		setSearchBoxPlaceholder ();
 	};
-	$('.selected-brand-badge').on('click',function(e){
-   		removeBrandFromSelected (this);
-
-	});
-	setSearchBoxPlaceholder ();
-
 }
 
 
@@ -190,7 +189,6 @@ function searchStores () {
 }
 
 function goToStartPage () {
-	console.log ('pierdu pierdu')
 	state.pageName.name = 'startPage';
 	$('#stores-wrapper').addClass('d-none');
 	$('#search-box-container').removeClass('d-none');
