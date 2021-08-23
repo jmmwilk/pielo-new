@@ -50,6 +50,9 @@ function searchBrands () {
 
 function removeBrandFromSelected (selectedBrand) {
 	if (state.pageName.name == 'startPage') {
+		if (state.selectedBrands.length == 0) {
+			$('#search-button').addClass('d-none');
+		}
 		let brandId = $(selectedBrand).attr('brand-id');
 		for (let i=0; i<state.selectedBrands.length; i++) {
 			if (state.selectedBrands[i]['brand-id'] == brandId) {
@@ -59,7 +62,6 @@ function removeBrandFromSelected (selectedBrand) {
 			};
 		};
 		setSearchBoxPlaceholder ();
-		$('#search-button').addClass('d-none');
 	}
 }
 
@@ -155,7 +157,7 @@ function searchStores () {
 	$('#search-box-container').addClass('d-none');
 	$('#search-button').addClass('d-none');
 	$('#matching-stores-wrapper').html('');
-	$('#add-more-brands').removeClass('d-none');
+	$('#go-back-text').removeClass('d-none');
 	$('.selected-brand-badge').each(function(badge) {
 	  	$(this).removeAttr('role');
 	});
@@ -173,20 +175,22 @@ function searchStores () {
 		return areAllItems === true
 	});
 	if (matchingStores.length === 0) {
-		$('#stores-text').html('Żaden sklep nie spełnia kryteriów. Spróbuj usunąć niektóre wyszukiwania.')
-		return
-	}
-	$('#stores-text').html('Sklepy:')
-	matchingStores.forEach(function(store){
-		let logo = 'images/stores-logos/' + store['store-src'];
-		createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
-	});
-	$('#add-more-brands').on('click',function(){
-   		goToStartPage ();
-	});
+		$('#go-back-text').html('Żaden sklep nie spełnia kryteriów. Spróbuj usunąć niektóre marki z wyszukiwania')
+	} else {
+		$('#go-back-text').html('Dodaj kolejną markę do wyszukiwania')
+		$('#stores-text').html('Sklepy:')
+		matchingStores.forEach(function(store){
+			let logo = 'images/stores-logos/' + store['store-src'];
+			createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
+		});
+		$('#add-more-brands').on('click',function(){
+	   		goToStartPage ();
+		});
+	};
 }
 
 function goToStartPage () {
+	console.log ('pierdu pierdu')
 	state.pageName.name = 'startPage';
 	$('#stores-wrapper').addClass('d-none');
 	$('#search-box-container').removeClass('d-none');
