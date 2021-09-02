@@ -6,16 +6,11 @@ let searchTermCount = 0;
 
 $(document).ready(function(){
 	var url = new URL(window.location.href);
-	if (url.search === '') {
-		createStartPage ();
-		return
-	}
 	var params = new URLSearchParams(url.search);
-	if (params.get('page') === 'start') {
-		createStartPage ();
-	}
 	if (params.get('page') === 'stores') {
 		createStoresPage ();
+	} else {
+		createStartPage ();
 	}
 })
 
@@ -30,9 +25,9 @@ function createStartPage () {
 	window.addEventListener('resize', adjustBgImage );
 	var url = new URL(window.location.href);
 	var params = new URLSearchParams(url.search);
-	params.delete('page');
-	params.forEach(function(param){
-		state.selectedBrands.push({'brand-id': param})
+	let brandsFromURL = params.getAll('brand');
+	brandsFromURL.forEach(function(brandFromURL){
+		state.selectedBrands.push({'brand-id': brandFromURL})
 	})
 	if (state.selectedBrands.length > 0) {
 		$('#search-button').removeClass('d-none');
@@ -97,7 +92,7 @@ function searchBrands () {
 function removeBrandFromSelected (selectedBrand) {
 	var url = new URL(window.location.href);
 	var params = new URLSearchParams(url.search);
-	if (params.get('page') === 'start') {
+	if (params.get('page') !== 'stores') {
 		if (state.selectedBrands.length === 1) {
 			$('#search-button').addClass('d-none');
 		} else {
@@ -204,9 +199,9 @@ function filterBrands () {
 function createStoresPage () {
 	var url = new URL(window.location.href);
 	var params = new URLSearchParams(url.search);
-	params.delete('page')
-	params.forEach(function(param){
-		state.selectedBrands.push({'brand-id': param})
+	let brandsFromURL = params.getAll('brand');
+	brandsFromURL.forEach(function(brandFromURL){
+		state.selectedBrands.push({'brand-id': brandFromURL})
 	})
 	createTemplate ('structure', 'application');
 	createTemplate ('main-page', 'main');
