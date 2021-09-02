@@ -4,23 +4,69 @@ import * as stores from './stores.js';
 
 let searchTermCount = 0;
 
-
 $(document).ready(function(){
+	var url = new URL(window.location.href);
+	if (url.search === '') {
+		createStartPage ();
+		return
+	}
+	var params = new URLSearchParams(url.search);
+	if (params.get('page') === 'start') {
+		createStartPage ();
+	}
+	if (params.get('page') === 'stores') {
+		createStoresPage ();
+	}
+})
+
+function createStartPage () {
 	createTemplate ('structure', 'application');
 	createTemplate ('main-page', 'main');
+	createTemplate ('search-box', 'search-box-container');
+	createTemplate ('search-button', 'search-button-wrapper');
+	createTemplate ('selected-brands', 'selected-brands-wrapper');
 	$('#newsletter-button').click(goToNewsletter);
-//	window.location.href = "https://pielo.pl#newsletter";
 	adjustBgImage ();
 	window.addEventListener('resize', adjustBgImage );
+	var url = new URL(window.location.href);
+	var params = new URLSearchParams(url.search);
+	params.delete('page');
+	params.forEach(function(param){
+		state.selectedBrands.push({'brand-id': param})
+	})
+	if (state.selectedBrands.length > 0) {
+		$('#search-button').removeClass('d-none');
+		for (let i=0; i<state.selectedBrands.length; i++) {
+			let brandId = state.selectedBrands[i]['brand-id'];
+			let selectedBrandName =  brandsList.sortedBrands.find(function(brand){
+				return brand['brand-id'] == brandId;
+			})['brand-name'];
+			createSelectedBrandBadge (selectedBrandName, brandId);
+		};
+	};
+	setSearchBoxPlaceholder ();
 	$('#search-box-input').on("keyup", function() {
 		searchBrands ();
   	});
   	$('#search-button').on('click',function(){
-   		searchStores ();
+  		let parametersString = '?page=stores';
+  		for (let i=0; i<state.selectedBrands.length; i++) {
+  			parametersString = parametersString + '&brand=' + state.selectedBrands[i]['brand-id'];
+  		}
+  		window.location.href = parametersString;
 	});
 	$('#right-column').height($(window).height() - $('#header').height());
+}
 
-})
+// document.onmouseover = function() {
+//     //User's mouse is inside the page.
+//     window.innerDocClick = true;
+// }
+
+// document.onmouseleave = function() {
+//     //User's mouse has left the page.
+//     window.innerDocClick = false;
+// }
 
 function searchBrands () {
 	let newCount = $('#search-box-input').val().length;
@@ -49,9 +95,13 @@ function searchBrands () {
 }
 
 function removeBrandFromSelected (selectedBrand) {
-	if (state.pageName.name == 'startPage') {
+	var url = new URL(window.location.href);
+	var params = new URLSearchParams(url.search);
+	if (params.get('page') === 'start') {
 		if (state.selectedBrands.length === 1) {
 			$('#search-button').addClass('d-none');
+		} else {
+			$('#search-button').removeClass('d-none');
 		}
 		let brandId = $(selectedBrand).attr('brand-id');
 		for (let i=0; i<state.selectedBrands.length; i++) {
@@ -79,20 +129,21 @@ function selectBrand (selectedBrand) {
 	};
 	if (!isAlreadySelected) {
 		state.selectedBrands.push({'brand-id': brandId});
-		let badgeType = 'selected-brand-badge';
-		createTemplate ('badge', 'selected-items-wrapper', {'brand-name': selectedBrandName, 'brand-id': brandId, 'badge-type': badgeType});
-		adjustBrandBadgeSize (brandId, badgeType);
+		createSelectedBrandBadge (selectedBrandName, brandId);
 		$('#filtered-brands-wrapper').html('');
 		$('#search-box-input').val('');
 		$('#search-button').removeClass('d-none');
-		let badgeId = brandId + '-' + badgeType;
-		$('#' + badgeId).on('click',function(e){
-	   		removeBrandFromSelected (this);
-		});
 		setSearchBoxPlaceholder ();
 	};
 }
 
+function createSelectedBrandBadge (selectedBrandName, brandId) {
+	createBrandBadge ('selected-brand-badge', selectedBrandName, brandId, 'selected-items-wrapper');
+	let badgeId = brandId + '-selected-brand-badge';
+	$('#' + badgeId).on('click',function(e){
+   		removeBrandFromSelected (this);
+	});
+}
 
 function setSearchBoxPlaceholder () {
 	if (state.selectedBrands.length > 0) {
@@ -126,8 +177,7 @@ function suggestBrands () {
 		if (!isAlreadySelected) {
 			brandName = results[i]['brand-name'];
 			badgeType = 'filtered-brand-badge';
-			createTemplate ('badge', 'filtered-brands-wrapper', {'brand-name': brandName, 'brand-id': brandId, 'badge-type': badgeType});
-			adjustBrandBadgeSize (brandId, badgeType);
+			createBrandBadge ('filtered-brand-badge', brandName, brandId, 'filtered-brands-wrapper');
 		};
 	};
 }
@@ -150,13 +200,29 @@ function filterBrands () {
 	});
 }
 
-function searchStores () {
-	state.pageName.name = 'storesPage';
-	$('#stores-wrapper').removeClass('d-none');
-	$('#search-box-container').addClass('d-none');
-	$('#search-button').addClass('d-none');
+
+function createStoresPage () {
+	var url = new URL(window.location.href);
+	var params = new URLSearchParams(url.search);
+	params.delete('page')
+	params.forEach(function(param){
+		state.selectedBrands.push({'brand-id': param})
+	})
+	createTemplate ('structure', 'application');
+	createTemplate ('main-page', 'main');
+	createTemplate ('stores', 'stores-wrapper');
+	createTemplate ('go-back-text', 'go-back-text-wrapper');
+	createTemplate ('selected-brands', 'selected-brands-wrapper');
+	for (let i=0; i<state.selectedBrands.length; i++) {
+		let brandId = state.selectedBrands[i]['brand-id'];
+		let brandName =  brandsList.sortedBrands.find(function(brand){
+			return brand['brand-id'] == brandId
+		})['brand-name'];
+		createBrandBadge ('selected-brand-badge', brandName, brandId, 'selected-items-wrapper')
+	};
+	adjustBgImage ();
+	window.addEventListener('resize', adjustBgImage );
 	$('#matching-stores-wrapper').html('');
-	$('#go-back-text').removeClass('d-none');
 	$('.selected-brand-badge').each(function(badge) {
 	  	$(this).removeAttr('role');
 	});
@@ -182,21 +248,22 @@ function searchStores () {
 			let logo = 'images/stores-logos/' + store['store-src'];
 			createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
 		});
-		$('#add-more-brands').on('click',function(){
-	   		goToStartPage ();
-		});
 	};
+	$('#go-back-text').on('click',function(){
+		let parametersString = '?page=start';
+  		for (let i=0; i<state.selectedBrands.length; i++) {
+  			parametersString = parametersString + '&brand=' + state.selectedBrands[i]['brand-id'];
+  		}
+		window.location.href = parametersString;
+//		state.selectedBrands = [];
+//   		createStartPage ();
+	});
+
 }
 
-function goToStartPage () {
-	state.pageName.name = 'startPage';
-	$('#stores-wrapper').addClass('d-none');
-	$('#search-box-container').removeClass('d-none');
-	$('#search-button').removeClass('d-none');
-	$('#add-more-brands').addClass('d-none');
-	$('.selected-brand-badge').each(function(badge) {
-		$(this).attr('role', 'button');
-	});
+function createBrandBadge (badgeType, brandName, brandId, wrapperId) {
+	createTemplate ('badge', wrapperId, {'brand-name': brandName, 'brand-id': brandId, 'badge-type': badgeType});
+	adjustBrandBadgeSize (brandId, badgeType);
 }
 
 function adjustBgImage () {

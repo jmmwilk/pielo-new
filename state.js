@@ -1,5 +1,3 @@
 export let selectedBrands = [];
 
-export let pageName = {
-	'name': 'startPage',
-}
+export let selectedBrandsHistory = {};
