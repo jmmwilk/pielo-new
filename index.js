@@ -44,11 +44,7 @@ function createStartPage () {
 		searchBrands ();
   	});
   	$('#search-button').on('click',function(){
-  		let parametersString = '?page=stores';
-  		for (let i=0; i<state.selectedBrands.length; i++) {
-  			parametersString = parametersString + '&brand=' + state.selectedBrands[i]['brand-id'];
-  		}
-  		window.location.href = parametersString;
+  		goToNewURL('?page=stores')
 	});
 	$('#right-column').height($(window).height() - $('#header').height());
 }
@@ -93,21 +89,22 @@ function removeBrandFromSelected (selectedBrand) {
 	var url = new URL(window.location.href);
 	var params = new URLSearchParams(url.search);
 	if (params.get('page') !== 'stores') {
-		if (state.selectedBrands.length === 1) {
-			$('#search-button').addClass('d-none');
-		} else {
-			$('#search-button').removeClass('d-none');
-		}
 		let brandId = $(selectedBrand).attr('brand-id');
 		for (let i=0; i<state.selectedBrands.length; i++) {
 			if (state.selectedBrands[i]['brand-id'] == brandId) {
 				state.selectedBrands.splice(i,1);
-				$(selectedBrand).parent().remove();
-				{ break; }
+				goToNewURL ('?page=start');
 			};
 		};
 		setSearchBoxPlaceholder ();
 	}
+}
+
+function goToNewURL (parametersString) {
+	for (let i=0; i<state.selectedBrands.length; i++) {
+		parametersString = parametersString + '&brand=' + state.selectedBrands[i]['brand-id'];
+	}
+	window.location.href = parametersString;
 }
 
 function selectBrand (selectedBrand) {
@@ -124,11 +121,7 @@ function selectBrand (selectedBrand) {
 	};
 	if (!isAlreadySelected) {
 		state.selectedBrands.push({'brand-id': brandId});
-		createSelectedBrandBadge (selectedBrandName, brandId);
-		$('#filtered-brands-wrapper').html('');
-		$('#search-box-input').val('');
-		$('#search-button').removeClass('d-none');
-		setSearchBoxPlaceholder ();
+		goToNewURL ('?page=start');
 	};
 }
 
@@ -245,13 +238,7 @@ function createStoresPage () {
 		});
 	};
 	$('#go-back-text').on('click',function(){
-		let parametersString = '?page=start';
-  		for (let i=0; i<state.selectedBrands.length; i++) {
-  			parametersString = parametersString + '&brand=' + state.selectedBrands[i]['brand-id'];
-  		}
-		window.location.href = parametersString;
-//		state.selectedBrands = [];
-//   		createStartPage ();
+		goToNewURL ('?page=start');
 	});
 
 }
