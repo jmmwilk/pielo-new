@@ -5,22 +5,37 @@ import * as stores from './stores.js';
 let searchTermCount = 0;
 
 $(document).ready(function(){
+	createFrame ();
 	var url = new URL(window.location.href);
 	var params = new URLSearchParams(url.search);
 	if (params.get('page') === 'stores') {
 		createStoresPage ();
-	} else {
+	}
+	if (params.get('page') === 'newsletter') {
+		createTemplate ('newsletter-page', 'main');
+	}
+	if (params.get('page') === 'o-pielo') {
+	}
+	if (params.get('page') === 'lista-marek') {
+		createBrandsListPage ();
+	}
+	if (params.get('page') === 'start' || !params.get('page')) {
 		createStartPage ();
 	}
 })
 
-function createStartPage () {
+function createFrame () {
 	createTemplate ('structure', 'application');
+	// $('#newsletter-button').click(function(){
+	// 	window.location.href = '?page=newsletter';
+	// });
+}
+
+function createStartPage () {
 	createTemplate ('main-page', 'main');
 	createTemplate ('search-box', 'search-box-container');
 	createTemplate ('search-button', 'search-button-wrapper');
 	createTemplate ('selected-brands', 'selected-brands-wrapper');
-	$('#newsletter-button').click(goToNewsletter);
 	adjustBgImage ();
 	window.addEventListener('resize', adjustBgImage );
 	var url = new URL(window.location.href);
@@ -47,6 +62,13 @@ function createStartPage () {
   		goToNewURL('?page=stores')
 	});
 	$('#right-column').height($(window).height() - $('#header').height());
+}
+
+function createBrandsListPage () {
+	createTemplate ('brands-list', 'main')
+	brandsList.sortedBrands.forEach(function(brand){
+		createTemplate ('brand', 'brands-list-wrapper', brand);
+	})
 }
 
 // document.onmouseover = function() {
@@ -196,7 +218,6 @@ function createStoresPage () {
 	brandsFromURL.forEach(function(brandFromURL){
 		state.selectedBrands.push({'brand-id': brandFromURL})
 	})
-	createTemplate ('structure', 'application');
 	createTemplate ('main-page', 'main');
 	createTemplate ('stores', 'stores-wrapper');
 	createTemplate ('go-back-text', 'go-back-text-wrapper');
@@ -234,7 +255,11 @@ function createStoresPage () {
 		$('#stores-text').html('Sklepy:')
 		matchingStores.forEach(function(store){
 			let logo = 'images/stores-logos/' + store['store-src'];
-			createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-url': store['store-url']});
+			createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-id': store['store-id']});
+			$('#' + store['store-id'] + '-store-logo-wrapper').on('click',function(){
+				console.log ('pleple')
+				window.open(store['store-url']);
+			});
 		});
 	};
 	$('#go-back-text').on('click',function(){
@@ -264,18 +289,15 @@ function adjustBgImage () {
 	}
 }
 
-function goToNewsletter () {
-	window.location.href = "#newsletter";
-	$('#main').html('');
-	createTemplate ('newsletter-page', 'main');
-}
-
 
 function createTemplate (templateId, parentTemplate, data) {
 	let template = Handlebars.templates[templateId];
 	$('#' + parentTemplate).append(template(data));
 }
 
+// newsletter button (in structure.handlebars)
+// <button id="newsletter-button" class="btn btn-outline-warning" type="button">
+// 				        NEWSLETTER</button>
 
 
 

@@ -24,6 +24,23 @@ templates['badge'] = template({"compiler":[8,">= 4.3.0"],"main":function(contain
     + alias4(((helper = (helper = lookupProperty(helpers,"brand-name") || (depth0 != null ? lookupProperty(depth0,"brand-name") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"brand-name","hash":{},"data":data,"loc":{"start":{"line":4,"column":10},"end":{"line":4,"column":24}}}) : helper)))
     + "</small>\n		</div>\n	</div>\n</div>";
 },"useData":true});
+templates['brand'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "<p brand-id="
+    + alias4(((helper = (helper = lookupProperty(helpers,"brand-id") || (depth0 != null ? lookupProperty(depth0,"brand-id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"brand-id","hash":{},"data":data,"loc":{"start":{"line":1,"column":12},"end":{"line":1,"column":24}}}) : helper)))
+    + ">"
+    + alias4(((helper = (helper = lookupProperty(helpers,"brand-name") || (depth0 != null ? lookupProperty(depth0,"brand-name") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"brand-name","hash":{},"data":data,"loc":{"start":{"line":1,"column":25},"end":{"line":1,"column":39}}}) : helper)))
+    + "</p>";
+},"useData":true});
+templates['brands-list'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
+    return "<div class=\"mt-5 text-secondary small\">\n	Marki pieluszek wielorazowych, które znajdziesz w sklepach internetowych i wyszukasz w naszej wyszukiwarce.\n</div>\n<div id=\"brands-list-wrapper\" class=\"mt-5\">\n</div>";
+},"useData":true});
 templates['go-back-text'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<a id=\"go-back-text\" class=\"link-secondary col-md-9 col-lg-10 col-xxl-10\">\n</a>";
 },"useData":true});
@@ -38,9 +55,9 @@ templates['matching-stores'] = template({"compiler":[8,">= 4.3.0"],"main":functi
         return undefined
     };
 
-  return "<div class=\"col mb-5 d-flex align-items-center justify-content-center\">\n  <div class=\"store-logo-wrapper\">\n    <a href=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"store-url") || (depth0 != null ? lookupProperty(depth0,"store-url") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-url","hash":{},"data":data,"loc":{"start":{"line":3,"column":13},"end":{"line":3,"column":26}}}) : helper)))
-    + "\" role=\"button\">\n      <img class=\"img-fluid store-logo\" src=\""
+  return "<div class=\"col mb-5 d-flex align-items-center justify-content-center\">\n  <div id=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"store-id") || (depth0 != null ? lookupProperty(depth0,"store-id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-id","hash":{},"data":data,"loc":{"start":{"line":2,"column":11},"end":{"line":2,"column":23}}}) : helper)))
+    + "-store-logo-wrapper\" class=\"store-logo-wrapper\">\n    <a role=\"button\">\n      <img class=\"img-fluid store-logo\" src=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"store-logo") || (depth0 != null ? lookupProperty(depth0,"store-logo") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-logo","hash":{},"data":data,"loc":{"start":{"line":4,"column":45},"end":{"line":4,"column":59}}}) : helper)))
     + "\" >\n    </a>\n  </div>\n</div>";
 },"useData":true});
@@ -60,6 +77,6 @@ templates['stores'] = template({"compiler":[8,">= 4.3.0"],"main":function(contai
     return "<h6 id=\"stores-text\">\n</h6>\n<div class=\"d-flex flex-wrap\">\n	<div id=\"matching-stores-wrapper\" class=\"row row-cols-3\">\n	</div>\n</div>";
 },"useData":true});
 templates['structure'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"dm-sans font-weight-bold container\">\n	<div id=\"head-and-main-wrapper\" class=\"d-flex flex-column min-vh-100\">\n		<div id=\"header\" class=\"row p-1\">\n			<nav class=\"navbar sticky-top navbar-expand-md navbar-light bg-white\">\n			    <a class=\"navbar-brand\" href=\"#\">\n			      <img id=\"pielo\" src=\"images/pielo.png\" alt=\"\">\n			    </a>\n			    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarTogglerDemo02\" aria-controls=\"navbarTogglerDemo02\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n			      <span class=\"navbar-toggler-icon\"></span>\n			    </button>\n			    <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarTogglerDemo02\">\n			    	<div class=\"navbar-nav\">\n				        <a class=\"nav-link me-5\" href=\"#\">O PIELO</a>\n				        <button id=\"newsletter-button\" class=\"btn btn-outline-warning\" href=\"#newsletter\" type=\"button\">NEWSLETTER</button>\n				    </div>\n			    </div>\n			</nav>\n		</div>\n		<div id=\"main\" class=\"flex-grow-1\">\n		</div>\n	</div>\n	<div id=\"footer\" class=\"footer-border-top mt-3 pt-4 pb-4\">\n		<div id=\"pielo-logo-footer\">\n			<h6>Pielo.pl</h6>\n		</div>\n		<div class=\"mt-2\">\n			<a href=\"#newsletter\" class=\"text-secondary\">Polityka prywatności</a>\n		</div>\n	</div>\n</div>\n\n";
+    return "<div class=\"dm-sans font-weight-bold container\">\n	<div id=\"head-and-main-wrapper\" class=\"d-flex flex-column min-vh-100\">\n		<div id=\"header\" class=\"row p-1\">\n			<nav class=\"navbar navbar-expand-md navbar-light bg-white\">\n			    <a class=\"navbar-brand\" href=\"?page=start\">\n			      <img id=\"pielo\" src=\"images/pielo.png\" alt=\"\">\n			    </a>\n			    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarTogglerDemo02\" aria-controls=\"navbarTogglerDemo02\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n			      <span class=\"navbar-toggler-icon\"></span>\n			    </button>\n			    <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarTogglerDemo02\">\n			    	<div class=\"navbar-nav\">\n			    		<a class=\"nav-link me-5\" href=\"?page=lista-marek\">LISTA MAREK</a>\n				        <a class=\"nav-link me-5\" href=\"?page=o-pielo\">O PIELO</a>\n				    </div>\n			    </div>\n			</nav>\n		</div>\n		<div id=\"main\" class=\"flex-grow-1\">\n		</div>\n	</div>\n	<div id=\"footer\" class=\"footer-border-top mt-3 pt-4 pb-4\">\n		<div id=\"pielo-logo-footer\">\n			<h6>Pielo.pl</h6>\n		</div>\n		<div class=\"mt-2\">\n			<a href=\"#newsletter\" class=\"text-secondary\">Polityka prywatności</a>\n		</div>\n	</div>\n</div>\n\n";
 },"useData":true});
 })();
