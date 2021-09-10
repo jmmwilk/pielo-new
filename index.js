@@ -15,6 +15,7 @@ $(document).ready(function(){
 		createTemplate ('newsletter-page', 'main');
 	}
 	if (params.get('page') === 'o-pielo') {
+		createTemplate ('about-pielo', 'main');
 	}
 	if (params.get('page') === 'lista-marek') {
 		createBrandsListPage ();
@@ -274,6 +275,7 @@ function createBrandBadge (badgeType, brandName, brandId, wrapperId) {
 }
 
 function adjustBgImage () {
+	$('#right-column').css('height', $(window).height() - $('#header').height() + 'px');
 	let bgImage;
 	if ($(window).width() >= 992) {
 		bgImage = $('#lg-background-image');
