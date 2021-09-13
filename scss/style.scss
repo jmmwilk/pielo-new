@@ -1,21 +1,37 @@
+
+
 @import "../node_modules/bootstrap-scss/functions";
 
 
-$grey-badge-color : #979797;
+
+$gray-badge-color : #979797;
+$font-family-sans-serif: "DM Sans" !default;
+$font-family-base: "DM Sans" !default;
+
 
 
 @import "../node_modules/bootstrap-scss/variables";
+$font-family-sans-serif: "DM Sans" !default;
+$font-family-base: "DM Sans" !default;
 @import "../node_modules/bootstrap-scss/mixins";
 @import "../node_modules/bootstrap-scss/utilities";
 
+body {
+	font-family: "DM Sans" !important;
+}
+
+
 $custom-colors: (
-  "grey-badge-color": $grey-badge-color
+  "gray-badge-color": $gray-badge-color
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
 
 $input-placeholder-color: $gray-400;
+
+
+
 
 #diaper-icon {
 	height: 120px;
@@ -78,10 +94,6 @@ input.placeholder-color::placeholder {
 	.lg-background-image {
 	    display: block;
 	}
-}
-
-body {
-  font-family: 'DM Sans', sans-serif;
 }
 
 .dm-sans {
