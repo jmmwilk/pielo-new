@@ -66,7 +66,8 @@ function createStartPage () {
 }
 
 function createBrandsListPage () {
-	createTemplate ('brands-list', 'main')
+	createTemplate ('brands-list', 'main', {'brands-number': brandsList.sortedBrands.length});
+	console.log (brandsList.sortedBrands.length)
 	brandsList.sortedBrands.forEach(function(brand){
 		createTemplate ('brand', 'brands-list-wrapper', brand);
 	})
@@ -258,7 +259,6 @@ function createStoresPage () {
 			let logo = 'images/stores-logos/' + store['store-src'];
 			createTemplate ('matching-stores', 'matching-stores-wrapper', {'store-logo': logo, 'store-id': store['store-id']});
 			$('#' + store['store-id'] + '-store-logo-wrapper').on('click',function(){
-				console.log ('pleple')
 				window.open(store['store-url']);
 			});
 		});

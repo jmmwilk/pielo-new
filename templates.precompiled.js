@@ -42,7 +42,16 @@ templates['brand'] = template({"compiler":[8,">= 4.3.0"],"main":function(contain
     + "</p>";
 },"useData":true});
 templates['brands-list'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<div class=\"mt-5 text-secondary small\">\n	Marki pieluszek wielorazowych, które znajdziesz w sklepach internetowych i wyszukasz w naszej wyszukiwarce.\n</div>\n<div id=\"brands-list-wrapper\" class=\"mt-5\">\n</div>";
+    var helper, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return "<div class=\"mt-5 text-secondary small\">\n	Marki pieluszek wielorazowych, które wyszukasz w naszej wyszukiwarce ("
+    + container.escapeExpression(((helper = (helper = lookupProperty(helpers,"brands-number") || (depth0 != null ? lookupProperty(depth0,"brands-number") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : (container.nullContext || {}),{"name":"brands-number","hash":{},"data":data,"loc":{"start":{"line":2,"column":71},"end":{"line":2,"column":88}}}) : helper)))
+    + "):\n</div>\n<div id=\"brands-list-wrapper\" class=\"mt-5\">\n</div>";
 },"useData":true});
 templates['go-back-text'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<a id=\"go-back-text\" class=\"link-secondary col-md-9 col-lg-10 col-xxl-10\">\n</a>";
