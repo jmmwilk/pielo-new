@@ -153,7 +153,7 @@ let brandsList = [
 		'brand-id': 'grovia',
 	},
 	{
-		'brand-name': 'Mrb',
+		'brand-name': 'MRB - Wielorazowo',
 		'brand-id': 'mrb',
 	},
 	{
@@ -315,6 +315,42 @@ let brandsList = [
 	{
 		'brand-name': 'Pink by Paula',
 		'brand-id': 'pink-by-paula',
+	},
+	{
+		'brand-name': 'Gagatki',
+		'brand-id': 'gagatki',
+	},
+	{
+		'brand-name': 'INAczej',
+		'brand-id': 'inaczej',
+	},
+	{
+		'brand-name': 'Hasiowe',
+		'brand-id': 'hasiowe',
+	},
+	{
+		'brand-name': 'Sue&Sophie',
+		'brand-id': 'sue-and-sophie',
+	},
+	{
+		'brand-name': 'agulla',
+		'brand-id': 'agulla',
+	},
+	{
+		'brand-name': 'Lily\'s Pupu',
+		'brand-id': 'lilys-pupu',
+	},
+	{
+		'brand-name': 'manufaktura-jegliczki',
+		'brand-id': 'Manufaktura Jegliczki',
+	},
+	{
+		'brand-name': 'wieloszycie',
+		'brand-id': 'wieloszycie',
+	},
+	{
+		'brand-name': 'yeju',
+		'brand-id': 'yeju',
 	},
 ]
 

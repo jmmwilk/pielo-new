@@ -67,7 +67,6 @@ function createStartPage () {
 
 function createBrandsListPage () {
 	createTemplate ('brands-list', 'main', {'brands-number': brandsList.sortedBrands.length});
-	console.log (brandsList.sortedBrands.length)
 	brandsList.sortedBrands.forEach(function(brand){
 		createTemplate ('brand', 'brands-list-wrapper', brand);
 	})

@@ -67,11 +67,11 @@ templates['matching-stores'] = template({"compiler":[8,">= 4.3.0"],"main":functi
         return undefined
     };
 
-  return "<div class=\"col mb-5 d-flex align-items-center justify-content-center\">\n  <div id=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"store-id") || (depth0 != null ? lookupProperty(depth0,"store-id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-id","hash":{},"data":data,"loc":{"start":{"line":2,"column":11},"end":{"line":2,"column":23}}}) : helper)))
-    + "-store-logo-wrapper\" class=\"store-logo-wrapper\">\n    <a role=\"button\">\n      <img class=\"img-fluid store-logo\" src=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"store-logo") || (depth0 != null ? lookupProperty(depth0,"store-logo") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-logo","hash":{},"data":data,"loc":{"start":{"line":4,"column":45},"end":{"line":4,"column":59}}}) : helper)))
-    + "\" >\n    </a>\n  </div>\n</div>";
+  return "<div class=\"col mb-5 d-flex align-items-center justify-content-center\">\n  <div>\n    <div id=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"store-id") || (depth0 != null ? lookupProperty(depth0,"store-id") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-id","hash":{},"data":data,"loc":{"start":{"line":3,"column":13},"end":{"line":3,"column":25}}}) : helper)))
+    + "-store-logo-wrapper\" class=\"store-logo-wrapper\">\n      <a role=\"button\">\n        <img class=\"img-fluid store-logo\" src=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"store-logo") || (depth0 != null ? lookupProperty(depth0,"store-logo") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"store-logo","hash":{},"data":data,"loc":{"start":{"line":5,"column":47},"end":{"line":5,"column":61}}}) : helper)))
+    + "\" >\n      </a>\n    </div>\n  </div>\n</div>";
 },"useData":true});
 templates['newsletter-page'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<!-- MailerLite Universal -->\n    <script>\n    (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){\n    var c={ a:arguments,q:[]};var r=this.push(c);return \"number\"!=typeof r?r:f.bind(c.q);}\n    f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=m[e].q||f.q;r=a.createElement(i);\n    var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l+'?v'+(~~(new Date().getTime()/1000000));\n    _.parentNode.insertBefore(r,_);})(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');\n\n    var ml_account = ml('accounts', '3216661', 'z0h5v3y8a5', 'load');\n    </script>\n    <!-- End MailerLite Universal -->\n\n<div class=\"ml-form-embed\"\n  data-account=\"3216661:z0h5v3y8a5\"\n  data-form=\"4233088:o3r9m1\">\n</div>";
@@ -86,7 +86,7 @@ templates['selected-brands'] = template({"compiler":[8,">= 4.3.0"],"main":functi
     return "<div class=\"col-12 col-xxl-11\">\n	<div id=\"selected-items-wrapper\" class=\"d-flex flex-wrap row row-cols-3 row-cols-xxl-4 my-2\">\n		</div>\n</div>";
 },"useData":true});
 templates['stores'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<h6 id=\"stores-text\">\n</h6>\n<div class=\"d-flex flex-wrap\">\n	<div id=\"matching-stores-wrapper\" class=\"row row-cols-3\">\n	</div>\n</div>";
+    return "<h6 id=\"stores-text\">\n</h6>\n<div id=\"matching-stores-wrapper\" class=\"row row-cols-3\">\n</div>\n";
 },"useData":true});
 templates['structure'] = template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\" container\">\n	<div id=\"head-and-main-wrapper\" class=\"d-flex flex-column min-vh-100\">\n		<div id=\"header\" class=\"row\">\n			<nav class=\"navbar navbar-expand-md navbar-light bg-white\">\n			    <a class=\"navbar-brand\" href=\"?page=start\">\n			      <img id=\"pielo\" src=\"images/pielo.png\" alt=\"\">\n			    </a>\n			    <button class=\"navbar-toggler\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#navbarTogglerDemo02\" aria-controls=\"navbarTogglerDemo02\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n			      <span class=\"navbar-toggler-icon\"></span>\n			    </button>\n			    <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarTogglerDemo02\">\n			    	<div class=\"navbar-nav\">\n			    		<a class=\"nav-link me-5\" href=\"?page=lista-marek\">LISTA MAREK</a>\n				        <a class=\"nav-link me-5\" href=\"?page=o-pielo\">O PIELO</a>\n				    </div>\n			    </div>\n			</nav>\n		</div>\n		<div id=\"main\" class=\"flex-grow-1\">\n		</div>\n	</div>\n	<div id=\"footer\" class=\"footer-border-top mt-3 pt-4 pb-4\">\n		<div id=\"pielo-logo-footer\">\n			<h6>Pielo.pl</h6>\n		</div>\n		<div class=\"mt-2\">\n			<a href=\"#newsletter\" class=\"text-secondary\">Polityka prywatności</a>\n		</div>\n	</div>\n</div>\n\n";
