@@ -65,7 +65,7 @@ export let storesList = [
 	{
 		'store-id': 'ekoludzik',
 		'store-name': 'Ekoludzik',
-		'store-src': 'ekoludzik-mock.jpeg',
+		'store-src': 'ekoludzik.png',
 		'store-brands': ['ekomajty', 'ekowelniaki', 'xkko', 'maksi-natura', 'dziobak', 'jellyfish', 'konti', 'lelos', 'sudaszyje', 'oh-my-boy', 'welna-otuleni', 'woolberry', 'pink-by-paula',],
 		'store-url': 'https://ekoludzikcentrumpieluszkowe.pl/',
 	},

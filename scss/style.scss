@@ -77,6 +77,18 @@ input.placeholder-color::placeholder {
   }
 }
 
+#wieluszki-store-logo {
+	width: 100px;
+	height: 45px;
+}
+
+@include media-breakpoint-only(sm) {
+	#wieluszki-store-logo {
+		width: 120px;
+		height: 70px;
+	}
+}
+
 @include media-breakpoint-up(md) {
 	#right-column {
 		display: flex;
@@ -88,11 +100,19 @@ input.placeholder-color::placeholder {
 		max-height: 150px;
 		max-width: 150px;
 	}
+	#wieluszki-store-logo {
+		height: 50px;
+		width: 120px;
+	}
 }
 
 @include media-breakpoint-up(lg) {
 	.lg-background-image {
 	    display: block;
+	}
+	#wieluszki-store-logo {
+		height: 65px;
+		width: 150px;
 	}
 }
 

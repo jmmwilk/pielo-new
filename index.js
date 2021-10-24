@@ -261,6 +261,7 @@ function createStoresPage () {
 				window.open(store['store-url']);
 			});
 		});
+		$('#galotki-store-logo').height(150);
 	};
 	$('#go-back-text').on('click',function(){
 		goToNewURL ('?page=start');

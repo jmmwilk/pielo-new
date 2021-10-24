@@ -44,6 +44,17 @@ input.placeholder-color::placeholder {
     display: block;
   }
 }
+#wieluszki-store-logo {
+  width: 100px;
+  height: 45px;
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  #wieluszki-store-logo {
+    width: 120px;
+    height: 70px;
+  }
+}
 @media (min-width: 768px) {
   #right-column {
     display: flex;
@@ -57,10 +68,20 @@ input.placeholder-color::placeholder {
     max-height: 150px;
     max-width: 150px;
   }
+
+  #wieluszki-store-logo {
+    height: 50px;
+    width: 120px;
+  }
 }
 @media (min-width: 992px) {
   .lg-background-image {
     display: block;
+  }
+
+  #wieluszki-store-logo {
+    height: 65px;
+    width: 150px;
   }
 }
 .dm-sans {
