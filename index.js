@@ -2,8 +2,6 @@ import * as brandsList from './brands-list.js';
 import * as state from './state.js';
 import * as stores from './stores.js';
 
-let searchTermCount = 0;
-
 $(document).ready(function(){
 	createFrame ();
 	var url = new URL(window.location.href);
@@ -62,9 +60,12 @@ function createStartPage () {
 		};
 	};
 	setSearchBoxPlaceholder ();
-	$('#search-box-input').on("keyup", function() {
-		searchBrands ();
-  	});
+	// $('#search-box-input').on("keyup", function() {
+	// 	searchBrands ();
+ //  	});
+  	document.getElementById("search-box-input").addEventListener('input', (evt) => {
+	  	searchBrands ();
+	});
   	$('#search-button').on('click',function(){
   		goToNewURL('?page=stores')
 	});
@@ -94,24 +95,13 @@ function searchBrands () {
 		$("#filtered-brands-wrapper").html('');
 		return
 	}
-	if (newCount === 2) {
+	if (newCount >= 2) {
 		$("#filtered-brands-wrapper").html('');
 		suggestBrands ();
 		$('.filtered-brand-badge').on('click',function(e){
 	   		selectBrand (this);
 		});
 	};
-	if (newCount > 2 && newCount > searchTermCount) {
-		filterBrands ();
-	};
-	if (newCount > 2 && newCount < searchTermCount) {
-		$("#filtered-brands-wrapper").html('');
-		suggestBrands ();
-		$('.filtered-brand-badge').on('click',function(e){
-	   		selectBrand (this);
-		});
-	}
-	searchTermCount = newCount;
 }
 
 function removeBrandFromSelected (selectedBrand) {
@@ -208,13 +198,6 @@ function isThisBrandSelected (brandId) {
 		};
 	};
 	return isAlreadySelected
-}
-
-function filterBrands () {
-	let searchTerm = $('#search-box-input').val().toLowerCase();
-	$("#filtered-brands-wrapper *").filter(function() {
-  		$(this).toggle($(this).text().toLowerCase().indexOf(searchTerm) > -1)
-	});
 }
 
 
