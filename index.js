@@ -23,13 +23,19 @@ $(document).ready(function(){
 	if (params.get('page') === 'start' || !params.get('page')) {
 		createStartPage ();
 	}
+	$('#fundraising-button').on('click',function(){
+		window.open('https://zrzutka.pl/z/pielopl');
+	});
 })
 
 function createFrame () {
 	createTemplate ('structure', 'application');
-	// $('#newsletter-button').click(function(){
-	// 	window.location.href = '?page=newsletter';
-	// });
+	$('#newsletter-button').click(function(){
+		window.location.href = '?page=newsletter';
+	});
+	$('#privacy-policy').click(function(){
+		window.location.href = 'https://docs.google.com/document/d/1d4LIkB3eOqfsAVcNuQTRHdfT5vhP3bP0ReJBcdK0acw/edit?usp=sharing';
+	});
 }
 
 function createStartPage () {

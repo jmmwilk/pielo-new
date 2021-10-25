@@ -44,7 +44,7 @@ export let storesList = [
 	{
 		'store-id': 'babao',
 		'store-name': 'Babao',
-		'store-src': '',
+		'store-src': 'babao.png',
 		'store-brands': ['jellyfish', 'puppi'],
 		'store-url': 'https://www.babao.pl/',
 	},

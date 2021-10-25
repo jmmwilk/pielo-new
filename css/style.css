@@ -130,6 +130,11 @@ input.placeholder-color::placeholder {
   border-top: 1px solid #ffc107;
 }
 
+.sm-icon {
+  height: 30px;
+  width: 30px;
+}
+
 .brand-badge {
   height: 30px;
   width: 135px;
